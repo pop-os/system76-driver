@@ -1,0 +1,57 @@
+System76 Driver
+
+System76, Inc.
+Copyright System76, Inc.
+Released under the GNU General Public License (See LICENSE)
+
+
+--------------------------------------
+
+Version 2.0.4
+
+1.) Apply update for gazp3 motherboard change
+
+--------------------------------------
+
+Version 2.0.3
+
+1.) Add usb audio device support to systems requiring sound
+    Fixes bug #110321
+
+--------------------------------------
+
+Version 2.0.2
+
+1.) Fix ata driver problem with daru1, gazv3, gazv4
+
+--------------------------------------
+
+Version 2.0.1
+
+1.) Add Feisty sound support to gazv3
+2.) Add Feisty sound support to gazp1
+3.) Fix variable bug drivers.py/driverscontrol.py
+4.) Fix Suspend in Gazelle Value
+
+--------------------------------------
+
+Version 2.0.0
+
+1.) Add Feisty sound support for gazp2 & gazp3 front speakers
+
+--------------------------------------
+
+Version 1.9.95
+
+1.) Add support for Kubuntu
+2.) Add new Wild Dog Professional (wilp3)
+
+--------------------------------------
+
+Version 1.9.94
+
+1.) Major re-write
+2.) Implement System Information tab
+3.) Separate drivers and restore task
+4.) Bug fixes
+5.) Move to GLADE

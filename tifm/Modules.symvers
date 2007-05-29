@@ -1,0 +1,11 @@
+0xd2991bda	tifm_alloc_device	drivers/mmc/tifm_core
+0xbe298427	tifm_map_sg	drivers/mmc/tifm_core
+0x9b6aa66f	tifm_alloc_adapter	drivers/mmc/tifm_core
+0x7d733561	tifm_add_adapter	drivers/mmc/tifm_core
+0xd0e5c943	tifm_unregister_driver	drivers/mmc/tifm_core
+0x2cbd08f3	tifm_free_adapter	drivers/mmc/tifm_core
+0xbe020513	tifm_eject	drivers/mmc/tifm_core
+0x68b452b6	tifm_free_device	drivers/mmc/tifm_core
+0x38b2fda0	tifm_unmap_sg	drivers/mmc/tifm_core
+0x873baf19	tifm_register_driver	drivers/mmc/tifm_core
+0xab9d1bc1	tifm_remove_adapter	drivers/mmc/tifm_core

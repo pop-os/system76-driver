@@ -1,0 +1,34 @@
+#!/bin/bash
+WHO=`whoami`
+KERNELVER=`uname -r`
+SRCDIR=/lib/modules/$KERNELVER/build
+
+if [ $WHO != "root" ]; then
+echo -e '\E[31;44m'
+echo -e '\E[1m FATAL !! you must be root to run this script\E[0m'
+exit 1
+fi
+if [ ! -d $SRCDIR/include/linux ]; then
+echo -e '\E[31;44m'
+echo -e '\E[1m FATAL you need to install the Kernel Source for your running kernel\E[0m'
+exit 1
+fi
+echo -e '\E[1;33;44m'
+echo -e '\E[1m REMOVE the old module if present\E[0m'
+rmmod gspca
+echo -e '\E[1;33;44m'
+echo -e '\E[1m CLEAN gspca source tree\E[0m'
+make clean
+echo -e '\E[1;33;44m'
+echo -e '\E[1m COMPILE gspca Please Wait ....!!\E[0m'
+make >& kgspca.err
+echo -e '\E[1;33;44m'
+echo -e '\E[1m INSTALL gspca in the kernel binary tree\E[0m'
+make install 
+echo -e '\E[1;33;44m'
+echo -e '\E[1m LOAD gspca in memory \E[0m'
+modprobe gspca
+echo -e '\E[1;33;44m'
+echo -e '\E[1m PRINT COMPILATION MESSAGES if ERRORS look kgspca.err \E[0m'
+cat kgspca.err
+ 

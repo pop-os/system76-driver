@@ -1,0 +1,1 @@
+cmd_/home/carl/workspace/system76-driver/system76-driver-1.9.1/opt/system76/system76-driver/src/tifm/built-in.o :=  rm -f /home/carl/workspace/system76-driver/system76-driver-1.9.1/opt/system76/system76-driver/src/tifm/built-in.o; ar rcs /home/carl/workspace/system76-driver/system76-driver-1.9.1/opt/system76/system76-driver/src/tifm/built-in.o

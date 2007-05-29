@@ -1,0 +1,113 @@
+YanC42 - Yet another nV Configurator 42
+=======================================
+
+(c) 2002-2005 by Sebastian J. Wolf - E-Mail: ygriega@web.de
+
+Homepage: http://yanc.sourceforge.net/ - http://yanc.ygriega.de/
+
+HINT:
+=====
+All trademarks or registered trademarks mentioned within this package belong to their respective owners. The copyright for any material created by the author is reserved. For more details please read the section LICENSE.
+
+LICENSE:
+========
+Licensed under the GNU GPL - read it in the file LICENSE or at http://www.fsf.org/licenses/gpl.html
+
+What the hell is YanC?
+======================
+YanC42 or formerly known as "Yet another nV Configurator" is a small tool, which you can use to change many nVidia and ATI-specific settings (almost) as easily as with the Windows-drivers. 
+
+Why YanC42?
+===========
+Well, you might consider it as the 42nd attempt to rewrite the old YanC codebase. Some might even link it to the Hitchhiker's Guide to the Galaxy and consider it as the answer to the ultimate question...
+To be honest, just consider it as a YanC for two (nVidia and ATI) ;-)
+
+Thanks to:
+==========
+YanC uses 
+- the Java programming language. See http://java.sun.com for details.
+- the Standard Widget Toolkit (SWT), which has been created by the Eclipse Foundation (http://www.eclipse.org). Please see about.html for license details.
+- a modified startup script from the Azureus project, see http://azureus.sf.net for details
+
+Requirements:
+=============
+ix86-based Linux
+nVidia or ATI graphics card with correctly installed binary driver
+XFree 4 or better
+Java Runtime Environment, at least 1.4.2, 5.0 is recommended
+
+WARNING:
+========
+-> Please create a copy of your XF86Config/xorg.conf before you use YanC42 for the first time, because it is possible that your XF86Config/xorg.conf will get damaged because of the use of YanC42. Then a restart of XFree/XOrg would be impossible.
+
+Installation
+============
+-> Extract the archive (Guess you did this already to access this README ;-))
+-> Run the 'yanc' script as root to start the program
+
+Documentation
+=============
+-> A documentation is planned for a later release
+
+TO-DO
+=====
+
+0.X
+===
+-> Include more options...
+
+VERSION-HISTORY - YanC42
+========================
+
+Version 0.0.9 - 2005-08-21
+==========================
+-> TEST-RELEASE
+-> NOT THOROUGHLY TESTED, MAY CONTAIN SERIOUS BUGS
+-> Complete Rewrite of YanC in Java and SWT
+-> Support for nVidia and ATI cards
+
+VERSION-HISTORY - YanC
+======================
+
+Version 0.2.1 - 2003-03-25
+==========================
+-> Fixed PCI card support
+-> Added Brazilian translation (big thanks to Xico Loco)
+
+Version 0.2.0 - 2003-02-07
+==========================
+-> Fixed critical storage bug
+-> modules.conf support included (Side Band Adressing, AGP Fast Writes etc.)
+-> Simple NVClock integration included (available if NVClock is present on 
+your system)
+-> added Dutch localization (big thanks to Marcel J.E. Mol)
+-> added Turkish localization (big thanks to Erkan Kaplan)
+
+Version 0.1.4 - 2003-01-18
+==========================
+-> Added French localization (big thanks to Marc-�ic Dupuis)
+-> YanC icon available
+
+Version 0.1.3 - 2003-01-08
+==========================
+-> Support for multiple device sections in XF86Config
+-> Detection of GeForce2 Pro/GTS should work correctly now
+-> All twinview related elements are now disabled if twinview is disabled at startup
+-> Fixed some charset issues
+
+Version 0.1.2 - 2003-01-03
+==========================
+-> 
+-> Uncommented device section will now be ignored (thanks to Patrick Ouellet for the bug report)
+-> Font problems on some systems in the info-, settings- and license-window fixed now (hopefully)
+
+Version 0.1.1 - 2002-12-29
+==========================
+-> Added Italian localization (big thanks to Piersandro Guerrera)
+-> Minor bugfixes
+
+Version 0.1.0 - 2002-12-23
+==========================
+-> First international version
+
+
