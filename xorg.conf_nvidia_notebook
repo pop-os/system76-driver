@@ -103,6 +103,7 @@ Section "Device"
 	Identifier	"nVidia Graphics Controller"
 	Driver		"nvidia"
 	Option		"NoLogo"
+	Option		"RandRRotation"	"on"
 EndSection
 
 Section "Monitor"

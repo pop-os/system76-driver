@@ -22,8 +22,7 @@ def app_install():
     today = time.strftime('%Y%m%d_h%Hm%Ms%S')
     modelname = model.determine_model()
     version = ubuntuversion.release()
-    # TODO: Add driver install module
-    # TODO: Bonbo Performance (bonp1)
+
     # Model Z35FM / System76 Model Darter Ultra
     if modelname == ('daru1'):
         if version == ('6.06'):
@@ -195,7 +194,6 @@ def app_install():
             os.system('sudo apt-get --assume-yes install 915resolution gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver gsynaptics i855-crt systemconfigurator network-manager-gnome linux-restricted-modules-generic linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_intel_notebook /etc/X11/xorg.conf')
-            os.system('sudo cp /opt/system76/system76-driver/src/acpi/gazv3/acpi-support /etc/default/acpi-support')
             os.system('sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --load /opt/system76/system76-driver/src/76-panel-setup.entries')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/metacity/global_keybindings/panel_main_menu 'Super_L'")
         elif version == ('7.04'):
@@ -225,7 +223,6 @@ def app_install():
             os.system('sudo apt-get --assume-yes install 915resolution gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver gsynaptics i855-crt systemconfigurator network-manager-gnome linux-restricted-modules-generic linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_intel_notebook /etc/X11/xorg.conf')
-            os.system('sudo cp /opt/system76/system76-driver/src/acpi/gazv3/acpi-support /etc/default/acpi-support')
             os.system('sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --load /opt/system76/system76-driver/src/76-panel-setup.entries')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/metacity/global_keybindings/panel_main_menu 'Super_L'")
         elif version == ('7.04'):
@@ -235,7 +232,6 @@ def app_install():
             os.system('sudo apt-get --assume-yes install 915resolution gnucash beagle beagle-backend-evolution mozilla-beagle inkscape system76-driver gsynaptics i855-crt')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_intel_notebook /etc/X11/xorg.conf')
-            os.system('sudo cp /opt/system76/system76-driver/src/acpi/gazv3/acpi-support /etc/default/acpi-support')
             os.system('sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --load /opt/system76/system76-driver/src/76-panel-setup.entries')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/metacity/global_keybindings/panel_main_menu 'Super_L'")
     # Model Mini PC / System76 model Koala Performance
