@@ -13,6 +13,7 @@ import tifm_7xx1
 import gspca
 import feisty_ata_fix
 import acpi
+import hotkey
 
 ## KEEP ALL MODELS IN ALPHABETICAL ORDER
 
