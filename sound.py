@@ -15,7 +15,7 @@ def alsa1():
     """Installs alsa 1.0.14rc2"""
     if os.path.exists(SOUNDDIR1) == True:
         # Install kernel headers
-        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r`")
+        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r` build-essential")
         # Configure and Install Driver
         os.chdir(SOUNDDIR1)
         os.system("sudo sh configure --with-oss=yes --with-cards=hda-intel,usb-audio --with-kernel=/usr/src/linux-headers-`uname -r`/")
@@ -27,7 +27,7 @@ def alsa1():
         os.system("sudo wget http://planet76.com/sound/sys76-alsa-1.0.14rc2.tgz")
         os.system("tar -xzvf sys76-alsa-1.0.14rc2.tgz")
         # Install kernel headers
-        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r`")
+        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r` build-essential")
         # Configure and Install Driver
         os.chdir(SOUNDDIR1)
         os.system("sudo sh configure --with-oss=yes --with-cards=hda-intel,usb-audio --with-kernel=/usr/src/linux-headers-`uname -r`/")
@@ -40,7 +40,7 @@ def alsa2():
     """Installs alsa 1.0.14rc3"""
     if os.path.exists(SOUNDDIR2) == True:
         # Install kernel headers
-        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r`")
+        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r` build-essential")
         # Configure and Install Driver
         os.chdir(SOUNDDIR2)
         os.system("sudo sh configure --with-oss=yes --with-cards=hda-intel,usb-audio --with-kernel=/usr/src/linux-headers-`uname -r`/")
@@ -52,7 +52,7 @@ def alsa2():
         os.system("sudo wget http://planet76.com/sound/sys76-alsa-1.0.14rc3.tar.gz")
         os.system("tar -xzvf sys76-alsa-1.0.14rc3.tar.gz")
         # Install kernel headers
-        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r`")
+        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r` build-essential")
         # Configure and Install Driver
         os.chdir(SOUNDDIR2)
         os.system("sudo sh configure --with-oss=yes --with-cards=hda-intel,usb-audio --with-kernel=/usr/src/linux-headers-`uname -r`/")

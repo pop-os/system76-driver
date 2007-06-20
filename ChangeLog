@@ -14,6 +14,7 @@ Version 2.0.5
 4.) Fix Darter Feisty Suspend and LCD Brightness on Resume Bug #114675
 5.) Fix network-manager wireless interface recognition after resume
 6.) Fix Darter (daru1) FN+F8 monitor switching Bug #116107
+7.) Remove build-essential dependency fixing bug #121405
 
 --------------------------------------
 
