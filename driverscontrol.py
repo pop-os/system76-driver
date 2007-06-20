@@ -44,6 +44,7 @@ def installDrivers():
         elif version == ('7.04'):
             feisty_ata_fix.piix()
             acpi.acpi1
+            hotkey.daru1_monitor_switch
         else:
             nodrivers = "true"
             return nodriversdaru1

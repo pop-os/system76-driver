@@ -13,6 +13,7 @@ Version 2.0.5
 3.) Fix nVidia rotation Bug #118854
 4.) Fix Darter Feisty Suspend and LCD Brightness on Resume Bug #114675
 5.) Fix network-manager wireless interface recognition after resume
+6.) Fix Darter (daru1) FN+F8 monitor switching Bug #116107
 
 --------------------------------------
 
