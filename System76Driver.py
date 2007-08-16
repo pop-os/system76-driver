@@ -119,6 +119,7 @@ class System76Driver:
         dic = {"on_mainWindow_destroy" : gtk.main_quit
                 , "on_about_clicked" : self.on_about_clicked
                 , "on_close_clicked" : gtk.main_quit
+                , "on_create_clicked" : self.on_create_clicked
                 , "on_driverInstall_clicked" : self.on_driverInstall_clicked
                 , "on_restore_clicked" : self.on_restore_clicked}
         self.wTree.signal_autoconnect(dic)
@@ -165,6 +166,45 @@ class System76Driver:
         #Calls aboutDlg class to display dialog
         aboutDialog = aboutDlg(datadir);
         aboutDialog.run()
+        
+    def on_create_clicked(self, widget):
+        
+        #Creates an archive of common support files and logs
+        today = time.strftime('%Y%m%d_h%Hm%Ms%S')
+        modelname = model.determine_model()
+        
+        """
+        Get OS Description
+        """
+        v = os.popen('lsb_release -d')
+        try:
+            ubuntuversion = v.readline().strip()
+            version = ubuntuversion.split("\t")
+        finally:
+            v.close()
+        return version[-1].lower()
+        release = version
+        
+        os.mkdir('/tmp/system_logs_%s' % today)
+        TARGETDIR = '/tmp/system_logs_%s' % today
+        
+        fileObject = file('/tmp/system_logs_%s/systeminfo.txt' % today, 'wt')
+        fileObject.write('System76 Model: %s\n' % modelname)
+        fileObject.write('OS Version: %s\n' % release)
+        fileObject.close()
+        os.system('sudo dmidecode > %s/dmidecode' % TARGETDIR)
+        os.system('lspci -vv > %s/lspci' % TARGETDIR)
+        os.system('sudo lsusb -vv > %s/lsusb' % TARGETDIR)
+        os.system('cp /etc/X11/xorg.conf %s/' % TARGETDIR)
+        os.system('cp /etc/default/acpi-support %s/' % TARGETDIR)
+        os.system('cp /var/log/daemon.log %s/' % TARGETDIR)
+        os.system('cp /var/log/dmesg %s/' % TARGETDIR)
+        os.system('cp /var/log/messages %s/' % TARGETDIR)
+        os.system('cp /var/log/Xorg.0.log %s/' % TARGETDIR)
+        
+        ## NEED TO COMPLETE
+        ## CREATE ZIP ARCHIVE
+        ## COPY TO DESKTOP
 
     def on_driverInstall_clicked(self, widget):
         
