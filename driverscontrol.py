@@ -34,6 +34,9 @@ def installDrivers():
         elif version == ('7.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -46,9 +49,21 @@ def installDrivers():
             feisty_ata_fix.piix()
             acpi.acpi1()
             hotkey.daru1_monitor_switch()
+        elif version == ('7.10'):
+            hotkey.daru1_monitor_switch()
         else:
             nodrivers = "true"
-            return nodriversdaru1
+            return nodrivers
+    elif modelname == ('daru2'):
+        if version == ('7.04'):
+            feisty_ata_fix.piix()
+            acpi.acpi2()
+        if version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('gazp1'):
         if version == ('6.06'):
             gspca.camera()
@@ -58,9 +73,12 @@ def installDrivers():
         elif version == ('7.04'):
             sound.alsa1()
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
-            return nodriversdaru1
+            return nodrivers
     elif modelname == ('gazp2'):
         if version == ('6.06'):
             gspca.camera()
@@ -70,6 +88,9 @@ def installDrivers():
         elif version == ('7.04'):
             sound.alsa1()
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -82,6 +103,9 @@ def installDrivers():
         elif version == ('7.04'):
             sound.alsa1()
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -99,6 +123,9 @@ def installDrivers():
             sound.alsa2()
             tifm_7xx1.card_reader()
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -112,6 +139,9 @@ def installDrivers():
             sound.alsa1()
             feisty_ata_fix.piix()
             acpi.acpi2()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -124,6 +154,9 @@ def installDrivers():
             sound.alsa2()
             feisty_ata_fix.piix()
             acpi.acpi2()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -136,6 +169,9 @@ def installDrivers():
             return nodrivers
         elif version == ('7.04'):
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -150,6 +186,20 @@ def installDrivers():
         elif version == ('7.04'):
             sound.alsa2()
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('panv3'):
+        if version == ('7.04'):
+            feisty_ata_fix.piix()
+            sound.alsa3()
+            acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -162,6 +212,9 @@ def installDrivers():
             return nodrivers
         elif version == ('7.04'):
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -174,6 +227,9 @@ def installDrivers():
             return nodrivers
         elif version == ('7.04'):
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -186,6 +242,9 @@ def installDrivers():
             return nodrivers
         elif version == ('7.04'):
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -198,6 +257,9 @@ def installDrivers():
             return nodrivers
         elif version == ('7.04'):
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -209,6 +271,9 @@ def installDrivers():
         elif version == ('7.04'):
             sound.alsa2()
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -221,6 +286,9 @@ def installDrivers():
             return nodrivers
         elif version == ('7.04'):
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -233,6 +301,19 @@ def installDrivers():
             return nodrivers
         elif version == ('7.04'):
             acpi.acpi1()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('serp3'):
+        if version == ('7.04'):
+            acpi.acpi1()
+            sound.alsa3()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -244,6 +325,9 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -259,6 +343,9 @@ def installDrivers():
         elif version == ('7.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -270,6 +357,9 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
         else:

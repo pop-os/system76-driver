@@ -54,11 +54,20 @@ def determine_model():
     elif baseboard_product_name == 'Z35F':
         modelname = "daru1"
         return modelname
+    elif baseboard_product_name == 'MS-1221':
+        modelname = "daru2"
+        return modelname
+    elif baseboard_product_name == 'IFL91':
+        modelname = "panv3"
+        return modelname
     elif baseboard_product_name == 'A8N8L':
         modelname = "sabv1"
         return modelname
     elif baseboard_product_name == 'M2N8L':
         modelname = "sabv2"
+        return modelname
+    elif baseboard_product_name == 'IFL90':
+        modelname = "serp3"
         return modelname
     elif baseboard_product_name == 'MS-7250':
         modelname = "wilp1"

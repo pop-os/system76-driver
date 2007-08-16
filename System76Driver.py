@@ -83,7 +83,7 @@ def supported(datadir):
     modelname = model.determine_model()
     version = ubuntuversion.release()
     
-    if version != '6.06' and version != '6.10' and version != '7.04':
+    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10':
         notsupported = unsupported(datadir);
         notsupported.run()
     elif modelname == ('nonsystem76'):
