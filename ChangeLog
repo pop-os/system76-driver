@@ -6,6 +6,25 @@ Released under the GNU General Public License (See LICENSE)
 
 --------------------------------------
 
+Version 2.0.8
+
+1.) Add new Serval Performance (serp3) (incomplete)
+2.) Add initial gutsy support
+
+--------------------------------------
+
+Version 2.0.7
+
+1.) Add new Pangolin Value (panv3)
+
+--------------------------------------
+
+Version 2.0.6
+
+1.) Add new Darter Ultra (daru2)
+
+--------------------------------------
+
 Version 2.0.5
 
 1.) Fix Suspend on all laptops (gazv4 still buggy)
