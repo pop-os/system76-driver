@@ -22,3 +22,22 @@ def piix():
         os.system("sudo update-initramfs -u")
     else:
         return
+    
+def piix2():
+    """Blacklist ata_piix and uses piix.  Required for the CDROM on
+    Feisty Santa Rosa models.  Can render some models un-bootable.
+    Test prior to applying to particular machines."""
+
+    a = os.popen('lsmod | grep piix')
+    try:
+        ata_piix = a.readline().strip()
+    finally:
+        a.close()
+    piix = ata_piix[0:4]
+    
+    if piix != "piix":
+        os.system("echo blacklist ata_piix | sudo tee -a /etc/modprobe.d/blacklist-ata")
+        os.system("echo piix | sudo tee -a /etc/initramfs-tools/modules")
+        os.system("sudo update-initramfs -u")
+    else:
+        return
