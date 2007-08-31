@@ -58,6 +58,7 @@ def installDrivers():
         if version == ('7.04'):
             feisty_ata_fix.piix2()
             acpi.acpi2()
+            sound.alsa3()
         if version == ('7.10'):
             nodrivers = "true"
             return nodrivers
