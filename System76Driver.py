@@ -34,7 +34,7 @@ SYS76SQUARE_LOGO = os.path.join(IMAGEDIR, 'logoSQUARE.png')
 WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.png')
 
 class aboutDlg:
-    """Shows the Unsupported dialog box"""
+    """Shows the about dialog box"""
 
     def __init__(self, datadir):
         #setup the glade file
@@ -42,11 +42,31 @@ class aboutDlg:
         self.wTree = gtk.glade.XML(os.path.join(self.datadir, 'system76driver.glade'), 'aboutDialog')
 
     def run(self):
-        """Loads the unsupported Dialog"""
+        """Loads the about Dialog"""
         self.dlg = self.wTree.get_widget("aboutDialog")
         self.square_logo = gtk.gdk.pixbuf_new_from_file(os.path.join(SYS76SQUARE_LOGO))
         self.icon = gtk.gdk.pixbuf_new_from_file(os.path.join(WINDOW_ICON))
         self.dlg.set_logo(self.square_logo)
+        self.dlg.set_icon(self.icon)
+        
+        #run the dialog      
+        self.dlg.run()
+        
+        #we are done with the dialog, destroy it
+        self.dlg.destroy()
+        
+class archiveCreated:
+    """Shows archive created dialog"""
+    
+    def __init__(self, datadir):
+        #setup the glade file
+        self.datadir = datadir
+        self.wTree = gtk.glade.XML(os.path.join(self.datadir, 'system76driver.glade'), 'logArchiveCreated')
+        
+    def run(self):
+        """Loads the archive created Dialog"""
+        self.dlg = self.wTree.get_widget("logArchiveCreated")
+        self.icon = gtk.gdk.pixbuf_new_from_file(os.path.join(WINDOW_ICON))
         self.dlg.set_icon(self.icon)
         
         #run the dialog      
@@ -170,27 +190,18 @@ class System76Driver:
     def on_create_clicked(self, widget):
         
         #Creates an archive of common support files and logs
+        #TODO: saving in the wrong user dir (root).
+        
         today = time.strftime('%Y%m%d_h%Hm%Ms%S')
         modelname = model.determine_model()
-        
-        """
-        Get OS Description
-        """
-        v = os.popen('lsb_release -d')
-        try:
-            ubuntuversion = v.readline().strip()
-            version = ubuntuversion.split("\t")
-        finally:
-            v.close()
-        return version[-1].lower()
-        release = version
+        version = ubuntuversion.release()
         
         os.mkdir('/tmp/system_logs_%s' % today)
         TARGETDIR = '/tmp/system_logs_%s' % today
         
         fileObject = file('/tmp/system_logs_%s/systeminfo.txt' % today, 'wt')
         fileObject.write('System76 Model: %s\n' % modelname)
-        fileObject.write('OS Version: %s\n' % release)
+        fileObject.write('OS Version: %s\n' % version)
         fileObject.close()
         os.system('sudo dmidecode > %s/dmidecode' % TARGETDIR)
         os.system('lspci -vv > %s/lspci' % TARGETDIR)
@@ -201,10 +212,11 @@ class System76Driver:
         os.system('cp /var/log/dmesg %s/' % TARGETDIR)
         os.system('cp /var/log/messages %s/' % TARGETDIR)
         os.system('cp /var/log/Xorg.0.log %s/' % TARGETDIR)
+        os.system('tar -zcvf logs.tar %s/' % TARGETDIR)
+        os.system('cp logs.tar ~/Desktop/')
         
-        ## NEED TO COMPLETE
-        ## CREATE ZIP ARCHIVE
-        ## COPY TO DESKTOP
+        archiveCreatedDialog = archiveCreated(datadir);
+        archiveCreatedDialog.run()
 
     def on_driverInstall_clicked(self, widget):
         
