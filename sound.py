@@ -6,6 +6,7 @@
 ## Common sound driver installation
 import os
 import urllib
+import model
 
 WORKDIR = os.path.join(os.path.dirname(__file__), '.')
 SOUNDDIR1 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14rc2')
@@ -63,6 +64,9 @@ def alsa2():
         raise OSError("A problem has occured.")
     
 def alsa3():
+    
+    modelname = model.determine_model()
+    
     """Installs alsa 1.0.14 final with realtek patches"""
     if os.path.exists(SOUNDDIR3) == True:
         # Install kernel headers
@@ -72,7 +76,10 @@ def alsa3():
         os.system("sudo sh configure --with-oss=yes --with-cards=hda-intel,usb-audio --with-kernel=/usr/src/linux-headers-`uname -r`/")
         os.system("sudo make && sudo make install")
         os.system("sudo make clean")
-        os.system("echo options snd-hda-intel model=toshiba >> /etc/modprobe.d/alsa-base")
+        if modelname == ('panv3'):
+            os.system("echo options snd-hda-intel model=toshiba >> /etc/modprobe.d/alsa-base")
+        else:
+            os.system("echo options snd-hda-intel model=targa-dig >> /etc/modprobe.d/alsa-base")
     elif os.path.exists(SOUNDDIR3) == False:
         # Get the Driver
         os.chdir(WORKDIR)
@@ -85,6 +92,9 @@ def alsa3():
         os.system("sudo sh configure --with-oss=yes --with-cards=hda-intel,usb-audio --with-kernel=/usr/src/linux-headers-`uname -r`/")
         os.system("sudo make && sudo make install")
         os.system("sudo make clean")
-        os.system("echo options snd-hda-intel model=toshiba >> /etc/modprobe.d/alsa-base")
+        if modelname == ('panv3'):
+            os.system("echo options snd-hda-intel model=toshiba >> /etc/modprobe.d/alsa-base")
+        else:
+            os.system("echo options snd-hda-intel model=targa-dig >> /etc/modprobe.d/alsa-base")
     else:
         raise OSError("A problem has occured.")

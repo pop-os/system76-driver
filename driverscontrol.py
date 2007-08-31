@@ -56,8 +56,9 @@ def installDrivers():
             return nodrivers
     elif modelname == ('daru2'):
         if version == ('7.04'):
-            feisty_ata_fix.piix()
+            feisty_ata_fix.piix2()
             acpi.acpi2()
+            sound.alsa3()
         if version == ('7.10'):
             nodrivers = "true"
             return nodrivers
@@ -194,7 +195,7 @@ def installDrivers():
             return nodrivers
     elif modelname == ('panv3'):
         if version == ('7.04'):
-            feisty_ata_fix.piix()
+            feisty_ata_fix.piix2()
             sound.alsa3()
             acpi.acpi1()
         elif version == ('7.10'):

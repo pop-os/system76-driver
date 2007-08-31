@@ -622,7 +622,11 @@ Click &lt;b&gt;Create&lt;/b&gt; to build an archive of common logs.  The archive
     <property name="visible">True</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
     <property name="copyright" translatable="yes">Copyright (C) System76, Inc.</property>
+<<<<<<< TREE
     <property name="comments" translatable="yes">version 2.0.5</property>
+=======
+    <property name="comments" translatable="yes">version 2.0.9</property>
+>>>>>>> MERGE-SOURCE
     <property name="website">www.system76.com</property>
     <property name="license" translatable="yes">GNU GENERAL PUBLIC LICENSE
 
