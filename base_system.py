@@ -293,6 +293,24 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash system76-driver gsynaptics')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/metacity/global_keybindings/panel_main_menu 'Super_L'")
+    # System76 Model Gazelle Value 5
+    if modelname == ('gazv5'):
+        if version == ('7.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_feisty /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install xserver-xorg-video-intel gnome-bluetooth bluetooth gnucash beagle beagle-backend-evolution mozilla-beagle inkscape system76-driver i855-crt')
+            os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_intel_new_notebook /etc/X11/xorg.conf')
+            # Setup Panel and Super_L key
+            os.system('sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --load /opt/system76/system76-driver/src/76-panel-setup.entries')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/metacity/global_keybindings/panel_main_menu 'Super_L'")
+        elif version == ('7.10'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash system76-driver')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/metacity/global_keybindings/panel_main_menu 'Super_L'")
     # Model Mini PC / System76 model Koala Performance
     elif modelname == ('koap1'):
         if version == ('6.06'):

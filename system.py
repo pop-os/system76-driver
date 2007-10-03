@@ -57,6 +57,9 @@ def name():
     elif modelname == "gazv4":
         systemname = "Gazelle Value"
         return systemname
+    elif modelname == "gazv5":
+        systemname = "Gazelle Value"
+        return systemname
     elif modelname == "gazp1":
         systemname = "Gazelle Performance"
         return systemname

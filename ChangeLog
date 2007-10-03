@@ -6,6 +6,15 @@ Released under the GNU General Public License (See LICENSE)
 
 --------------------------------------
 
+Version 2.0.10
+
+1.) Add new Gazelle Value (gazv5) model
+2.) Add uvc camera driver for new Gazelle Value (gazv5)
+3.) Fix some file permissions problems (menu icon)
+4.) Add SD card reader support for Pangolin (panv3) and Gazelle (gazv5)
+
+--------------------------------------
+
 Version 2.0.9
 
 1.) Fix Darter Headphone Sensing Bug #130669

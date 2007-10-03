@@ -14,6 +14,8 @@ import gspca
 import feisty_ata_fix
 import acpi
 import hotkey
+import uvc
+import ricoh_cr
 
 ## KEEP ALL MODELS IN ALPHABETICAL ORDER
 
@@ -162,6 +164,19 @@ def installDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+    elif modelname == ('gazv5'):
+        if version == ('7.04'):
+            feisty_ata_fix.piix2()
+            sound.alsa3()
+            uvc.camera()
+            acpi.acpi1()
+            ricoh_cr.card_reader()
+        elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('koap1'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -199,6 +214,7 @@ def installDrivers():
             feisty_ata_fix.piix2()
             sound.alsa3()
             acpi.acpi1()
+            ricoh_cr.card_reader()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers

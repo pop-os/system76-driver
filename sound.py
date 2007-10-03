@@ -76,7 +76,7 @@ def alsa3():
         os.system("sudo sh configure --with-oss=yes --with-cards=hda-intel,usb-audio --with-kernel=/usr/src/linux-headers-`uname -r`/")
         os.system("sudo make && sudo make install")
         os.system("sudo make clean")
-        if modelname == ('panv3'):
+        if ((modelname=='panv3') or (modelname=='gazv5')):
             os.system("echo options snd-hda-intel model=toshiba >> /etc/modprobe.d/alsa-base")
         else:
             os.system("echo options snd-hda-intel model=targa-dig >> /etc/modprobe.d/alsa-base")
@@ -92,7 +92,7 @@ def alsa3():
         os.system("sudo sh configure --with-oss=yes --with-cards=hda-intel,usb-audio --with-kernel=/usr/src/linux-headers-`uname -r`/")
         os.system("sudo make && sudo make install")
         os.system("sudo make clean")
-        if modelname == ('panv3'):
+        if ((modelname=='panv3') or (modelname=='gazv5')):
             os.system("echo options snd-hda-intel model=toshiba >> /etc/modprobe.d/alsa-base")
         else:
             os.system("echo options snd-hda-intel model=targa-dig >> /etc/modprobe.d/alsa-base")
