@@ -1,9 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=nVidia Control Panel
-Comment=Set nVidia Properties
-Exec=gksudo /opt/yanc/yanc
-Icon=/opt/yanc/nvidia_menu_logo.png
-Terminal=false
-Type=Application
-Categories=GNOME;GTK;Settings;DesktopSettings;

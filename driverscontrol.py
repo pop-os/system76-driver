@@ -9,8 +9,6 @@
 import ubuntuversion
 import model
 import sound
-import tifm_7xx1
-import gspca
 import feisty_ata_fix
 import acpi
 import hotkey
@@ -72,10 +70,10 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp1'):
         if version == ('6.06'):
-            gspca.camera()
             sound.alsa1()
         elif version == ('6.10'):
-            gspca.camera()
+            nodrivers = "true"
+            return nodrivers
         elif version == ('7.04'):
             sound.alsa1()
             acpi.acpi1()
@@ -87,10 +85,10 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp2'):
         if version == ('6.06'):
-            gspca.camera()
             sound.alsa1()
         elif version == ('6.10'):
-            gspca.camera()
+            nodrivers = "true"
+            return nodrivers
         elif version == ('7.04'):
             sound.alsa1()
             acpi.acpi1()
@@ -102,10 +100,10 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp3'):
         if version == ('6.06'):
-            gspca.camera()
             sound.alsa1()
         elif version == ('6.10'):
-            gspca.camera()
+            nodrivers = "true"
+            return nodrivers
         elif version == ('7.04'):
             sound.alsa1()
             acpi.acpi1()
@@ -132,17 +130,13 @@ def installDrivers():
     elif modelname == ('gazv2'):
         if version == ('6.06'):
             sound.alsa2()
-            tifm_7xx1.card_reader()
         elif version == ('6.10'):
             sound.alsa2()
-            tifm_7xx1.card_reader()
         elif version == ('7.04'):
             sound.alsa2()
-            tifm_7xx1.card_reader()
             acpi.acpi1()
         elif version == ('7.10'):
             sound.alsa2()
-            tifm_7xx1.card_reader()
             acpi.acpi1()
         else:
             nodrivers = "true"

@@ -121,8 +121,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver gsynaptics network-manager-gnome linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -132,8 +130,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install camorama nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver gsynaptics network-manager-gnome linux-restricted-modules-generic linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -162,8 +158,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install camorama nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver gsynaptics network-manager-gnome linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -173,8 +167,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install camorama nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver gsynaptics network-manager-gnome linux-restricted-modules-generic linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -504,8 +496,6 @@ def app_install():
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             if graphics == 'nVidia':
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_nvidia_desktop /etc/X11/xorg.conf')
-                os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-                os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             else:
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_via_desktop /etc/X11/xorg.conf')
         elif version == ('6.10'):
@@ -524,8 +514,6 @@ def app_install():
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             if graphics == 'nVidia':
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_nvidia_desktop /etc/X11/xorg.conf')
-                os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-                os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             else:
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_via_desktop /etc/X11/xorg.conf')
         elif version == ('7.04'):
@@ -544,8 +532,6 @@ def app_install():
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             if graphics == 'nVidia':
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_nvidia_desktop /etc/X11/xorg.conf')
-                os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-                os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             else:
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_via_desktop /etc/X11/xorg.conf')
         elif version == ('7.10'):
@@ -574,8 +560,6 @@ def app_install():
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             if graphics == 'nVidia':
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_nvidia_desktop /etc/X11/xorg.conf')
-                os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-                os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             else:
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_via_desktop /etc/X11/xorg.conf')
         elif version == ('6.10'):
@@ -594,8 +578,6 @@ def app_install():
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             if graphics == 'nVidia':
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_nvidia_desktop /etc/X11/xorg.conf')
-                os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-                os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             else:
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_via_desktop /etc/X11/xorg.conf')
         elif version == ('7.04'):
@@ -614,8 +596,6 @@ def app_install():
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
             if graphics == 'nVidia':
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_nvidia_desktop /etc/X11/xorg.conf')
-                os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-                os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             else:
                 os.system('sudo cp /opt/system76/system76-driver/src/xorg.conf_via_desktop /etc/X11/xorg.conf')
         elif version == ('7.10'):
@@ -631,8 +611,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver systemconfigurator network-manager-gnome')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -642,8 +620,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver systemconfigurator network-manager-gnome linux-restricted-modules-generic')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -672,8 +648,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver systemconfigurator network-manager-gnome')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -683,8 +657,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver systemconfigurator network-manager-gnome linux-restricted-modules-generic')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -713,8 +685,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver systemconfigurator linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -724,8 +694,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver systemconfigurator network-manager-gnome linux-restricted-modules-generic linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -755,8 +723,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver systemconfigurator linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -766,8 +732,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver systemconfigurator network-manager-gnome linux-restricted-modules-generic linux-headers-`uname -r`')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -815,8 +779,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver systemconfigurator')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -826,8 +788,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver systemconfigurator')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -856,8 +816,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver systemconfigurator')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -867,8 +825,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver systemconfigurator')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -897,8 +853,6 @@ def app_install():
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx grisbi tomboy beagle beagle-backend-evolution inkscape f-spot system76-driver systemconfigurator')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
@@ -908,8 +862,6 @@ def app_install():
         elif version == ('6.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_edgy /etc/apt/sources.list')
-            os.system('sudo cp -r /opt/system76/system76-driver/src/yanc /opt/')
-            os.system('sudo cp /opt/system76/system76-driver/src/yanc.desktop /usr/share/applications/')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx gnucash tomboy beagle beagle-backend-evolution inkscape system76-driver systemconfigurator')
             os.system('sudo cp /etc/X11/xorg.conf /etc/X11/xorg.conf_sys76backup_%s' % today)
