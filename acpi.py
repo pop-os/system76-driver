@@ -29,14 +29,6 @@ def acpi2():
 def dsdt_daru2():
     """Fix dsdt tables in daru2"""
     
-    # Determine if dsdt patch has already been applied    
-    a = os.popen('dmesg | grep "Looking for DSDT in initramfs"')
-    try:
-        dsdt = a.readline().strip()
-    finally:
-        a.close()
-    dsdtstat = dsdt
-    
     # Determin running kernel version
     b = os.popen('uname -r')
     try:
@@ -45,7 +37,5 @@ def dsdt_daru2():
         b.close()
     kernel = uname
     
-    if 'not found' in dsdtstat:
-        os.system('sudo sh /opt/system76/system76-driver/src/acpi/initrd-add-dsdt.sh /boot/initrd.img-%s /opt/system76/system76-driver/src/acpi/daru2/dsdt.aml' % kernel)
-    else:
-        return
+    os.system('sudo sh /opt/system76/system76-driver/src/acpi/initrd-add-dsdt.sh /boot/initrd.img-%s /opt/system76/system76-driver/src/acpi/daru2/dsdt.aml' % kernel)
+    

@@ -16,6 +16,7 @@ import system
 import drivers
 import ubuntuversion
 import connection_test
+import getpass
 
 try:
      import pygtk
@@ -192,6 +193,8 @@ class System76Driver:
         #Creates an archive of common support files and logs
         #TODO: saving in the wrong user dir (root).
         
+        username = getpass.getuser()
+        
         today = time.strftime('%Y%m%d_h%Hm%Ms%S')
         modelname = model.determine_model()
         version = ubuntuversion.release()
@@ -213,7 +216,7 @@ class System76Driver:
         os.system('cp /var/log/messages %s/' % TARGETDIR)
         os.system('cp /var/log/Xorg.0.log %s/' % TARGETDIR)
         os.system('tar -zcvf logs.tar %s/' % TARGETDIR)
-        os.system('cp logs.tar ~/Desktop/')
+        os.system('cp logs.tar /home/%s/' % username)
         
         archiveCreatedDialog = archiveCreated(datadir);
         archiveCreatedDialog.run()

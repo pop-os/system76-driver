@@ -69,6 +69,9 @@ def name():
     elif modelname == "gazp3":
         systemname = "Gazelle Performance"
         return systemname
+    elif modelname == "gazp5":
+        systemname = "Gazelle Value with nVidia and Camera"
+        return systemname
     elif modelname == "panv2":
         systemname = "Pangolin Value"
         return systemname

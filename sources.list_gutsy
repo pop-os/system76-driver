@@ -1,4 +1,4 @@
-## Ubuntu 7.04 System76 Repositories Listing
+## Ubuntu 7.10 Software Repositories
 
 # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
 # newer versions of the distribution.
@@ -38,8 +38,8 @@ deb-src http://us.archive.ubuntu.com/ubuntu/ gutsy-updates multiverse
 ## newer versions of some applications which may provide useful features.
 ## Also, please note that software in backports WILL NOT receive any review
 ## or updates from the Ubuntu security team.
-deb http://us.archive.ubuntu.com/ubuntu/ gutsy-backports main restricted universe multiverse
-deb-src http://us.archive.ubuntu.com/ubuntu/ gutsy-backports main restricted universe multiverse
+# deb http://us.archive.ubuntu.com/ubuntu/ gutsy-backports main restricted universe multiverse
+# deb-src http://us.archive.ubuntu.com/ubuntu/ gutsy-backports main restricted universe multiverse
 
 ## Uncomment the following two lines to add software from Canonical's
 ## 'commercial' repository. This software is not part of Ubuntu, but is
@@ -56,5 +56,6 @@ deb http://security.ubuntu.com/ubuntu gutsy-security multiverse
 deb http://us.archive.ubuntu.com/ubuntu/ gutsy-proposed restricted main multiverse universe
 deb-src http://security.ubuntu.com/ubuntu gutsy-security multiverse
 
-## System76 Driver Repository
+## System76 Repository.  This software repository contains drivers and
+## updates specifically for your computer
 deb http://planet76.com/repositories/ ./
