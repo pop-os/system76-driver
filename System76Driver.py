@@ -15,7 +15,7 @@ import model
 import system
 import drivers
 import ubuntuversion
-import connection_test
+import detect
 import getpass
 
 try:
@@ -48,6 +48,26 @@ class aboutDlg:
         self.square_logo = gtk.gdk.pixbuf_new_from_file(os.path.join(SYS76SQUARE_LOGO))
         self.icon = gtk.gdk.pixbuf_new_from_file(os.path.join(WINDOW_ICON))
         self.dlg.set_logo(self.square_logo)
+        self.dlg.set_icon(self.icon)
+        
+        #run the dialog      
+        self.dlg.run()
+        
+        #we are done with the dialog, destroy it
+        self.dlg.destroy()
+        
+class aptErrorDlg:
+    """Shows another package manager running dialog"""
+    
+    def __init__(self, datadir):
+        #setup the glade file
+        self.datadir = datadir
+        self.wTree = gtk.glade.XML(os.path.join(self.datadir, 'system76driver.glade'), 'aptRunning')
+        
+    def run(self):
+        """Loads the apt running Dialog"""
+        self.dlg = self.wTree.get_widget("aptRunning")
+        self.icon = gtk.gdk.pixbuf_new_from_file(os.path.join(WINDOW_ICON))
         self.dlg.set_icon(self.icon)
         
         #run the dialog      
@@ -223,27 +243,39 @@ class System76Driver:
 
     def on_driverInstall_clicked(self, widget):
         
+        #Check if another package mamanger is running
+        aptrunning = detect.aptcheck()
+        
         #Grab internet connection test
-        connection = connection_test.connectivityCheck()
+        connection = detect.connectivityCheck()
         
         #Calls drivers module when user clicks Driver Install button
-        if connection == "connectionExists":
-            drivers.start()
-        elif connection == "noConnectionExists":
+        if connection == "noConnectionExists":
             notConnected = connectDlg(datadir);
             notConnected.run()
+        elif aptrunning == "running":
+            aptError = aptErrorDlg(datadir);
+            aptError.run()
+        else:
+            drivers.start()
 
     def on_restore_clicked(self, widget):
         
+        #Check if another package mamanger is running
+        aptrunning = detect.aptcheck()
+        
         #Grab internet connection test
-        connection = connection_test.connectivityCheck()
+        connection = detect.connectivityCheck()
         
         #Calls restore module when user clicks Restore button
-        if connection == "connectionExists":
-            restore.start()
-        elif connection == "noConnectionExists":
+        if connection == "noConnectionExists":
             notConnected = connectDlg(datadir);
             notConnected.run()
+        elif aptrunning == "running":
+            aptError = aptErrorDlg(datadir);
+            aptError.run()
+        else:
+            restore.start()
 
     def run(self):
         gtk.main()
