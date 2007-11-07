@@ -63,6 +63,9 @@ def determine_model():
     elif baseboard_product_name == 'IFT01':
         modelname = "gazv5"
         return modelname
+    elif baseboard_product_name == 'IFT00':
+        modelname = "gazp5"
+        return modelname
     elif baseboard_product_name == 'A8N8L':
         modelname = "sabv1"
         return modelname

@@ -6,6 +6,27 @@ Released under the GNU General Public License (See LICENSE)
 
 --------------------------------------
 
+Version 2.1.2
+
+1.) Fix bug effecting serp3 sound
+2.) Fix DSDT tables on Darter (better power managment)
+3.) Do not install Alsa on daru2 - only add targa-dig for headphone jacksense
+
+--------------------------------------
+
+Version 2.1.1
+
+1.) Fix Gutsy upgrade bug on Gazelle Value (gazv3)
+
+--------------------------------------
+
+Version 2.1.0
+
+1.) Complete Ubuntu 7.10 Gutsy support for all computers
+2.) Add support tab and create log archive
+
+--------------------------------------
+
 Version 2.0.10
 
 1.) Add new Gazelle Value (gazv5) model
