@@ -37,5 +37,5 @@ def dsdt_daru2():
         b.close()
     kernel = uname
     
-    os.system('sudo sh /opt/system76/system76-driver/src/acpi/initrd-add-dsdt.sh /boot/initrd.img-%s /opt/system76/system76-driver/src/acpi/daru2/dsdt.aml' % kernel)
-    
+    os.system('sudo sh /opt/system76/system76-driver/src/acpi/initrd-add-dsdt.sh /boot/initrd.img-%s /opt/system76/system76-driver/src/acpi/daru2/DSDT.aml' % kernel)
+    os.system('sudo cp /opt/system76/system76-driver/src/acpi/daru2/DSDT.aml /etc/initramfs-tools/DSDT.aml')

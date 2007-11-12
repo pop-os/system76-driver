@@ -30,7 +30,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('6.10'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('7.04'):
             nodrivers = "true"
             return nodrivers
@@ -42,9 +42,9 @@ def installDrivers():
             return nodrivers
     elif modelname == ('daru1'):
         if version == ('6.06'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('6.10'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('7.04'):
             feisty_ata_fix.piix()
             acpi.acpi1()
@@ -70,45 +70,45 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp1'):
         if version == ('6.06'):
-            sound.alsa1()
+            sound.alsa6()
         elif version == ('6.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            sound.alsa1()
+            sound.alsa6()
             acpi.acpi1()
         elif version == ('7.10'):
-            sound.alsa1()
+            sound.alsa6()
             acpi.acpi1()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('gazp2'):
         if version == ('6.06'):
-            sound.alsa1()
+            sound.alsa6()
         elif version == ('6.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            sound.alsa1()
+            sound.alsa6()
             acpi.acpi1()
         elif version == ('7.10'):
-            sound.alsa1()
+            sound.alsa6()
             acpi.acpi1()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('gazp3'):
         if version == ('6.06'):
-            sound.alsa1()
+            sound.alsa6()
         elif version == ('6.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            sound.alsa1()
+            sound.alsa6()
             acpi.acpi1()
         elif version == ('7.10'):
-            sound.alsa1()
+            sound.alsa6()
             acpi.acpi1()
         else:
             nodrivers = "true"
@@ -116,12 +116,12 @@ def installDrivers():
     elif modelname == ('gazp5'):
         if version == ('7.04'):
             feisty_ata_fix.piix2()
-            sound.alsa3()
+            sound.alsa5()
             uvc.camera()
             acpi.acpi1()
             ricoh_cr.card_reader()
         elif version == ('7.10'):
-            sound.alsa3()
+            sound.alsa5()
             acpi.acpi1()
             ricoh_cr.card_reader()
     elif modelname == ('gazv1'):
@@ -129,45 +129,45 @@ def installDrivers():
         return nodrivers
     elif modelname == ('gazv2'):
         if version == ('6.06'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('6.10'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('7.04'):
-            sound.alsa2()
+            sound.alsa6()
             acpi.acpi1()
         elif version == ('7.10'):
-            sound.alsa2()
+            sound.alsa6()
             acpi.acpi1()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('gazv3'):
         if version == ('6.06'):
-            sound.alsa1()
+            sound.alsa6()
         elif version == ('6.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            sound.alsa1()
+            sound.alsa6()
             feisty_ata_fix.piix()
             acpi.acpi2()
         elif version == ('7.10'):
-            sound.alsa1()
+            sound.alsa6()
             acpi.acpi1()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('gazv4'):
         if version == ('6.06'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('6.10'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('7.04'):
-            sound.alsa2()
+            sound.alsa6()
             feisty_ata_fix.piix()
             acpi.acpi2()
         elif version == ('7.10'):
-            sound.alsa2()
+            sound.alsa6()
             acpi.acpi1()
         else:
             nodrivers = "true"
@@ -175,12 +175,12 @@ def installDrivers():
     elif modelname == ('gazv5'):
         if version == ('7.04'):
             feisty_ata_fix.piix2()
-            sound.alsa3()
+            sound.alsa5()
             uvc.camera()
             acpi.acpi1()
             ricoh_cr.card_reader()
         elif version == ('7.10'):
-            sound.alsa3()
+            sound.alsa5()
             acpi.acpi1()
             ricoh_cr.card_reader()
         else:
@@ -205,14 +205,14 @@ def installDrivers():
         return nodrivers
     elif modelname == ('panv2'):
         if version == ('6.06'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('6.10'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('7.04'):
-            sound.alsa2()
+            sound.alsa6()
             acpi.acpi1()
         elif version == ('7.10'):
-            sound.alsa2()
+            sound.alsa6()
             acpi.acpi1()
         else:
             nodrivers = "true"
@@ -220,11 +220,11 @@ def installDrivers():
     elif modelname == ('panv3'):
         if version == ('7.04'):
             feisty_ata_fix.piix2()
-            sound.alsa3()
+            sound.alsa5()
             acpi.acpi1()
             ricoh_cr.card_reader()
         elif version == ('7.10'):
-            sound.alsa3()
+            sound.alsa5()
             acpi.acpi1()
             ricoh_cr.card_reader()
         else:
@@ -288,11 +288,11 @@ def installDrivers():
             return nodrivers
     elif modelname == ('sabv2'):
         if version == ('6.06'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('6.10'):
-            sound.alsa2()
+            sound.alsa6()
         elif version == ('7.04'):
-            sound.alsa2()
+            sound.alsa6()
             acpi.acpi1()
         elif version == ('7.10'):
             acpi.acpi1()
@@ -330,10 +330,10 @@ def installDrivers():
     elif modelname == ('serp3'):
         if version == ('7.04'):
             acpi.acpi1()
-            sound.alsa3()
+            sound.alsa5()
         elif version == ('7.10'):
             acpi.acpi1()
-            sound.alsa3()
+            sound.alsa5()
             ricoh_cr.card_reader()
         else:
             nodrivers = "true"

@@ -7,8 +7,10 @@
 import os
 import urllib
 import model
+import fileinput
 
 WORKDIR = os.path.join(os.path.dirname(__file__), '.')
+USRSRCDIR = os.path.join(os.path.dirname(__file__), '/usr/src/')
 SOUNDDIR1 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14rc2')
 SOUNDDIR2 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14rc3')
 SOUNDDIR3 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14')
@@ -65,6 +67,20 @@ def alsa2():
     
 def alsa3():
     
+    # Clean up /etc/modprobe.d/alsa-base file
+    
+    alsa_base = open("/etc/modprobe.d/alsa-base", "w")
+    
+    for line in fileinput.input("alsa_base",inplace =1):
+        line = line.strip()
+        if not 'toshiba' in line:
+            print line
+            
+    for line in fileinput.input("alsa_base",inplace =1):
+        line = line.strip()
+        if not 'targa-dig' in line:
+            print line
+    
     """Installs alsa 1.0.14 final with realtek patches"""
     if os.path.exists(SOUNDDIR3) == True:
         # Install kernel headers
@@ -90,4 +106,116 @@ def alsa3():
         os.system("echo options snd-hda-intel model=toshiba | sudo tee -a /etc/modprobe.d/alsa-base")
     
 def alsa4():
+    
+    # Clean up /etc/modprobe.d/alsa-base file
+    
+    alsa_base = open("/etc/modprobe.d/alsa-base", "w")
+    
+    for line in fileinput.input("alsa_base",inplace =1):
+        line = line.strip()
+        if not 'toshiba' in line:
+            print line
+            
+    for line in fileinput.input("alsa_base",inplace =1):
+        line = line.strip()
+        if not 'targa-dig' in line:
+            print line
+            
     os.system("echo options snd-hda-intel model=targa-dig | sudo tee -a /etc/modprobe.d/alsa-base")
+
+def alsa5():
+    
+    """Installs alsa 1.0.15rc3 source package.  Creates alsa-modules package.
+    Installs alsa-modules package.  Replaces above alsa3 def.
+    Adds "toshiba" line to alsa-base."""
+    
+    #Clean up /etc/modprobe.d/alsa-base file
+    
+    alsa_base = open("/etc/modprobe.d/alsa-base", "w")
+    
+    for line in fileinput.input("alsa_base",inplace =1):
+        line = line.strip()
+        if not 'toshiba' in line:
+            print line
+            
+    for line in fileinput.input("alsa_base",inplace =1):
+        line = line.strip()
+        if not 'targa-dig' in line:
+            print line
+    
+    # Determine running kernel version
+    b = os.popen('uname -r')
+    try:
+        uname = b.readline().strip()
+    finally:
+        b.close()
+    kernel = uname
+    
+    # Check if alsa-modules-2.6.22-14-'uname -r' is installed
+    b = os.popen('dpkg --get-selections | grep alsa-modules-%s' % kernel)
+    try:
+        installstatus = b.readline().strip()
+    finally:
+        b.close()
+    installed = installstatus
+    
+    # Change to the working directory
+    os.chdir(WORKDIR)
+    
+    if installed == "alsa-modules-2.6.22-14-%s                  install" % kernel:
+        return
+    elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == True:
+        os.system("sudo apt-get install debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.chdir(USRSRCDIR)
+        os.system("sudo module-assistant a-i alsa-source")
+        os.system("echo options snd-hda-intel model=toshiba | sudo tee -a /etc/modprobe.d/alsa-base")
+        return
+    elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == False:
+        os.system("sudo wget http://planet76.com/sound/alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.system("sudo apt-get install debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.chdir(USRSRCDIR)
+        os.system("sudo module-assistant a-i alsa-source")
+        os.system("echo options snd-hda-intel model=toshiba | sudo tee -a /etc/modprobe.d/alsa-base")
+        return
+
+def alsa6():
+    
+    """Installs alsa 1.0.15rc3 source package.  Creates alsa-modules package.
+    Installs alsa-modules package.  Replaces above alsa1 and alsa2 defs."""
+    
+    # Determine running kernel version
+    b = os.popen('uname -r')
+    try:
+        uname = b.readline().strip()
+    finally:
+        b.close()
+    kernel = uname
+    
+    # Check if alsa-modules-2.6.22-14-'uname -r' is installed
+    b = os.popen('dpkg --get-selections | grep alsa-modules-%s' % kernel)
+    try:
+        installstatus = b.readline().strip()
+    finally:
+        b.close()
+    installed = installstatus
+    
+    # Change to the working directory
+    os.chdir(WORKDIR)
+    
+    if installed == "alsa-modules-2.6.22-14-%s                  install" % kernel:
+        return
+    elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == True:
+        os.system("sudo apt-get install debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.chdir(USRSRCDIR)
+        os.system("sudo module-assistant a-i alsa-source")
+        return
+    elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == False:
+        os.system("sudo wget http://planet76.com/sound/alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.system("sudo apt-get install debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.chdir(USRSRCDIR)
+        os.system("sudo module-assistant a-i alsa-source")
+        return

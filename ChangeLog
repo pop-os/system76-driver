@@ -10,6 +10,11 @@ Version 2.1.3
 
 1.) Clean out legacy unnecessary drivers
 2.) Add checks for running package managers
+3.) Fix Darter (daru2) brightness increase/decrease
+4.) Sound imporovments:
+	a.) sound drivers are now provided by alsa-modules package
+	rather than compiled into kernel (kernel update doesn't break sound)
+	b.) provide a clean /etc/modprobe.d/alsa-base file where necessary
 
 --------------------------------------
 
