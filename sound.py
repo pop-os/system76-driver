@@ -109,14 +109,12 @@ def alsa4():
     
     # Clean up /etc/modprobe.d/alsa-base file
     
-    alsa_base = open("/etc/modprobe.d/alsa-base", "w")
-    
-    for line in fileinput.input("alsa_base",inplace =1):
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
         line = line.strip()
         if not 'toshiba' in line:
             print line
             
-    for line in fileinput.input("alsa_base",inplace =1):
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
         line = line.strip()
         if not 'targa-dig' in line:
             print line
@@ -131,14 +129,12 @@ def alsa5():
     
     #Clean up /etc/modprobe.d/alsa-base file
     
-    alsa_base = open("/etc/modprobe.d/alsa-base", "w")
-    
-    for line in fileinput.input("alsa_base",inplace =1):
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
         line = line.strip()
         if not 'toshiba' in line:
             print line
             
-    for line in fileinput.input("alsa_base",inplace =1):
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
         line = line.strip()
         if not 'targa-dig' in line:
             print line
@@ -151,32 +147,39 @@ def alsa5():
         b.close()
     kernel = uname
     
-    # Check if alsa-modules-2.6.22-14-'uname -r' is installed
-    b = os.popen('dpkg --get-selections | grep alsa-modules-%s' % kernel)
+    # Check if alsa-modules-'uname -r' is installed
+    b = os.popen('dpkg --get-selections | grep alsa-modules')
     try:
         installstatus = b.readline().strip()
+        installed = installstatus.rstrip('install')
+        version = installed.strip()
     finally:
         b.close()
-    installed = installstatus
+        
+    if version == "alsa-modules-%s" % kernel:
+        alsa_installed = True
+    else:
+        alsa_installed = False
     
     # Change to the working directory
     os.chdir(WORKDIR)
     
-    if installed == "alsa-modules-2.6.22-14-%s                  install" % kernel:
+    if alsa_installed == True:
+        os.system("echo options snd-hda-intel model=toshiba | sudo tee -a /etc/modprobe.d/alsa-base")
         return
     elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == True:
-        os.system("sudo apt-get install debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo apt-get --assume-yes install build-essential debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
         os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
         os.chdir(USRSRCDIR)
-        os.system("sudo module-assistant a-i alsa-source")
+        os.system("sudo module-assistant -t -i a-i alsa-source")
         os.system("echo options snd-hda-intel model=toshiba | sudo tee -a /etc/modprobe.d/alsa-base")
         return
     elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == False:
         os.system("sudo wget http://planet76.com/sound/alsa-source_1.0.15rc3-ldd1_all.deb")
-        os.system("sudo apt-get install debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo apt-get --assume-yes install build-essential debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
         os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
         os.chdir(USRSRCDIR)
-        os.system("sudo module-assistant a-i alsa-source")
+        os.system("sudo module-assistant -t -i a-i alsa-source")
         os.system("echo options snd-hda-intel model=toshiba | sudo tee -a /etc/modprobe.d/alsa-base")
         return
 
@@ -193,29 +196,35 @@ def alsa6():
         b.close()
     kernel = uname
     
-    # Check if alsa-modules-2.6.22-14-'uname -r' is installed
-    b = os.popen('dpkg --get-selections | grep alsa-modules-%s' % kernel)
+    # Check if alsa-modules-'uname -r' is installed
+    b = os.popen('dpkg --get-selections | grep alsa-modules')
     try:
         installstatus = b.readline().strip()
+        installed = installstatus.rstrip('install')
+        version = installed.strip()
     finally:
         b.close()
-    installed = installstatus
+        
+    if version == "alsa-modules-%s" % kernel:
+        alsa_installed = True
+    else:
+        alsa_installed = False
     
     # Change to the working directory
     os.chdir(WORKDIR)
     
-    if installed == "alsa-modules-2.6.22-14-%s                  install" % kernel:
+    if alsa_installed == True:
         return
     elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == True:
-        os.system("sudo apt-get install debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo apt-get --assume-yes install build-essential debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
         os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
         os.chdir(USRSRCDIR)
-        os.system("sudo module-assistant a-i alsa-source")
+        os.system("sudo module-assistant -t -i a-i alsa-source")
         return
     elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == False:
         os.system("sudo wget http://planet76.com/sound/alsa-source_1.0.15rc3-ldd1_all.deb")
-        os.system("sudo apt-get install debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo apt-get --assume-yes install build-essential debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
         os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
         os.chdir(USRSRCDIR)
-        os.system("sudo module-assistant a-i alsa-source")
+        os.system("sudo module-assistant -t -i a-i alsa-source")
         return

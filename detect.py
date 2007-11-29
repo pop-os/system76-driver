@@ -16,14 +16,12 @@ def aptcheck():
     Check if any apt processes are running
     """
     p = os.popen("ps -U root -o comm")
-    running = False
     pslist = p.readlines()
     p.close()
     for process in pslist:
         if process.strip() in ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier"]:
-            running = True
+            return "running"
             break
-    return "running"
 
 def connectivityCheck():
     """Throws error if no internet connection is available"""
