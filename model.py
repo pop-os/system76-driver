@@ -33,6 +33,13 @@ def determine_model():
         d.close()
     system_product_name = system_product
     
+    e = os.popen('sudo dmidecode -s system-version')
+    try:
+        system_version = e.readline().strip()
+    finally:
+        e.close()
+    system_product_version = system_version
+    
     z = os.popen('grep ec /opt/system76/model/model')
     try:
         model_number = z.readline().strip()
@@ -72,8 +79,14 @@ def determine_model():
     elif baseboard_product_name == 'M2N8L':
         modelname = "sabv2"
         return modelname
+    elif baseboard_product_name == 'P5K-VM':
+        modelname = "sabv3"
+        return modelname
     elif baseboard_product_name == 'IFL90':
         modelname = "serp3"
+        return modelname
+    elif baseboard_product_name == 'JFL92':
+        modelname = "serp4"
         return modelname
     elif baseboard_product_name == 'MS-7250':
         modelname = "wilp1"
@@ -87,6 +100,12 @@ def determine_model():
     elif baseboard_product_name == 'P5VD2-VM':
         modelname = "ratv3"
         return modelname
+    elif baseboard_product_name == 'D945GCPE':
+        modelname = "ratv4"
+        return modelname
+    elif baseboard_product_name == 'P5GC-MX/1333':
+        modelname = "ratv5"
+        return modelname
     elif baseboard_product_name == 'MPAD-MSAE Customer Reference Boards':
         modelname = "gazv2"
         return modelname
@@ -95,6 +114,9 @@ def determine_model():
         return modelname
     elif baseboard_product_name == 'KFN5-D SLI':
         modelname = "wilp3"
+        return modelname
+    elif baseboard_product_name == 'DP35DP':
+        modelname = "wilp5"
         return modelname
     # System Product Name
     elif system_product_name == 'MS-1012':
@@ -135,6 +157,10 @@ def determine_model():
         return modelname
     elif system_product_name == 'A7V':
         modelname = "bonp1"
+        return modelname
+    # System Product Version
+    elif system_product_version == '1.02A':
+        modelname = "daru3"
         return modelname
     # Old model file method (needs replacement)
     elif model_file == 'ec-panv1':

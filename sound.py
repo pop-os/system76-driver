@@ -228,3 +228,60 @@ def alsa6():
         os.chdir(USRSRCDIR)
         os.system("sudo module-assistant -t -i a-i alsa-source")
         return
+    
+def alsa7():
+    
+    """Installs alsa 1.0.15rc3 source package.  Creates alsa-modules package.
+    Installs alsa-modules package.  Adds "options snd-hda-intel model=6stack-dig" 
+    line to alsa-base."""
+    
+    #Clean up /etc/modprobe.d/alsa-base file
+    
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
+        line = line.strip()
+        if not '6stack-dig' in line:
+            print line
+    
+    # Determine running kernel version
+    b = os.popen('uname -r')
+    try:
+        uname = b.readline().strip()
+    finally:
+        b.close()
+    kernel = uname
+    
+    # Check if alsa-modules-'uname -r' is installed
+    b = os.popen('dpkg --get-selections | grep alsa-modules')
+    try:
+        installstatus = b.readline().strip()
+        installed = installstatus.rstrip('install')
+        version = installed.strip()
+    finally:
+        b.close()
+        
+    if version == "alsa-modules-%s" % kernel:
+        alsa_installed = True
+    else:
+        alsa_installed = False
+    
+    # Change to the working directory
+    os.chdir(WORKDIR)
+    
+    if alsa_installed == True:
+        os.system("echo options snd-hda-intel model=6stack-dig | sudo tee -a /etc/modprobe.d/alsa-base")
+        return
+    elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == True:
+        os.system("sudo apt-get --assume-yes install build-essential debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.chdir(USRSRCDIR)
+        os.system("sudo module-assistant -t -i a-i alsa-source")
+        os.system("echo options snd-hda-intel model=6stack-dig | sudo tee -a /etc/modprobe.d/alsa-base")
+        return
+    elif os.path.isfile("alsa-source_1.0.15rc3-ldd1_all.deb") == False:
+        os.system("sudo wget http://planet76.com/sound/alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.system("sudo apt-get --assume-yes install build-essential debhelper intltool-debian po-debconf html2text debconf-utils module-assistant")
+        os.system("sudo dpkg -i alsa-source_1.0.15rc3-ldd1_all.deb")
+        os.chdir(USRSRCDIR)
+        os.system("sudo module-assistant -t -i a-i alsa-source")
+        os.system("echo options snd-hda-intel model=6stack-dig | sudo tee -a /etc/modprobe.d/alsa-base")
+        return

@@ -47,6 +47,7 @@ Section "InputDevice"
 	Option		"Device"		"/dev/psaux"
 	Option		"Protocol"		"auto-dev"
 	Option		"HorizEdgeScroll"	"0"
+	Option		"SHMConfig"			"true"
 EndSection
 
 Section "InputDevice"

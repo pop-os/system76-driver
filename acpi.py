@@ -6,6 +6,7 @@
 ##
 ## Fixes Suspend and Hibernate on System76 machines
 import os
+import fileinput
 import time
 
 today = time.strftime('%Y%m%d_h%Hm%Ms%S')
@@ -26,10 +27,18 @@ def acpi2():
     os.system('sudo cp /etc/acpi/resume.d/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh_sys76backup_%s' % today)
     os.system('sudo cp /opt/system76/system76-driver/src/acpi/feisty/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh')
     
-def dsdt_daru2():
+def acpi3():
+    """Configures S1 sleep on Ubuntu 7.10"""
+    os.system('sudo cp /etc/default/acpi-support /etc/default/acpi-support_sys76backup_%s' % today)
+    os.system('sudo cp /opt/system76/system76-driver/src/acpi/gutsy/acpi-support /etc/default/acpi-support')
+    os.system('sudo cp /opt/system76/system76-driver/src/acpi/feisty/89-brightup.sh /etc/acpi/resume.d/89-brightup.sh')
+    os.system('sudo cp /etc/acpi/resume.d/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh_sys76backup_%s' % today)
+    os.system('sudo cp /opt/system76/system76-driver/src/acpi/feisty/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh')
+    
+def daru2():
     """Fix dsdt tables in daru2"""
     
-    # Determin running kernel version
+    # Determine running kernel version
     b = os.popen('uname -r')
     try:
         uname = b.readline().strip()
@@ -39,3 +48,16 @@ def dsdt_daru2():
     
     os.system('sudo sh /opt/system76/system76-driver/src/acpi/initrd-add-dsdt.sh /boot/initrd.img-%s /opt/system76/system76-driver/src/acpi/daru2/DSDT.aml' % kernel)
     os.system('sudo cp /opt/system76/system76-driver/src/acpi/daru2/DSDT.aml /etc/initramfs-tools/DSDT.aml')
+    
+    '''The ec_intr=0 option passes the embedded controller interupt
+    to the kernel at boot.  On Ubuntu 7.10 the option fixes acpi
+    battery notification problems.'''
+    
+    os.system('sudo cp /boot/grub/menu.lst /boot/grub/menu.lst_sys76backup_%s' % today)
+    
+    grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
+    for line in grub_menu:
+        print line.replace(' ec_intr=0',''),
+    grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
+    for line in grub_menu:
+        print line.replace('splash','splash ec_intr=0'),

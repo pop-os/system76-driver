@@ -45,16 +45,14 @@ deb-src http://us.archive.ubuntu.com/ubuntu/ gutsy-updates multiverse
 ## 'commercial' repository. This software is not part of Ubuntu, but is
 ## offered by Canonical and the respective vendors as a service to Ubuntu
 ## users.
-# deb http://archive.canonical.com/ubuntu gutsy commercial
-# deb-src http://archive.canonical.com/ubuntu gutsy commercial
+# deb http://archive.canonical.com/ubuntu gutsy partner
+# deb-src http://archive.canonical.com/ubuntu gutsy partner
 
 deb http://security.ubuntu.com/ubuntu gutsy-security main restricted
 deb-src http://security.ubuntu.com/ubuntu gutsy-security main restricted
 deb http://security.ubuntu.com/ubuntu gutsy-security universe
 deb-src http://security.ubuntu.com/ubuntu gutsy-security universe
 deb http://security.ubuntu.com/ubuntu gutsy-security multiverse
-deb http://us.archive.ubuntu.com/ubuntu/ gutsy-proposed restricted main multiverse universe
-deb-src http://security.ubuntu.com/ubuntu gutsy-security multiverse
 
 ## System76 Repository.  This software repository contains drivers and
 ## updates specifically for your computer

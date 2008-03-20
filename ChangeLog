@@ -6,6 +6,36 @@ Released under the GNU General Public License (See LICENSE)
 
 --------------------------------------
 
+Version 2.1.7
+
+1.) Add kernel line parameter ec_intr=0 to menu.lst on daru2 under
+Ubuntu 7.10.  Fixes acpi battery indication.
+2.) Update acpi-support on Ubuntu 7.10 for models daru1, daru2,
+gazp1, gazp2, gazp3, gazp5, gazv2, gazv3, gazv4.
+3.) Fix usplash bug after restoring a nVidia based system with Ubuntu
+7.10 64 bit from standard Ubuntu disk.  This fix was built into 
+manufacturing images but not applied when customer restored from disk.
+
+--------------------------------------
+
+Version 2.1.6
+
+1.) Add new system76 serval model serp4
+
+--------------------------------------
+
+Version 2.1.5
+
+1.) Add new system76 model ratv5
+
+--------------------------------------
+
+Version 2.1.4
+
+1.) Add new system76 models wilp5, sabv3, ratv4
+
+--------------------------------------
+
 Version 2.1.3
 
 1.) Clean out legacy unnecessary drivers

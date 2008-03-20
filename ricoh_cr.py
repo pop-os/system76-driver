@@ -11,4 +11,4 @@ DRIVERDIR = os.path.join(os.path.dirname(__file__), 'ricoh')
 def card_reader():
     # Install Driver Package
     os.chdir(DRIVERDIR)
-    os.system('sudo dpkg -i ricoh-r5c832-fix_1_i386.deb')
+    os.system('sudo dpkg -i --force-architecture ricoh-r5c832-fix_1_i386.deb')

@@ -30,3 +30,16 @@ def connectivityCheck():
         return "connectionExists"
     except:
         return "noConnectionExists"
+    
+def arch():
+    """
+    Detect whether the architecture is x86/ppc/amd64 
+    """
+    arch = os.uname()[-1]
+    if arch in ('ppc', 'ppc64'):
+        arch = 'powerpc'
+    elif arch =='x86_64':
+        arch = 'x86_64'
+    elif arch in ('i386','i686','i586','k7'):
+        arch = 'x86'
+    return arch

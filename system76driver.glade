@@ -364,9 +364,8 @@
                     <property name="label" translatable="yes">Restore configures portions of your system as it was delivered from the factory.  This will not destroy any existing data.  Restore performs the following actions:
 
 1.) Setup System76 software repository list (Replaces Existing)
-2.) Installs Systems76 xorg.conf file (Replaces Existing)
-3.) Installs any necessary drivers for your machine
-4.) Installs System76 additional applications (Includes GnuCash and some usefull utilities depending on your System76 model.)
+2.) Installs any necessary drivers for your machine
+
 
 &lt;b&gt;You must be connected to the internet before running restore.&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
@@ -375,7 +374,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="padding">12</property>
+                    <property name="padding">37</property>
                   </packing>
                 </child>
                 <child>
@@ -615,7 +614,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
     <property name="program_name">System76 Driver</property>
     <property name="copyright" translatable="yes">Copyright (C) System76, Inc.</property>
-    <property name="comments" translatable="yes">version 2.1.3</property>
+    <property name="comments" translatable="yes">version 2.1.7</property>
     <property name="website">www.system76.com</property>
     <property name="license" translatable="yes">GNU GENERAL PUBLIC LICENSE
 
