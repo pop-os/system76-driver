@@ -614,7 +614,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
     <property name="program_name">System76 Driver</property>
     <property name="copyright" translatable="yes">Copyright (C) System76, Inc.</property>
-    <property name="comments" translatable="yes">version 2.1.7</property>
+    <property name="comments" translatable="yes">version 2.1.8</property>
     <property name="website">www.system76.com</property>
     <property name="license" translatable="yes">GNU GENERAL PUBLIC LICENSE
 
@@ -967,7 +967,7 @@ END OF TERMS AND CONDITIONS</property>
         <child>
           <widget class="GtkLabel" id="label26">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">This driver is designed for System76 machines running Ubuntu version 6.06, 6.10, 7.04, or 7.10.  If you have a System76 machine running one of the above Ubuntu versions please file a bug report at https://launchpad.net/system76</property>
+            <property name="label" translatable="yes">This driver is designed for System76 machines running Ubuntu version 6.06, 6.10, 7.04, 7.10, or 8.04.  If you have a System76 machine running one of the above Ubuntu versions please file a bug report at https://launchpad.net/system76</property>
             <property name="wrap">True</property>
           </widget>
           <packing>
