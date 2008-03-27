@@ -6,6 +6,15 @@ Released under the GNU General Public License (See LICENSE)
 
 --------------------------------------
 
+Version 2.1.8
+
+1.) Add Hardy support.
+2.) Restore adds gnucash, gnucash-docs, and system76-driver. nVidia
+and gsynaptics are installed if appropriate.
+3.) Driver install doesn't do anything yet (waiting for testing).
+
+--------------------------------------
+
 Version 2.1.7
 
 1.) Add kernel line parameter ec_intr=0 to menu.lst on daru2 under

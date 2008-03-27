@@ -57,6 +57,11 @@ def app_install():
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # Model MS-1221 / System76 Model Darter Ultra 2
     elif modelname == ('daru2'):
         if version == ('7.04'):
@@ -73,11 +78,21 @@ def app_install():
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # System76 Model Darter Ultra 3
     elif modelname == ('daru3'):
         if version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # Model Z62F / System76 model Gazelle Performance
@@ -114,6 +129,11 @@ def app_install():
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # Model S62J / System76 model Gazelle Performance
     elif modelname == ('gazp2'):
         if version == ('6.06'):
@@ -146,6 +166,12 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver gsynaptics')
+            os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver gsynaptics')
             os.system('sudo nvidia-glx-config enable')
@@ -184,11 +210,23 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver gsynaptics')
             os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver gsynaptics')
+            os.system('sudo nvidia-glx-config enable')
     # System76 model Gazelle Value with nVidia and Camera
     elif modelname == ('gazp5'):
         if version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
@@ -226,6 +264,11 @@ def app_install():
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # Model Z62FP / System76 model Gazelle Value
     elif modelname == ('gazv3'):
         if version == ('6.06'):
@@ -258,6 +301,11 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # Model Z62FM / System76 model Gazelle Value
@@ -294,6 +342,11 @@ def app_install():
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # System76 Model Gazelle Value 5
     elif modelname == ('gazv5'):
         if version == ('7.04'):
@@ -309,6 +362,11 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model Mini PC / System76 model Koala Performance
@@ -345,6 +403,11 @@ def app_install():
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model S96F / System76 model Pangolin Value
     elif modelname == ('panv2'):
         if version == ('6.06'):
@@ -379,6 +442,11 @@ def app_install():
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # System76 Model Pangolin Value 3
     elif modelname == ('panv3'):
         if version == ('7.04'):
@@ -403,6 +471,11 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model V2-AH1 / System76 model Ratel Value
@@ -437,6 +510,11 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Ratel Value
@@ -498,6 +576,12 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
@@ -563,6 +647,12 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
     # Ratel Value 4 (ratv4)
     elif modelname == ('ratv4'):
         if version == ('7.10'):
@@ -570,11 +660,21 @@ def app_install():
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Ratel Value 5 (ratv5)
     elif modelname == ('ratv5'):
         if version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model P1-AH1 / System76 model Sable Value
@@ -609,6 +709,12 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
@@ -647,11 +753,22 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
-    # Sable Value 3 (sabv4)
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
+    # Sable Value 3 (sabv3)
     elif modelname == ('sabv3'):
         if version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('7.10'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model EL80 / System76 model Serval Performance
@@ -686,6 +803,12 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
@@ -725,6 +848,12 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
     # System76 Model Serval Performance 3 (serp3)
     elif modelname == ('serp3'):
         if version == ('7.10'):
@@ -733,11 +862,23 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
     # System76 Model Serval Performance 3 (serp3)
     elif modelname == ('serp4'):
         if version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
@@ -776,6 +917,12 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
     # Wild Dog Professional
     elif modelname == ('wilp2'):
         if version == ('6.06'):
@@ -808,6 +955,12 @@ def app_install():
         elif version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
@@ -846,11 +999,23 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
     # Wild Dog Performance (wilp5)
     elif modelname == ('wilp5'):
         if version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
+            os.system('sudo apt-get update')
+            os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
+            os.system('sudo nvidia-glx-config enable')
+        elif version == ('8.04'):
+            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
+            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_hardy /etc/apt/sources.list')
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-glx-config enable')

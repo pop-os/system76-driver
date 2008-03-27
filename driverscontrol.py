@@ -40,6 +40,9 @@ def installDrivers():
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -55,6 +58,9 @@ def installDrivers():
         elif version == ('7.10'):
             acpi.acpi3()
             hotkey.daru1_monitor_switch()
+        elif version == ('8.04'):
+            acpi.acpi3()
+            hotkey.daru1_monitor_switch()
         else:
             nodrivers = "true"
             return nodrivers
@@ -64,10 +70,13 @@ def installDrivers():
             acpi.acpi2()
             acpi.daru2()
             sound.alsa4()
-        if version == ('7.10'):
+        elif version == ('7.10'):
             acpi.acpi3()
             acpi.daru2()
             sound.alsa4()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -75,6 +84,9 @@ def installDrivers():
         if version == ('7.10'):
             acpi.daru3()
             sound.alsa6()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -90,6 +102,9 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa6()
             acpi.acpi3()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -105,6 +120,9 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa6()
             acpi.acpi3()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -120,6 +138,9 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa6()
             acpi.acpi3()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -134,6 +155,9 @@ def installDrivers():
             sound.alsa5()
             acpi.acpi3()
             ricoh_cr.card_reader()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('gazv1'):
         nodrivers = "true"
         return nodrivers
@@ -148,6 +172,9 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa6()
             acpi.acpi3()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -164,6 +191,9 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa6()
             acpi.acpi3()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -179,6 +209,9 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa6()
             acpi.acpi3()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -192,6 +225,9 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa5()
             ricoh_cr.card_reader()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -205,6 +241,9 @@ def installDrivers():
         elif version == ('7.04'):
             acpi.acpi1()
         elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('8.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -223,6 +262,9 @@ def installDrivers():
             acpi.acpi1()
         elif version == ('7.10'):
             sound.alsa6()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -235,6 +277,9 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa5()
             ricoh_cr.card_reader()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -248,6 +293,9 @@ def installDrivers():
         elif version == ('7.04'):
             acpi.acpi1()
         elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('8.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -265,6 +313,9 @@ def installDrivers():
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -280,15 +331,30 @@ def installDrivers():
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('ratv4'):
         if version == ('7.10'):
             sound.alsa7()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('ratv5'):
         if version == ('7.10'):
             sound.alsa7()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('sabv1'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -299,6 +365,9 @@ def installDrivers():
         elif version == ('7.04'):
             acpi.acpi1()
         elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('8.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -313,6 +382,9 @@ def installDrivers():
             sound.alsa6()
             acpi.acpi1()
         elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('8.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -334,6 +406,9 @@ def installDrivers():
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -347,6 +422,9 @@ def installDrivers():
         elif version == ('7.04'):
             acpi.acpi1()
         elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('8.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -364,6 +442,9 @@ def installDrivers():
                 usplash.gutsy_64_nvidia()
                 sound.alsa5()
                 ricoh_cr.card_reader()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -379,6 +460,9 @@ def installDrivers():
                 usplash.gutsy_64_nvidia()
                 sound.alsa5()
                 ricoh_cr.card_reader()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -393,6 +477,9 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('8.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -411,6 +498,9 @@ def installDrivers():
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -427,6 +517,9 @@ def installDrivers():
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -437,6 +530,9 @@ def installDrivers():
                 return nodrivers
             else:
                 usplash.gutsy_64_nvidia()
+        elif version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
     else:
         nodrivers = "true"
         return nodrivers
