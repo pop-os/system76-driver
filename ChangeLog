@@ -4,6 +4,10 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.1.9
+
+1.) Fix nVidia installation on restore (command changed in Hardy)
+
 --------------------------------------
 
 Version 2.1.8
@@ -11,7 +15,7 @@ Version 2.1.8
 1.) Add Hardy support.
 2.) Restore adds gnucash, gnucash-docs, and system76-driver. nVidia
 and gsynaptics are installed if appropriate.
-3.) Driver install doesn't do anything yet (waiting for testing).
+3.) Remove system76 repo from sources.list and add via sources.list.d/system76.list
 
 --------------------------------------
 

@@ -285,3 +285,14 @@ def alsa7():
         os.system("sudo module-assistant -t -i a-i alsa-source")
         os.system("echo options snd-hda-intel model=6stack-dig | sudo tee -a /etc/modprobe.d/alsa-base")
         return
+
+def alsa8():
+    
+    # Clean up /etc/modprobe.d/alsa-base file
+    
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
+        line = line.strip()
+        if not '6stack-dig' in line:
+            print line
+            
+    os.system("echo options snd-hda-intel model=6stack-dig | sudo tee -a /etc/modprobe.d/alsa-base")

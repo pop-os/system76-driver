@@ -75,8 +75,7 @@ def installDrivers():
             acpi.daru2()
             sound.alsa4()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            sound.alsa4()
         else:
             nodrivers = "true"
             return nodrivers
@@ -350,8 +349,7 @@ def installDrivers():
         if version == ('7.10'):
             sound.alsa7()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            sound.alsa8()
         else:
             nodrivers = "true"
             return nodrivers
