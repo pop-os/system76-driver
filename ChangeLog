@@ -4,6 +4,19 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.2.1
+
+1.) [hardy] fix sound on resume from suspend LP Bug #223742
+    (serp3) (serp4) (gazp5) (gazv5) (panv3)
+
+--------------------------------------
+
+Version 2.2.0
+
+1.) Version bump for Hardy release
+
+--------------------------------------
+
 Version 2.1.9
 
 1.) Fix nVidia installation on restore (command changed in Hardy)

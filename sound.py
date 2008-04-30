@@ -296,3 +296,14 @@ def alsa8():
             print line
             
     os.system("echo options snd-hda-intel model=6stack-dig | sudo tee -a /etc/modprobe.d/alsa-base")
+    
+def alsa9():
+    
+    # Clean up /etc/modprobe.d/alsa-base file
+    
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
+        line = line.strip()
+        if not 'toshiba' in line:
+            print line
+            
+    os.system("echo options snd-hda-intel model=toshiba | sudo tee -a /etc/modprobe.d/alsa-base")

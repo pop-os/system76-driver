@@ -155,8 +155,7 @@ def installDrivers():
             acpi.acpi3()
             ricoh_cr.card_reader()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            sound.alsa9
     elif modelname == ('gazv1'):
         nodrivers = "true"
         return nodrivers
@@ -225,8 +224,7 @@ def installDrivers():
             sound.alsa5()
             ricoh_cr.card_reader()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            sound.alsa9
         else:
             nodrivers = "true"
             return nodrivers
@@ -277,8 +275,7 @@ def installDrivers():
             sound.alsa5()
             ricoh_cr.card_reader()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            sound.alsa9
         else:
             nodrivers = "true"
             return nodrivers
@@ -441,8 +438,7 @@ def installDrivers():
                 sound.alsa5()
                 ricoh_cr.card_reader()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            sound.alsa9
         else:
             nodrivers = "true"
             return nodrivers
@@ -459,8 +455,7 @@ def installDrivers():
                 sound.alsa5()
                 ricoh_cr.card_reader()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            sound.alsa9
         else:
             nodrivers = "true"
             return nodrivers
