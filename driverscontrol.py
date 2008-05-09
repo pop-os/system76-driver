@@ -16,6 +16,7 @@ import uvc
 import ricoh_cr
 import detect
 import usplash
+import hardy_led
 
 ## KEEP ALL MODELS IN ALPHABETICAL ORDER
 
@@ -41,8 +42,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -61,6 +61,7 @@ def installDrivers():
         elif version == ('8.04'):
             acpi.acpi3()
             hotkey.daru1_monitor_switch()
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -76,6 +77,7 @@ def installDrivers():
             sound.alsa4()
         elif version == ('8.04'):
             sound.alsa4()
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -84,8 +86,7 @@ def installDrivers():
             acpi.daru3()
             sound.alsa6()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -102,8 +103,7 @@ def installDrivers():
             sound.alsa6()
             acpi.acpi3()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -120,8 +120,7 @@ def installDrivers():
             sound.alsa6()
             acpi.acpi3()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -138,8 +137,7 @@ def installDrivers():
             sound.alsa6()
             acpi.acpi3()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -156,6 +154,7 @@ def installDrivers():
             ricoh_cr.card_reader()
         elif version == ('8.04'):
             sound.alsa9
+            hardy_led.install()
     elif modelname == ('gazv1'):
         nodrivers = "true"
         return nodrivers
@@ -171,8 +170,7 @@ def installDrivers():
             sound.alsa6()
             acpi.acpi3()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -190,8 +188,7 @@ def installDrivers():
             sound.alsa6()
             acpi.acpi3()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -208,8 +205,7 @@ def installDrivers():
             sound.alsa6()
             acpi.acpi3()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -225,6 +221,7 @@ def installDrivers():
             ricoh_cr.card_reader()
         elif version == ('8.04'):
             sound.alsa9
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -260,8 +257,7 @@ def installDrivers():
         elif version == ('7.10'):
             sound.alsa6()
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -276,6 +272,7 @@ def installDrivers():
             ricoh_cr.card_reader()
         elif version == ('8.04'):
             sound.alsa9
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -402,8 +399,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -420,8 +416,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.04'):
-            nodrivers = "true"
-            return nodrivers
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -439,6 +434,7 @@ def installDrivers():
                 ricoh_cr.card_reader()
         elif version == ('8.04'):
             sound.alsa9
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -456,6 +452,7 @@ def installDrivers():
                 ricoh_cr.card_reader()
         elif version == ('8.04'):
             sound.alsa9
+            hardy_led.install()
         else:
             nodrivers = "true"
             return nodrivers

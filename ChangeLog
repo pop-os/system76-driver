@@ -8,6 +8,8 @@ Version 2.2.1
 
 1.) [hardy] fix sound on resume from suspend LP Bug #223742
     (serp3) (serp4) (gazp5) (gazv5) (panv3)
+2.) Install linux-backports-modules-hardy to fix the wireless
+    LED on Intel based cards LP Bug #223874
 
 --------------------------------------
 
