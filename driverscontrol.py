@@ -153,7 +153,7 @@ def installDrivers():
             acpi.acpi3()
             ricoh_cr.card_reader()
         elif version == ('8.04'):
-            sound.alsa9
+            sound.alsa9()
             hardy_led.install()
     elif modelname == ('gazv1'):
         nodrivers = "true"
@@ -220,7 +220,7 @@ def installDrivers():
             sound.alsa5()
             ricoh_cr.card_reader()
         elif version == ('8.04'):
-            sound.alsa9
+            sound.alsa9()
             hardy_led.install()
         else:
             nodrivers = "true"
@@ -271,7 +271,7 @@ def installDrivers():
             sound.alsa5()
             ricoh_cr.card_reader()
         elif version == ('8.04'):
-            sound.alsa9
+            sound.alsa9()
             hardy_led.install()
         else:
             nodrivers = "true"
@@ -433,7 +433,7 @@ def installDrivers():
                 sound.alsa5()
                 ricoh_cr.card_reader()
         elif version == ('8.04'):
-            sound.alsa9
+            sound.alsa9()
             hardy_led.install()
         else:
             nodrivers = "true"
@@ -451,7 +451,7 @@ def installDrivers():
                 sound.alsa5()
                 ricoh_cr.card_reader()
         elif version == ('8.04'):
-            sound.alsa9
+            sound.alsa9()
             hardy_led.install()
         else:
             nodrivers = "true"
