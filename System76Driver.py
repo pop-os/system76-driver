@@ -124,6 +124,9 @@ def supported(datadir):
     modelname = model.determine_model()
     version = ubuntuversion.release()
     
+    if version == ('8.04.1'):
+        version = '8.04'
+    
     if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04':
         notsupported = unsupported(datadir);
         notsupported.run()

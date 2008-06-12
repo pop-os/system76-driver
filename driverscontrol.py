@@ -29,6 +29,9 @@ def installDrivers():
     version = ubuntuversion.release()
     arch = detect.arch()
     
+    if version == ('8.04.1'):
+        version = '8.04'
+    
     if modelname == ('bonp1'):
         if version == ('6.06'):
             nodrivers = "true"

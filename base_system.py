@@ -23,6 +23,9 @@ def app_install():
     today = time.strftime('%Y%m%d_h%Hm%Ms%S')
     modelname = model.determine_model()
     version = ubuntuversion.release()
+    
+    if version == ('8.04.1'):
+        version = '8.04'
 
     # Model Z35FM / System76 Model Darter Ultra
     if modelname == ('daru1'):
