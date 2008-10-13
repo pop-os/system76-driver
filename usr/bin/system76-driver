@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+## System76, Inc.
+## Universal Driver
+## Copyright (C) 2007 System76, Inc.
+## Released under the GNU General Public License (See LICENSE)
+
+if [ "$DESKTOP_SESSION" = "gnome" ]; then
+	RUNNING=gnome
+fi
+if [ "$KDE_FULL_SESSION" = "true" ]; then
+	RUNNING=kde
+fi
+
+case $RUNNING in
+	"gnome")
+		gksu python /opt/system76/system76-driver/src/System76Driver.py
+		;;
+
+	"kde")
+    	kdesu python /opt/system76/system76-driver/src/System76Driver.py
+		;;
+
+	*)
+		gksu python /opt/system76/system76-driver/src/System76Driver.py
+		;;
+esac

@@ -10,7 +10,7 @@ import os
 
 def release():
     """
-    Get Ubuntu Version. Can be 6.06, 6.10, 7.04, 7.10, or 8.04
+    Get Ubuntu Version. Can be 6.06, 6.10, 7.04, 7.10, 8.04, or 8.10
     """
     v = os.popen('lsb_release -r')
     try:

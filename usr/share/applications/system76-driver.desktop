@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.9.95
+Encoding=UTF-8
+Name=System76 Driver
+GenericName=System76 Driver
+Comment=Installs Drivers for System76 Systems
+Exec=system76-driver
+Terminal=false
+Type=Application
+Icon=/opt/system76/system76-driver/src/images/76icon.png
+Categories=System;Settings
+GenericName[en_US]=System76 Driver

@@ -127,7 +127,7 @@ def supported(datadir):
     if version == ('8.04.1'):
         version = '8.04'
     
-    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04':
+    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10':
         notsupported = unsupported(datadir);
         notsupported.run()
     elif modelname == ('nonsystem76'):
@@ -214,7 +214,6 @@ class System76Driver:
     def on_create_clicked(self, widget):
         
         #Creates an archive of common support files and logs
-        #TODO: saving in the wrong user dir (root).
         
         username = getpass.getuser()
         

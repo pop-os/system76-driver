@@ -307,3 +307,30 @@ def alsa9():
             print line
             
     os.system("echo options snd-hda-intel model=toshiba | sudo tee -a /etc/modprobe.d/alsa-base")
+    
+def alsa10():
+    
+    # Clean up /etc/modprobe.d/alsa-base file
+    
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
+        line = line.strip()
+        if not '3stack-6ch-dig' in line:
+            print line
+            
+    os.system("echo options snd-hda-intel model=3stack-6ch-dig | sudo tee -a /etc/modprobe.d/alsa-base")
+    
+def alsa11():
+    
+    # Install Alsa Driver 1.0.17 for mic and sound after resume support
+    os.chdir(WORKDIR)
+    os.system("sudo sh ./alsa-1.0.17.sh")
+    
+    # Clean up /etc/modprobe.d/alsa-base file
+    
+    for line in fileinput.input("/etc/modprobe.d/alsa-base",inplace =1):
+        line = line.strip()
+        if not '3stack-6ch-dig' in line:
+            print line
+            
+    os.system("echo options snd-hda-intel model=3stack-6ch-dig | sudo tee -a /etc/modprobe.d/alsa-base")
+    

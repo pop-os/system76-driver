@@ -11,5 +11,5 @@ DRIVERDIR = os.path.join(os.path.dirname(__file__), 'uvc')
 def camera():
     # Make and Install Driver
     os.chdir(DRIVERDIR)
-    os.system("make")
+    os.system("sudo make")
     os.system("sudo make install")

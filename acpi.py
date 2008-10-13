@@ -61,3 +61,15 @@ def daru2():
     grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
     for line in grub_menu:
         print line.replace('splash','splash ec_intr=0'),
+        
+def osiNotWindows():
+    # Kernel parameter tells the BIOS that the system is not Windows 2006
+    
+    os.system('sudo cp /boot/grub/menu.lst /boot/grub/menu.lst_sys76backup_%s' % today)
+    
+    grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
+    for line in grub_menu:
+        print line.replace(' acpi_osi="!Windows 2006"',''),
+    grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
+    for line in grub_menu:
+        print line.replace('splash','splash acpi_osi="!Windows 2006"'),

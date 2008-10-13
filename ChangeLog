@@ -4,6 +4,35 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.2.6
+
+1.) Add System76 Bonobo Pro (bonp2)
+2.) Add System76 Serval Pro (serp5)
+3.) Fix system designation for one Pangolin panv2 where the MB had been replaced
+4.) Update Linux UVC code
+5.) Add Ubuntu Intrepid to System76Driver.py (no system patches applied yet)
+
+
+--------------------------------------
+
+Version 2.2.5
+
+1.) Fix panp4 mic and sound after resume LP #264516
+
+--------------------------------------
+
+Version 2.2.4
+
+1.) Add new Pangolin Performance (panp4) and Darter Ultra (daru3)
+
+--------------------------------------
+
+Version 2.2.3
+
+1.) Add new Ratel Value (ratv6)
+
+--------------------------------------
+
 Version 2.2.2
 
 1.) Fix missing () in driverscontrol

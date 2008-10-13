@@ -27,8 +27,27 @@ def app_install():
     if version == ('8.04.1'):
         version = '8.04'
 
+    # System76 Bonobo Professional (bonp2)
+    if modelname == ('bonp2'):
+        if version == ('8.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese nvidia-settings')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type list --list-type=string --set /desktop/gnome/sound/default_mixer_tracks [PCM]")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+            os.system("sudo cp /opt/system76/system76-driver/src/nvidia-settings.desktop /usr/share/applications/nvidia-settings.desktop")
+            os.system("sudo chmod +x /usr/share/applications/nvidia-settings.desktop")
+    # System76 Meerkat Compact (meec1)
+    if modelname == ('meec1'):
+        if version == ('8.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
     # Model Z35FM / System76 Model Darter Ultra
-    if modelname == ('daru1'):
+    elif modelname == ('daru1'):
         if version == ('6.06'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
             os.system('sudo cp /opt/system76/system76-driver/src/sources.list_dapper /etc/apt/sources.list')
@@ -85,14 +104,14 @@ def app_install():
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
     # System76 Model Darter Ultra 3
     elif modelname == ('daru3'):
-        if version == ('7.10'):
-            os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
-            os.system('sudo cp /opt/system76/system76-driver/src/sources.list_gutsy /etc/apt/sources.list')
-            os.system('sudo apt-get update')
-            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
-        elif version == ('8.04'):
+        if version == ('8.04'):
             sources.add()
-            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type list --list-type=string --set /desktop/gnome/sound/default_mixer_tracks [PCM]")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")
     # Model Z62F / System76 model Gazelle Performance
     elif modelname == ('gazp1'):
         if version == ('6.06'):
@@ -388,6 +407,25 @@ def app_install():
         elif version == ('8.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+    # System76 Pangolin Performance panp4i
+    elif modelname == ('panp4i'):
+        if version == ('8.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type list --list-type=string --set /desktop/gnome/sound/default_mixer_tracks [PCM]")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")
+    # System76 Pangolin Performance panp4n
+    elif modelname == ('panp4n'):
+        if version == ('8.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type list --list-type=string --set /desktop/gnome/sound/default_mixer_tracks [PCM]")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
     # Model S96F / System76 model Pangolin Value
     elif modelname == ('panv2'):
         if version == ('6.06'):
@@ -641,7 +679,15 @@ def app_install():
             os.system('sudo apt-get update')
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
         elif version == ('8.04'):
-            osources.add()
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+    # Ratel Value 6 (ratv6)
+    elif modelname == ('ratv6'):
+        if version == ('8.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('8.10'):
+            sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model P1-AH1 / System76 model Sable Value
     elif modelname == ('sabv1'):
@@ -839,6 +885,15 @@ def app_install():
             sources.add()
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-xconfig -s')
+    # System76 Serval Professional (serp5)
+    if modelname == ('serp5'):
+        if version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type list --list-type=string --set /desktop/gnome/sound/default_mixer_tracks [PCM]")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
     # Model Wild Dog Performance
     elif modelname == ('wilp1'):
         if version == ('6.06'):

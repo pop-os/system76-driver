@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=fprint project demo
+GenericName=Fingerprint demo program
+GenericName[fr]=Logiciel de démonstration de reconnaissances des empreintes digitales
+Comment=Fingerprint scanning demonstration
+Comment[fr]=Logiciel de démonstration pour le programme de reconnaissance d'empreinte digitale fprint
+Exec=gksu fprint_demo
+Icon=fprint_demo
+Terminal=false
+Type=Application
+Categories=Utility;ComputerScience;ImageProcessing;

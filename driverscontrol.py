@@ -17,6 +17,7 @@ import ricoh_cr
 import detect
 import usplash
 import hardy_led
+import fprint
 
 ## KEEP ALL MODELS IN ALPHABETICAL ORDER
 
@@ -46,6 +47,18 @@ def installDrivers():
             return nodrivers
         elif version == ('8.04'):
             hardy_led.install()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('bonp2'):
+        if version == ('8.04'):
+            sound.alsa10()
+            uvc.camera()
+            fprint.install()
+            acpi.osiNotWindows()
+        elif verison == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -85,11 +98,13 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
     elif modelname == ('daru3'):
-        if version == ('7.10'):
-            acpi.daru3()
-            sound.alsa6()
-        elif version == ('8.04'):
-            hardy_led.install()
+        if version == ('8.04'):
+            sound.alsa10()
+            uvc.camera()
+            fprint.install()
+        elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -246,9 +261,33 @@ def installDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+    elif modelname == ('meec1'):
+        if version == ('8.04'):
+            uvc.camera()
+        elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('nonsystem76'):
         nodrivers = "true"
         return nodrivers
+    elif modelname == ('panp4i'):
+        if version == ('8.04'):
+            uvc.camera()
+            sound.alsa11()
+    elif modelname == ('panp4n'):
+        if version == ('8.04'):
+            uvc.camera()
+            fprint.install()
+            sound.alsa11()
+        elif verison == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('panv2'):
         if version == ('6.06'):
             sound.alsa6()
@@ -347,6 +386,13 @@ def installDrivers():
             sound.alsa7()
         elif version == ('8.04'):
             sound.alsa8()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('ratv6'):
+        if version == ('8.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -456,6 +502,14 @@ def installDrivers():
         elif version == ('8.04'):
             sound.alsa9()
             hardy_led.install()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('serp5'):
+        if version == ('8.10'):
+            sound.alsa10()
+            fprint.install()
+            acpi.osiNotWindows()
         else:
             nodrivers = "true"
             return nodrivers

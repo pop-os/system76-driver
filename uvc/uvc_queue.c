@@ -1,7 +1,7 @@
 /*
- *      uvcvideo.c  --  USB Video Class driver
+ *      uvc_queue.c  --  USB Video Class driver - Buffers management
  *
- *      Copyright (C) 2005-2006
+ *      Copyright (C) 2005-2008
  *          Laurent Pinchart (laurent.pinchart@skynet.be)
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -13,10 +13,11 @@
 
 #include <linux/kernel.h>
 #include <linux/version.h>
+#include <linux/mm.h>
 #include <linux/list.h>
 #include <linux/module.h>
 #include <linux/usb.h>
-#include <linux/videodev.h>
+#include <linux/videodev2.h>
 #include <linux/vmalloc.h>
 #include <linux/wait.h>
 #include <asm/atomic.h>
@@ -110,6 +111,10 @@ int uvc_alloc_buffers(struct uvc_video_queue *queue, unsigned int nbuffers,
 	if ((ret = uvc_free_buffers(queue)) < 0)
 		goto done;
 
+	/* Bail out if no buffers should be allocated. */
+	if (nbuffers == 0)
+		goto done;
+
 	/* Decrement the number of buffers until allocation succeeds. */
 	for (; nbuffers > 0; --nbuffers) {
 		mem = vmalloc_32(nbuffers * bufsize);
@@ -124,7 +129,6 @@ int uvc_alloc_buffers(struct uvc_video_queue *queue, unsigned int nbuffers,
 
 	for (i = 0; i < nbuffers; ++i) {
 		memset(&queue->buffer[i], 0, sizeof queue->buffer[i]);
-		queue->buffer[i].size = bufsize;
 		queue->buffer[i].buf.index = i;
 		queue->buffer[i].buf.m.offset = i * bufsize;
 		queue->buffer[i].buf.length = buflength;
@@ -138,6 +142,7 @@ int uvc_alloc_buffers(struct uvc_video_queue *queue, unsigned int nbuffers,
 
 	queue->mem = mem;
 	queue->count = nbuffers;
+	queue->buf_size = bufsize;
 	ret = nbuffers;
 
 done:
@@ -162,9 +167,9 @@ int uvc_free_buffers(struct uvc_video_queue *queue)
 	if (queue->count) {
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,15)
 		unsigned long addr = (unsigned long)queue->mem;
-		size_t size = queue->count * queue->buffer[0].size;
+		size_t size = queue->count * queue->buf_size;
 		while (size > 0) {
-			ClearPageReserved(vmalloc_to_page((void*)addr));
+			ClearPageReserved(vmalloc_to_page((void *)addr));
 			addr += PAGE_SIZE;
 			size -= PAGE_SIZE;
 		}
@@ -176,12 +181,12 @@ int uvc_free_buffers(struct uvc_video_queue *queue)
 	return 0;
 }
 
-void uvc_query_buffer(struct uvc_buffer *buf,
+static void __uvc_query_buffer(struct uvc_buffer *buf,
 		struct v4l2_buffer *v4l2_buf)
 {
 	memcpy(v4l2_buf, &buf->buf, sizeof *v4l2_buf);
 
-	if(buf->vma_use_count)
+	if (buf->vma_use_count)
 		v4l2_buf->flags |= V4L2_BUF_FLAG_MAPPED;
 
 	switch (buf->state) {
@@ -199,11 +204,30 @@ void uvc_query_buffer(struct uvc_buffer *buf,
 	}
 }
 
+int uvc_query_buffer(struct uvc_video_queue *queue,
+		struct v4l2_buffer *v4l2_buf)
+{
+	int ret = 0;
+
+	mutex_lock(&queue->mutex);
+	if (v4l2_buf->index >= queue->count) {
+		ret = -EINVAL;
+		goto done;
+	}
+
+	__uvc_query_buffer(&queue->buffer[v4l2_buf->index], v4l2_buf);
+
+done:
+       mutex_unlock(&queue->mutex);
+       return ret;
+}
+
 /*
  * Queue a video buffer. Attempting to queue a buffer that has already been
  * queued will return -EINVAL.
  */
-int uvc_queue_buffer(struct uvc_video_queue *queue, struct v4l2_buffer *v4l2_buf)
+int uvc_queue_buffer(struct uvc_video_queue *queue,
+	struct v4l2_buffer *v4l2_buf)
 {
 	struct uvc_buffer *buf;
 	unsigned long flags;
@@ -234,10 +258,15 @@ int uvc_queue_buffer(struct uvc_video_queue *queue, struct v4l2_buffer *v4l2_buf
 		goto done;
 	}
 
+	spin_lock_irqsave(&queue->irqlock, flags);
+	if (queue->flags & UVC_QUEUE_DISCONNECTED) {
+		spin_unlock_irqrestore(&queue->irqlock, flags);
+		ret = -ENODEV;
+		goto done;
+	}
 	buf->state = UVC_BUF_STATE_QUEUED;
 	buf->buf.bytesused = 0;
 	list_add_tail(&buf->stream, &queue->mainqueue);
-	spin_lock_irqsave(&queue->irqlock, flags);
 	list_add_tail(&buf->queue, &queue->irqqueue);
 	spin_unlock_irqrestore(&queue->irqlock, flags);
 
@@ -284,10 +313,12 @@ int uvc_dequeue_buffer(struct uvc_video_queue *queue,
 		goto done;
 	}
 
-	buf = list_entry(queue->mainqueue.next, struct uvc_buffer, stream);
-	uvc_trace(UVC_TRACE_CAPTURE, "Dequeuing buffer %u.\n", buf->buf.index);
+	buf = list_first_entry(&queue->mainqueue, struct uvc_buffer, stream);
 	if ((ret = uvc_queue_waiton(buf, nonblocking)) < 0)
 		goto done;
+
+	uvc_trace(UVC_TRACE_CAPTURE, "Dequeuing buffer %u (%u, %u bytes).\n",
+		buf->buf.index, buf->state, buf->buf.bytesused);
 
 	switch (buf->state) {
 	case UVC_BUF_STATE_ERROR:
@@ -309,11 +340,40 @@ int uvc_dequeue_buffer(struct uvc_video_queue *queue,
 	}
 
 	list_del(&buf->stream);
-	uvc_query_buffer(buf, v4l2_buf);
+	__uvc_query_buffer(buf, v4l2_buf);
 
 done:
 	mutex_unlock(&queue->mutex);
 	return ret;
+}
+
+/*
+ * Poll the video queue.
+ *
+ * This function implements video queue polling and is intended to be used by
+ * the device poll handler.
+ */
+unsigned int uvc_queue_poll(struct uvc_video_queue *queue, struct file *file,
+		poll_table *wait)
+{
+	struct uvc_buffer *buf;
+	unsigned int mask = 0;
+
+	mutex_lock(&queue->mutex);
+	if (list_empty(&queue->mainqueue)) {
+		mask |= POLLERR;
+		goto done;
+	}
+	buf = list_first_entry(&queue->mainqueue, struct uvc_buffer, stream);
+
+	poll_wait(file, &buf->wait, wait);
+	if (buf->state == UVC_BUF_STATE_DONE ||
+	    buf->state == UVC_BUF_STATE_ERROR)
+		mask |= POLLIN | POLLRDNORM;
+
+done:
+	mutex_unlock(&queue->mutex);
+	return mask;
 }
 
 /*
@@ -340,25 +400,20 @@ int uvc_queue_enable(struct uvc_video_queue *queue, int enable)
 
 	mutex_lock(&queue->mutex);
 	if (enable) {
-		if (queue->streaming) {
+		if (uvc_queue_streaming(queue)) {
 			ret = -EBUSY;
 			goto done;
 		}
-		queue->last_fid = -1;
 		queue->sequence = 0;
-		queue->streaming = 1;
-		queue->bulk.header_size = -1;
-		queue->bulk.skip_payload = 0;
-		queue->bulk.payload_size = 0;
-	}
-	else {
-		uvc_queue_cancel(queue);
+		queue->flags |= UVC_QUEUE_STREAMING;
+	} else {
+		uvc_queue_cancel(queue, 0);
 		INIT_LIST_HEAD(&queue->mainqueue);
 
 		for (i = 0; i < queue->count; ++i)
 			queue->buffer[i].state = UVC_BUF_STATE_IDLE;
 
-		queue->streaming = 0;
+		queue->flags &= ~UVC_QUEUE_STREAMING;
 	}
 
 done:
@@ -372,21 +427,33 @@ done:
  * Cancelling the queue marks all buffers on the irq queue as erroneous,
  * wakes them up and remove them from the queue.
  *
+ * If the disconnect parameter is set, further calls to uvc_queue_buffer will
+ * fail with -ENODEV.
+ *
  * This function acquires the irq spinlock and can be called from interrupt
  * context.
  */
-void uvc_queue_cancel(struct uvc_video_queue *queue)
+void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect)
 {
 	struct uvc_buffer *buf;
 	unsigned long flags;
 
 	spin_lock_irqsave(&queue->irqlock, flags);
 	while (!list_empty(&queue->irqqueue)) {
-		buf = list_entry(queue->irqqueue.next, struct uvc_buffer, queue);
+		buf = list_first_entry(&queue->irqqueue, struct uvc_buffer,
+				       queue);
 		list_del(&buf->queue);
 		buf->state = UVC_BUF_STATE_ERROR;
 		wake_up(&buf->wait);
 	}
+	/* This must be protected by the irqlock spinlock to avoid race
+	 * conditions between uvc_queue_buffer and the disconnection event that
+	 * could result in an interruptible wait in uvc_dequeue_buffer. Do not
+	 * blindly replace this logic by checking for the UVC_DEV_DISCONNECTED
+	 * state outside the queue code.
+	 */
+	if (disconnect)
+		queue->flags |= UVC_QUEUE_DISCONNECTED;
 	spin_unlock_irqrestore(&queue->irqlock, flags);
 }
 
@@ -396,11 +463,18 @@ struct uvc_buffer *uvc_queue_next_buffer(struct uvc_video_queue *queue,
 	struct uvc_buffer *nextbuf;
 	unsigned long flags;
 
+	if ((queue->flags & UVC_QUEUE_DROP_INCOMPLETE) &&
+	    buf->buf.length != buf->buf.bytesused) {
+		buf->state = UVC_BUF_STATE_QUEUED;
+		buf->buf.bytesused = 0;
+		return buf;
+	}
+
 	spin_lock_irqsave(&queue->irqlock, flags);
 	list_del(&buf->queue);
 	if (!list_empty(&queue->irqqueue))
-		nextbuf = list_entry(queue->irqqueue.next, struct uvc_buffer,
-					queue);
+		nextbuf = list_first_entry(&queue->irqqueue, struct uvc_buffer,
+					   queue);
 	else
 		nextbuf = NULL;
 	spin_unlock_irqrestore(&queue->irqlock, flags);

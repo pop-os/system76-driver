@@ -54,6 +54,9 @@ def name():
     elif modelname == "ratv5":
         systemname = "Ratel Value"
         return systemname
+    elif modelname == "ratv6":
+        systemname = "Ratel Value"
+        return systemname
     elif modelname == "gazv2":
         systemname = "Gazelle Value"
         return systemname
@@ -87,6 +90,9 @@ def name():
     elif modelname == "gazp5":
         systemname = "Gazelle Value with nVidia and Camera"
         return systemname
+    elif modelname == "meec1":
+        systemname = "Meerkat Compact"
+        return systemname
     elif modelname == "panv2":
         systemname = "Pangolin Value"
         return systemname
@@ -105,8 +111,20 @@ def name():
     elif modelname == "serp4":
         systemname = "Serval Performance"
         return systemname
+    elif modelname == "serp5":
+        systemname = "Serval Professional"
+        return systemname
     elif modelname == "bonp1":
         systemname = "Bonobo Performance"
+        return systemname
+    elif modelname == "bonp2":
+        systemname = "Bonobo Professional"
+        return systemname
+    elif modelname == "panp4i":
+        systemname = "Pangolin Performance"
+        return systemname
+    elif modelname == "panp4n":
+        systemname = "Pangolin Performance"
         return systemname
     elif modelname == "panv1":
         systemname = "Pangolin Value"

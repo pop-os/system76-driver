@@ -38,117 +38,16 @@
                     <property name="column_spacing">5</property>
                     <property name="row_spacing">6</property>
                     <child>
-                      <widget class="GtkLabel" id="sysNameLabel">
+                      <widget class="GtkLabel" id="sysHardDrive">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;System Name:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                        <property name="label" translatable="yes">label27</property>
                       </widget>
                       <packing>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysModelLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;System Model:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysProcessorLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Processor:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysMemoryLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Memory:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysHardDriveLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Hard Drive:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
                         <property name="top_attach">4</property>
                         <property name="bottom_attach">5</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysName">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">label23</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysModel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">label24</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysProcessor">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">label25</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
                       </packing>
@@ -169,16 +68,117 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="sysHardDrive">
+                      <widget class="GtkLabel" id="sysProcessor">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">label27</property>
+                        <property name="label" translatable="yes">label25</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="sysModel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">label24</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="sysName">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">label23</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="sysHardDriveLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Hard Drive:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
                         <property name="top_attach">4</property>
                         <property name="bottom_attach">5</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="sysMemoryLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Memory:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="sysProcessorLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Processor:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="sysModelLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">&lt;b&gt;System Model:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="sysNameLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">&lt;b&gt;System Name:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
                       </packing>
@@ -262,7 +262,7 @@
                     <property name="spacing">5</property>
                     <property name="layout_style">GTK_BUTTONBOX_END</property>
                     <child>
-                      <widget class="GtkButton" id="about">
+                      <widget class="GtkButton" id="about1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -273,7 +273,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkButton" id="close">
+                      <widget class="GtkButton" id="close1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -386,7 +386,7 @@
                         <property name="spacing">5</property>
                         <property name="layout_style">GTK_BUTTONBOX_END</property>
                         <child>
-                          <widget class="GtkButton" id="about">
+                          <widget class="GtkButton" id="about2">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -397,7 +397,7 @@
                           </widget>
                         </child>
                         <child>
-                          <widget class="GtkButton" id="close">
+                          <widget class="GtkButton" id="close2">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -504,7 +504,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                     <property name="spacing">5</property>
                     <property name="layout_style">GTK_BUTTONBOX_END</property>
                     <child>
-                      <widget class="GtkButton" id="about">
+                      <widget class="GtkButton" id="about3">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -515,7 +515,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkButton" id="close">
+                      <widget class="GtkButton" id="close3">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -614,7 +614,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
     <property name="program_name">System76 Driver</property>
     <property name="copyright" translatable="yes">Copyright (C) System76, Inc.</property>
-    <property name="comments" translatable="yes">version 2.2.1</property>
+    <property name="comments" translatable="yes">version 2.2.3</property>
     <property name="website">www.system76.com</property>
     <property name="license" translatable="yes">GNU GENERAL PUBLIC LICENSE
 
@@ -719,7 +719,7 @@ END OF TERMS AND CONDITIONS</property>
     <property name="title" translatable="yes">Restoring</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <widget class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
         <child>
           <widget class="GtkVBox" id="vbox6">
@@ -753,7 +753,7 @@ END OF TERMS AND CONDITIONS</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <widget class="GtkHButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
           </widget>
@@ -773,7 +773,7 @@ END OF TERMS AND CONDITIONS</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox2">
+      <widget class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
         <child>
           <widget class="GtkLabel" id="restoreCompleteLabel">
@@ -789,7 +789,7 @@ END OF TERMS AND CONDITIONS</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area2">
+          <widget class="GtkHButtonBox" id="dialog-action_area3">
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>

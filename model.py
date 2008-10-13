@@ -140,7 +140,13 @@ def determine_model():
     elif system_product_name == 'Z62JP':
         modelname = "gazp3"
         return modelname
+    elif system_product_name == 'U-100':
+        modelname = "meec1"
+        return modelname
     elif system_product_name == 'Z96F':
+        modelname = "panv2"
+        return modelname
+    elif system_product_name == 'Centoris V661':
         modelname = "panv2"
         return modelname
     elif system_product_name == 'Z96FM':
@@ -159,8 +165,26 @@ def determine_model():
         modelname = "bonp1"
         return modelname
     # System Product Version
-    elif system_product_version == '1.02A':
+    elif system_product_name == 'M570TU':
+        modelname = "bonp2"
+        return modelname
+    elif system_product_name == 'M720T/M730T':
         modelname = "daru3"
+        return modelname
+    elif system_product_name == 'M740T/M760T':
+        modelname = "panp4i"
+        return modelname
+    elif system_product_name == 'M740TU/M760TU':
+        modelname = "panp4n"
+        return modelname
+    elif system_product_version == 'ratv6':
+        modelname = "ratv6"
+        return modelname
+    elif system_product_name == 'M860TU':
+        modelname = "serp5"
+        return modelname
+    elif system_product_version == 'serp5':
+        modelname = "serp5"
         return modelname
     # Old model file method (needs replacement)
     elif model_file == 'ec-panv1':
