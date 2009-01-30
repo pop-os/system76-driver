@@ -168,13 +168,25 @@ def determine_model():
     elif system_product_name == 'M570TU':
         modelname = "bonp2"
         return modelname
+    elif system_product_version == 'bonp2':
+        modelname = "bonp2"
+        return modelname
+    elif system_product_version == 'gazu1':
+        modelname = "gazu1"
+        return modelname
     elif system_product_name == 'M720T/M730T':
+        modelname = "daru3"
+        return modelname
+    elif system_product_version == 'daru3':
         modelname = "daru3"
         return modelname
     elif system_product_name == 'M740T/M760T':
         modelname = "panp4i"
         return modelname
     elif system_product_name == 'M740TU/M760TU':
+        modelname = "panp4n"
+        return modelname
+    elif system_product_version == 'panp4n':
         modelname = "panp4n"
         return modelname
     elif system_product_version == 'ratv6':

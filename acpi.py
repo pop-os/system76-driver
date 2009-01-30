@@ -34,6 +34,11 @@ def acpi3():
     os.system('sudo cp /opt/system76/system76-driver/src/acpi/feisty/89-brightup.sh /etc/acpi/resume.d/89-brightup.sh')
     os.system('sudo cp /etc/acpi/resume.d/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh_sys76backup_%s' % today)
     os.system('sudo cp /opt/system76/system76-driver/src/acpi/feisty/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh')
+
+def acpi4():
+    """Removes script used to temporarly fix Suspend with DRM on daru3
+    Bug was fixed in Ubuntu"""
+    os.system('sudo rm /etc/pm/sleep.d/00CPU')
     
 def daru2():
     """Fix dsdt tables in daru2"""

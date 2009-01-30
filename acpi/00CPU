@@ -1,0 +1,21 @@
+#!/bin/sh
+# Workaround for concurrency bug in xserver-xorg-video-intel 2:2.4.1-1ubuntu10.
+# Save this as /etc/pm/sleep.d/00CPU
+
+. "${PM_FUNCTIONS}"
+
+case "$1" in
+	hibernate|suspend)
+		for i in /sys/devices/system/cpu/cpu*/online ; do
+			echo 0 >$i
+		done
+		;;
+	thaw|resume) 
+		sleep 10	# run with one core for 10 secs
+		for i in /sys/devices/system/cpu/cpu*/online ; do
+			echo 1 >$i
+		done
+		;;
+	*)
+		;;
+esac

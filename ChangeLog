@@ -4,6 +4,38 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.3.1
+
+1.) Fix daru1 touchpad on/off hotkey
+
+--------------------------------------
+
+Version 2.3.0
+
+1.) Reverse Direct Rendering w/ Suspend on fix daru3 (2.2.9) - fixed in Ubuntu
+2.) Add quirks=2 to uvcvideo load on gazu3 (fixes webcam)
+
+--------------------------------------
+
+Version 2.2.9
+
+1.) Fix Suspend with Direct Rendering on daru3
+
+--------------------------------------
+
+Version 2.2.8
+
+1.) Support ATI card video playback on wilp5
+2.) Add proposed gazu1 model
+
+--------------------------------------
+
+Version 2.2.7
+
+1.) Manufacturing Update
+
+--------------------------------------
+
 Version 2.2.6
 
 1.) Add System76 Bonobo Pro (bonp2)
@@ -11,7 +43,6 @@ Version 2.2.6
 3.) Fix system designation for one Pangolin panv2 where the MB had been replaced
 4.) Update Linux UVC code
 5.) Add Ubuntu Intrepid to System76Driver.py (no system patches applied yet)
-
 
 --------------------------------------
 

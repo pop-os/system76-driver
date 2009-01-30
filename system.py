@@ -90,6 +90,9 @@ def name():
     elif modelname == "gazp5":
         systemname = "Gazelle Value with nVidia and Camera"
         return systemname
+    elif modelname == "gazu1":
+        systemname = "Gazelle Ultra"
+        return systemname
     elif modelname == "meec1":
         systemname = "Meerkat Compact"
         return systemname

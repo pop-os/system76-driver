@@ -18,7 +18,7 @@ case $RUNNING in
 		;;
 
 	"kde")
-    	kdesu python /opt/system76/system76-driver/src/System76Driver.py
+    	kdesudo python /opt/system76/system76-driver/src/System76Driver.py
 		;;
 
 	*)
