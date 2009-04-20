@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="mainWindow">
     <property name="visible">True</property>
     <property name="title" translatable="yes">System76 Driver Installer</property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER_ALWAYS</property>
-    <signal name="destroy" handler="on_mainWindow_destroy"/>
+    <property name="window_position">center-always</property>
     <child>
       <widget class="GtkVBox" id="mainVBox">
         <property name="visible">True</property>
@@ -18,6 +17,7 @@
           </widget>
           <packing>
             <property name="expand">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -33,79 +33,21 @@
                   <widget class="GtkTable" id="sysinfoTable">
                     <property name="visible">True</property>
                     <property name="border_width">10</property>
-                    <property name="n_rows">5</property>
+                    <property name="n_rows">2</property>
                     <property name="n_columns">2</property>
                     <property name="column_spacing">5</property>
                     <property name="row_spacing">6</property>
                     <child>
-                      <widget class="GtkLabel" id="sysNameLabel">
+                      <widget class="GtkLabel" id="sysModel">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;System Name:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                        <property name="label" translatable="yes">label24</property>
                       </widget>
                       <packing>
-                        <property name="x_options"></property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysModelLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;System Model:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
-                        <property name="x_options"></property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysProcessorLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Processor:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                        <property name="x_options"></property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysMemoryLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Memory:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                        <property name="x_options"></property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysHardDriveLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Hard Drive:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
                         <property name="x_options"></property>
                         <property name="y_options"></property>
                       </packing>
@@ -124,14 +66,14 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="sysModel">
+                      <widget class="GtkLabel" id="sysModelLabel">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">label24</property>
+                        <property name="label" translatable="yes">&lt;b&gt;System Model:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">right</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="x_options"></property>
@@ -139,82 +81,58 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="sysProcessor">
+                      <widget class="GtkLabel" id="sysNameLabel">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">label25</property>
+                        <property name="label" translatable="yes">&lt;b&gt;System Name:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">right</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                        <property name="x_options"></property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysMemory">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">label26</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                        <property name="x_options"></property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sysHardDrive">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">label27</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
                         <property name="x_options"></property>
                         <property name="y_options"></property>
                       </packing>
                     </child>
                   </widget>
                   <packing>
-                    <property name="padding">41</property>
+                    <property name="padding">75</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <widget class="GtkHButtonBox" id="sysinfoHButtonBox">
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
-                    <property name="layout_style">GTK_BUTTONBOX_END</property>
+                    <property name="layout_style">end</property>
                     <child>
                       <widget class="GtkButton" id="about">
+                        <property name="label">gtk-about</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
-                        <property name="label">gtk-about</property>
+                        <property name="receives_default">False</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">0</property>
                         <signal name="clicked" handler="on_about_clicked"/>
                       </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                     <child>
                       <widget class="GtkButton" id="close">
+                        <property name="label">gtk-close</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
-                        <property name="label">gtk-close</property>
+                        <property name="receives_default">False</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">0</property>
                         <signal name="clicked" handler="on_close_clicked"/>
                       </widget>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -232,8 +150,8 @@
                 <property name="use_underline">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -245,44 +163,51 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="yalign">0</property>
-                    <property name="label" translatable="yes">Most drivers are provided by Ubuntu.  This application installs additional drivers depending on your System76 model.  Visit http://knowledge76.com/index.php/System76_Driver for details.
+                    <property name="label" translatable="yes">Most drivers are provided by Ubuntu.  This application installs additional drivers depending on your System76 model.  Visit http://knowledge76.com for details.
 
 &lt;b&gt;You must be connected to the internet before installing drivers.&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                     <property name="wrap">True</property>
-                    <property name="selectable">True</property>
                   </widget>
                   <packing>
                     <property name="padding">40</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <widget class="GtkHButtonBox" id="driverButtonBox">
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
-                    <property name="layout_style">GTK_BUTTONBOX_END</property>
+                    <property name="layout_style">end</property>
                     <child>
                       <widget class="GtkButton" id="about1">
+                        <property name="label">gtk-about</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
-                        <property name="label">gtk-about</property>
+                        <property name="receives_default">False</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">0</property>
                         <signal name="clicked" handler="on_about_clicked"/>
                       </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                     <child>
                       <widget class="GtkButton" id="close1">
+                        <property name="label">gtk-close</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
-                        <property name="label">gtk-close</property>
+                        <property name="receives_default">False</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">0</property>
                         <signal name="clicked" handler="on_close_clicked"/>
                       </widget>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -291,7 +216,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
-                        <property name="response_id">0</property>
+                        <property name="receives_default">False</property>
                         <signal name="clicked" handler="on_driverInstall_clicked"/>
                         <child>
                           <widget class="GtkAlignment" id="alignment3">
@@ -310,6 +235,7 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -330,6 +256,8 @@
                         </child>
                       </widget>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -350,9 +278,9 @@
                 <property name="use_underline">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -375,6 +303,7 @@
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="padding">37</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
@@ -384,29 +313,36 @@
                       <widget class="GtkHButtonBox" id="restoreButtonBox">
                         <property name="visible">True</property>
                         <property name="spacing">5</property>
-                        <property name="layout_style">GTK_BUTTONBOX_END</property>
+                        <property name="layout_style">end</property>
                         <child>
                           <widget class="GtkButton" id="about2">
+                            <property name="label">gtk-about</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="label">gtk-about</property>
+                            <property name="receives_default">False</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                             <signal name="clicked" handler="on_about_clicked"/>
                           </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
                           <widget class="GtkButton" id="close2">
+                            <property name="label">gtk-close</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="label">gtk-close</property>
+                            <property name="receives_default">False</property>
                             <property name="use_stock">True</property>
-                            <property name="response_id">0</property>
                             <signal name="clicked" handler="on_close_clicked"/>
                           </widget>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -415,7 +351,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="response_id">0</property>
+                            <property name="receives_default">False</property>
                             <signal name="clicked" handler="on_restore_clicked"/>
                             <child>
                               <widget class="GtkAlignment" id="alignment2">
@@ -434,6 +370,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -454,10 +391,15 @@
                             </child>
                           </widget>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
                       </widget>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                   </widget>
                   <packing>
@@ -476,9 +418,9 @@
                 <property name="use_underline">True</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -494,34 +436,44 @@ A System76 support technician may request logs to help diagnose a support reques
 Click Create to build an archive of common logs.  The archive is saved to your home folder.</property>
                     <property name="wrap">True</property>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <widget class="GtkHButtonBox" id="supportButtonBox">
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
-                    <property name="layout_style">GTK_BUTTONBOX_END</property>
+                    <property name="layout_style">end</property>
                     <child>
                       <widget class="GtkButton" id="about3">
+                        <property name="label">gtk-about</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
-                        <property name="label">gtk-about</property>
+                        <property name="receives_default">False</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">0</property>
                         <signal name="clicked" handler="on_about_clicked"/>
                       </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                     <child>
                       <widget class="GtkButton" id="close3">
+                        <property name="label">gtk-close</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
-                        <property name="label">gtk-close</property>
+                        <property name="receives_default">False</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">0</property>
                         <signal name="clicked" handler="on_close_clicked"/>
                       </widget>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -530,7 +482,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
-                        <property name="response_id">0</property>
+                        <property name="receives_default">False</property>
                         <signal name="clicked" handler="on_create_clicked"/>
                         <child>
                           <widget class="GtkAlignment" id="alignment4">
@@ -549,6 +501,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -569,6 +522,8 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                         </child>
                       </widget>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -576,7 +531,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="pack_type">GTK_PACK_END</property>
+                    <property name="pack_type">end</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -591,9 +546,9 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                 <property name="label" translatable="yes">Support</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">3</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
           </widget>
@@ -607,10 +562,10 @@ Click Create to build an archive of common logs.  The archive is saved to your h
   <widget class="GtkAboutDialog" id="aboutDialog">
     <property name="visible">True</property>
     <property name="border_width">5</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
+    <property name="type_hint">normal</property>
     <property name="program_name">System76 Driver</property>
     <property name="copyright" translatable="yes">Copyright (C) System76, Inc.</property>
-    <property name="comments" translatable="yes">version 2.3.1</property>
+    <property name="comments" translatable="yes">version 2.3.3</property>
     <property name="website">www.system76.com</property>
     <property name="license" translatable="yes">GNU GENERAL PUBLIC LICENSE
 
@@ -700,11 +655,11 @@ END OF TERMS AND CONDITIONS</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
-          </widget>
+          <widget class="GtkHButtonBox" id="dialog-action_area1"/>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -713,7 +668,7 @@ END OF TERMS AND CONDITIONS</property>
   <widget class="GtkDialog" id="restoreDialog">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Restoring</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -729,6 +684,7 @@ END OF TERMS AND CONDITIONS</property>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="padding">38</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -751,11 +707,12 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -765,9 +722,9 @@ END OF TERMS AND CONDITIONS</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">Restore Complete</property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
@@ -787,21 +744,28 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area3">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="closebutton1">
+                <property name="label">gtk-close</property>
+                <property name="response_id">-7</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="label">gtk-close</property>
+                <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-7</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -810,7 +774,7 @@ END OF TERMS AND CONDITIONS</property>
   <widget class="GtkDialog" id="driverDialog">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Installing</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
@@ -826,6 +790,7 @@ END OF TERMS AND CONDITIONS</property>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="padding">38</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -848,11 +813,12 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -862,9 +828,9 @@ END OF TERMS AND CONDITIONS</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">Install Complete</property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="vbox9">
         <property name="visible">True</property>
@@ -884,21 +850,28 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="hbuttonbox2">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button1">
+                <property name="label">gtk-close</property>
+                <property name="response_id">-7</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="label">gtk-close</property>
+                <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-7</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -908,9 +881,9 @@ END OF TERMS AND CONDITIONS</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">Drivers</property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="vbox10">
         <property name="visible">True</property>
@@ -930,21 +903,28 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="hbuttonbox3">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button2">
+                <property name="label">gtk-close</property>
+                <property name="response_id">-7</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="label">gtk-close</property>
+                <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-7</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -955,7 +935,7 @@ END OF TERMS AND CONDITIONS</property>
     <property name="title" translatable="yes">Unsupported</property>
     <property name="resizable">False</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="vbox11">
         <property name="visible">True</property>
@@ -975,21 +955,28 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="hbuttonbox4">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button3">
+                <property name="label">gtk-close</property>
+                <property name="response_id">-7</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="label">gtk-close</property>
+                <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-7</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -999,9 +986,9 @@ END OF TERMS AND CONDITIONS</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">No Connection</property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="vbox12">
         <property name="visible">True</property>
@@ -1021,21 +1008,28 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="hbuttonbox5">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button4">
+                <property name="label">gtk-close</property>
+                <property name="response_id">-7</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="label">gtk-close</property>
+                <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-7</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -1045,9 +1039,9 @@ END OF TERMS AND CONDITIONS</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">Log Archive Created</property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox10">
         <property name="visible">True</property>
@@ -1067,21 +1061,28 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area10">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button6">
+                <property name="label">gtk-close</property>
+                <property name="response_id">-7</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="label">gtk-close</property>
+                <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-7</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -1091,9 +1092,9 @@ END OF TERMS AND CONDITIONS</property>
     <property name="visible">True</property>
     <property name="title" translatable="yes">Package Manager Running</property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox12">
         <property name="visible">True</property>
@@ -1113,21 +1114,28 @@ END OF TERMS AND CONDITIONS</property>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area12">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button8">
+                <property name="label">gtk-close</property>
+                <property name="response_id">-7</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="label">gtk-close</property>
+                <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-7</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>

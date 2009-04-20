@@ -24,6 +24,9 @@ def name():
     elif modelname == "daru3":
         systemname = "Darter Ultra"
         return systemname
+    elif modelname == "ment1":
+        systemname = "Meerkat Netbook"
+        return systemname
     elif modelname == "sabv1":
         systemname = "Sable Series"
         return systemname
@@ -37,6 +40,9 @@ def name():
         systemname = "Wild Dog Performance"
         return systemname
     elif modelname == "wilp5":
+        systemname = "Wild Dog Performance"
+        return systemname
+    elif modelname == "wilp6":
         systemname = "Wild Dog Performance"
         return systemname
     elif modelname == "ratv1":
@@ -123,10 +129,16 @@ def name():
     elif modelname == "bonp2":
         systemname = "Bonobo Professional"
         return systemname
+    elif modelname == "bonp3":
+        systemname = "Bonobo"
+        return systemname
     elif modelname == "panp4i":
         systemname = "Pangolin Performance"
         return systemname
     elif modelname == "panp4n":
+        systemname = "Pangolin Performance"
+        return systemname
+    elif modelname == "panp5":
         systemname = "Pangolin Performance"
         return systemname
     elif modelname == "panv1":

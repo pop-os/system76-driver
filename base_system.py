@@ -44,20 +44,28 @@ def app_install():
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
-    # System76 Meerkat Compact (meec1)
-    if modelname == ('meec1'):
-        if version == ('8.04'):
+        elif version == ('9.04'):
             sources.add()
-            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver nvidia-settings cheese')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
-        elif version == ('8.10'):
+    # System76 Bonobo (bonp3)
+    elif modelname == ('bonp3'):
+        if version == ('9.04'):
             sources.add()
-            os.system('sudo apt-get --assume-yes install system76-driver')
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver nvidia-settings cheese')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+    # System76 Meerkat NetTop (ment1)
+    elif modelname == ('meec1'):
+        if version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model Z35FM / System76 Model Darter Ultra
     elif modelname == ('daru1'):
         if version == ('6.06'):
@@ -98,6 +106,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model MS-1221 / System76 Model Darter Ultra 2
     elif modelname == ('daru2'):
         if version == ('7.04'):
@@ -120,6 +131,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Darter Ultra 3
     elif modelname == ('daru3'):
         if version == ('8.04'):
@@ -131,6 +145,12 @@ def app_install():
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
@@ -176,6 +196,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model S62J / System76 model Gazelle Performance
     elif modelname == ('gazp2'):
         if version == ('6.06'):
@@ -216,6 +239,9 @@ def app_install():
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver gsynaptics')
             os.system('sudo nvidia-xconfig -s')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model S62JP / System76 model Gazelle Performance
@@ -260,6 +286,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 model Gazelle Value with nVidia and Camera
     elif modelname == ('gazp5'):
         if version == ('7.10'):
@@ -273,6 +302,9 @@ def app_install():
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-xconfig -s')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model SW1 / System76 model Gazelle Value
@@ -312,7 +344,10 @@ def app_install():
         elif version == ('8.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver gsynaptics')
-        elif version == ('8.04'):
+        elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model Z62FP / System76 model Gazelle Value
@@ -355,6 +390,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model Z62FM / System76 model Gazelle Value
     elif modelname == ('gazv4'):
         if version == ('6.06'):
@@ -395,6 +433,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Gazelle Value 5
     elif modelname == ('gazv5'):
         if version == ('7.04'):
@@ -418,6 +459,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Gazelle Ultra 1
     elif modelname == ('gazu1'):
         if version == ('8.04'):
@@ -429,6 +473,12 @@ def app_install():
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
@@ -474,6 +524,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Pangolin Performance panp4i
     elif modelname == ('panp4i'):
         if version == ('8.04'):
@@ -490,6 +543,9 @@ def app_install():
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
     # System76 Pangolin Performance panp4n
     elif modelname == ('panp4n'):
         if version == ('8.04'):
@@ -500,6 +556,30 @@ def app_install():
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type list --list-type=string --set /desktop/gnome/sound/default_mixer_tracks [PCM]")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+    # System76 Pangolin Performance panp5
+    elif modelname == ('panp5'):
+        if version == ('8.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type list --list-type=string --set /desktop/gnome/sound/default_mixer_tracks [PCM]")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+        elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
@@ -545,6 +625,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Pangolin Value 3
     elif modelname == ('panv3'):
         if version == ('7.04'):
@@ -575,6 +658,9 @@ def app_install():
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model V2-AH1 / System76 model Ratel Value
@@ -615,6 +701,9 @@ def app_install():
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Ratel Value
@@ -686,6 +775,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Ratel Value
     elif modelname == ('ratv3'):
         if version == ('6.06'):
@@ -755,6 +847,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Ratel Value 4 (ratv4)
     elif modelname == ('ratv4'):
         if version == ('7.10'):
@@ -766,6 +861,9 @@ def app_install():
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Ratel Value 5 (ratv5)
@@ -784,6 +882,9 @@ def app_install():
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model P1-AH1 / System76 model Sable Value
@@ -828,6 +929,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Sable Value & Sable Performance (sabv2/sabv1)
     elif modelname == ('sabv2'):
         if version == ('6.06'):
@@ -870,6 +974,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Sable Value 3 (sabv3)
     elif modelname == ('sabv3'):
         if version == ('7.10'):
@@ -886,6 +993,9 @@ def app_install():
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model EL80 / System76 model Serval Performance
@@ -928,6 +1038,9 @@ def app_install():
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-xconfig -s')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Serval Performace
@@ -973,6 +1086,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Serval Performance 3 (serp3)
     elif modelname == ('serp3'):
         if version == ('7.10'):
@@ -986,6 +1102,9 @@ def app_install():
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-xconfig -s')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Model Serval Performance 3 (serp3)
@@ -1003,9 +1122,18 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # System76 Serval Professional (serp5)
     if modelname == ('serp5'):
         if version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
@@ -1053,6 +1181,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Wild Dog Professional
     elif modelname == ('wilp2'):
         if version == ('6.06'):
@@ -1093,6 +1224,9 @@ def app_install():
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-xconfig -s')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Wild Dog Professional
@@ -1137,6 +1271,9 @@ def app_install():
         elif version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Wild Dog Performance (wilp5)
     elif modelname == ('wilp5'):
         if version == ('7.10'):
@@ -1150,6 +1287,20 @@ def app_install():
             os.system('sudo apt-get --assume-yes install nvidia-glx-new gnucash gnucash-docs system76-driver')
             os.system('sudo nvidia-xconfig -s')
         elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")
+    # Wild Dog Performance (wilp5)
+    elif modelname == ('wilp6'):
+        if version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+            os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")
+        elif version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")

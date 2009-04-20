@@ -40,13 +40,6 @@ def determine_model():
         e.close()
     system_product_version = system_version
     
-    z = os.popen('grep ec /opt/system76/model/model')
-    try:
-        model_number = z.readline().strip()
-    finally:
-        z.close()
-    model_file = model_number
-    
     # Determine ultimate System76 model
     # Return values to the program
 
@@ -171,6 +164,9 @@ def determine_model():
     elif system_product_version == 'bonp2':
         modelname = "bonp2"
         return modelname
+    elif system_product_version == 'bonp3':
+        modelname = "bonp3"
+        return modelname
     elif system_product_version == 'gazu1':
         modelname = "gazu1"
         return modelname
@@ -189,21 +185,23 @@ def determine_model():
     elif system_product_version == 'panp4n':
         modelname = "panp4n"
         return modelname
+    elif system_product_version == 'panp5':
+        modelname = "panp5"
+        return modelname
+    elif system_product_version == 'ment1':
+        modelname = "ment1"
+        return modelname
     elif system_product_version == 'ratv6':
         modelname = "ratv6"
+        return modelname
+    elif system_product_version == 'wilp6':
+        modelname = "wilp6"
         return modelname
     elif system_product_name == 'M860TU':
         modelname = "serp5"
         return modelname
     elif system_product_version == 'serp5':
         modelname = "serp5"
-        return modelname
-    # Old model file method (needs replacement)
-    elif model_file == 'ec-panv1':
-        modelname = "panv1"
-        return modelname
-    elif model_file == 'ec-koav1':
-        modelname == "koav1"
         return modelname
     else:
         modelname = "nonsystem76"

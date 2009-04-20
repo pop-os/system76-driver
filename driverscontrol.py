@@ -50,6 +50,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -64,6 +67,18 @@ def installDrivers():
             uvc.camera()
             fprint.install()
             acpi.osiNotWindows()
+        elif version == ('9.04'):
+            fprint.install()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('bonp3'):
+        if version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -85,6 +100,8 @@ def installDrivers():
             hardy_led.install()
         elif version == ('8.10'):
             hotkey.daru1_touchpad_switch()
+        elif version == ('9.04'):
+            hotkey.daru1_touchpad_switch()
         else:
             nodrivers = "true"
             return nodrivers
@@ -103,6 +120,9 @@ def installDrivers():
             hardy_led.install()
         elif version == ('8.10'):
             sound.alsa4()
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -116,6 +136,8 @@ def installDrivers():
             uvc.camera()
             fprint.install()
             acpi.acpi4()
+        elif version == ('9.04'):
+            fprint.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -134,6 +156,9 @@ def installDrivers():
         elif version == ('8.04'):
             hardy_led.install()
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -156,6 +181,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -174,6 +202,9 @@ def installDrivers():
         elif version == ('8.04'):
             hardy_led.install()
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -195,6 +226,9 @@ def installDrivers():
             hardy_led.install()
         elif version == ('8.10'):
             sound.alsa9()
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('gazv1'):
         nodrivers = "true"
         return nodrivers
@@ -212,6 +246,9 @@ def installDrivers():
         elif version == ('8.04'):
             hardy_led.install()
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -235,6 +272,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -255,6 +295,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -273,6 +316,9 @@ def installDrivers():
             hardy_led.install()
         elif version == ('8.10'):
             sound.alsa9()
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -284,6 +330,9 @@ def installDrivers():
             fprint.install()
         elif version == ('8.10'):
             sound.alsa10()
+            uvc.quirks()
+            fprint.install()
+        elif version == ('9.04'):
             uvc.quirks()
             fprint.install()
         else:
@@ -307,13 +356,17 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
-    elif modelname == ('meec1'):
-        if version == ('8.04'):
-            uvc.camera()
-        elif version == ('8.10'):
+    elif modelname == ('ment1'):
+        if version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -329,6 +382,9 @@ def installDrivers():
         elif version == ('8.10'):
             uvc.camera()
             sound.alsa10()
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -341,6 +397,22 @@ def installDrivers():
             uvc.camera()
             fprint.install()
             sound.alsa10()
+        elif version == ('9.04'):
+            fprint.install()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('panp5'):
+        if version == ('8.04'):
+            uvc.camera()
+            fprint.install()
+            sound.alsa11()
+        elif version == ('8.10'):
+            uvc.camera()
+            fprint.install()
+            sound.alsa10()
+        elif version == ('9.04'):
+            fprint.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -357,6 +429,9 @@ def installDrivers():
         elif version == ('8.04'):
             hardy_led.install()
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -376,6 +451,9 @@ def installDrivers():
             hardy_led.install()
         elif version == ('8.10'):
             sound.alsa9()
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -395,6 +473,9 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -418,6 +499,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -439,6 +523,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -451,6 +538,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -461,6 +551,9 @@ def installDrivers():
             sound.alsa8()
         elif version == ('8.10'):
             sound.alsa8()
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -469,6 +562,9 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -492,6 +588,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -512,6 +611,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -523,6 +625,9 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -545,6 +650,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -563,6 +671,9 @@ def installDrivers():
         elif version == ('8.04'):
             hardy_led.install()
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -585,6 +696,9 @@ def installDrivers():
             hardy_led.install()
         elif version == ('8.10'):
             sound.alsa9()
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -605,6 +719,9 @@ def installDrivers():
             hardy_led.install()
         elif version == ('8.10'):
             sound.alsa9()
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -614,6 +731,8 @@ def installDrivers():
             uvc.camera()
             fprint.install()
             acpi.osiNotWindows()
+        elif version == ('9.04'):
+            fprint.install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -634,6 +753,9 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -658,6 +780,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -680,6 +805,9 @@ def installDrivers():
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -694,6 +822,16 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('wilp6'):
+        if version == ('8.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
     else:

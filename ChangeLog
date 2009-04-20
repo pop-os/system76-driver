@@ -4,9 +4,29 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.3.3
+
+1.) Add command line restore and install driver options
+2.) Remove some info from system info tab (CPU, HD, Mem)
+3.) Change startup script from bash to python
+4.) Add syslog to support archive
+5.) Add Jaunty support
+
+--------------------------------------
+
+Version 2.3.2
+
+1.) Add new Meerkat NetTop system
+2.) Add Pangolin update (panp5)
+3.) Add new Bonobo 17"
+
+--------------------------------------
+
 Version 2.3.1
 
 1.) Fix daru1 touchpad on/off hotkey
+2.) Re-add cheese during restore. Fixed upstream
+3.) Add new Wild Dog Performance wilp6
 
 --------------------------------------
 

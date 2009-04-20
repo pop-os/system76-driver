@@ -127,7 +127,7 @@ def supported(datadir):
     if version == ('8.04.1'):
         version = '8.04'
     
-    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10':
+    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10' and version != '9.04':
         notsupported = unsupported(datadir);
         notsupported.run()
     elif modelname == ('nonsystem76'):
@@ -172,38 +172,9 @@ class System76Driver:
         modelname = model.determine_model()
         systemname = system.name()
         
-        #Determine system processor
-        b = os.popen('sudo dmidecode -s processor-version')
-        try:
-            system_processor = b.readline().strip()
-        finally:
-            b.close()
-        processor = system_processor
-        
-        #Determine Total Memory
-        c = os.popen('cat /proc/meminfo | grep MemTotal:')
-        try:
-            total_memory = c.readline().strip()
-        finally:
-            c.close()
-        memory = int(total_memory[15:22])
-        readable_memory = str(memory) + str(' kB')
-        
-        #Determine Hard Drive Size
-        d = os.popen('cat /proc/partitions | grep 0')
-        try:
-            total_drive = d.readline().strip()
-        finally:
-            d.close()
-        hard_drive = int(total_drive[9:19])
-        readable_drive = str(hard_drive/1000000) + str(' GB')
-        
         #Change the labels
         self.sysName.set_label(systemname)
         self.sysModel.set_label(modelname)
-        self.sysProcessor.set_label(processor)
-        self.sysMemory.set_label(readable_memory)
-        self.sysHardDrive.set_label(readable_drive)
         
     def on_about_clicked(self, widget):
     
@@ -236,6 +207,7 @@ class System76Driver:
         os.system('cp /var/log/daemon.log %s/' % TARGETDIR)
         os.system('cp /var/log/dmesg %s/' % TARGETDIR)
         os.system('cp /var/log/messages %s/' % TARGETDIR)
+        os.system('cp /var/log/syslog %s/' % TARGETDIR)
         os.system('cp /var/log/Xorg.0.log %s/' % TARGETDIR)
         os.system('tar -zcvf logs.tar %s/' % TARGETDIR)
         os.system('cp logs.tar /home/%s/' % username)
