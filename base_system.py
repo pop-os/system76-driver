@@ -1139,6 +1139,11 @@ def app_install():
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_ac 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/buttons/lid_battery 'suspend'")
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /apps/gnome-power-manager/actions/critical_battery 'hibernate'")
+    # System76 Starling Netbook (star1)
+    if modelname == ('star1'):
+        if version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model Wild Dog Performance
     elif modelname == ('wilp1'):
         if version == ('6.06'):

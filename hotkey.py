@@ -7,6 +7,7 @@
 ## Hotkey setup for keys unsupported by Ubuntu vanilla
 
 import os
+import fileinput
 
 def daru1_monitor_switch():
     # Copies required files
@@ -39,3 +40,22 @@ def daru1_touchpad_switch():
         newFile.close()
         command = "mv /opt/system76/newFile.txt /usr/share/hal/fdi/policy/20thirdparty/11-x11-synaptics.fdi"
         os.system(command)
+        
+def star1_904():
+    # Copy required files
+    os.system('sudo cp /opt/system76/system76-driver/src/hotkeys/star1_904_30-keymap-system76.fdi /usr/share/hal/fdi/information/10freedesktop/30-keymap-system76.fdi')
+    os.system('sudo cp /opt/system76/system76-driver/src/hotkeys/star1_904_wlonoff.sh /usr/local/bin/wlonoff.sh')
+    os.system('sudo chmod a+x /usr/local/bin/wlonoff.sh')
+    
+    # Setup sudoers so user can turn on/off wireless without sudo
+    for line in fileinput.input("/etc/sudoers",inplace =1):
+        line = line.strip()
+        if not 'WLTOGGLE' in line:
+            print line
+            
+    os.system("echo Cmnd_Alias      WLTOGGLE=/usr/local/bin/wlonoff.sh | sudo tee -a /etc/sudoers")
+    os.system("echo '%admin ALL=(ALL) NOPASSWD: WLTOGGLE' | sudo tee -a /etc/sudoers")
+    
+    # configure keybinding in gnome
+    os.system("gconftool-2 --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory -s --type string /apps/metacity/keybinding_commands/command_2 'sudo /usr/local/bin/wlonoff.sh'")
+    os.system("gconftool-2 --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory -s --type string /apps/metacity/global_keybindings/run_command_2 XF86WLAN")

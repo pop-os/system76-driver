@@ -78,3 +78,18 @@ def osiNotWindows():
     grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
     for line in grub_menu:
         print line.replace('splash','splash acpi_osi="!Windows 2006"'),
+        
+def star1():
+    
+    # Fix wireless range issue  
+    os.system('sudo apt-get --assume-yes install linux-backports-modules-jaunty')
+    
+    # Fix pciehp for SD card reader
+    os.system('sudo cp /boot/grub/menu.lst /boot/grub/menu.lst_sys76backup_%s' % today)
+    
+    grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
+    for line in grub_menu:
+        print line.replace(' pciehp.pciehp_force=1',''),
+    grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
+    for line in grub_menu:
+        print line.replace('splash','splash pciehp.pciehp_force=1'),

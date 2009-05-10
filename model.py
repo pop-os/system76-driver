@@ -154,6 +154,12 @@ def determine_model():
     elif system_product_name == 'HEL80C':
         modelname = "serp2"
         return modelname
+    elif system_product_name == 'UW1':
+        modelname = "star1"
+        return modelname
+    elif system_product_name == 'star1':
+        modelname = "star1"
+        return modelname
     elif system_product_name == 'A7V':
         modelname = "bonp1"
         return modelname

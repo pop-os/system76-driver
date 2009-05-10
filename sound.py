@@ -334,3 +334,14 @@ def alsa11():
             
     os.system("echo options snd-hda-intel model=3stack-6ch-dig | sudo tee -a /etc/modprobe.d/alsa-base")
     
+def alsa12():
+    
+    # Clean up /etc/modprobe.d/alsa-base file
+    
+    for line in fileinput.input("/etc/modprobe.d/alsa-base.conf",inplace =1):
+        line = line.strip()
+        if not 'acer-aspire' in line:
+            print line
+            
+    os.system("echo options snd-hda-intel model=acer-aspire | sudo tee -a /etc/modprobe.d/alsa-base.conf")
+    os.system("gconftool-2 --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/gstreamer/0.10/default/audiosrc 'pulsesrc'")

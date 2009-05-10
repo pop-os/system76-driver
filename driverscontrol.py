@@ -736,6 +736,14 @@ def installDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+    elif modelname == ('star1'):
+        if version == ('9.04'):
+            sound.alsa12()
+            acpi.star1()
+            hotkey.star1_904()
+        else:
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('wilp1'):
         if version == ('6.06'):
             nodrivers = "true"

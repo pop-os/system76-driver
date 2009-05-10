@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- SGML -*- -->
+
+<deviceinfo version="0.2">
+  <device>
+
+    <!-- These are raw scancodes produced by the atkbd driver -->
+    <match key="@input.originating_device:info.linux.driver" string="atkbd">
+
+      <match key="/org/freedesktop/Hal/devices/computer:system.hardware.vendor" contains_outof="Quanta;System76">
+        <match key="/org/freedesktop/Hal/devices/computer:system.hardware.product" contains_outof="UW1;star1">
+          <append key="input.keymap.data" type="strlist">e026:wlan</append>	<!-- FN + F2 Wireless -->
+          <append key="input.keymap.data" type="strlist">e06f:brightnessdown</append>     <!-- FN + F4 Brightness Down -->
+          <append key="input.keymap.data" type="strlist">e04e:brightnessup</append>     <!-- FN + F4 Brightness Down -->
+          <append key="info.capabilities" type="strlist">input.keymap</append>
+        </match>
+      </match>
+
+    </match>
+
+  </device>
+</deviceinfo>

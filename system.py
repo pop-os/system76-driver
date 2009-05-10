@@ -27,6 +27,9 @@ def name():
     elif modelname == "ment1":
         systemname = "Meerkat Netbook"
         return systemname
+    elif modelname == "star1":
+        systemname = "Starling Netbook"
+        return systemname
     elif modelname == "sabv1":
         systemname = "Sable Series"
         return systemname
