@@ -4,6 +4,15 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.3.5
+
+1.) Fix Bonobo (bonp2) brightness hot keys
+2.) Add linux-backports to certain nVidia based laptops on 9.04
+    (panp4n, panp5, bonp2, serp5)
+    (fixes shutdown freeze bug using nVidia 180 driver)
+
+--------------------------------------
+
 Version 2.3.4
 
 1.) Add Starling Netbook (star1)

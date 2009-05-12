@@ -41,3 +41,8 @@ def piix2():
         os.system("sudo update-initramfs -u")
     else:
         return
+    
+def linux_backports():
+    """Install linux-backports-modules for the currently installed release"""
+    
+    os.system('sudo apt-get install linux-backports-modules-`lsb_release -c -s`')

@@ -81,9 +81,6 @@ def osiNotWindows():
         
 def star1():
     
-    # Fix wireless range issue  
-    os.system('sudo apt-get --assume-yes install linux-backports-modules-jaunty')
-    
     # Fix pciehp for SD card reader
     os.system('sudo cp /boot/grub/menu.lst /boot/grub/menu.lst_sys76backup_%s' % today)
     

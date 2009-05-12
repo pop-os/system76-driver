@@ -9,7 +9,7 @@
 import ubuntuversion
 import model
 import sound
-import feisty_ata_fix
+import misc
 import acpi
 import hotkey
 import uvc
@@ -69,6 +69,8 @@ def installDrivers():
             acpi.osiNotWindows()
         elif version == ('9.04'):
             fprint.install()
+            acpi.osiNotWindows()
+            misc.linux_backports()
         else:
             nodrivers = "true"
             return nodrivers
@@ -88,7 +90,7 @@ def installDrivers():
         elif version == ('6.10'):
             sound.alsa6()
         elif version == ('7.04'):
-            feisty_ata_fix.piix()
+            misc.piix()
             acpi.acpi1()
             hotkey.daru1_monitor_switch()
         elif version == ('7.10'):
@@ -107,7 +109,7 @@ def installDrivers():
             return nodrivers
     elif modelname == ('daru2'):
         if version == ('7.04'):
-            feisty_ata_fix.piix2()
+            misc.piix2()
             acpi.acpi2()
             acpi.daru2()
             sound.alsa4()
@@ -212,7 +214,7 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp5'):
         if version == ('7.04'):
-            feisty_ata_fix.piix2()
+            misc.piix2()
             sound.alsa5()
             uvc.camera()
             acpi.acpi1()
@@ -262,7 +264,7 @@ def installDrivers():
             return nodrivers
         elif version == ('7.04'):
             sound.alsa6()
-            feisty_ata_fix.piix()
+            misc.piix()
             acpi.acpi2()
         elif version == ('7.10'):
             sound.alsa6()
@@ -285,7 +287,7 @@ def installDrivers():
             sound.alsa6()
         elif version == ('7.04'):
             sound.alsa6()
-            feisty_ata_fix.piix()
+            misc.piix()
             acpi.acpi2()
         elif version == ('7.10'):
             sound.alsa6()
@@ -303,7 +305,7 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazv5'):
         if version == ('7.04'):
-            feisty_ata_fix.piix2()
+            misc.piix2()
             sound.alsa5()
             uvc.camera()
             acpi.acpi1()
@@ -399,6 +401,7 @@ def installDrivers():
             sound.alsa10()
         elif version == ('9.04'):
             fprint.install()
+            misc.linux_backports()
         else:
             nodrivers = "true"
             return nodrivers
@@ -413,6 +416,7 @@ def installDrivers():
             sound.alsa10()
         elif version == ('9.04'):
             fprint.install()
+            misc.linux_backports()
         else:
             nodrivers = "true"
             return nodrivers
@@ -439,7 +443,7 @@ def installDrivers():
             return nodrivers
     elif modelname == ('panv3'):
         if version == ('7.04'):
-            feisty_ata_fix.piix2()
+            misc.piix2()
             sound.alsa5()
             acpi.acpi1()
             ricoh_cr.card_reader()
@@ -733,12 +737,14 @@ def installDrivers():
             acpi.osiNotWindows()
         elif version == ('9.04'):
             fprint.install()
+            misc.linux_backports()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('star1'):
         if version == ('9.04'):
             sound.alsa12()
+            misc.linux_backports()
             acpi.star1()
             hotkey.star1_904()
         else:
