@@ -4,6 +4,27 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.3.8
+
+1.) Add Pangolin Performance 6 (panp6)
+2.) Add initial Karmic support
+
+--------------------------------------
+
+Version 2.3.7
+
+1.) Extend wireless range for the Starling Netbook (star1)
+2.) Fix wireless LED on Starling Netbook (star1)
+3.) Add Leopard Extreme info
+
+--------------------------------------
+
+Version 2.3.6
+
+1.) Add --assume-yes to fix linux-backports-modules installation
+
+--------------------------------------
+
 Version 2.3.5
 
 1.) Fix Bonobo (bonp2) brightness hot keys

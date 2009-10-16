@@ -24,8 +24,14 @@ def name():
     elif modelname == "daru3":
         systemname = "Darter Ultra"
         return systemname
+    elif modelname == "leo1":
+        systemname = "The Leopard Extreme"
+        return systemname
     elif modelname == "ment1":
-        systemname = "Meerkat Netbook"
+        systemname = "Meerkat NetTop"
+        return systemname
+    elif modelname == "ment2":
+        systemname = "Meerkat Ion NetTop"
         return systemname
     elif modelname == "star1":
         systemname = "Starling Netbook"
@@ -142,6 +148,9 @@ def name():
         systemname = "Pangolin Performance"
         return systemname
     elif modelname == "panp5":
+        systemname = "Pangolin Performance"
+        return systemname
+    elif modelname == "panp6":
         systemname = "Pangolin Performance"
         return systemname
     elif modelname == "panv1":

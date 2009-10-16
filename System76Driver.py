@@ -127,7 +127,7 @@ def supported(datadir):
     if version == ('8.04.1'):
         version = '8.04'
     
-    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10' and version != '9.04':
+    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10' and version != '9.04' and version != '9.10':
         notsupported = unsupported(datadir);
         notsupported.run()
     elif modelname == ('nonsystem76'):

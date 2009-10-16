@@ -13,9 +13,9 @@ if [ -z $SUDO_USER ]; then
 	SUDO_USER="root"
 fi
 
-if lsmod | grep rtl8187 > /dev/null; then
-	modprobe -r rtl8187
+if lsmod | grep r8187 > /dev/null; then
+	modprobe -r r8187
 else
-	modprobe rtl8187
+	modprobe r8187
 fi
 exit 0

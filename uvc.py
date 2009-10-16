@@ -17,4 +17,5 @@ def camera():
 def quirks():
     # adds quirks=2 when uvcvideo module loads
     os.system("sudo rm /etc/modprobe.d/uvc")
-    os.system("echo options uvcvideo quirks=2 | sudo tee -a /etc/modprobe.d/uvc")
+    os.system("sudo rm /etc/modprobe.d/uvc.conf")
+    os.system("echo options uvcvideo quirks=2 | sudo tee -a /etc/modprobe.d/uvc.conf")

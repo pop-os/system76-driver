@@ -6,6 +6,9 @@
 ## Common sound driver installation
 import os
 
+WORKDIR = os.path.join(os.path.dirname(__file__), '.')
+WIRELESS8187 = os.path.join(os.path.dirname(__file__), 'rtl8187B_linux_26.1052.0225.2009.release')
+
 def piix():
     """Changes hard drive driver from ata_piix to piix"""
 
@@ -45,4 +48,30 @@ def piix2():
 def linux_backports():
     """Install linux-backports-modules for the currently installed release"""
     
-    os.system('sudo apt-get install linux-backports-modules-`lsb_release -c -s`')
+    os.system('sudo apt-get --assume-yes install linux-backports-modules-`lsb_release -c -s`')
+    
+def wireless8187b():
+    """Install updated 8187b wireless driver"""
+
+    # blacklist old rtl8187 driver
+    os.system("sudo rm /etc/modprobe.d/rtl8187.conf")
+    os.system("echo blacklist rtl8187 | sudo tee -a /etc/modprobe.d/rtl8187.conf")
+
+    if os.path.exists(WIRELESS8187) == True:
+        # Install kernel headers
+        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r`")
+        # Configure and Install Driver
+        os.chdir(WIRELESS8187)
+        os.system("sudo make && sudo make install")
+    elif os.path.exists(WIRELESS8187) == False:
+        # Get the driver
+        os.chdir(WORKDIR)
+        os.system("sudo wget http://drivers76.com/drivers/laptops/star1/rtl8187B_linux_26.1052.0225.2009.release.tar.gz")
+        os.system("tar -xzvf rtl8187B_linux_26.1052.0225.2009.release.tar.gz")
+        # Install kernel headers
+        os.system("sudo apt-get --assume-yes install linux-headers-`uname -r`")
+        # Configure and Install Driver
+        os.chdir(WIRELESS8187)
+        os.system("sudo make && sudo make install")
+    else:
+        raise OSError("A problem has occured.")
