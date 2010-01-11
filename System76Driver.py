@@ -217,7 +217,7 @@ class System76Driver:
 
     def on_driverInstall_clicked(self, widget):
         
-        #Check if another package mamanger is running
+        #Check if another package manager is running
         aptrunning = detect.aptcheck()
         
         #Grab internet connection test
@@ -235,7 +235,7 @@ class System76Driver:
 
     def on_restore_clicked(self, widget):
         
-        #Check if another package mamanger is running
+        #Check if another package manager is running
         aptrunning = detect.aptcheck()
         
         #Grab internet connection test

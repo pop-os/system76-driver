@@ -24,6 +24,9 @@ def name():
     elif modelname == "daru3":
         systemname = "Darter Ultra"
         return systemname
+    elif modelname == "lemu1":
+        systemname = "Lemur Ultrathin"
+        return systemname
     elif modelname == "leo1":
         systemname = "The Leopard Extreme"
         return systemname
@@ -53,6 +56,12 @@ def name():
         return systemname
     elif modelname == "wilp6":
         systemname = "Wild Dog Performance"
+        return systemname
+    elif modelname == "wilp7":
+        systemname = "Wild Dog Performance"
+        return systemname
+    elif modelname == "wilb1":
+        systemname = "Wildebeest Performance"
         return systemname
     elif modelname == "ratv1":
         systemname = "Ratel Value"
@@ -130,6 +139,9 @@ def name():
         systemname = "Serval Performance"
         return systemname
     elif modelname == "serp5":
+        systemname = "Serval Professional"
+        return systemname
+    elif modelname == "serp6":
         systemname = "Serval Professional"
         return systemname
     elif modelname == "bonp1":

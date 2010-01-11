@@ -8,6 +8,7 @@
 import os
 import fileinput
 import time
+import ubuntuversion
 
 today = time.strftime('%Y%m%d_h%Hm%Ms%S')
 
@@ -79,14 +80,53 @@ def osiNotWindows():
     for line in grub_menu:
         print line.replace('splash','splash acpi_osi="!Windows 2006"'),
         
+def lemu1():
+    # Kernel parameter tells the BIOS that the OS is Linux
+    
+    os.system('sudo cp /etc/default/grub /etc/default/grub_sys76backup_%s' % today)
+    
+    grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+    for line in grub_menu:
+        print line.replace(' acpi_os_name=Linux acpi_osi=',''),
+    grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+    for line in grub_menu:
+        print line.replace('splash','splash acpi_os_name=Linux acpi_osi='),
+    os.system('sudo update-grub')
+    
+def serp6():
+    # Kernel parameter tells the BIOS that the OS is Linux
+    
+    os.system('sudo cp /etc/default/grub /etc/default/grub_sys76backup_%s' % today)
+    
+    grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+    for line in grub_menu:
+        print line.replace(' acpi_os_name=Linux acpi_osi=Linux',''),
+    grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+    for line in grub_menu:
+        print line.replace('splash','splash acpi_os_name=Linux acpi_osi=Linux'),
+    os.system('sudo update-grub')
+        
 def star1():
     
     # Fix pciehp for SD card reader
-    os.system('sudo cp /boot/grub/menu.lst /boot/grub/menu.lst_sys76backup_%s' % today)
+    version = ubuntuversion.release()
     
-    grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
-    for line in grub_menu:
-        print line.replace(' pciehp.pciehp_force=1',''),
-    grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
-    for line in grub_menu:
-        print line.replace('splash','splash pciehp.pciehp_force=1'),
+    if version == ('9.04'):
+        os.system('sudo cp /boot/grub/menu.lst /boot/grub/menu.lst_sys76backup_%s' % today)
+        
+        grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
+        for line in grub_menu:
+            print line.replace(' pciehp.pciehp_force=1',''),
+        grub_menu = fileinput.input('/boot/grub/menu.lst', inplace=1)
+        for line in grub_menu:
+            print line.replace('splash','splash pciehp.pciehp_force=1'),
+    elif version == ('9.10'):
+        os.system('sudo cp /etc/default/grub /etc/default/grub_sys76backup_%s' % today)
+        
+        grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+        for line in grub_menu:
+            print line.replace(' pciehp.pciehp_force=1',''),
+        grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+        for line in grub_menu:
+            print line.replace('splash','splash pciehp.pciehp_force=1'),
+        os.system('sudo update-grub')

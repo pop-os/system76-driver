@@ -3,7 +3,7 @@
 ## System76, Inc.
 ## Universal Driver
 ## Copyright System76, Inc.
-## Copyright (C) 2009 System76, Inc.
+## Copyright (C) 2010 System76, Inc.
 ## Released under the GNU General Public License (See LICENSE)
 ##
 ## Startup script
@@ -23,7 +23,7 @@ import System76Driver
 
 def main():
     
-    parser = optparse.OptionParser(usage="%prog [options]", version="2.3.8")
+    parser = optparse.OptionParser(usage="%prog [options]", version="2.4.4")
     parser.add_option("-d", "--drivers", action="store_true", dest="drivers",
 				help="Install Drivers for your Computer (requires sudo)")
     parser.add_option("-r", "--restore", action="store_true", dest="restore",

@@ -4,10 +4,39 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
-Version 2.3.8
+Version 2.4.4
+
+1.) Fix Starling Ultra (star1) wireless in Ubuntu 9.10
+
+--------------------------------------
+
+Version 2.4.3
+
+1.) Add new serp6 model
+2.) Add new wilp7 model
+
+--------------------------------------
+
+Version 2.4.2
+
+1.) Fix Lemur NIC on Ubuntu 64bit w 4GB
+2.) Remove brightness hotkey fix for bonp2 in 9.10
+
+--------------------------------------
+
+Version 2.4.0
+
+1.) Starling Netbook (star1) Ubuntu 9.10 (Karmic) patches
+2.) Lemur UltraThin webcam fix
+
+--------------------------------------
+
+Version 2.3.9
 
 1.) Add Pangolin Performance 6 (panp6)
-2.) Add initial Karmic support
+2.) Add Karmic support
+3.) Add Wildebeest Performance desktop (wilb1)
+4.) Add Lemur Ultrathin laptop (lemu1)
 
 --------------------------------------
 

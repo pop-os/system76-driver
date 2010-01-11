@@ -585,7 +585,15 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
-    # System76 Leopard Extreme
+    # System76 Lemur Ultrathin (lemu1)
+    elif modelname == ('lemu1'):
+        if version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('9.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+    # System76 Leopard Extreme (leo1)
     elif modelname == ('leo1'):
         if version == ('9.04'):
             sources.add()
@@ -1283,6 +1291,14 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+    # System76 Serval Pro (serp6)
+    elif modelname == ('serp6'):
+        if version == ('9.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
     # System76 Starling Netbook (star1)
     if modelname == ('star1'):
         if version == ('9.04'):
@@ -1291,6 +1307,14 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Wildebeest Performance (wilb1)
+    if modelname == ('wilb1'):
+        if version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
     # Model Wild Dog Performance
     elif modelname == ('wilp1'):
         if version == ('6.06'):
@@ -1469,6 +1493,14 @@ def app_install():
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
             os.system("gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type string --set /system/gstreamer/0.10/default/videosink 'ximagesink'")
         elif version == ('9.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+    # Wild Dog Performance (wilp7)
+    elif modelname == ('wilp7'):
+        if version == ('9.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
                 

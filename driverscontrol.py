@@ -75,8 +75,7 @@ def installDrivers():
             acpi.osiNotWindows()
             misc.linux_backports()
         elif version == ('9.10'):
-            nodrivers = "true"
-            return nodrivers
+            fprint.installPackages()
         else:
             nodrivers = "true"
             return nodrivers
@@ -156,8 +155,7 @@ def installDrivers():
         elif version == ('9.04'):
             fprint.install()
         elif version == ('9.10'):
-            nodrivers = "true"
-            return nodrivers
+            fprint.installPackages()
         else:
             nodrivers = "true"
             return nodrivers
@@ -383,8 +381,8 @@ def installDrivers():
             uvc.quirks()
             fprint.install()
         elif version == ('9.10'):
-            nodrivers = "true"
-            return nodrivers
+            uvc.quirks()
+            fprint.installPackages()
         else:
             nodrivers = "true"
             return nodrivers
@@ -415,11 +413,25 @@ def installDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+    elif modelname == ('lemu1'):
+        if version == ('9.04'):
+            uvc.lemu1()
+            acpi.lemu1()
+        elif version == ('9.10'):
+            uvc.lemu1()
+            acpi.lemu1()
+            misc.lemu1_nic()
+        else:
+            nodrivers = "true"
+            return nodrivers
     elif modelname == ('leo1'):
         if version == ('9.04'):
             nodrivers = "true"
             return nodrivers
         elif version == ('9.10'):
+            nodrivers = "true"
+            return nodrivers
+        else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('ment1'):
@@ -480,8 +492,7 @@ def installDrivers():
             fprint.install()
             misc.linux_backports()
         elif version == ('9.10'):
-            nodrivers = "true"
-            return nodrivers
+            fprint.installPackages()
         else:
             nodrivers = "true"
             return nodrivers
@@ -498,8 +509,7 @@ def installDrivers():
             fprint.install()
             misc.linux_backports()
         elif version == ('9.10'):
-            nodrivers = "true"
-            return nodrivers
+            fprint.installPackages()
         else:
             nodrivers = "true"
             return nodrivers
@@ -516,8 +526,7 @@ def installDrivers():
             fprint.install()
             misc.linux_backports()
         elif version == ('9.10'):
-            nodrivers = "true"
-            return nodrivers
+            fprint.installPackages()
         else:
             nodrivers = "true"
             return nodrivers
@@ -885,6 +894,16 @@ def installDrivers():
             fprint.install()
             misc.linux_backports()
         elif version == ('9.10'):
+            fprint.installPackages()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('serp6'):
+        if version == ('9.10'):
+            acpi.serp6()
+            uvc.lemu1()
+            fprint.installUpek1()
+        elif version == ('10.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -898,8 +917,19 @@ def installDrivers():
             hotkey.star1_904()
             misc.wireless8187b()
         elif version == ('9.10'):
-            sound.alsa12()
+            sound.alsa13()
+            acpi.star1()
             misc.wireless8187b()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('wilb1'):
+        if version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('9.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1017,6 +1047,16 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('9.10'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('wilp7'):
+        if version == ('9.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('10.04'):
             nodrivers = "true"
             return nodrivers
         else:

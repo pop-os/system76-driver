@@ -197,6 +197,9 @@ def determine_model():
     elif system_product_version == 'panp6':
         modelname = "panp6"
         return modelname
+    elif system_product_version == 'lemu1':
+        modelname = "lemu1"
+        return modelname
     elif system_product_version == 'leo1':
         modelname = "leo1"
         return modelname
@@ -209,14 +212,23 @@ def determine_model():
     elif system_product_version == 'ratv6':
         modelname = "ratv6"
         return modelname
+    elif system_product_version == 'wilb1':
+        modelname = "wilb1"
+        return modelname
     elif system_product_version == 'wilp6':
         modelname = "wilp6"
+        return modelname
+    elif system_product_version == 'wilp7':
+        modelname = "wilp7"
         return modelname
     elif system_product_name == 'M860TU':
         modelname = "serp5"
         return modelname
     elif system_product_version == 'serp5':
         modelname = "serp5"
+        return modelname
+    elif system_product_version == 'serp6':
+        modelname = "serp6"
         return modelname
     else:
         modelname = "nonsystem76"

@@ -11,6 +11,7 @@ LIBUSBDIR =  os.path.join(os.path.dirname(__file__), 'fprint/libusb-0.9.2')
 LIBFPRINTDIR =  os.path.join(os.path.dirname(__file__), 'fprint/libfprint-20080810-6b8b17f5')
 PAMFPRINTDIR = os.path.join(os.path.dirname(__file__), 'fprint/pam_fprint-20080330-5452ea09')
 FPRINTDEMODIR = os.path.join(os.path.dirname(__file__), 'fprint/fprint_demo-20080319-5d86c3f7')
+FPRINTGUI = os.path.join(os.path.dirname(__file__), 'fprint/fingerprint-0.12')
 
 
 def install():
@@ -54,3 +55,28 @@ def install():
     os.system("sudo rm -r libusb-0.9.2/ libfprint-20080810-6b8b17f5/ pam_fprint-20080330-5452ea09/ fprint_demo-20080319-5d86c3f7/")
     # copy fprint menu item
     os.system("sudo cp fprint_demo.desktop /usr/share/applications/fprint_demo.desktop")
+    
+def installPackages():
+    os.system('sudo apt-get --assume-yes install libusb-1.0-0')
+    os.chdir(DRIVERDIR)
+    os.system('sudo dpkg -i libfprint0_20081125git-2_amd64.deb')
+    os.system('sudo apt-get --assume-yes install fprint-demo libpam-fprint')
+    # copy fprint menu item
+    os.system("sudo cp fprint_demo.desktop /usr/share/applications/fprint-demo.desktop")
+    
+def installUpek1():
+    os.system('sudo apt-get --assume-yes install libusb-1.0-0 libqca2-plugin-ossl libqtgui4 libfakekey0 libqt4-xml')
+    os.chdir(DRIVERDIR)
+    os.system('sudo dpkg -i libfprint0_20081125git-2_amd64.deb')
+    os.system('sudo apt-get --assume-yes install libpam-fprint')
+    # copy fprint menu item
+    os.system('sudo cp z60_libfprint0.rules /etc/udev/rules.d/z60_libfprint0.rules')
+    os.system('sudo chmod 644 /etc/udev/rules.d/z60_libfprint0.rules')
+    os.system('wget http://planet76.com/fprint/fingerprintGUI-0.12.tar.gz')
+    os.system('sudo tar zxf fingerprintGUI-0.12.tar.gz')
+    os.chdir(FPRINTGUI)
+    os.system('sudo sh install.sh --with-upek')
+    os.chdir(DRIVERDIR)
+    os.system('sudo rm -r fingerprint-0.12')
+    os.system('sudo rm fingerprintGUI-0.12.tar.gz')
+    
