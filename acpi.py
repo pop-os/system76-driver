@@ -93,7 +93,7 @@ def lemu1():
         print line.replace('splash','splash acpi_os_name=Linux acpi_osi='),
     os.system('sudo update-grub')
     
-def serp6():
+def os_linux():
     # Kernel parameter tells the BIOS that the OS is Linux
     
     os.system('sudo cp /etc/default/grub /etc/default/grub_sys76backup_%s' % today)

@@ -1,0 +1,3 @@
+#!/bin/bash
+python /opt/system76/system76-driver/src/jme_kernel_update.py
+make install --directory=/opt/system76/system76-driver/src/jme-1.0.5/

@@ -1,0 +1,2 @@
+#!/bin/bash
+python /opt/system76/system76-driver/src/uvc_lemu1_kernel_update.py

@@ -4,6 +4,23 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.4.6
+
+1.) Add new Meerkat NetTop (ment3)
+2.) Add jme patch for panp7 and bonp3. Installs jme module
+    version 1.0.5 and scripts to update when new kernels
+    are installed. Effects panp7 and bonp3 with quad core
+    CPUs
+
+--------------------------------------
+
+Version 2.4.5
+
+1.) Add new Pangolin Performance (panp7)
+2.) Add new Bonobo Performance (bonp3)
+
+--------------------------------------
+
 Version 2.4.4
 
 1.) Fix Starling Ultra (star1) wireless in Ubuntu 9.10

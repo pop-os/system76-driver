@@ -80,13 +80,13 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
     elif modelname == ('bonp3'):
-        if version == ('8.10'):
-            nodrivers = "true"
-            return nodrivers
-        elif version == ('9.04'):
-            nodrivers = "true"
-            return nodrivers
-        elif version == ('9.10'):
+        if version == ('9.10'):
+            acpi.os_linux()
+            fprint.installUpek1()
+            misc.jme_nic()
+            misc.rm_aticatalyst()
+            misc.jme_nic()
+        elif version == ('10.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -420,7 +420,7 @@ def installDrivers():
         elif version == ('9.10'):
             uvc.lemu1()
             acpi.lemu1()
-            misc.lemu1_nic()
+            misc.jme_nic()
         else:
             nodrivers = "true"
             return nodrivers
@@ -454,7 +454,20 @@ def installDrivers():
         elif version == ('9.10'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('10.04'):
+            nodrivers = "true"
+            return nodrivers
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('ment3'):
+        if version == ('9.04'):
+            nodrivers = "true"
+            return nodrivers
         elif version == ('9.10'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('10.04'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -527,6 +540,19 @@ def installDrivers():
             misc.linux_backports()
         elif version == ('9.10'):
             fprint.installPackages()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('panp7'):
+        if version == ('9.10'):
+            acpi.os_linux()
+            fprint.installUpek1()
+            misc.jme_nic()
+            misc.rm_aticatalyst()
+            misc.jme_nic()
+        elif version == ('10.04'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -900,7 +926,7 @@ def installDrivers():
             return nodrivers
     elif modelname == ('serp6'):
         if version == ('9.10'):
-            acpi.serp6()
+            acpi.os_linux()
             uvc.lemu1()
             fprint.installUpek1()
         elif version == ('10.04'):

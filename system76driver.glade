@@ -565,7 +565,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
     <property name="type_hint">normal</property>
     <property name="program_name">System76 Driver</property>
     <property name="copyright" translatable="yes">Copyright (C) System76, Inc.</property>
-    <property name="comments" translatable="yes">version 2.4.4</property>
+    <property name="comments" translatable="yes">version 2.4.5</property>
     <property name="website">www.system76.com</property>
     <property name="license" translatable="yes">GNU GENERAL PUBLIC LICENSE
 

@@ -100,7 +100,7 @@ def wireless8187b():
         os.chdir(WORKDIR)
         os.system('sudo rm -r rtl8187B.tar.gz rtl8187B/')
         
-def lemu1_nic():
+def jme_nic():
     """Install 1.0.5 jme driver - fixes 4GB mem lag"""
     
     # Place files to run driver install after new headers install
@@ -121,3 +121,8 @@ def lemu1_nic():
         jme_kernel_latest.makefile_kernel()
         os.chdir(JMEDIR)
         os.system("sudo make install")
+        
+def rm_aticatalyst():
+    """Remove Catalyst from the menu system (does not work well in Ubuntu 9.10)"""
+    
+    os.system('sudo rm /usr/share/applications/amdcccle.desktop /usr/share/applications/amdccclesu.desktop')
