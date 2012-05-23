@@ -35,7 +35,7 @@ restoret1, restoret2 = 0, 0
 #Setup Source Directory
 datadir = os.path.join(os.path.dirname(__file__),'.')
 IMAGEDIR = os.path.join(os.path.dirname(__file__), 'images')
-WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.png')
+WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.svg')
 
 class pulseSetter(threading.Thread):
     """This class sets the fraction of the progressbar"""

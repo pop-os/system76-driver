@@ -14,6 +14,7 @@ USRSRCDIR = os.path.join(os.path.dirname(__file__), '/usr/src/')
 SOUNDDIR1 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14rc2')
 SOUNDDIR2 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14rc3')
 SOUNDDIR3 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14')
+SOUNDDIR4 = os.path.join(os.path.dirname(__file__), 'alsa-driver')
 
 def alsa1():
     """Installs alsa 1.0.14rc2"""
@@ -356,3 +357,15 @@ def alsa13():
             print line
             
     os.system("echo options snd-hda-intel model=acer-aspire | sudo tee -a /etc/modprobe.d/alsa-base.conf")
+    
+def alsabackportsLucid():
+    
+    # Install alsa backports
+    os.system('sudo apt-get --assume-yes install linux-backports-modules-alsa-lucid-generic')
+    
+def audioDevPPA():
+    """Install latest alsa release via Ubuntu Audio Dev PPA"""
+    
+    os.system("sudo add-apt-repository ppa:ubuntu-audio-dev/ppa")
+    os.system("sudo apt-get update")
+    os.system("sudo apt-get install linux-alsa-driver-modules-$(uname -r)")

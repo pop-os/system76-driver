@@ -22,11 +22,15 @@ def quirks():
     os.system("sudo rm /etc/modprobe.d/uvc.conf")
     os.system("echo options uvcvideo quirks=2 | sudo tee -a /etc/modprobe.d/uvc.conf")
 
-def lemu1():
+def lemur():
     # compiles new UVC driver for Lemur Ultrathin webcam
+    
     # remove any existing driver files
     os.system('sudo rm -r /opt/system76/system76-driver/src/uvcvideo-74ad936bcca2-custom/')
     os.system('sudo rm /opt/system76/system76-driver/src/uvcvideo-74ad936bcca2-custom.tar.gz')
+    # Place files to run driver install after new headers install
+    os.system('sudo cp /opt/system76/system76-driver/src/uvcinstall /etc/kernel/header_postinst.d/uvcinstall')
+    os.system('sudo chmod +x /etc/kernel/header_postinst.d/uvcinstall')
     # Get the driver
     os.chdir(WORKDIR)
     os.system("sudo wget http://planet76.com/webcam/uvcvideo-74ad936bcca2-custom.tar.gz")

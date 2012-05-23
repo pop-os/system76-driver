@@ -1,0 +1,3 @@
+[org.gnome.settings-daemon.peripherals.touchpad]
+  horiz-scroll-enabled=true
+  scroll-method="two-finger-scrolling"

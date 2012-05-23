@@ -130,3 +130,45 @@ def star1():
         for line in grub_menu:
             print line.replace('splash','splash pciehp.pciehp_force=1'),
         os.system('sudo update-grub')
+    elif version == ('10.04'):
+        os.system('sudo cp /etc/default/grub /etc/default/grub_sys76backup_%s' % today)
+        
+        grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+        for line in grub_menu:
+            print line.replace(' pciehp.pciehp_force=1',''),
+        grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+        for line in grub_menu:
+            print line.replace('splash','splash pciehp.pciehp_force=1'),
+        os.system('sudo update-grub')
+        
+def star2():
+    """Fix Synaptic touchpad wakeup after resume from suspend"""
+    os.system('sudo cp /opt/system76/system76-driver/src/acpi/70_star2_touchpad /etc/pm/sleep.d/70_star2_touchpad')
+    os.system('sudo chmod +x /etc/pm/sleep.d/70_star2_touchpad')
+    
+def sdCardBug():
+    """Fix suspend when a SD card is inserted - removes sd card related modules before suspend"""
+    os.system('sudo rm /etc/pm/config.d/suspend_modules')
+    os.system('echo "SUSPEND_MODULES=\"sdhci sdhci_pci\"" | sudo tee -a /etc/pm/config.d/suspend_modules')
+    os.system('sudo chmod +x /etc/pm/config.d/suspend_modules')
+    
+def xhcihcdModule():
+    """Unload the NEC USB 3.0 module prior to suspend"""
+    os.system('sudo rm /etc/pm/config.d/suspend_modules')
+    os.system('echo "SUSPEND_MODULES=\"xhci-hcd\"" | sudo tee -a /etc/pm/config.d/suspend_modules')
+    os.system('sudo chmod +x /etc/pm/config.d/suspend_modules')
+    
+def pcie_aspm():
+    """Fix ethernet and freezes when AC is unplugged and replugged
+    while ethernet is plugged in. Caused by PCIe ASPM."""
+    
+    os.system('sudo cp /etc/default/grub /etc/default/grub_sys76backup_%s' % today)
+    
+    grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+    for line in grub_menu:
+        print line.replace(' pcie_aspm=off',''),
+    grub_menu = fileinput.input('/etc/default/grub', inplace=1)
+    for line in grub_menu:
+        print line.replace('splash','splash pcie_aspm=off'),
+    os.system('sudo update-grub')
+    

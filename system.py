@@ -25,9 +25,24 @@ def name():
         systemname = "Darter Ultra"
         return systemname
     elif modelname == "lemu1":
-        systemname = "Lemur Ultrathin"
+        systemname = "Lemur UltraThin"
+        return systemname
+    elif modelname == "lemu2":
+        systemname = "Lemur UltraThin"
+        return systemname
+    elif modelname == "lemu3":
+        systemname = "Lemur Ultra"
+        return systemname
+    elif modelname == "lemu4":
+        systemname = "Lemur Ultra"
         return systemname
     elif modelname == "leo1":
+        systemname = "The Leopard Extreme"
+        return systemname
+    elif modelname == "leox2":
+        systemname = "The Leopard Extreme"
+        return systemname
+    elif modelname == "leox3":
         systemname = "The Leopard Extreme"
         return systemname
     elif modelname == "ment1":
@@ -39,8 +54,23 @@ def name():
     elif modelname == "ment3":
         systemname = "Meerkat NetTop"
         return systemname
+    elif modelname == "ment5":
+        systemname = "Meerkat Ion NetTop"
+        return systemname
     elif modelname == "star1":
-        systemname = "Starling Netbook"
+        systemname = "Starling NetBook"
+        return systemname
+    elif modelname == "star2":
+        systemname = "Starling EduBook"
+        return systemname
+    elif modelname == "star3":
+        systemname = "Starling NetBook"
+        return systemname
+    elif modelname == "star4":
+        systemname = "Starling NetBook"
+        return systemname
+    elif modelname == "star5":
+        systemname = "Starling NetBook"
         return systemname
     elif modelname == "sabv1":
         systemname = "Sable Series"
@@ -63,7 +93,16 @@ def name():
     elif modelname == "wilp7":
         systemname = "Wild Dog Performance"
         return systemname
+    elif modelname == "wilp8":
+        systemname = "Wild Dog Performance"
+        return systemname
+    elif modelname == "wilp9":
+        systemname = "Wild Dog Performance"
+        return systemname
     elif modelname == "wilb1":
+        systemname = "Wildebeest Performance"
+        return systemname
+    elif modelname == "wilb2":
         systemname = "Wildebeest Performance"
         return systemname
     elif modelname == "ratv1":
@@ -83,6 +122,15 @@ def name():
         return systemname
     elif modelname == "ratv6":
         systemname = "Ratel Value"
+        return systemname
+    elif modelname == "ratu1":
+        systemname = "Ratel Ultra"
+        return systemname
+    elif modelname == "ratu2":
+        systemname = "Ratel Ultra"
+        return systemname
+    elif modelname == "ratp1":
+        systemname = "Ratel Performance"
         return systemname
     elif modelname == "gazv2":
         systemname = "Gazelle Value"
@@ -117,6 +165,12 @@ def name():
     elif modelname == "gazp5":
         systemname = "Gazelle Value with nVidia and Camera"
         return systemname
+    elif modelname == "gazp6":
+        systemname = "Gazelle Professional"
+        return systemname
+    elif modelname == "gazp7":
+        systemname = "Gazelle Professional"
+        return systemname
     elif modelname == "gazu1":
         systemname = "Gazelle Ultra"
         return systemname
@@ -147,6 +201,9 @@ def name():
     elif modelname == "serp6":
         systemname = "Serval Professional"
         return systemname
+    elif modelname == "serp7":
+        systemname = "Serval Professional"
+        return systemname
     elif modelname == "bonp1":
         systemname = "Bonobo Performance"
         return systemname
@@ -155,6 +212,12 @@ def name():
         return systemname
     elif modelname == "bonp3":
         systemname = "Bonobo Performance"
+        return systemname
+    elif modelname == "bonp4":
+        systemname = "Bonobo Professional"
+        return systemname
+    elif modelname == "bonp5":
+        systemname = "Bonobo Professional"
         return systemname
     elif modelname == "panp4i":
         systemname = "Pangolin Performance"
@@ -169,6 +232,12 @@ def name():
         systemname = "Pangolin Performance"
         return systemname
     elif modelname == "panp7":
+        systemname = "Pangolin Performance"
+        return systemname
+    elif modelname == "panp8":
+        systemname = "Pangolin Performance"
+        return systemname
+    elif modelname == "panp9":
         systemname = "Pangolin Performance"
         return systemname
     elif modelname == "panv1":
