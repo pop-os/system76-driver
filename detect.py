@@ -20,6 +20,7 @@ def aptcheck():
     p.close()
     for process in pslist:
         if process.strip() in ["dpkg", "apt-get","synaptic","update-manager", "adept", "adept-notifier"]:
+            print("FAIL: You have APT running somewhere. Please close it or reboot.")
             return "running"
             break
 
@@ -29,6 +30,7 @@ def connectivityCheck():
         connectivityCheck = urllib2.urlopen('http://www.system76.com')
         return "connectionExists"
     except:
+        print("FAIL: No internet connection. Please connect first!")
         return "noConnectionExists"
     
 def arch():

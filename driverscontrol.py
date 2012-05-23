@@ -29,6 +29,8 @@ def installDrivers():
     modelname = model.determine_model()
     version = ubuntuversion.release()
     arch = detect.arch()
+    if version == ('0.2'):
+        version = '12.04'
     
     if version == ('8.04.1'):
         version = '8.04'
