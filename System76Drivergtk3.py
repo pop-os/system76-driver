@@ -4,7 +4,7 @@
 ## Copyright System76, Inc.
 ## Released under the GNU General Public License (See LICENSE)
 ##
-## Main frontend
+## Main frontend - GTK3 Version
 
 #import system python libraries:
 import os

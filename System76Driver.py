@@ -4,7 +4,7 @@
 ## Copyright System76, Inc.
 ## Released under the GNU General Public License (See LICENSE)
 ##
-## Main frontend
+## Main frontend - Legacy GTK2 Version
 
 import os
 import sys

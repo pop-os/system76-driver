@@ -9,7 +9,7 @@
     <property name="type_hint">normal</property>
     <property name="program_name">System76 Driver</property>
     <property name="copyright" translatable="yes">Copyright (C) System76, Inc.</property>
-    <property name="comments" translatable="yes">version 2.7.6</property>
+    <property name="comments" translatable="yes">version 3.0.0</property>
     <property name="website">http://www.system76.com</property>
     <property name="license" translatable="yes">GNU GENERAL PUBLIC LICENSE
 
@@ -476,7 +476,7 @@ END OF TERMS AND CONDITIONS</property>
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_about_clicked"/>
+                        <signal name="clicked" handler="on_about_clicked" swapped="no"/>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -493,7 +493,7 @@ END OF TERMS AND CONDITIONS</property>
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_close_clicked"/>
+                        <signal name="clicked" handler="on_close_clicked" swapped="no"/>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -560,7 +560,7 @@ END OF TERMS AND CONDITIONS</property>
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_about_clicked"/>
+                        <signal name="clicked" handler="on_about_clicked" swapped="no"/>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -577,7 +577,7 @@ END OF TERMS AND CONDITIONS</property>
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_close_clicked"/>
+                        <signal name="clicked" handler="on_close_clicked" swapped="no"/>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -592,7 +592,7 @@ END OF TERMS AND CONDITIONS</property>
                         <property name="can_default">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
-                        <signal name="clicked" handler="on_driverInstall_clicked"/>
+                        <signal name="clicked" handler="on_driverInstall_clicked" swapped="no"/>
                         <child>
                           <widget class="GtkAlignment" id="alignment3">
                             <property name="visible">True</property>
@@ -708,7 +708,7 @@ END OF TERMS AND CONDITIONS</property>
                             <property name="receives_default">False</property>
                             <property name="use_action_appearance">False</property>
                             <property name="use_stock">True</property>
-                            <signal name="clicked" handler="on_about_clicked"/>
+                            <signal name="clicked" handler="on_about_clicked" swapped="no"/>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
@@ -725,7 +725,7 @@ END OF TERMS AND CONDITIONS</property>
                             <property name="receives_default">False</property>
                             <property name="use_action_appearance">False</property>
                             <property name="use_stock">True</property>
-                            <signal name="clicked" handler="on_close_clicked"/>
+                            <signal name="clicked" handler="on_close_clicked" swapped="no"/>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
@@ -740,7 +740,7 @@ END OF TERMS AND CONDITIONS</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_action_appearance">False</property>
-                            <signal name="clicked" handler="on_restore_clicked"/>
+                            <signal name="clicked" handler="on_restore_clicked" swapped="no"/>
                             <child>
                               <widget class="GtkAlignment" id="alignment2">
                                 <property name="visible">True</property>
@@ -856,7 +856,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_about_clicked"/>
+                        <signal name="clicked" handler="on_about_clicked" swapped="no"/>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -873,7 +873,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_close_clicked"/>
+                        <signal name="clicked" handler="on_close_clicked" swapped="no"/>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -888,7 +888,7 @@ Click Create to build an archive of common logs.  The archive is saved to your h
                         <property name="can_default">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
-                        <signal name="clicked" handler="on_create_clicked"/>
+                        <signal name="clicked" handler="on_create_clicked" swapped="no"/>
                         <child>
                           <widget class="GtkAlignment" id="alignment4">
                             <property name="visible">True</property>
