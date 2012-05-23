@@ -32,7 +32,7 @@ except:
 IMAGEDIR = os.path.join(os.path.dirname(__file__), 'images')
 SYS76LOGO_IMAGE = os.path.join(IMAGEDIR, 'logo.png')
 SYS76SQUARE_LOGO = os.path.join(IMAGEDIR, 'logoSQUARE.png')
-WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.png')
+WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.svg')
 
 class aboutDlg:
     """Shows the about dialog box"""
@@ -127,7 +127,7 @@ def supported(datadir):
     if version == ('8.04.1'):
         version = '8.04'
     
-    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10' and version != '9.04' and version != '9.10':
+    if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10' and version != '9.04' and version != '9.10' and version != '10.04' and version != '10.10' and version != '11.04' and version != '11.10' and version != '12.04':
         notsupported = unsupported(datadir);
         notsupported.run()
     elif modelname == ('nonsystem76'):

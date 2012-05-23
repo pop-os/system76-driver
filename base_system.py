@@ -53,6 +53,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver nvidia-settings cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Bonobo Performance (bonp3)
     elif modelname == ('bonp3'):
         if version == ('9.04'):
@@ -64,6 +79,64 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Bonobo Performance (bonp3)
+    elif modelname == ('bonp4'):
+        if version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Bonobo Pro (bonp5)
+    elif modelname == ('bonp5'):
+        if version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
     # System76 Meerkat NetTop (ment1)
     elif modelname == ('ment1'):
         if version == ('8.10'):
@@ -75,6 +148,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Meerkat Ion NetTop (ment2)
     elif modelname == ('ment2'):
         if version == ('9.04'):
@@ -85,8 +173,23 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Meerkat NetTop (ment3)
-    elif modelname == ('ment1'):
+    elif modelname == ('ment3'):
         if version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
@@ -96,6 +199,29 @@ def app_install():
         elif version == ('10.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Meerkat NetTop (ment5)
+    elif modelname == ('ment5'):
+        if version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model Z35FM / System76 Model Darter Ultra
     elif modelname == ('daru1'):
         if version == ('6.06'):
@@ -142,6 +268,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model MS-1221 / System76 Model Darter Ultra 2
     elif modelname == ('daru2'):
         if version == ('7.04'):
@@ -170,6 +311,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Model Darter Ultra 3
     elif modelname == ('daru3'):
         if version == ('8.04'):
@@ -195,6 +351,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model Z62F / System76 model Gazelle Performance
     elif modelname == ('gazp1'):
         if version == ('6.06'):
@@ -241,6 +412,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model S62J / System76 model Gazelle Performance
     elif modelname == ('gazp2'):
         if version == ('6.06'):
@@ -289,6 +475,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model S62JP / System76 model Gazelle Performance
     elif modelname == ('gazp3'):
         if version == ('6.06'):
@@ -337,6 +538,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 model Gazelle Value with nVidia and Camera
     elif modelname == ('gazp5'):
         if version == ('7.10'):
@@ -358,6 +574,59 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Gazelle Pro (gazp6)
+    elif modelname == ('gazp6'):
+        if version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+    # System76 Gazelle Performance (gazp7)
+    elif modelname == ('gazp7'):
+        if version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
     # Model SW1 / System76 model Gazelle Value
     elif modelname == ('gazv2'):
         if version == ('6.06'):
@@ -404,6 +673,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model Z62FP / System76 model Gazelle Value
     elif modelname == ('gazv3'):
         if version == ('6.06'):
@@ -450,6 +734,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model Z62FM / System76 model Gazelle Value
     elif modelname == ('gazv4'):
         if version == ('6.06'):
@@ -496,6 +795,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Model Gazelle Value 5
     elif modelname == ('gazv5'):
         if version == ('7.04'):
@@ -525,6 +839,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Model Gazelle Ultra 1
     elif modelname == ('gazu1'):
         if version == ('8.04'):
@@ -550,6 +879,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model Mini PC / System76 model Koala Performance
     elif modelname == ('koap1'):
         if version == ('6.06'):
@@ -596,6 +940,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Lemur Ultrathin (lemu1)
     elif modelname == ('lemu1'):
         if version == ('9.04'):
@@ -604,6 +963,117 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+    # System76 Lemur Ultrathin (lemu2)
+    elif modelname == ('lemu2'):
+        if version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+    # System76 Lemur Ultra (lemu3)
+    elif modelname == ('lemu3'):
+        if version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+    # System76 Lemur Ultra (lemu4)
+    elif modelname == ('lemu4'):
+        if version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
     # System76 Leopard Extreme (leo1)
     elif modelname == ('leo1'):
         if version == ('9.04'):
@@ -612,6 +1082,43 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Leopard Extreme (leox2)
+    elif modelname == ('leox2'):
+        if version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Leopard Extreme (leox3)
+    elif modelname == ('leox3'):
+        if version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Pangolin Performance panp4i
     elif modelname == ('panp4i'):
         if version == ('8.04'):
@@ -634,6 +1141,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Pangolin Performance panp4n
     elif modelname == ('panp4n'):
         if version == ('8.04'):
@@ -655,6 +1177,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Pangolin Performance panp5
     elif modelname == ('panp5'):
         if version == ('8.04'):
@@ -679,6 +1216,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Pangolin Performance panp6
     elif modelname == ('panp6'):
         if version == ('8.04'):
@@ -703,6 +1255,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Pangolin Performance panp7
     elif modelname == ('panp7'):
         if version == ('9.10'):
@@ -711,6 +1278,75 @@ def app_install():
         elif version == ('10.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+    # System76 Pangolin Performance panp8
+    elif modelname == ('panp8'):
+        if version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+    # System76 Pangolin Performance (panp9)
+    elif modelname == ('panp9'):
+        if version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
     # Model S96F / System76 model Pangolin Value
     elif modelname == ('panv2'):
         if version == ('6.06'):
@@ -757,6 +1393,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Model Pangolin Value 3
     elif modelname == ('panv3'):
         if version == ('7.04'):
@@ -795,6 +1446,51 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # Ratel Ultra (ratu1)
+    elif modelname == ('ratu1'):
+        if version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # Ratel Ultra (ratu2)
+    elif modelname == ('ratu2'):
+        if version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # Ratel Performance (ratp1)
+    elif modelname == ('ratp1'):
+        if version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model V2-AH1 / System76 model Ratel Value
     elif modelname == ('ratv1'):
         if version == ('6.06'):
@@ -841,6 +1537,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Model Ratel Value
     elif modelname == ('ratv2'):
         if version == ('6.06'):
@@ -916,6 +1627,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Model Ratel Value
     elif modelname == ('ratv3'):
         if version == ('6.06'):
@@ -991,6 +1717,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Ratel Value 4 (ratv4)
     elif modelname == ('ratv4'):
         if version == ('7.10'):
@@ -1010,6 +1751,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Ratel Value 5 (ratv5)
     elif modelname == ('ratv5'):
         if version == ('7.10'):
@@ -1020,6 +1776,30 @@ def app_install():
         elif version == ('8.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('8.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('9.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Ratel Value 6 (ratv6)
     elif modelname == ('ratv6'):
         if version == ('8.04'):
@@ -1034,6 +1814,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model P1-AH1 / System76 model Sable Value
     elif modelname == ('sabv1'):
         if version == ('6.06'):
@@ -1082,6 +1877,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Model Sable Value & Sable Performance (sabv2/sabv1)
     elif modelname == ('sabv2'):
         if version == ('6.06'):
@@ -1130,6 +1940,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Sable Value 3 (sabv3)
     elif modelname == ('sabv3'):
         if version == ('7.10'):
@@ -1154,6 +1979,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model EL80 / System76 model Serval Performance
     elif modelname == ('serp1'):
         if version == ('6.06'):
@@ -1202,6 +2042,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Serval Performace
     # Model EL80 / System76 model Serval Performance
     elif modelname == ('serp2'):
@@ -1251,6 +2106,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Model Serval Performance 3 (serp3)
     elif modelname == ('serp3'):
         if version == ('7.10'):
@@ -1272,7 +2142,22 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
-    # System76 Model Serval Performance 3 (serp3)
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Model Serval Performance 4 (serp4)
     elif modelname == ('serp4'):
         if version == ('7.10'):
             os.system('sudo cp /etc/apt/sources.list /etc/apt/sources.list_sys76backup_%s' % today)
@@ -1293,8 +2178,23 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Serval Professional (serp5)
-    if modelname == ('serp5'):
+    elif modelname == ('serp5'):
         if version == ('8.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
@@ -1310,6 +2210,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Serval Pro (serp6)
     elif modelname == ('serp6'):
         if version == ('9.10'):
@@ -1318,22 +2233,171 @@ def app_install():
         elif version == ('10.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Serval Pro (serp7)
+    elif modelname == ('serp7'):
+        if version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver cheese')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type int --set /desktop/gnome/peripherals/touchpad/scroll_method 2")
+            os.system("sudo gconftool-2 --direct --config-source xml:readwrite:/home/$USER/.gconf --type bool --set /desktop/gnome/peripherals/touchpad/horiz_scroll_enabled true")
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
     # System76 Starling Netbook (star1)
-    if modelname == ('star1'):
+    elif modelname == ('star1'):
         if version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install system76-driver')
         elif version == ('9.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Starling Edubook (star2)
+    elif modelname == ('star2'):
+        if version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Starling Netbook (star3)
+    elif modelname == ('star3'):
+        if version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Starling Netbook (star4)
+    elif modelname == ('star4'):
+        if version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Starling Netbook (star5)
+    elif modelname == ('star5'):
+        if version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver cheese')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install system76-driver')
     # System76 Wildebeest Performance (wilb1)
-    if modelname == ('wilb1'):
+    elif modelname == ('wilb1'):
         if version == ('9.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # System76 Wildebeest Performance (wilb2)
+    elif modelname == ('wilb2'):
+        if version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Model Wild Dog Performance
     elif modelname == ('wilp1'):
         if version == ('6.06'):
@@ -1382,6 +2446,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Wild Dog Professional
     elif modelname == ('wilp2'):
         if version == ('6.06'):
@@ -1430,6 +2509,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Wild Dog Professional
     elif modelname == ('wilp3'):
         if version == ('6.06'):
@@ -1478,6 +2572,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Wild Dog Performance (wilp5)
     elif modelname == ('wilp5'):
         if version == ('7.10'):
@@ -1501,6 +2610,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Wild Dog Performance (wilp6)
     elif modelname == ('wilp6'):
         if version == ('8.10'):
@@ -1514,6 +2638,21 @@ def app_install():
         elif version == ('9.10'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
     # Wild Dog Performance (wilp7)
     elif modelname == ('wilp7'):
         if version == ('9.10'):
@@ -1522,4 +2661,37 @@ def app_install():
         elif version == ('10.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # Wild Dog Performance (wilp8)
+    elif modelname == ('wilp8'):
+        if version == ('10.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install gnucash gnucash-docs system76-driver')
+        elif version == ('11.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('11.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    elif modelname == ('wilp9'):
+        if version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
                 

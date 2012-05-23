@@ -80,3 +80,7 @@ def installUpek1():
     os.system('sudo rm -r fingerprint-0.12')
     os.system('sudo rm fingerprintGUI-0.12.tar.gz')
     
+def fingerprintGUI():
+    os.system('sudo add-apt-repository -y ppa:fingerprint/fingerprint-gui')
+    os.system('sudo apt-get update')
+    os.system('sudo apt-get install --assume-yes fingerprint-gui policykit-1-fingerprint-gui libbsapi')

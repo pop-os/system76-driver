@@ -160,6 +160,15 @@ def determine_model():
     elif system_product_name == 'star1':
         modelname = "star1"
         return modelname
+    elif system_product_name == 'E10IS':
+        modelname = "star2"
+        return modelname
+    elif system_product_name == 'E10IS2':
+        modelname = "star2"
+        return modelname
+    elif system_product_name == 'Star2':
+        modelname = "star2"
+        return modelname
     elif system_product_name == 'A7V':
         modelname = "bonp1"
         return modelname
@@ -173,8 +182,20 @@ def determine_model():
     elif system_product_version == 'bonp3':
         modelname = "bonp3"
         return modelname
+    elif system_product_version == 'bonp4':
+        modelname = "bonp4"
+        return modelname
+    elif system_product_version == 'bonp5':
+        modelname = "bonp5"
+        return modelname
     elif system_product_version == 'gazu1':
         modelname = "gazu1"
+        return modelname
+    elif system_product_version == 'gazp6':
+        modelname = "gazp6"
+        return modelname
+    elif system_product_version == 'gazp7':
+        modelname = "gazp7"
         return modelname
     elif system_product_name == 'M720T/M730T':
         modelname = "daru3"
@@ -200,11 +221,32 @@ def determine_model():
     elif system_product_version == 'panp7':
         modelname = "panp7"
         return modelname
+    elif system_product_version == 'panp8':
+        modelname = "panp8"
+        return modelname
+    elif system_product_version == 'panp9':
+        modelname = "panp9"
+        return modelname
     elif system_product_version == 'lemu1':
         modelname = "lemu1"
         return modelname
+    elif system_product_version == 'lemu2':
+        modelname = "lemu2"
+        return modelname
+    elif system_product_version == 'lemu3':
+        modelname = "lemu3"
+        return modelname
+    elif system_product_version == 'lemu4':
+        modelname = "lemu4"
+        return modelname
     elif system_product_version == 'leo1':
         modelname = "leo1"
+        return modelname
+    elif system_product_version == 'leox2':
+        modelname = "leox2"
+        return modelname
+    elif system_product_version == 'leox3':
+        modelname = "leox3"
         return modelname
     elif system_product_version == 'ment1':
         modelname = "ment1"
@@ -215,17 +257,47 @@ def determine_model():
     elif system_product_version == 'ment3':
         modelname = "ment3"
         return modelname
+    elif system_product_version == 'ment5':
+        modelname = "ment5"
+        return modelname
     elif system_product_version == 'ratv6':
         modelname = "ratv6"
         return modelname
+    elif system_product_version == 'ratu1':
+        modelname = "ratu1"
+        return modelname
+    elif system_product_version == 'ratu2':
+        modelname = "ratu2"
+        return modelname
+    elif system_product_version == 'ratp1':
+        modelname = "ratp1"
+        return modelname
+    elif system_product_version == 'star3':
+        modelname = "star3"
+        return modelname
+    elif system_product_version == 'star4':
+        modelname = "star4"
+        return modelname
+    elif system_product_version == 'star5':
+        modelname = "star5"
+        return modelname
     elif system_product_version == 'wilb1':
         modelname = "wilb1"
+        return modelname
+    elif system_product_version == 'wilb2':
+        modelname = "wilb2"
         return modelname
     elif system_product_version == 'wilp6':
         modelname = "wilp6"
         return modelname
     elif system_product_version == 'wilp7':
         modelname = "wilp7"
+        return modelname
+    elif system_product_version == 'wilp8':
+        modelname = "wilp8"
+        return modelname
+    elif system_product_version == 'wilp9':
+        modelname = "wilp9"
         return modelname
     elif system_product_name == 'M860TU':
         modelname = "serp5"
@@ -235,6 +307,9 @@ def determine_model():
         return modelname
     elif system_product_version == 'serp6':
         modelname = "serp6"
+        return modelname
+    elif system_product_version == 'serp7':
+        modelname = "serp7"
         return modelname
     else:
         modelname = "nonsystem76"

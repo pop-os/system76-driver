@@ -4,6 +4,217 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 2.7.6
+
+1.) Add new Gazelle Professional (gazp7)
+
+--------------------------------------
+
+Version 2.7.5
+
+1.) Add new Ratel Performance ratp1
+2.) Add new Wild Dog Performance
+3.) Move rts_bpp realtek module install directory to /usr/src
+
+--------------------------------------
+
+Version 2.7.4
+
+1.) Fix Lemur Ultra (lemu1) brightness keys in 12.04
+
+--------------------------------------
+
+Version 2.7.3
+
+1.) Add new Lemur Ultra (lemu4) and Pangolin Performance (panp9)
+2.) Add Ubuntu 12.04 support
+
+--------------------------------------
+Version 2.7.2
+
+1.) Add new Leopard Extreme model - leox3
+
+--------------------------------------
+
+Version 2.7.1
+
+1.) Fix Starling Netbook (star1) Ubuntu 11.10 support
+
+--------------------------------------
+
+Version 2.7.0
+
+1.) Fix Lemur Ultra (lemu2) runtime error (bug defining systemname)
+
+--------------------------------------
+
+Version 2.6.9
+
+1.) Add Ubuntu 11.10 support
+2.) Add Lemur Ultra (lemu3)
+
+--------------------------------------
+
+Version 2.6.8
+
+1.) Add new Meerkat Ion model (ment5)
+
+--------------------------------------
+
+Version 2.6.7
+
+1.) Add new Wildebeest Performance (wilb2) model
+2.) Add new Ratel Ultra (ratu2) model (unreleased)
+
+--------------------------------------
+
+Version 2.6.6
+
+1.) Add new Pangolin Performance (panp8) model
+
+--------------------------------------
+
+Version 2.6.5
+
+1.) Fix Bonobo (bonp5) headphone detection and speaker mute
+
+--------------------------------------
+Version 2.6.4
+
+1.) Change app icon to white "76" instead of alpha
+2.) Add Bonobo pro (bonp5) model
+3.) In Ubuntu 11.04 configure two finger scrolling on supported touchpads
+
+--------------------------------------
+
+Version 2.6.3
+
+1.) Add initial Ubuntu 11.04 support
+2.) Change app icon to .svg
+3.) Fix PCIe ASPM bug on serp7 and gazp6 (Ethernet connection
+    problems when AC is unplugged. Potential system freeze
+    when AC is plugged in while Ethernet is plugged in)
+
+--------------------------------------
+
+Version 2.6.2
+
+1.) Add new Wild Dog (wilp8), Leopard Extreme (leox2), and Starling Netbook (star5)
+
+--------------------------------------
+
+Version 2.6.1
+
+1.) Add Gnome theme race condition fix to the serp6 and wilb1 models
+
+--------------------------------------
+
+Version 2.6.0
+
+1.) Add new serp7 and gazp6 models
+
+--------------------------------------
+
+Version 2.5.9
+
+1.) Complete new 17" Bonobo Pro (bonp4)
+2.) Fix suspend and hibernate on the Serval Pro (serp6)
+
+--------------------------------------
+
+Version 2.5.8
+
+1.) Complete new 17" Bonobo Pro (bonp4)
+2.) Fix suspend and hibernate on the Serval Pro (serp6)
+
+--------------------------------------
+
+Version 2.5.8
+
+1.) Add new Starling Netbook (star4)
+2.) Add initial support for the new 17" Bonobo Pro (bonp4)
+
+--------------------------------------
+
+Version 2.5.7
+
+1.) Remove uvc code update for Ubuntu 10.10 on the lemu1, lemu2
+    and serp6. Code is now included in 10.10.
+2.) Removed SD Card + Suspend patch for Ubuntu 10.10. Fixed in
+    distro.
+
+--------------------------------------
+
+Version 2.5.6
+
+1.) Add initial Ubuntu 10.10 support
+2.) Fix Starling Edubook BIOS recognition
+
+--------------------------------------
+
+Version 2.5.5
+
+1.) Fix typo in driverscontrol.py. Typo cause a drivers install
+    error on some models
+
+--------------------------------------
+
+Version 2.5.4
+
+1.) Fix typo in driverscontrol.py. Typo cause a drivers install
+    error on the lemu1
+
+--------------------------------------
+
+Version 2.5.3
+
+1.) Add 2nd Gen Lemur UltraThin (lemu2)
+2.) Change Lemur series camera driver installation
+    so that the driver is automatically reinstalled
+    whenever a new kernel-headers package is installed
+
+--------------------------------------
+
+Version 2.5.2
+
+1.) Add 2nd Gen Starling Netbook (star3)
+
+--------------------------------------
+
+Version 2.5.1
+
+1.) Fix model designation problem on star2 (stopped driver
+    from running with certain BIOS's)
+
+--------------------------------------
+
+Version 2.5.0
+
+1.) Fix dependency problem (build-essential) when installing wireless
+    drivers on the Starling Netbook (model star1)
+2.) Fix SD Card reader in Ubuntu 10.04 on star1
+3.) Add patch to wake up Starling Edubook (model star2)
+    Synaptic touchpad when resuming from suspend
+
+--------------------------------------
+
+Version 2.4.9
+
+1.) Fix missing cheese and repository install on lemu1 restore
+
+--------------------------------------
+
+Version 2.4.8
+
+1.) Add Ratel Ultra (ratu1)
+
+--------------------------------------
+
+Version 2.4.7
+
+1.) Add Ubuntu 10.04 support
+
+--------------------------------------
 Version 2.4.6
 
 1.) Add new Meerkat NetTop (ment3)
