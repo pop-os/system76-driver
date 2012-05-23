@@ -49,6 +49,7 @@ class aboutDlg:
         self.icon = gtk.gdk.pixbuf_new_from_file(os.path.join(WINDOW_ICON))
         self.dlg.set_logo(self.square_logo)
         self.dlg.set_icon(self.icon)
+        self.dlg.set_version(ubuntuversion.driver())
         
         #run the dialog      
         self.dlg.run()
