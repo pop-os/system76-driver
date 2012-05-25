@@ -28,7 +28,8 @@ from gi.repository import GObject
 
 GObject.threads_init() #initialize threads
 
-lockFile = "/tmp/Sys76Lock.lock"
+lockFile = "/tmp/Sys76Lock.lock" #setup our lock file to prevent the driver from trying to do multiple things at once and...
+os.system('rm ' + lockFile) #...remove it if it exists for some reason
 
 #set some variables
 programVersion = ubuntuversion.driver() #This sets the driver's version to be used throughout the application.
@@ -37,8 +38,7 @@ SYS76LOGO_IMAGE = os.path.join(IMAGEDIR, 'logo.png')
 SYS76SQUARE_LOGO = os.path.join(IMAGEDIR, 'logoSQUARE.png')
 WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.svg')
 
-def setNotify(icon, text):
-    #Allows us to set the notification text and icon in the bottom of the window
+def setNotify(icon, text): #Allows us to set the notification text and icon in the bottom of the window
     notifyIcon = builder.get_object("notifyImage")
     notifyText = builder.get_object("notifyLabel")
     notifyIcon.show()
@@ -49,7 +49,7 @@ def setNotify(icon, text):
 #####################
 ## Create Log Dump ##
 #####################
-def on_create_clicked(driverCreate):
+def onCreateClicked(driverCreate):
     #Creates an archive of common support files and logs    
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
@@ -103,7 +103,7 @@ class InstallThread(threading.Thread):
         GObject.idle_add(setNotify, "gtk-apply", "Driver installation finished! Reboot your machine now.")
         time.sleep(0.1)
 
-def on_install_clicked(driverInstall):
+def onInstallClicked(driverInstall):
     #Manages installing the driver
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
@@ -137,7 +137,7 @@ class RestoreThread(threading.Thread):
         GObject.idle_add(setNotify, "gtk-apply", "System restore finished! Reboot your machine now.")
         time.sleep(0.1)
 
-def on_restore_clicked(driverRestore):
+def onRestoreClicked(driverRestore):
     #This method restores the system to factory state.
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
@@ -155,7 +155,7 @@ def on_restore_clicked(driverRestore):
 ##################
 ## About Dialog ##
 ##################
-def on_about_clicked(aboutButton):
+def onAboutClicked(aboutButton):
     #displays the about dialog, and hides it when it's done
     print("NOTE: Showing about dialog")
     aboutDialog = builder.get_object("aboutDialog")
@@ -163,19 +163,17 @@ def on_about_clicked(aboutButton):
     aboutDialog.run() #open the dialog and...
     aboutDialog.hide() #...remove it when the user hits close
 
-
-#initialize our Glade file
 builder = Gtk.Builder()
-builder.add_from_file("/opt/system76/system76-driver/src/system76Driver-gtk3.glade")
+builder.add_from_file("/opt/system76/system76-driver/src/system76Driver-gtk3.glade") #initialize our glade file.
 
 #create a dictionary for our commands and connect it
 handlers = {
     "onDeleteWindow": Gtk.main_quit,
-    "onInstallClicked": on_install_clicked,
-    "onRestoreClicked": on_restore_clicked,
-    "onCreateClicked": on_create_clicked,
+    "onInstallClicked": onInstallClicked,
+    "onRestoreClicked": onRestoreClicked,
+    "onCreateClicked": onCreateClicked,
     "onCloseClicked": Gtk.main_quit,
-    "onAboutClicked": on_about_clicked,
+    "onAboutClicked": onAboutClicked,
 }
 builder.connect_signals(handlers)
     
