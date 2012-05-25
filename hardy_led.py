@@ -9,5 +9,11 @@
 
 import os
 
-def install():
-    os.system('sudo apt-get --assume-yes install linux-backports-modules-hardy')
+class install():
+    def install(self):
+        
+        os.system('sudo apt-get --assume-yes install linux-backports-modules-hardy')
+        
+    def describe(self):
+        return "Wireless LED driver"
+    
