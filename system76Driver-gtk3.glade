@@ -6,6 +6,7 @@
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="resizable">False</property>
+    <property name="window_position">center</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
@@ -46,6 +47,7 @@ Ian Santopietro</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">System76 Driver</property>
     <property name="resizable">False</property>
+    <property name="window_position">center</property>
     <property name="has_resize_grip">False</property>
     <signal name="destroy" handler="onDeleteWindow" swapped="no"/>
     <child>
@@ -486,6 +488,7 @@ Ian Santopietro</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="resizable">False</property>
+    <property name="window_position">center</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="message_type">error</property>
