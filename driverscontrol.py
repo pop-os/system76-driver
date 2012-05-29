@@ -6,15 +6,18 @@
 ##
 ## Controls driver installation
 
+#import driver files
 import ubuntuversion
 import model
+import detect
+
+#import function files
 import sound
 import misc
 import acpi
 import hotkey
 import uvc
 import ricoh_cr
-import detect
 import usplash
 import hardy_led
 import fprint
@@ -40,7 +43,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('6.10'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('7.04'):
             nodrivers = "true"
             return nodrivers
@@ -48,7 +51,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -78,40 +81,23 @@ def installDrivers():
             return nodrivers
     elif modelname == ('bonp2'):
         if version == ('8.04'):
-            audio = sound.alsa10
-            video = uvc.camera
-            finger = fprint.install
-            power = acpi.osiNotWindows
-            
-            audio.install()
-            video.install()
-            finger.install()
-            power.install()
+            sound.alsa10().install()
+            uvc.camera().install()
+            fprint.install().install()
+            acpi.osiNotWindows().install()
         elif version == ('8.10'):
-            audio = sound.alsa10
-            video = uvc.camera
-            finger = fprint.install
-            power = acpi.osiNotWindows
-            
-            audio.install()
-            video.install()
-            finger.install()
-            power.install()
+            sound.alsa10().install()
+            uvc.camera().install()
+            fprint.install().install()
+            acpi.osiNotWindows().install()
         elif version == ('9.04'):
-            finger = fprint.install
-            power = acpi.osiNotWindows
-            other = misc.linux_backports
-            
-            finger.install()
-            power.install()
-            other.install()
+            fprint.install().install()
+            acpi.osiNotWindows().install()
+            misc.linux_backports().install()
         elif version == ('9.10'):
-            finger = fprint.installPackages()
-            
-            finger.install()
+            fprint.installPackages().install()
         elif version == ('10.04'):
-            finger = fprint.installPackages()
-            finger.install()
+            fprint.installPackages().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -129,18 +115,13 @@ def installDrivers():
             return nodrivers
     elif modelname == ('bonp3'):
         if version == ('9.10'):
-            power = acpi.os_linux
-            finger = fprint.installUpek1
-            other1 = misc.jme_nic
-            other2 = misc.rm_aticatalyst
-            
-            power.install()
-            finger.install()
-            other1.install()
-            other2.install()
+            acpi.os_linux().install()
+            fprint.installUpek1().install()
+            misc.jme_nic().install()
+            misc.rm_aticatalyst().install()
         elif version == ('10.04'):
-            fprint.installUpek1()
-            acpi.os_linux()
+            fprint.installUpek1().install()
+            acpi.os_linux().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -158,8 +139,7 @@ def installDrivers():
             return nodrivers
     elif modelname == ('bonp4'):
         if version == ('10.10'):
-            power = acpi.xhcihcdModule
-            power.install()
+            acpi.xhcihcdModule().install()
         elif version == ('11.04'):
             nodrivers = "true"
             return nodrivers
@@ -174,51 +154,36 @@ def installDrivers():
             return nodrivers
     elif modelname == ('bonp5'):
         if version == ('11.04'):
-            power = acpi.pcie_aspm
-            audio = sound.audioDevPPA
-            power.install()
-            audio.install()
+            acpi.pcie_aspm().install()
+            sound.audioDevPPA().install()
         elif version == ('11.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            finger = fprint.fingerprintGUI
-            finger.install()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('daru1'):
         if version == ('6.06'):
-            audio = sound.alsa6
-            audio.install()
+            sound.alsa6().install()
         elif version == ('6.10'):
-            audio = sound.alsa6
-            audio.install()
+            sound.alsa6().install()
         elif version == ('7.04'):
-            other = misc.piix
-            power = acpi.acpi1
-            keys = hotkey.daru1_monitor_switch
-            other.install()
-            power.install()
-            keys.install()
+            misc.piix().install()
+            acpi.acpi1().install()
+            hotkey.daru1_monitor_switch().install()
         elif version == ('7.10'):
-            power = acpi.acpi3
-            keys = hotkey.daru1_monitor_switch()
-            power.install()
-            keys.install()
+            acpi.acpi3().install()
+            hotkey.daru1_monitor_switch().install()
         elif version == ('8.04'):
-            power = acpi.acpi3
-            power.install()
-            keys = hotkey.daru1_monitor_switch
-            keys.install()
-            led = hardy_led.install
-            led.install()
+            acpi.acpi3().install()
+            hotkey.daru1_monitor_switch().install()
+            hardy_led.install().install()
         elif version == ('8.10'):
-            keys = hotkey.daru1_touchpad_switch
-            keys.install()
+            hotkey.daru1_touchpad_switch().install()
         elif version == ('9.04'):
-            keys = hotkey.daru1_touchpad_switch
-            keys.install()
+            hotkey.daru1_touchpad_switch().install()
         elif version == ('9.10'):
             nodrivers = "true"
             return nodrivers
@@ -242,29 +207,19 @@ def installDrivers():
             return nodrivers
     elif modelname == ('daru2'):
         if version == ('7.04'):
-            other = misc.piix2
-            other.install()
-            power = acpi.acpi2
-            power.install()
-            power1 = acpi.daru2()
-            power1.install()
-            audio = sound.alsa4
-            audio.install()
+            misc.piix2().install()
+            acpi.acpi2().install()
+            acpi.daru2().install()
+            sound.alsa4().install()
         elif version == ('7.10'):
-            power1 = acpi.acpi3
-            power1.install()
-            power2 = acpi.daru2
-            power2.install()
-            audio = sound.alsa4
-            audio.install()
+            acpi.acpi3().install()
+            acpi.daru2().install()
+            sound.alsa4().install()
         elif version == ('8.04'):
-            audio = sound.alsa4
-            audio.install()
-            led = hardy_led.install
-            led.install()
+            sound.alsa4().install()
+            hardy_led.install().install()
         elif version == ('8.10'):
-            audio = sound.alsa4
-            audio.install()
+            sound.alsa4().install()
         elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
@@ -291,30 +246,20 @@ def installDrivers():
             return nodrivers
     elif modelname == ('daru3'):
         if version == ('8.04'):
-            audio = sound.alsa10
-            audio.install()
-            video = uvc.camera
-            video.install()
-            finger = fprint.install
-            finger.install()
+            sound.alsa10().install()
+            uvc.camera().install()
+            fprint.install().install()
         elif version == ('8.10'):
-            audio = sound.alsa10
-            audio.install()
-            video = uvc.camera
-            video.install()
-            finger = fprint.install
-            finger.install()
-            power = acpi.acpi4
-            power.install()
+            sound.alsa10().install()
+            uvc.camera().install()
+            fprint.install().install()
+            acpi.acpi4().install()
         elif version == ('9.04'):
-            finger = fprint.install
-            finger.install()
+            fprint.install().install()
         elif version == ('9.10'):
-            finger = fprint.installPackages
-            finger.install()
+            fprint.installPackages().install()
         elif version == ('10.04'):
-            finger = fprint.installPackages()
-            finger.install()
+            fprint.installPackages().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -322,36 +267,27 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('11.10'):
-            power = acpi.lemu1
-            power.install()
+            acpi.lemu1().install()
         elif version == ('12.04'):
-            finger = fprint.fingerprintGUI
-            finger.install()
-            power = acpi.lemu1
-            power.install()
+            fprint.fingerprintGUI().install()
+            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('gazp1'):
         if version == ('6.06'):
-            audio = sound.alsa6
-            audio.install()
+            sound.alsa6().install()
         elif version == ('6.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            audio = sound.alsa6
-            audio.install()
-            power = acpi.acpi1
-            power.install()
+            sound.alsa6().install()
+            acpi.acpi1().install()
         elif version == ('7.10'):
-            audio = sound.alsa6
-            audio.install()
-            power = acpi.acpi3
-            power.install()
+            sound.alsa6().install()
+            acpi.acpi3().install()
         elif version == ('8.04'):
-            led = hardy_led.install
-            led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -381,19 +317,18 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp2'):
         if version == ('6.06'):
-            audio = sound.alsa6
-            audio.install()
+            sound.alsa6().install()
         elif version == ('6.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            sound.alsa6()
-            acpi.acpi1()
+            sound.alsa6().install()
+            acpi.acpi1().install()
         elif version == ('7.10'):
-            sound.alsa6()
-            acpi.acpi3()
+            sound.alsa6().install()
+            acpi.acpi3().install()
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -423,18 +358,18 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp3'):
         if version == ('6.06'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('6.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            sound.alsa6()
-            acpi.acpi1()
+            sound.alsa6().install()
+            acpi.acpi1().install()
         elif version == ('7.10'):
-            sound.alsa6()
-            acpi.acpi3()
+            sound.alsa6().install()
+            acpi.acpi3().install()
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -464,20 +399,20 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp5'):
         if version == ('7.04'):
-            misc.piix2()
-            sound.alsa5()
-            uvc.camera()
-            acpi.acpi1()
-            ricoh_cr.card_reader()
+            misc.piix2().install()
+            sound.alsa5().install()
+            uvc.camera().install()
+            acpi.acpi1().install()
+            ricoh_cr.card_reader().install()
         elif version == ('7.10'):
-            sound.alsa5()
-            acpi.acpi3()
-            ricoh_cr.card_reader()
+            sound.alsa5().install()
+            acpi.acpi3().install()
+            ricoh_cr.card_reader().install()
         elif version == ('8.04'):
-            sound.alsa9()
-            hardy_led.install()
+            sound.alsa9().install()
+            hardy_led.install().install()
         elif version == ('8.10'):
-            sound.alsa9()
+            sound.alsa9().install()
         elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
@@ -504,24 +439,24 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazp6'):
         if version == ('10.10'):
-            fprint.fingerprintGUI()
-            acpi.xhcihcdModule()
-            misc.gnomeThemeRace()
-            acpi.pcie_aspm()
+            fprint.fingerprintGUI().install()
+            acpi.xhcihcdModule().install()
+            misc.gnomeThemeRace().install()
+            acpi.pcie_aspm().install()
         elif version == ('11.04'):
-            acpi.pcie_aspm()
+            acpi.pcie_aspm().install()
         elif version == ('11.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            fprint.fingerprintGUI()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('gazp7'):
         if version == ('12.04'):
-            acpi.lemu1()
-            misc.realtek_rts_bpp()
+            acpi.lemu1().install()
+            misc.realtek_rts_bpp().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -530,17 +465,17 @@ def installDrivers():
         return nodrivers
     elif modelname == ('gazv2'):
         if version == ('6.06'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('6.10'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('7.04'):
-            sound.alsa6()
-            acpi.acpi1()
+            sound.alsa6().install()
+            acpi.acpi1().install()
         elif version == ('7.10'):
-            sound.alsa6()
-            acpi.acpi3()
+            sound.alsa6().install()
+            acpi.acpi3().install()
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -570,19 +505,19 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazv3'):
         if version == ('6.06'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('6.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            sound.alsa6()
-            misc.piix()
-            acpi.acpi2()
+            sound.alsa6().install()
+            misc.piix().install()
+            acpi.acpi2().install()
         elif version == ('7.10'):
-            sound.alsa6()
-            acpi.acpi3()
+            sound.alsa6().install()
+            acpi.acpi3().install()
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -612,18 +547,18 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazv4'):
         if version == ('6.06'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('6.10'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('7.04'):
-            sound.alsa6()
-            misc.piix()
-            acpi.acpi2()
+            sound.alsa6().install()
+            misc.piix().install()
+            acpi.acpi2().install()
         elif version == ('7.10'):
-            sound.alsa6()
-            acpi.acpi3()
+            sound.alsa6().install()
+            acpi.acpi3().install()
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -653,19 +588,19 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazv5'):
         if version == ('7.04'):
-            misc.piix2()
-            sound.alsa5()
-            uvc.camera()
-            acpi.acpi1()
-            ricoh_cr.card_reader()
+            misc.piix2().install()
+            sound.alsa5().install()
+            uvc.camera().install()
+            acpi.acpi1().install()
+            ricoh_cr.card_reader().install()
         elif version == ('7.10'):
-            sound.alsa5()
-            ricoh_cr.card_reader()
+            sound.alsa5().install()
+            ricoh_cr.card_reader().install()
         elif version == ('8.04'):
-            sound.alsa9()
-            hardy_led.install()
+            sound.alsa9().install()
+            hardy_led.install().install()
         elif version == ('8.10'):
-            sound.alsa9()
+            sound.alsa9().install()
         elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
@@ -692,32 +627,32 @@ def installDrivers():
             return nodrivers
     elif modelname == ('gazu1'):
         if version == ('8.04'):
-            sound.alsa10()
-            uvc.camera()
-            uvc.quirks()
-            fprint.install()
+            sound.alsa10().install()
+            uvc.camera().install()
+            uvc.quirks().install()
+            fprint.install().install()
         elif version == ('8.10'):
-            sound.alsa10()
-            uvc.quirks()
-            fprint.install()
+            sound.alsa10().install()
+            uvc.quirks().install()
+            fprint.install().install()
         elif version == ('9.04'):
-            uvc.quirks()
-            fprint.install()
+            uvc.quirks().install()
+            fprint.install().install()
         elif version == ('9.10'):
-            uvc.quirks()
-            fprint.installPackages()
+            uvc.quirks().install()
+            fprint.installPackages().install()
         elif version == ('10.04'):
-            uvc.quirks()
-            fprint.installPackages()
+            uvc.quirks().install()
+            fprint.installPackages().install()
         elif version == ('10.10'):
-            uvc.quirks()
+            uvc.quirks().install()
         elif version == ('11.04'):
-            uvc.quirks()
+            uvc.quirks().install()
         elif version == ('11.10'):
-            uvc.quirks()
+            uvc.quirks().install()
         elif version == ('12.04'):
-            uvc.quirks()
-            fprint.fingerprintGUI()
+            uvc.quirks().install()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -729,7 +664,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            acpi.acpi1()
+            acpi.acpi1().install()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
@@ -765,29 +700,29 @@ def installDrivers():
             return nodrivers
     elif modelname == ('lemu1'):
         if version == ('9.04'):
-            uvc.lemur()
-            acpi.lemu1()
+            uvc.lemur().install()
+            acpi.lemu1().install()
         elif version == ('9.10'):
-            uvc.lemur()
-            acpi.lemu1()
-            misc.jme_nic()
+            uvc.lemur().install()
+            acpi.lemu1().install()
+            misc.jme_nic().install()
         elif version == ('10.04'):
-            uvc.lemur()
-            acpi.lemu1()
+            uvc.lemur().install()
+            acpi.lemu1().install()
         elif version == ('10.10'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         elif version == ('11.04'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         elif version == ('11.10'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         elif version == ('12.04'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('lemu2'):
         if version == ('10.04'):
-            uvc.lemur()
+            uvc.lemur().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -805,21 +740,21 @@ def installDrivers():
             return nodrivers
     elif modelname == ('lemu3'):
         if version == ('11.04'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         elif version == ('11.10'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         elif version == ('12.04'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('lemu4'):
         if version == ('11.10'):
-            acpi.lemu1()
-            misc.realtek_rts_bpp()
+            acpi.lemu1().install()
+            misc.realtek_rts_bpp().install()
         elif version == ('12.04'):
-            acpi.lemu1()
-            misc.realtek_rts_bpp()
+            acpi.lemu1().install()
+            misc.realtek_rts_bpp().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -850,8 +785,8 @@ def installDrivers():
             return nodrivers
     elif modelname == ('leox2'):
         if version == ('10.10'):
-            acpi.xhcihcdModule()
-            misc.gnomeThemeRace()
+            acpi.xhcihcdModule().install()
+            misc.gnomeThemeRace().install()
         elif version == ('11.04'):
             nodrivers = "true"
             return nodrivers
@@ -970,11 +905,11 @@ def installDrivers():
         return nodrivers
     elif modelname == ('panp4i'):
         if version == ('8.04'):
-            uvc.camera()
-            sound.alsa11()
+            uvc.camera().install()
+            sound.alsa11().install()
         elif version == ('8.10'):
-            uvc.camera()
-            sound.alsa10()
+            uvc.camera().install()
+            sound.alsa10().install()
         elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
@@ -1001,20 +936,20 @@ def installDrivers():
             return nodrivers
     elif modelname == ('panp4n'):
         if version == ('8.04'):
-            uvc.camera()
-            fprint.install()
-            sound.alsa11()
+            uvc.camera().install()
+            fprint.install().install()
+            sound.alsa11().install()
         elif version == ('8.10'):
-            uvc.camera()
-            fprint.install()
-            sound.alsa10()
+            uvc.camera().install()
+            fprint.install().install()
+            sound.alsa10().install()
         elif version == ('9.04'):
-            fprint.install()
-            misc.linux_backports()
+            fprint.install().install()
+            misc.linux_backports().install()
         elif version == ('9.10'):
-            fprint.installPackages()
+            fprint.installPackages().install()
         elif version == ('10.04'):
-            fprint.installPackages()
+            fprint.installPackages().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1025,26 +960,26 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            fprint.fingerprintGUI()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('panp5'):
         if version == ('8.04'):
-            uvc.camera()
-            fprint.install()
-            sound.alsa11()
+            uvc.camera().install()
+            fprint.install().install()
+            sound.alsa11().install()
         elif version == ('8.10'):
-            uvc.camera()
-            fprint.install()
-            sound.alsa10()
+            uvc.camera().install()
+            fprint.install().install()
+            sound.alsa10().install()
         elif version == ('9.04'):
-            fprint.install()
-            misc.linux_backports()
+            fprint.install().install()
+            misc.linux_backports().install()
         elif version == ('9.10'):
-            fprint.installPackages()
+            fprint.installPackages().install()
         elif version == ('10.04'):
-            fprint.installPackages()
+            fprint.installPackages().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1055,26 +990,26 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            fprint.fingerprintGUI()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('panp6'):
         if version == ('8.04'):
-            uvc.camera()
-            fprint.install()
-            sound.alsa11()
+            uvc.camera().install()
+            fprint.install().install()
+            sound.alsa11().install()
         elif version == ('8.10'):
-            uvc.camera()
-            fprint.install()
-            sound.alsa10()
+            uvc.camera().install()
+            fprint.install().install()
+            sound.alsa10().install()
         elif version == ('9.04'):
-            fprint.install()
-            misc.linux_backports()
+            fprint.install().install()
+            misc.linux_backports().install()
         elif version == ('9.10'):
-            fprint.installPackages()
+            fprint.installPackages().install()
         elif version == ('10.04'):
-            fprint.installPackages()
+            fprint.installPackages().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1085,19 +1020,19 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            fprint.fingerprintGUI()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('panp7'):
         if version == ('9.10'):
-            acpi.os_linux()
-            fprint.installUpek1()
-            misc.jme_nic()
-            misc.rm_aticatalyst()
+            acpi.os_linux().install()
+            fprint.installUpek1().install()
+            misc.jme_nic().install()
+            misc.rm_aticatalyst().install()
         elif version == ('10.04'):
-            acpi.os_linux()
-            fprint.installUpek1()
+            acpi.os_linux().install()
+            fprint.installUpek1().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1108,43 +1043,43 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            fprint.fingerprintGUI()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('panp8'):
         if version == ('11.04'):
-            acpi.lemu1()
-            misc.elantech()
+            acpi.lemu1().install()
+            misc.elantech().install()
         elif version == ('11.10'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         elif version == ('12.04'):
-            acpi.lemu1()
+            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('panp9'):
         if version == ('11.10'):
-            acpi.lemu1()
-            misc.realtek_rts_bpp()
+            acpi.lemu1().install()
+            misc.realtek_rts_bpp().install()
         elif version == ('12.04'):
-            acpi.lemu1()
-            misc.realtek_rts_bpp()
+            acpi.lemu1().install()
+            misc.realtek_rts_bpp().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('panv2'):
         if version == ('6.06'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('6.10'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('7.04'):
-            sound.alsa6()
-            acpi.acpi1()
+            sound.alsa6().install()
+            acpi.acpi1().install()
         elif version == ('7.10'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -1174,18 +1109,18 @@ def installDrivers():
             return nodrivers
     elif modelname == ('panv3'):
         if version == ('7.04'):
-            misc.piix2()
-            sound.alsa5()
-            acpi.acpi1()
-            ricoh_cr.card_reader()
+            misc.piix2().install()
+            sound.alsa5().install()
+            acpi.acpi1().install()
+            ricoh_cr.card_reader().install()
         elif version == ('7.10'):
-            sound.alsa5()
-            ricoh_cr.card_reader()
+            sound.alsa5().install()
+            ricoh_cr.card_reader().install()
         elif version == ('8.04'):
-            sound.alsa9()
-            hardy_led.install()
+            sound.alsa9().install()
+            hardy_led.install().install()
         elif version == ('8.10'):
-            sound.alsa9()
+            sound.alsa9().install()
         elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
@@ -1257,7 +1192,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            acpi.acpi1()
+            acpi.acpi1().install()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
@@ -1299,7 +1234,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            acpi.acpi1()
+            acpi.acpi1().install()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
@@ -1341,7 +1276,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            acpi.acpi1()
+            acpi.acpi1().install()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
@@ -1377,7 +1312,7 @@ def installDrivers():
             return nodrivers
     elif modelname == ('ratv4'):
         if version == ('7.10'):
-            sound.alsa7()
+            sound.alsa7().install()
         elif version == ('8.04'):
             nodrivers = "true"
             return nodrivers
@@ -1410,11 +1345,11 @@ def installDrivers():
             return nodrivers
     elif modelname == ('ratv5'):
         if version == ('7.10'):
-            sound.alsa7()
+            sound.alsa7().install()
         elif version == ('8.04'):
-            sound.alsa8()
+            sound.alsa8().install()
         elif version == ('8.10'):
-            sound.alsa8()
+            sound.alsa8().install()
         elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
@@ -1478,7 +1413,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            acpi.acpi1()
+            acpi.acpi1().install()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
@@ -1514,12 +1449,12 @@ def installDrivers():
             return nodrivers
     elif modelname == ('sabv2'):
         if version == ('6.06'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('6.10'):
-            sound.alsa6()
+            sound.alsa6().install()
         elif version == ('7.04'):
-            sound.alsa6()
-            acpi.acpi1()
+            sound.alsa6().install()
+            acpi.acpi1().install()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
@@ -1595,12 +1530,12 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            acpi.acpi1()
+            acpi.acpi1().install()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -1636,12 +1571,12 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('7.04'):
-            acpi.acpi1()
+            acpi.acpi1().install()
         elif version == ('7.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('8.04'):
-            hardy_led.install()
+            hardy_led.install().install()
         elif version == ('8.10'):
             nodrivers = "true"
             return nodrivers
@@ -1671,21 +1606,21 @@ def installDrivers():
             return nodrivers
     elif modelname == ('serp3'):
         if version == ('7.04'):
-            acpi.acpi1()
-            sound.alsa5()
+            acpi.acpi1().install()
+            sound.alsa5().install()
         elif version == ('7.10'):
             if arch == ('x86'):
-                sound.alsa5()
-                ricoh_cr.card_reader()
+                sound.alsa5().install()
+                ricoh_cr.card_reader().install()
             else:
-                usplash.gutsy_64_nvidia()
-                sound.alsa5()
-                ricoh_cr.card_reader()
+                usplash.gutsy_64_nvidia().install()
+                sound.alsa5().install()
+                ricoh_cr.card_reader().install()
         elif version == ('8.04'):
-            sound.alsa9()
-            hardy_led.install()
+            sound.alsa9().install()
+            hardy_led.install().install()
         elif version == ('8.10'):
-            sound.alsa9()
+            sound.alsa9().install()
         elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
@@ -1712,21 +1647,21 @@ def installDrivers():
             return nodrivers
     elif modelname == ('serp4'):
         if version == ('7.04'):
-            acpi.acpi1()
-            sound.alsa5()
+            acpi.acpi1().install()
+            sound.alsa5().install()
         elif version == ('7.10'):
             if arch == ('x86'):
-                sound.alsa5()
-                ricoh_cr.card_reader()
+                sound.alsa5().install()
+                ricoh_cr.card_reader().install()
             else:
-                usplash.gutsy_64_nvidia()
-                sound.alsa5()
-                ricoh_cr.card_reader()
+                usplash.gutsy_64_nvidia().install()
+                sound.alsa5().install()
+                ricoh_cr.card_reader().install()
         elif version == ('8.04'):
-            sound.alsa9()
-            hardy_led.install()
+            sound.alsa9().install()
+            hardy_led.install().install()
         elif version == ('8.10'):
-            sound.alsa9()
+            sound.alsa9().install()
         elif version == ('9.04'):
             nodrivers = "true"
             return nodrivers
@@ -1753,17 +1688,17 @@ def installDrivers():
             return nodrivers
     elif modelname == ('serp5'):
         if version == ('8.10'):
-            sound.alsa10()
-            uvc.camera()
-            fprint.install()
-            acpi.osiNotWindows()
+            sound.alsa10().install()
+            uvc.camera().install()
+            fprint.install().install()
+            acpi.osiNotWindows().install()
         elif version == ('9.04'):
-            fprint.install()
-            misc.linux_backports()
+            fprint.install().install()
+            misc.linux_backports().install()
         elif version == ('9.10'):
-            fprint.installPackages()
+            fprint.installPackages().install()
         elif version == ('10.04'):
-            fprint.installPackages()
+            fprint.installPackages().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1774,22 +1709,22 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            fprint.fingerprintGUI()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('serp6'):
         if version == ('9.10'):
-            acpi.os_linux()
-            uvc.lemur()
-            fprint.installUpek1()
-            misc.gnomeThemeRace()
+            acpi.os_linux().install()
+            uvc.lemur().install()
+            fprint.installUpek1().install()
+            misc.gnomeThemeRace().install()
         elif version == ('10.04'):
-            acpi.os_linux()
-            uvc.lemur()
-            fprint.installUpek1()
+            acpi.os_linux().install()
+            uvc.lemur().install()
+            fprint.installUpek1().install()
         elif version == ('10.10'):
-            acpi.xhcihcdModule()
+            acpi.xhcihcdModule().install()
         elif version == ('11.04'):
             nodrivers = "true"
             return nodrivers
@@ -1797,63 +1732,63 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            fprint.fingerprintGUI()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('serp7'):
         if version == ('10.10'):
-            fprint.fingerprintGUI()
-            acpi.xhcihcdModule()
-            misc.gnomeThemeRace()
-            acpi.pcie_aspm()
+            fprint.fingerprintGUI().install()
+            acpi.xhcihcdModule().install()
+            misc.gnomeThemeRace().install()
+            acpi.pcie_aspm().install()
         elif version == ('11.04'):
-            acpi.pcie_aspm()
+            acpi.pcie_aspm().install()
         elif version == ('11.10'):
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            fprint.fingerprintGUI()
+            fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('star1'):
         if version == ('9.04'):
-            sound.alsa12()
-            misc.linux_backports()
-            acpi.star1()
-            hotkey.star1_904()
-            misc.wireless8187b()
+            sound.alsa12().install()
+            misc.linux_backports().install()
+            acpi.star1().install()
+            hotkey.star1_904().install()
+            misc.wireless8187b().install()
         elif version == ('9.10'):
-            sound.alsa13()
-            acpi.star1()
-            misc.wireless8187b()
+            sound.alsa13().install()
+            acpi.star1().install()
+            misc.wireless8187b().install()
         elif version == ('10.04'):
-            sound.alsa13()
-            acpi.star1()
-            misc.wireless8187b()
+            sound.alsa13().install()
+            acpi.star1().install()
+            misc.wireless8187b().install()
         elif version == ('10.10'):
-            sound.alsa13()
-            acpi.star1()
-            misc.wireless8187b()
+            sound.alsa13().install()
+            acpi.star1().install()
+            misc.wireless8187b().install()
         elif version == ('11.04'):
-            sound.alsa13()
-            acpi.star1()
-            misc.wireless8187b()
+            sound.alsa13().install()
+            acpi.star1().install()
+            misc.wireless8187b().install()
         elif version == ('11.10'):
-            sound.alsa13()
-            acpi.star1()
-            misc.wireless8187b()
+            sound.alsa13().install()
+            acpi.star1().install()
+            misc.wireless8187b().install()
         elif version == ('12.04'):
-            sound.alsa13()
-            acpi.star1()
-            misc.wireless8187b()
+            sound.alsa13().install()
+            acpi.star1().install()
+            misc.wireless8187b().install()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('star2'):
         if version == ('10.04'):
-            acpi.star2()
+            acpi.star2().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1871,8 +1806,8 @@ def installDrivers():
             return nodrivers
     elif modelname == ('star3'):
         if version == ('10.04'):
-            sound.alsabackportsLucid()
-            acpi.sdCardBug()
+            sound.alsabackportsLucid().install()
+            acpi.sdCardBug().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1890,8 +1825,8 @@ def installDrivers():
             return nodrivers
     elif modelname == ('star4'):
         if version == ('10.04'):
-            sound.alsabackportsLucid()
-            acpi.sdCardBug()
+            sound.alsabackportsLucid().install()
+            acpi.sdCardBug().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1909,8 +1844,8 @@ def installDrivers():
             return nodrivers
     elif modelname == ('star5'):
         if version == ('10.04'):
-            sound.alsabackportsLucid()
-            acpi.sdCardBug()
+            sound.alsabackportsLucid().install()
+            acpi.sdCardBug().install()
         elif version == ('10.10'):
             nodrivers = "true"
             return nodrivers
@@ -1937,7 +1872,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('10.10'):
-            misc.gnomeThemeRace()
+            misc.gnomeThemeRace().install()
         elif version == ('11.04'):
             nodrivers = "true"
             return nodrivers
@@ -2098,7 +2033,7 @@ def installDrivers():
                 nodrivers = "true"
                 return nodrivers
             else:
-                usplash.gutsy_64_nvidia()
+                usplash.gutsy_64_nvidia().install()
         elif version == ('8.04'):
             nodrivers = "true"
             return nodrivers
@@ -2152,8 +2087,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            nodrivers = "true"
-            return nodrivers
+            misc.test().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2181,8 +2115,8 @@ def installDrivers():
             return nodrivers
     elif modelname == ('wilp8'):
         if version == ('10.10'):
-            acpi.xhcihcdModule()
-            misc.gnomeThemeRace()
+            acpi.xhcihcdModule().install()
+            misc.gnomeThemeRace().install()
         elif version == ('11.04'):
             nodrivers = "true"
             return nodrivers

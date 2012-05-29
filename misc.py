@@ -229,3 +229,11 @@ class realtek_rts_bpp():
             os.system('echo \'DRIVERS=="rts_bpp", ENV{ID_DRIVE_FLASH_SD}="1"\' | sudo tee -a /lib/udev/rules.d/81-udisks-realtek.rules')
     def describe(self):
         return "Realtek Card Reader Driver"
+    
+class test():
+    def install(self):
+        #simple test method to see if the driver is working
+        print("Installing drivers...")
+        
+    def describe(self):
+        return "Test Driver"
