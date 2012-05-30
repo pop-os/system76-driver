@@ -190,7 +190,7 @@ def onDetailsClicked(details):
         DETAILS_SHOW = False
 
 builder = Gtk.Builder()
-builder.add_from_file("/opt/system76/system76-driver/src/system76Driver-gtk3.glade") #initialize our glade file.
+builder.add_from_file(os.path.join("system76Driver-gtk3.glade")) #initialize our glade file.
 
 #create a dictionary for our commands and connect it
 handlers = {
