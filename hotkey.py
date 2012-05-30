@@ -9,6 +9,8 @@
 import os
 import fileinput
 
+descriptionFile = "/tmp/sys76-drivers"
+
 class daru1_monitor_switch():
     def install(self):
         

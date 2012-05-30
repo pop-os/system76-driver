@@ -12,7 +12,7 @@ LIBFPRINTDIR =  os.path.join(os.path.dirname(__file__), 'fprint/libfprint-200808
 PAMFPRINTDIR = os.path.join(os.path.dirname(__file__), 'fprint/pam_fprint-20080330-5452ea09')
 FPRINTDEMODIR = os.path.join(os.path.dirname(__file__), 'fprint/fprint_demo-20080319-5d86c3f7')
 FPRINTGUI = os.path.join(os.path.dirname(__file__), 'fprint/fingerprint-0.12')
-
+descriptionFile = "/tmp/sys76-drivers"
 
 class install():
     def install(self):

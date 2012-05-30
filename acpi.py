@@ -11,6 +11,7 @@ import time
 import ubuntuversion
 
 today = time.strftime('%Y%m%d_h%Hm%Ms%S')
+descriptionFile = "/tmp/sys76-drivers"
 
 class acpi1():
     def install(self):

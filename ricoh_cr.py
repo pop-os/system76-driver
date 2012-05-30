@@ -7,6 +7,7 @@
 import os
 
 DRIVERDIR = os.path.join(os.path.dirname(__file__), 'ricoh')
+descriptionFile = "/tmp/sys76-drivers"
 
 class card_reader():
     def install(self):

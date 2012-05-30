@@ -15,6 +15,7 @@ SOUNDDIR1 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14rc2')
 SOUNDDIR2 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14rc3')
 SOUNDDIR3 = os.path.join(os.path.dirname(__file__), 'sys76-alsa-1.0.14')
 SOUNDDIR4 = os.path.join(os.path.dirname(__file__), 'alsa-driver')
+descriptionFile = "/tmp/sys76-drivers"
 
 class alsa1():
     def install(self):
@@ -43,6 +44,7 @@ class alsa1():
             raise OSError("A problem has occured.")
         
     def describe(self):
+        os.system("echo 'ALSA 1.0.12rc2 Sound Driver' >> " + descriptionFile)
         return "ALSA 1.0.12rc2 Sound Driver"
     
 class alsa2():

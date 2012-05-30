@@ -9,6 +9,8 @@
 
 import os
 
+descriptionFile = "/tmp/sys76-drivers"
+
 class install():
     def install(self):
         

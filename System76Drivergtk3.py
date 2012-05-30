@@ -21,6 +21,7 @@ import detect
 import getpass
 import base_system
 import driverscontrol
+import driversdescribe
 
 #import GTK 3 libraries
 from gi.repository import Gtk       
@@ -29,7 +30,9 @@ from gi.repository import GObject
 GObject.threads_init() #initialize threads
 
 lockFile = "/tmp/Sys76Lock.lock" #setup our lock file to prevent the driver from trying to do multiple things at once and...
-os.system('rm ' + lockFile) #...remove it if it exists for some reason
+os.system('rm ' + lockFile + ' 2>/dev/null') #...silently remove it if it exists for some reason
+descriptionFile = "/tmp/sys76-drivers" #setup our description file that will hold descriptions of all of the drivers to be installed...
+os.system("rm " + descriptionFile + " 2>/dev/null") #...and remove it too
 
 #set some variables
 programVersion = ubuntuversion.driver() #This sets the driver's version to be used throughout the application.
@@ -240,9 +243,12 @@ class notSupport(object):
         Gtk.main()
 
 if getSupported() == True:
+    driversdescribe.describeDrivers()
+    os.system("cat " + descriptionFile)
     system76Driver().run()
 else:
     notSupport().run()
 
-os.system('rm ' + lockFile)
+os.system('rm ' + lockFile + ' 2>/dev/null') #remove any stray lock files and...
+os.system("rm " + descriptionFile + " 2>/dev/null") #description files.
 sys.exit(0)

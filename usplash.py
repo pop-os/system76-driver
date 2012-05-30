@@ -10,6 +10,7 @@ import fileinput
 import time
 
 today = time.strftime('%Y%m%d_h%Hm%Ms%S')
+descriptionFile = "/tmp/sys76-drivers"
 
 class gutsy_64_nvidia():
     def install(self):

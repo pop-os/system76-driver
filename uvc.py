@@ -9,6 +9,7 @@ import os
 DRIVERDIR = os.path.join(os.path.dirname(__file__), 'uvc')
 WEBCAMDIR1 = os.path.join(os.path.dirname(__file__), 'uvcvideo-74ad936bcca2-custom')
 WORKDIR = os.path.join(os.path.dirname(__file__), '.')
+descriptionFile = "/tmp/sys76-drivers"
 
 class camera():
     def install(self):

@@ -15,6 +15,8 @@ WIRELESS8187 = os.path.join(os.path.dirname(__file__), 'rtl8187B_linux_26.1052.0
 WIRELESS8187B = os.path.join(os.path.dirname(__file__), 'rtl8187B/rtl8187/')
 JMEDIR = os.path.join(os.path.dirname(__file__), 'jme-1.0.5')
 DKMSDIR = os.path.join(os.path.dirname(__file__), '/usr/src/')
+descriptionFile = "/tmp/sys76-drivers"
+
 class piix():
     def install(self):
         """Changes hard drive driver from ata_piix to piix"""
@@ -236,4 +238,13 @@ class test():
         print("Installing drivers...")
         
     def describe(self):
-        return "Test Driver"
+        os.system("echo 'Test Driver 1' >> " + descriptionFile)
+        return "Test Driver 1"
+
+class test2():
+    def install(self):
+        print("Installing Test Driver 2")
+        
+    def describe(self):
+        os.system("echo 'Test Driver 2' >> " + descriptionFile)
+    
