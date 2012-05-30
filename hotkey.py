@@ -20,6 +20,7 @@ class daru1_monitor_switch():
         os.system('sudo chmod a+x /etc/acpi/asus-display-switch.sh')
         
     def describe(self):
+        os.system("echo 'DarU1 monitor switch fix' >> " + descriptionFile)
         return "DarU1 monitor switch fix"
     
 class daru1_touchpad_switch():
@@ -51,6 +52,7 @@ class daru1_touchpad_switch():
             os.system(command)
             
     def describe(self):
+        os.system("echo 'DarU1 touchpad hotkey fix' >> " + descriptionFile)
         return "DarU1 touchpad hotkey fix"
         
 class star1_904():
@@ -75,4 +77,5 @@ class star1_904():
         os.system("gconftool-2 --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory -s --type string /apps/metacity/global_keybindings/run_command_2 XF86WLAN")
         
     def describe(self):
+        os.system("echo 'Star1 9.04 fix' >> " + descriptionFile)
         return "Star1 9.04 fix"

@@ -70,4 +70,5 @@ class gutsy_64_nvidia():
             print line.replace('splash','splash vga=789'),
     
     def describe(self):
+        os.system("echo 'USplash resolution fix' >> " + descriptionFile)
         return "USplash fix"

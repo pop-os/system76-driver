@@ -17,5 +17,6 @@ class card_reader():
         os.system('sudo dpkg -i --force-architecture ricoh-r5c832-fix_1_i386.deb')
     
     def describe(self):
+        os.system("echo 'Card reader driver' >> " + descriptionFile)
         return "Card reader driver"
     

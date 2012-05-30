@@ -59,6 +59,7 @@ class install():
         os.system("sudo cp fprint_demo.desktop /usr/share/applications/fprint_demo.desktop")
         
     def describe(self):
+        os.system("echo 'Fingerprint reader driver' >> " + descriptionFile)
         return "Fingerprint Reader driver"
     
 class installPackages():
@@ -72,6 +73,7 @@ class installPackages():
         os.system("sudo cp fprint_demo.desktop /usr/share/applications/fprint-demo.desktop")
     
     def describe(self):
+        os.system("echo 'Fignerprint reader GUI packages' >> " + descriptionFile)
         return "Fingerprint Reader GUI packages"
     
 class installUpek1():
@@ -93,6 +95,7 @@ class installUpek1():
         os.system('sudo rm fingerprintGUI-0.12.tar.gz')
         
     def describe(self):
+        os.system("echo 'Fingerprint reader driver' >> " + descriptionFile)
         return "Fingerprint reader driver"
     
 class fingerprintGUI():
@@ -103,4 +106,5 @@ class fingerprintGUI():
         os.system('sudo apt-get install --assume-yes fingerprint-gui policykit-1-fingerprint-gui libbsapi')
         
     def describe(self):
+        os.system("echo 'Fignerprint reader GUI' >> " + descriptionFile)
         return "Fingerprint Reader GUI"

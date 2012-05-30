@@ -20,6 +20,7 @@ class camera():
         os.system("sudo make install")
         
     def describe(self):
+        os.system("echo 'Camera driver' >> " + descriptionFile)
         return "Camera Driver"
 
 class quirks():
@@ -31,6 +32,7 @@ class quirks():
         os.system("echo options uvcvideo quirks=2 | sudo tee -a /etc/modprobe.d/uvc.conf")
     
     def describe(self):
+        os.system("echo 'Webcam quirk fixes' >> " + descriptionFile)
         return "Webcam quirk fixes"
 
 class lemur():
@@ -61,4 +63,5 @@ class lemur():
         os.chdir(WORKDIR)
         
     def describe(self):
+        os.system("echo 'Camera driver' >> " + descriptionFile)
         return "Camera Driver"

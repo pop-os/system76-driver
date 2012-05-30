@@ -24,6 +24,7 @@ class acpi1():
         os.system('sudo cp /opt/system76/system76-driver/src/acpi/feisty/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh')
         
     def describe(self):
+        os.system("echo 'Suspend configuration' >> " + descriptionFile)
         return "Suspend configuration"
     
 class acpi2():
@@ -37,6 +38,7 @@ class acpi2():
         os.system('sudo cp /opt/system76/system76-driver/src/acpi/feisty/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh')
     
     def describe(self):
+        os.system("echo 'Suspend configuration' >> " + descriptionFile)
         return "Suspend configuration"
     
 class acpi3():
@@ -50,6 +52,7 @@ class acpi3():
         os.system('sudo cp /opt/system76/system76-driver/src/acpi/feisty/60-asus-wireless-led.sh /etc/acpi/resume.d/60-asus-wireless-led.sh')
     
     def describe(self):
+        os.system("echo 'Suspend configuration' >> " + descriptionFile)
         return "Suspend configuration"
 
 class acpi4():
@@ -60,6 +63,7 @@ class acpi4():
         os.system('sudo rm /etc/pm/sleep.d/00CPU')
         
     def describe(self):
+        os.system("echo 'Remove old Suspend configuration' >> " + descriptionFile)
         return "Remove old suspend configuration"
     
 class daru2():
@@ -92,6 +96,7 @@ class daru2():
             print line.replace('splash','splash ec_intr=0'),
         
     def describe(self):
+        os.system("echo 'DSDT table for DarU2' >> " + descriptionFile)
         return "DSDT table for DarU2"
         
 class osiNotWindows():
@@ -109,6 +114,7 @@ class osiNotWindows():
             print line.replace('splash','splash acpi_osi="!Windows 2006"'),
     
     def describe(self):
+        os.system("echo 'Linux BIOS description' >> " + descriptionFile)
         return "Linux BIOS descripton"
             
 class lemu1():
@@ -127,6 +133,7 @@ class lemu1():
         os.system('sudo update-grub')
     
     def describe(self):
+        os.system("echo 'Linux BIOS description' >> " + descriptionFile)
         return "Linux BIOS descroption"
     
 class os_linux():
@@ -145,6 +152,7 @@ class os_linux():
         os.system('sudo update-grub')
     
     def describe(self):
+        os.system("echo 'Linux BIOS description' >> " + descriptionFile)
         return "Linux BIOS description"
         
 class star1():
@@ -184,6 +192,7 @@ class star1():
             os.system('sudo update-grub')
     
     def describe(self):
+        os.system("echo 'Star1 card reader driver' >> " + descriptionFile)
         return "Star1 card reader driver"
         
 class star2():
@@ -193,6 +202,7 @@ class star2():
         os.system('sudo chmod +x /etc/pm/sleep.d/70_star2_touchpad')
         
     def describe(self):
+        os.system("echo 'Synaptic trackpad suspend fix' >> " + descriptionFile)
         return "Synaptic Trackpad suspend fix"
     
 class sdCardBug():
@@ -204,6 +214,7 @@ class sdCardBug():
         os.system('sudo chmod +x /etc/pm/config.d/suspend_modules')
         
     def describe(self):
+        os.system("echo 'SD card reader suspend fix' >> " + descriptionFile)
         return "SD card reader suspend fix"
     
 class xhcihcdModule():
@@ -214,6 +225,7 @@ class xhcihcdModule():
         os.system('sudo chmod +x /etc/pm/config.d/suspend_modules')
         
     def describe(self):
+        os.system("echo 'USB 3 suspend fix' >> " + descriptionFile)
         return "USB 3 suspend fix"
     
 class pcie_aspm():
@@ -233,5 +245,6 @@ class pcie_aspm():
         os.system('sudo update-grub')
     
     def describe(self):
+        os.system("echo 'Ethernet instability fixes' >> " + descriptionFile)
         return "Ethernet instability fixes"
     

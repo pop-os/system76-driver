@@ -2090,8 +2090,8 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            misc.test().describe()
-            misc.test2().describe()
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers

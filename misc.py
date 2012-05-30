@@ -36,6 +36,7 @@ class piix():
             return
         
     def describe(self):
+        os.system("echo 'PIIX hard drive driver' >> " + descriptionFile)
         return "PIIX hard drive driver"
     
 class piix2():
@@ -59,6 +60,7 @@ class piix2():
             return
         
     def describe(self):
+        os.system("echo 'PIIX hard drive driver' >> " + descriptionFile)
         return "PIIX hard drive driver"
         
 class linux_backports():
@@ -68,6 +70,7 @@ class linux_backports():
         os.system('sudo apt-get --assume-yes install linux-backports-modules-`lsb_release -c -s`')
     
     def describe(self):
+        os.system("echo 'Linux-backports-modules' >> " + descriptionFile)
         return "Linux-backports-modules"
     
 class wireless8187b():
@@ -138,6 +141,7 @@ class wireless8187b():
             os.system('sudo rm -r rtl8187B.tar.gz rtl8187B/')
             
     def describe(self):
+        os.system("echo 'RTL8187B Wireless Driver' >> " + descriptionFile)
         return "RTL8187B Wireless Driver"
         
 class jme_nic():
@@ -164,6 +168,7 @@ class jme_nic():
             os.system("sudo make install")
             
     def describe(self):
+        os.system("echo 'JME RAM driver 1.0.5' >> " + descriptionFile)
         return "JME RAM driver 1.0.5"
         
 class rm_aticatalyst():
@@ -173,6 +178,7 @@ class rm_aticatalyst():
         os.system('sudo rm /usr/share/applications/amdcccle.desktop /usr/share/applications/amdccclesu.desktop')
         
     def describe(self):
+        os.system("echo 'Remove Catalyst Driver Control' >> " + descriptionFile)
         return "Remove Catalyst Driver Control"
     
 class gnomeThemeRace():
@@ -191,6 +197,7 @@ class gnomeThemeRace():
             print line.replace('Exec=','Exec=bash -c "sleep 2; /usr/lib/gnome-settings-daemon/gnome-settings-daemon"'),
             
     def describe(self):
+        os.system("echo 'Nvidia Driver race condition fix' >> " + descriptionFile)
         return "Nvidia Driver Race Condition Fix"
         
 class elantech():
@@ -206,6 +213,7 @@ class elantech():
         os.system('sudo dkms install -m psmouse -v elantech-v6')
         
     def describe(self):
+        os.system("echo 'Elantech Touchpad Driver' >> " + descriptionFile)
         return "Elantech Touchpad Driver"
 
 class realtek_rts_bpp():
@@ -230,6 +238,7 @@ class realtek_rts_bpp():
             os.system('sudo rm /lib/udev/rules.d/81-udisks-realtek.rules')
             os.system('echo \'DRIVERS=="rts_bpp", ENV{ID_DRIVE_FLASH_SD}="1"\' | sudo tee -a /lib/udev/rules.d/81-udisks-realtek.rules')
     def describe(self):
+        os.system("echo 'Realtek Card Reader driver' >> " + descriptionFile)
         return "Realtek Card Reader Driver"
     
 class test():
@@ -247,4 +256,25 @@ class test2():
         
     def describe(self):
         os.system("echo 'Test Driver 2' >> " + descriptionFile)
+    
+class test3():
+    def install(self):
+        print("Installing Test Driver 3")
+        
+    def describe(self):
+        os.system("echo 'Test Driver 3' >> " + descriptionFile)
+    
+class test4():
+    def install(self):
+        print("Installing Test Driver 4")
+        
+    def describe(self):
+        os.system("echo 'Test Driver 4' >> " + descriptionFile)
+    
+class test5():
+    def install(self):
+        print("Installing Test Driver 5")
+        
+    def describe(self):
+        os.system("echo 'Test Driver 5' >> " + descriptionFile)
     

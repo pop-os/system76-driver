@@ -40,6 +40,7 @@ IMAGEDIR = os.path.join(os.path.dirname(__file__), 'images')
 SYS76LOGO_IMAGE = os.path.join(IMAGEDIR, 'logo.png')
 SYS76SQUARE_LOGO = os.path.join(IMAGEDIR, 'logoSQUARE.png')
 WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.svg')
+DETAILS_SHOW = False
 
 def setNotify(icon, text): #Allows us to set the notification text and icon in the bottom of the window
     notifyIcon = builder.get_object("notifyImage")
@@ -165,6 +166,28 @@ def onAboutClicked(aboutButton):
     aboutDialog.set_version(programVersion)
     aboutDialog.run() #open the dialog and...
     aboutDialog.hide() #...remove it when the user hits close
+    
+##################
+## Details pane ##
+##################
+def onDetailsClicked(details):
+    #figures out if we need to hide or show the details
+    global DETAILS_SHOW
+    detailsPane = builder.get_object("details_pane")
+    detailsText = builder.get_object("detailsText")
+    b = open(descriptionFile)
+    d = b.read()
+    b.close()
+    detailsText.set_text(d)
+    
+    if DETAILS_SHOW == False:
+        print("NOTE: Showing details of installed drivers")
+        detailsPane.show()
+        DETAILS_SHOW = True
+    else:
+        print("NOTE: Hiding details of installed drivers")
+        detailsPane.hide()
+        DETAILS_SHOW = False
 
 builder = Gtk.Builder()
 builder.add_from_file("/opt/system76/system76-driver/src/system76Driver-gtk3.glade") #initialize our glade file.
@@ -177,6 +200,7 @@ handlers = {
     "onCreateClicked": onCreateClicked,
     "onCloseClicked": Gtk.main_quit,
     "onAboutClicked": onAboutClicked,
+    "onDetailsClicked": onDetailsClicked,
 }
 builder.connect_signals(handlers)
     
@@ -243,6 +267,7 @@ class notSupport(object):
         Gtk.main()
 
 if getSupported() == True:
+    os.system("echo 'The following drivers/fixes will be installed:' >> " + descriptionFile)
     driversdescribe.describeDrivers()
     os.system("cat " + descriptionFile)
     system76Driver().run()
