@@ -21,6 +21,7 @@ import detect
 import getpass
 import base_system
 import driverscontrol
+import driversdescribe
 
 #import GTK 3 libraries
 from gi.repository import Gtk       
@@ -29,7 +30,9 @@ from gi.repository import GObject
 GObject.threads_init() #initialize threads
 
 lockFile = "/tmp/Sys76Lock.lock" #setup our lock file to prevent the driver from trying to do multiple things at once and...
-os.system('rm ' + lockFile) #...remove it if it exists for some reason
+os.system('rm ' + lockFile + ' 2>/dev/null') #...silently remove it if it exists for some reason
+descriptionFile = "/tmp/sys76-drivers" #setup our description file that will hold descriptions of all of the drivers to be installed...
+os.system("rm " + descriptionFile + " 2>/dev/null") #...and remove it too
 
 #set some variables
 programVersion = ubuntuversion.driver() #This sets the driver's version to be used throughout the application.
@@ -37,6 +40,7 @@ IMAGEDIR = os.path.join(os.path.dirname(__file__), 'images')
 SYS76LOGO_IMAGE = os.path.join(IMAGEDIR, 'logo.png')
 SYS76SQUARE_LOGO = os.path.join(IMAGEDIR, 'logoSQUARE.png')
 WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.svg')
+DETAILS_SHOW = True
 
 def setNotify(icon, text): #Allows us to set the notification text and icon in the bottom of the window
     notifyIcon = builder.get_object("notifyImage")
@@ -53,7 +57,7 @@ def onCreateClicked(driverCreate):
     #Creates an archive of common support files and logs    
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
-        setNotify("gtk-dialog-error", "The driver is currently processing, please wait for it to finish")
+        setNotify("gtk-dialog-error", "The driver is currently processing other operations.\nPlease wait for it to finish")
     else:
         os.system('touch ' + lockFile)
         username = getpass.getuser()
@@ -84,7 +88,7 @@ def onCreateClicked(driverCreate):
 #        os.system('sudo chmod 777 /home/%s/logs.tar' % username)
         os.system('rm ' + lockFile)
         
-        setNotify("gtk-ok", "Log file (logs.tar) created in your home folder. Please send it to support!")
+        setNotify("gtk-ok", "File (logs.tar) created in your home folder. Please\nsend it to support at www.system76.com/support")
 
 #########################
 ## Driver installation ##
@@ -97,23 +101,26 @@ class InstallThread(threading.Thread):
     def run(self):
         GObject.idle_add(setNotify, "gtk-execute", "Now installing drivers. This may take a while...")
         time.sleep(0.1)
-        driverscontrol.installDrivers()
-        time.sleep(5)
-        os.system('rm ' + lockFile)
-        GObject.idle_add(setNotify, "gtk-apply", "Driver installation finished! Reboot your machine now.")
-        time.sleep(0.1)
+        if driverscontrol.installDrivers() == "true":
+            GObject.idle_add(setNotify, "gtk-dialog-info", "All of your drivers for this system\nare provided by Ubuntu.")
+            time.sleep(0.1)
+            os.system('rm ' + lockFile)
+        else:
+            GObject.idle_add(setNotify, "gtk-apply", "Installation finished!\nReboot your machine now.")
+            time.sleep(0.1)
+            os.system('rm ' + lockFile)
 
 def onInstallClicked(driverInstall):
     #Manages installing the driver
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
-        setNotify("gtk-dialog-error", "The driver is currently processing, please wait for it to finish")
+        setNotify("gtk-dialog-error", "The driver is currently processing other operations.\nPlease wait for it to finish")
     elif detect.connectivityCheck() == "noConnectionExists": #Check to ensure there's a connection
         print("FAIL: No internet connection, or connection to server down.")
-        setNotify("gtk-dialog-warning", "You are not currently connected to the internet! Please connect.")
+        setNotify("gtk-dialog-warning", "You are not currently connected to the internet!\nPlease establish a wired or wireless connetion.")
     elif detect.aptcheck() == "running": #Check if there's an APT process running.
         print("FAIL: Another APT process running. Please close it and retry or reboot")
-        setNotify("gtk-dialog-warning", "A package manager is running! Please close it or reboot.")
+        setNotify("gtk-dialog-warning", "A package manager is running!\nPlease close it or reboot.")
     else:
         os.system('touch ' + lockFile)
         print("NOTE: Installing Drivers")
@@ -129,7 +136,7 @@ class RestoreThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        GObject.idle_add(setNotify, "gtk-execute", "Now restoring factory settings. This may take a while...")
+        GObject.idle_add(setNotify, "gtk-execute", "Now restoring factory settings.\nThis may take a while...")
         time.sleep(0.1)
         base_system.app_install()
         driverscontrol.installDrivers()
@@ -141,11 +148,11 @@ def onRestoreClicked(driverRestore):
     #This method restores the system to factory state.
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
-        setNotify("gtk-dialog-error", "The driver is currently processing, please wait for it to finish")
+        setNotify("gtk-dialog-error", "The driver is currently processing other operations.\nPlease wait for it to finish")
     elif detect.connectivityCheck() == "noConnectionExists": #Check to ensure there's a connection
-        setNotify("gtk-dialog-warning", "You are not currently connected to the internet! Please connect.")
+        setNotify("gtk-dialog-warning", "You are not currently connected to the internet!\nPlease establish a wired or wireless connetion.")
     elif detect.aptcheck() == "running": #Check if there's an APT process running.
-        setNotify("gtk-dialog-warning", "A package manager is running! Please close it or reboot.")
+        setNotify("gtk-dialog-warning", "A package manager is running!\nPlease close it or reboot.")
     else:
         os.system('touch ' + lockFile)
         print("NOTE: Restoring system to factory state...")
@@ -162,9 +169,31 @@ def onAboutClicked(aboutButton):
     aboutDialog.set_version(programVersion)
     aboutDialog.run() #open the dialog and...
     aboutDialog.hide() #...remove it when the user hits close
+    
+##################
+## Details pane ##
+##################
+def onDetailsClicked(details):
+    #figures out if we need to hide or show the details
+    global DETAILS_SHOW
+    detailsPane = builder.get_object("details_pane")
+    detailsText = builder.get_object("detailsText")
+    b = open(descriptionFile)
+    d = b.read()
+    b.close()
+    detailsText.set_text(d)
+    
+    if DETAILS_SHOW == True:
+        print("NOTE: Showing details of installed drivers")
+        detailsPane.show()
+        DETAILS_SHOW = False
+    else:
+        print("NOTE: Hiding details of installed drivers")
+        detailsPane.hide()
+        DETAILS_SHOW = True
 
 builder = Gtk.Builder()
-builder.add_from_file("/opt/system76/system76-driver/src/system76Driver-gtk3.glade") #initialize our glade file.
+builder.add_from_file(os.path.join("system76Driver-gtk3.glade")) #initialize our glade file.
 
 #create a dictionary for our commands and connect it
 handlers = {
@@ -174,6 +203,7 @@ handlers = {
     "onCreateClicked": onCreateClicked,
     "onCloseClicked": Gtk.main_quit,
     "onAboutClicked": onAboutClicked,
+    "onDetailsClicked": onDetailsClicked,
 }
 builder.connect_signals(handlers)
     
@@ -240,9 +270,16 @@ class notSupport(object):
         Gtk.main()
 
 if getSupported() == True:
+    if driversdescribe.describeDrivers() == "true":
+        os.system("echo 'All of the drivers for this system are provided by Ubuntu.' > " + descriptionFile)
+    else:
+        os.system("echo 'The following drivers/fixes will be installed:' > " + descriptionFile)
+        driversdescribe.describeDrivers()
+    os.system("cat " + descriptionFile)
     system76Driver().run()
 else:
     notSupport().run()
 
-os.system('rm ' + lockFile)
+os.system('rm ' + lockFile + ' 2>/dev/null') #remove any stray lock files and...
+os.system("rm " + descriptionFile + " 2>/dev/null") #description files.
 sys.exit(0)

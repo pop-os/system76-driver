@@ -18,9 +18,18 @@
     <property name="website">http://www.system76.com/</property>
     <property name="website_label" translatable="yes">www.system76.com</property>
     <property name="authors">System76, Inc.
+
+Code:
 Carl Richell
 Thomas Aaron
-Ian Santopietro</property>
+Ian Santopietro
+
+UI:
+Carl Richell 
+Ian Santopietro
+
+Documentation:
+Carl Richell</property>
     <property name="logo">images/logoSQUARE.png</property>
     <property name="license_type">gpl-2-0</property>
     <child internal-child="vbox">
@@ -43,17 +52,28 @@ Ian Santopietro</property>
       </object>
     </child>
   </object>
+  <object class="GtkTextBuffer" id="detailsText">
+    <property name="text" translatable="yes">{Long list of items}
+{You should not see any of these}
+{Still seeing them?}
+{If so, you have something very wrong with your driver code}
+{You should contact support}</property>
+  </object>
   <object class="GtkWindow" id="mainWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">System76 Driver</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
+    <property name="icon">images/76icon.svg</property>
     <property name="has_resize_grip">False</property>
     <signal name="destroy" handler="onDeleteWindow" swapped="no"/>
     <child>
       <object class="GtkBox" id="box2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin_left">9</property>
+        <property name="margin_right">9</property>
+        <property name="margin_bottom">10</property>
         <property name="orientation">vertical</property>
         <property name="spacing">5</property>
         <child>
@@ -424,31 +444,8 @@ Ian Santopietro</property>
           <object class="GtkBox" id="box1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkImage" id="notifyImage">
-                <property name="can_focus">False</property>
-                <property name="xpad">3</property>
-                <property name="stock">gtk-dialog-warning</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="padding">6</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="notifyLabel">
-                <property name="can_focus">False</property>
-                <property name="ypad">15</property>
-                <property name="label" translatable="yes">Log file (logs.tar) created in your home folder!</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
+            <property name="margin_left">8</property>
+            <property name="margin_right">8</property>
             <child>
               <object class="GtkButton" id="aboutButton">
                 <property name="use_action_appearance">False</property>
@@ -471,14 +468,129 @@ Ian Santopietro</property>
                 <property name="fill">True</property>
                 <property name="padding">3</property>
                 <property name="pack_type">end</property>
-                <property name="position">2</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="details">
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="toggled" handler="onDetailsClicked" swapped="no"/>
+                <child>
+                  <object class="GtkBox" id="box7">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkImage" id="image6">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xpad">3</property>
+                        <property name="ypad">5</property>
+                        <property name="stock">gtk-properties</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xpad">6</property>
+                        <property name="label" translatable="yes">View Details</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="box8">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkImage" id="notifyImage">
+                    <property name="can_focus">False</property>
+                    <property name="xpad">3</property>
+                    <property name="stock">gtk-info</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="padding">6</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="notifyLabel">
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Log file (logs.tar) created in your home folder!</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">False</property>
+                <property name="position">4</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">7</property>
             <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="details_pane">
+            <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">always</property>
+            <property name="shadow_type">in</property>
+            <property name="min_content_height">45</property>
+            <child>
+              <object class="GtkViewport" id="viewport1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="vscroll_policy">natural</property>
+                <child>
+                  <object class="GtkTextView" id="textview1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscroll_policy">natural</property>
+                    <property name="vscroll_policy">natural</property>
+                    <property name="editable">False</property>
+                    <property name="cursor_visible">False</property>
+                    <property name="buffer">detailsText</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">6</property>
           </packing>
         </child>
       </object>
