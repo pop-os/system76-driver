@@ -402,7 +402,7 @@ log file will be available in your home folder.</property>
               <object class="GtkLabel" id="label7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Driver installation details:</property>
+                <property name="label" translatable="yes">Driver installation details</property>
               </object>
             </child>
           </object>
