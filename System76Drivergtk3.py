@@ -57,7 +57,7 @@ def onCreateClicked(driverCreate):
     #Creates an archive of common support files and logs    
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
-        setNotify("gtk-dialog-error", "The driver is currently processing, please wait for it to finish")
+        setNotify("gtk-dialog-error", "The driver is currently processing other operations.\nPlease wait for it to finish")
     else:
         os.system('touch ' + lockFile)
         username = getpass.getuser()
@@ -88,7 +88,7 @@ def onCreateClicked(driverCreate):
 #        os.system('sudo chmod 777 /home/%s/logs.tar' % username)
         os.system('rm ' + lockFile)
         
-        setNotify("gtk-ok", "Log file (logs.tar) created in your home folder. Please send it to support!")
+        setNotify("gtk-ok", "File (logs.tar) created in your home folder. Please\nsend it to support at www.system76.com/support")
 
 #########################
 ## Driver installation ##
@@ -102,11 +102,11 @@ class InstallThread(threading.Thread):
         GObject.idle_add(setNotify, "gtk-execute", "Now installing drivers. This may take a while...")
         time.sleep(0.1)
         if driverscontrol.installDrivers() == "true":
-            GObject.idle_add(setNotify, "gtk-dialog-info", "All of the Drivers for this system are provided by Ubuntu.")
+            GObject.idle_add(setNotify, "gtk-dialog-info", "All of your drivers for this system\nare provided by Ubuntu.")
             time.sleep(0.1)
             os.system('rm ' + lockFile)
         else:
-            GObject.idle_add(setNotify, "gtk-apply", "Driver installation finished! Reboot your machine now.")
+            GObject.idle_add(setNotify, "gtk-apply", "Installation finished!\nReboot your machine now.")
             time.sleep(0.1)
             os.system('rm ' + lockFile)
 
@@ -114,13 +114,13 @@ def onInstallClicked(driverInstall):
     #Manages installing the driver
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
-        setNotify("gtk-dialog-error", "The driver is currently processing, please wait for it to finish")
+        setNotify("gtk-dialog-error", "The driver is currently processing other operations.\nPlease wait for it to finish")
     elif detect.connectivityCheck() == "noConnectionExists": #Check to ensure there's a connection
         print("FAIL: No internet connection, or connection to server down.")
-        setNotify("gtk-dialog-warning", "You are not currently connected to the internet! Please connect.")
+        setNotify("gtk-dialog-warning", "You are not currently connected to the internet!\nPlease establish a wired or wireless connetion.")
     elif detect.aptcheck() == "running": #Check if there's an APT process running.
         print("FAIL: Another APT process running. Please close it and retry or reboot")
-        setNotify("gtk-dialog-warning", "A package manager is running! Please close it or reboot.")
+        setNotify("gtk-dialog-warning", "A package manager is running!\nPlease close it or reboot.")
     else:
         os.system('touch ' + lockFile)
         print("NOTE: Installing Drivers")
@@ -136,7 +136,7 @@ class RestoreThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        GObject.idle_add(setNotify, "gtk-execute", "Now restoring factory settings. This may take a while...")
+        GObject.idle_add(setNotify, "gtk-execute", "Now restoring factory settings.\nThis may take a while...")
         time.sleep(0.1)
         base_system.app_install()
         driverscontrol.installDrivers()
@@ -148,11 +148,11 @@ def onRestoreClicked(driverRestore):
     #This method restores the system to factory state.
     if os.path.isfile(lockFile) == True:
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
-        setNotify("gtk-dialog-error", "The driver is currently processing, please wait for it to finish")
+        setNotify("gtk-dialog-error", "The driver is currently processing other operations.\nPlease wait for it to finish")
     elif detect.connectivityCheck() == "noConnectionExists": #Check to ensure there's a connection
-        setNotify("gtk-dialog-warning", "You are not currently connected to the internet! Please connect.")
+        setNotify("gtk-dialog-warning", "You are not currently connected to the internet!\nPlease establish a wired or wireless connetion.")
     elif detect.aptcheck() == "running": #Check if there's an APT process running.
-        setNotify("gtk-dialog-warning", "A package manager is running! Please close it or reboot.")
+        setNotify("gtk-dialog-warning", "A package manager is running!\nPlease close it or reboot.")
     else:
         os.system('touch ' + lockFile)
         print("NOTE: Restoring system to factory state...")

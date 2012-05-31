@@ -18,9 +18,18 @@
     <property name="website">http://www.system76.com/</property>
     <property name="website_label" translatable="yes">www.system76.com</property>
     <property name="authors">System76, Inc.
+
+Code:
 Carl Richell
 Thomas Aaron
-Ian Santopietro</property>
+Ian Santopietro
+
+UI:
+Carl Richell 
+Ian Santopietro
+
+Documentation:
+Carl Richell</property>
     <property name="logo">images/logoSQUARE.png</property>
     <property name="license_type">gpl-2-0</property>
     <child internal-child="vbox">
@@ -505,33 +514,43 @@ Ian Santopietro</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="notifyImage">
+              <object class="GtkBox" id="box8">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xpad">3</property>
-                <property name="stock">gtk-dialog-info</property>
+                <child>
+                  <object class="GtkImage" id="notifyImage">
+                    <property name="can_focus">False</property>
+                    <property name="xpad">3</property>
+                    <property name="stock">gtk-info</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="padding">6</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="notifyLabel">
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Log file (logs.tar) created in your home folder!</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="padding">6</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="notifyLabel">
-                <property name="can_focus">False</property>
-                <property name="ypad">15</property>
-                <property name="label" translatable="yes">Log file (logs.tar) created in your home folder!</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="expand">True</property>
+                <property name="fill">False</property>
+                <property name="position">4</property>
               </packing>
             </child>
           </object>
