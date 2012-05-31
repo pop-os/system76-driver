@@ -244,11 +244,11 @@ class realtek_rts_bpp():
 class test():
     def install(self):
         #simple test method to see if the driver is working
-        print("Installing drivers...")
+        print("Installing Test Driver 1")
         
     def describe(self):
         os.system("echo 'Test Driver 1' >> " + descriptionFile)
-        return "Test Driver 1"
+        return "Test Driver 10"
 
 class test2():
     def install(self):

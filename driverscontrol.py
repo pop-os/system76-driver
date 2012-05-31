@@ -2087,8 +2087,12 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            nodrivers = "true"
-            return nodrivers
+#            misc.test().install()
+#            misc.test2().install()
+#            misc.test3().install()
+#            misc.test5().install()
+           nodrivers = "true"
+           return nodrivers
         else:
             nodrivers = "true"
             return nodrivers

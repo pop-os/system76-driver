@@ -101,11 +101,14 @@ class InstallThread(threading.Thread):
     def run(self):
         GObject.idle_add(setNotify, "gtk-execute", "Now installing drivers. This may take a while...")
         time.sleep(0.1)
-        driverscontrol.installDrivers()
-        time.sleep(5)
-        os.system('rm ' + lockFile)
-        GObject.idle_add(setNotify, "gtk-apply", "Driver installation finished! Reboot your machine now.")
-        time.sleep(0.1)
+        if driverscontrol.installDrivers() == "true":
+            GObject.idle_add(setNotify, "gtk-dialog-info", "All of the Drivers for this system are provided by Ubuntu.")
+            time.sleep(0.1)
+            os.system('rm ' + lockFile)
+        else:
+            GObject.idle_add(setNotify, "gtk-apply", "Driver installation finished! Reboot your machine now.")
+            time.sleep(0.1)
+            os.system('rm ' + lockFile)
 
 def onInstallClicked(driverInstall):
     #Manages installing the driver
@@ -190,7 +193,7 @@ def onDetailsClicked(details):
         DETAILS_SHOW = False
 
 builder = Gtk.Builder()
-builder.add_from_file(os.path.join("system76Driver-gtk3.glade")) #initialize our glade file.
+builder.add_from_file(os.path.join("system76Driver-gtk3-test.glade")) #initialize our glade file.
 
 #create a dictionary for our commands and connect it
 handlers = {
@@ -267,8 +270,11 @@ class notSupport(object):
         Gtk.main()
 
 if getSupported() == True:
-    os.system("echo 'The following drivers/fixes will be installed:' >> " + descriptionFile)
-    driversdescribe.describeDrivers()
+    if driversdescribe.describeDrivers() == "true":
+        os.system("echo 'All of the drivers for this system are provided by Ubuntu.' > " + descriptionFile)
+    else:
+        os.system("echo 'The following drivers/fixes will be installed:' > " + descriptionFile)
+        driversdescribe.describeDrivers()
     os.system("cat " + descriptionFile)
     system76Driver().run()
 else:
