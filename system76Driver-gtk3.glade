@@ -64,6 +64,7 @@ Carl Richell</property>
     <property name="title" translatable="yes">System76 Driver</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
+    <property name="icon">images/76icon.svg</property>
     <property name="has_resize_grip">False</property>
     <signal name="destroy" handler="onDeleteWindow" swapped="no"/>
     <child>
