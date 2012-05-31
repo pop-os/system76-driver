@@ -19,6 +19,8 @@ dir='/opt/system76/system76-driver/src/'
 if os.path.isdir(dir):
     sys.path.append(dir)
 
+os.chdir(dir)
+
 import base_system
 import driverscontrol
 import optparse

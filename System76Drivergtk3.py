@@ -40,7 +40,7 @@ IMAGEDIR = os.path.join(os.path.dirname(__file__), 'images')
 SYS76LOGO_IMAGE = os.path.join(IMAGEDIR, 'logo.png')
 SYS76SQUARE_LOGO = os.path.join(IMAGEDIR, 'logoSQUARE.png')
 WINDOW_ICON = os.path.join(IMAGEDIR, '76icon.svg')
-DETAILS_SHOW = False
+DETAILS_SHOW = True
 
 def setNotify(icon, text): #Allows us to set the notification text and icon in the bottom of the window
     notifyIcon = builder.get_object("notifyImage")
@@ -183,14 +183,14 @@ def onDetailsClicked(details):
     b.close()
     detailsText.set_text(d)
     
-    if DETAILS_SHOW == False:
+    if DETAILS_SHOW == True:
         print("NOTE: Showing details of installed drivers")
         detailsPane.show()
-        DETAILS_SHOW = True
+        DETAILS_SHOW = False
     else:
         print("NOTE: Hiding details of installed drivers")
         detailsPane.hide()
-        DETAILS_SHOW = False
+        DETAILS_SHOW = True
 
 builder = Gtk.Builder()
 builder.add_from_file(os.path.join("system76Driver-gtk3.glade")) #initialize our glade file.
