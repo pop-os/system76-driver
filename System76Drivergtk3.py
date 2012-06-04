@@ -251,7 +251,7 @@ class system76Driver(GObject.GObject):
         #set the strings and labels
         modelName.set_text(system.name())
         modelNumber.set_text(model.determine_model())
-        oSystem.set_text(ubuntuversion.getOsName() + " Version:")
+        oSystem.set_text(ubuntuversion.getOsName() + " Version")
         ubuntuVersion.set_text(ubuntuversion.getVersion())
         driverVersion.set_text(programVersion)
         
