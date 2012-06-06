@@ -25,7 +25,6 @@ class acpi1():
         
     def describe(self):
         os.system("echo 'Suspend configuration' >> " + descriptionFile)
-        return "Suspend configuration"
     
 class acpi2():
     def install(self):
@@ -39,7 +38,6 @@ class acpi2():
     
     def describe(self):
         os.system("echo 'Suspend configuration' >> " + descriptionFile)
-        return "Suspend configuration"
     
 class acpi3():
     def install(self):
@@ -53,7 +51,6 @@ class acpi3():
     
     def describe(self):
         os.system("echo 'Suspend configuration' >> " + descriptionFile)
-        return "Suspend configuration"
 
 class acpi4():
     def install(self):
@@ -63,8 +60,7 @@ class acpi4():
         os.system('sudo rm /etc/pm/sleep.d/00CPU')
         
     def describe(self):
-        os.system("echo 'Remove old Suspend configuration' >> " + descriptionFile)
-        return "Remove old suspend configuration"
+        os.system("echo 'Suspend configuration' >> " + descriptionFile)
     
 class daru2():
     def install(self):
@@ -96,8 +92,7 @@ class daru2():
             print line.replace('splash','splash ec_intr=0'),
         
     def describe(self):
-        os.system("echo 'DSDT table for DarU2' >> " + descriptionFile)
-        return "DSDT table for DarU2"
+        os.system("echo 'Configure battery notification' >> " + descriptionFile)
         
 class osiNotWindows():
     def install(self):
@@ -114,8 +109,7 @@ class osiNotWindows():
             print line.replace('splash','splash acpi_osi="!Windows 2006"'),
     
     def describe(self):
-        os.system("echo 'Linux BIOS description' >> " + descriptionFile)
-        return "Linux BIOS descripton"
+        os.system("echo 'Enable brightness hot keys' >> " + descriptionFile)
             
 class lemu1():
     def install(self):
@@ -133,8 +127,7 @@ class lemu1():
         os.system('sudo update-grub')
     
     def describe(self):
-        os.system("echo 'Linux BIOS description' >> " + descriptionFile)
-        return "Linux BIOS descroption"
+        os.system("echo 'Enable brightness hot keys' >> " + descriptionFile)
     
 class os_linux():
     def install(self):
@@ -152,8 +145,7 @@ class os_linux():
         os.system('sudo update-grub')
     
     def describe(self):
-        os.system("echo 'Linux BIOS description' >> " + descriptionFile)
-        return "Linux BIOS description"
+        os.system("echo 'Enable brightness hot keys' >> " + descriptionFile)
         
 class star1():
     def install(self):
@@ -192,8 +184,7 @@ class star1():
             os.system('sudo update-grub')
     
     def describe(self):
-        os.system("echo 'Star1 card reader driver' >> " + descriptionFile)
-        return "Star1 card reader driver"
+        os.system("echo 'Card reader driver' >> " + descriptionFile)
         
 class star2():
     def install(self):
@@ -203,19 +194,17 @@ class star2():
         
     def describe(self):
         os.system("echo 'Synaptic trackpad suspend fix' >> " + descriptionFile)
-        return "Synaptic Trackpad suspend fix"
     
 class sdCardBug():
     def install(self):
         
-        """Fix suspend when a SD card is inserted - removes sd card related modules before suspend"""
+        """Starling 3 through 5 - Fix suspend when a SD card is inserted - removes sd card related modules before suspend"""
         os.system('sudo rm /etc/pm/config.d/suspend_modules')
         os.system('echo "SUSPEND_MODULES=\"sdhci sdhci_pci\"" | sudo tee -a /etc/pm/config.d/suspend_modules')
         os.system('sudo chmod +x /etc/pm/config.d/suspend_modules')
         
     def describe(self):
-        os.system("echo 'SD card reader suspend fix' >> " + descriptionFile)
-        return "SD card reader suspend fix"
+        os.system("echo 'Configure suspend' >> " + descriptionFile)
     
 class xhcihcdModule():
     def install(self):
@@ -225,8 +214,7 @@ class xhcihcdModule():
         os.system('sudo chmod +x /etc/pm/config.d/suspend_modules')
         
     def describe(self):
-        os.system("echo 'USB 3 suspend fix' >> " + descriptionFile)
-        return "USB 3 suspend fix"
+        os.system("echo 'Configure suspend' >> " + descriptionFile)
     
 class pcie_aspm():
     def install(self):
@@ -245,6 +233,5 @@ class pcie_aspm():
         os.system('sudo update-grub')
     
     def describe(self):
-        os.system("echo 'Ethernet instability fixes' >> " + descriptionFile)
-        return "Ethernet instability fixes"
+        os.system("echo 'Ethernet instability fix' >> " + descriptionFile)
     

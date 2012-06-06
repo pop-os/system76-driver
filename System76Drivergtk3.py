@@ -148,7 +148,7 @@ def onRestoreClicked(driverRestore):
         print("FAIL: System76 Driver is currently locked! Wait for it to finish. If this error persists, please reboot.")
         setNotify("gtk-dialog-error", "The driver is currently processing another operation.\nPlease wait for it to finish")
     elif detect.connectivityCheck() == "noConnectionExists": #Check to ensure there's a connection
-        setNotify("gtk-dialog-warning", "You are not currently connected to the internet!\nPlease establish a wired or wireless internet connetion.")
+        setNotify("gtk-dialog-warning", "You are not currently connected to the internet!\nPlease establish a wired or wireless internet connection.")
     elif detect.aptcheck() == "running": #Check if there's an APT process running.
         setNotify("gtk-dialog-warning", "A package manager is running!\nPlease close it or reboot.")
     else:
@@ -168,28 +168,6 @@ def onAboutClicked(aboutButton):
     aboutDialog.run() #open the dialog and...
     aboutDialog.hide() #...remove it when the user hits close
     
-##################
-## Details pane ##
-##################
-def onDetailsClicked(details):
-    #figures out if we need to hide or show the details
-    global DETAILS_SHOW
-    detailsPane = builder.get_object("details_pane")
-    detailsText = builder.get_object("detailsText")
-    b = open(descriptionFile)
-    d = b.read()
-    b.close()
-    detailsText.set_text(d)
-    
-    if DETAILS_SHOW == True:
-        print("NOTE: Showing details of installed drivers")
-        detailsPane.show()
-        DETAILS_SHOW = False
-    else:
-        print("NOTE: Hiding details of installed drivers")
-        detailsPane.hide()
-        DETAILS_SHOW = True
-
 builder = Gtk.Builder()
 builder.add_from_file(os.path.join("system76Driver-gtk3.glade")) #initialize our glade file.
 
