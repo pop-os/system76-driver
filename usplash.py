@@ -5,6 +5,20 @@
 ## Released under the GNU General Public License (See LICENSE)
 ##
 ## Fix bugs or apply enhancements for usplash
+
+## FORMATTING:
+## Add new entries like this template:
+"""
+class exampleDriver():
+    def install(self):
+        ##Install example Driver
+        {code to install goes here}
+        {More code}
+        
+    def describe(self):
+        os.system("echo 'Describe example driver here' >> " + descriptionFile)
+"""
+
 import os
 import fileinput
 import time
@@ -71,4 +85,3 @@ class gutsy_64_nvidia():
     
     def describe(self):
         os.system("echo 'USplash resolution fix' >> " + descriptionFile)
-        return "USplash fix"

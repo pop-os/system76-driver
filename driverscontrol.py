@@ -11,16 +11,16 @@ import ubuntuversion
 import model
 import detect
 
-#import function files
-import sound
-import misc
+#import function files - KEEP IN ALPHABETICAL ORDER!
 import acpi
-import hotkey
-import uvc
-import ricoh_cr
-import usplash
-import hardy_led
 import fprint
+import hardy_led
+import hotkey
+import misc
+import ricoh_cr
+import sound
+import usplash
+import uvc
 
 ## KEEP ALL MODELS IN ALPHABETICAL ORDER
 
@@ -2087,12 +2087,8 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-#            misc.test().install()
-#            misc.test2().install()
-#            misc.test3().install()
-#            misc.test5().install()
-           nodrivers = "true"
-           return nodrivers
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers

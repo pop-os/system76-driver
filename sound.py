@@ -4,9 +4,21 @@
 ## Copyright System76, Inc.
 ## Released under the GNU General Public License (See LICENSE)
 ## Common sound driver installation
+
+## FORMATTING:
+## Add new entries like this template:
+"""
+class exampleDriver():
+    def install(self):
+        ##Install example Driver
+        {code to install goes here}
+        {More code}
+        
+    def describe(self):
+        os.system("echo 'Describe example driver here' >> " + descriptionFile)
+"""
+
 import os
-import urllib
-import model
 import fileinput
 
 WORKDIR = os.path.join(os.path.dirname(__file__), '.')
@@ -45,7 +57,6 @@ class alsa1():
         
     def describe(self):
         os.system("echo 'ALSA 1.0.12rc2 Sound Driver' >> " + descriptionFile)
-        return "ALSA 1.0.12rc2 Sound Driver"
     
 class alsa2():
     def install(self):
@@ -75,18 +86,17 @@ class alsa2():
         
     def describe(self):
         os.system("echo 'ALSA 1.0.14rc3 Sound Driver' >> " + descriptionFile)
-        return "ALSA 1.0.14rc3 Sound Driver"
     
 class alsa3():
     def install(self):
         # Clean up /etc/modprobe.d/alsa-base file
         alsa_base = open("/etc/modprobe.d/alsa-base", "w")
         
-        for line in fileinput.input("alsa_base",inplace =1):
+        for line in fileinput.input(alsa_base,inplace =1):
             line = line.strip()
             if not 'toshiba' in line:
                 print line            
-        for line in fileinput.input("alsa_base",inplace =1):
+        for line in fileinput.input(alsa_base,inplace =1):
             line = line.strip()
             if not 'targa-dig' in line:
                 print line
@@ -116,7 +126,6 @@ class alsa3():
             
     def describe(self):
         os.system("echo 'ALSA 1.0.14 Sound Driver' >> " + descriptionFile)
-        return "ALSA 1.0.14 Sound Driver"
             
 class alsa4():
     def install(self):
@@ -134,8 +143,7 @@ class alsa4():
         os.system("echo options snd-hda-intel model=targa-dig | sudo tee -a /etc/modprobe.d/alsa-base")
         
     def describe(self):
-        os.system("echo 'Correct alsa-base configuration' >> " + descriptionFile)
-        return "Correct issue with alsa-base configuration"
+        os.system("echo 'Alsa-base configuration' >> " + descriptionFile)
 
 class alsa5():
     def install(self):
@@ -202,7 +210,6 @@ class alsa5():
         
     def describe(self):
         os.system("echo 'ALSA 1.0.15rc3 Sound Driver' >> " + descriptionFile)
-        return "ALSA 1.0.15rc3 Sound Driver"
 
 class alsa6():
     def install(self):
@@ -253,7 +260,6 @@ class alsa6():
         
     def describe(self):
         os.system("echo 'ALSA 1.0.15rc3 Sound Driver' >> " + descriptionFile)
-        return "ALSA 1.0.15rc3 Sound Driver"
         
 class alsa7():
     def install(self):
@@ -315,7 +321,6 @@ class alsa7():
         
     def describe(self):
         os.system("echo 'ALSA 1.0.15rc3 Sound Driver' >> " + descriptionFile)
-        return "ALSA 1.0.15rc3 Sound Driver"
 
 class alsa8():
     def install(self):
@@ -330,7 +335,6 @@ class alsa8():
         
     def describe(self):
         os.system("echo 'Clean sound configuration' >> " + descriptionFile)
-        return "Clean up sound configuration"
     
 class alsa9():
     def install(self):
@@ -346,7 +350,6 @@ class alsa9():
         
     def describe(self):
         os.system("echo 'Clean sound configuration' >> " + descriptionFile)
-        return "Clean up sound configuration"
     
 class alsa10():
     def install(self):
@@ -362,7 +365,6 @@ class alsa10():
         
     def describe(self):
         os.system("echo 'Clean sound configuration' >> " + descriptionFile)
-        return "Clean up sound configuration"
     
 class alsa11():
     def install(self):
@@ -381,7 +383,6 @@ class alsa11():
         
     def describe(self):
         os.system("echo 'ALSA 1.0.17 Sound Driver' >> " + descriptionFile)
-        return "ALSA 1.0.17 Sound Driver"
     
 class alsa12():
     def install(self):
@@ -397,7 +398,6 @@ class alsa12():
     
     def describe(self):
         os.system("echo 'Clean sound configuration' >> " + descriptionFile)
-        return "Clean up sound configuration"
 
 class alsa13():
     def install(self):    
@@ -410,9 +410,8 @@ class alsa13():
                 
         os.system("echo options snd-hda-intel model=acer-aspire | sudo tee -a /etc/modprobe.d/alsa-base.conf")
         
-    def install(self):
+    def describe(self):
         os.system("echo 'Clean sound configuration' >> " + descriptionFile)
-        return "Clean up sound configuration"
     
 class alsabackportsLucid():
     def install(self):
@@ -420,8 +419,7 @@ class alsabackportsLucid():
         os.system('sudo apt-get --assume-yes install linux-backports-modules-alsa-lucid-generic')
     
     def describe(self):
-        os.system("echo 'ALSA backported versions' >> " + descriptionFile)
-        return "Install ALSA backports" 
+        os.system("echo 'ALSA sound driver; backported versions' >> " + descriptionFile)
     
 class audioDevPPA():
     def install(self):
@@ -432,6 +430,6 @@ class audioDevPPA():
         os.system("sudo apt-get install linux-alsa-driver-modules-$(uname -r)")
         
     def describe(self):
-        os.system("echo 'Latest ALSA driver from audio PPA' >> " + descriptionFile)
-        return "Latest ALSA sound driver via Ubuntu Audio PPA"
+        os.system("echo 'Latest ALSA sound driver' >> " + descriptionFile)
     
+123456789112345678921234567893123456789412345678951234567896123456789712345

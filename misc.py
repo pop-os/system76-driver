@@ -5,6 +5,19 @@
 ## Released under the GNU General Public License (See LICENSE)
 ## Installs Miscellaneous drivers
 
+## FORMATTING:
+## Add new entries like this template:
+"""
+class exampleDriver():
+    def install(self):
+        ##Install example Driver
+        {code to install goes here}
+        {More code}
+        
+    def describe(self):
+        os.system("echo 'Describe example driver here' >> " + descriptionFile)
+"""
+
 import os
 import ubuntuversion
 import jme_kernel_latest
@@ -36,8 +49,7 @@ class piix():
             return
         
     def describe(self):
-        os.system("echo 'PIIX hard drive driver' >> " + descriptionFile)
-        return "PIIX hard drive driver"
+        os.system("echo 'Hard drive driver' >> " + descriptionFile)
     
 class piix2():
     def install(self):
@@ -60,8 +72,7 @@ class piix2():
             return
         
     def describe(self):
-        os.system("echo 'PIIX hard drive driver' >> " + descriptionFile)
-        return "PIIX hard drive driver"
+        os.system("echo 'Hard drive driver' >> " + descriptionFile)
         
 class linux_backports():
     def install(self):
@@ -70,8 +81,7 @@ class linux_backports():
         os.system('sudo apt-get --assume-yes install linux-backports-modules-`lsb_release -c -s`')
     
     def describe(self):
-        os.system("echo 'Linux-backports-modules' >> " + descriptionFile)
-        return "Linux-backports-modules"
+        os.system("echo 'Linux-backports-modules package' >> " + descriptionFile)
     
 class wireless8187b():
     
@@ -141,8 +151,7 @@ class wireless8187b():
             os.system('sudo rm -r rtl8187B.tar.gz rtl8187B/')
             
     def describe(self):
-        os.system("echo 'RTL8187B Wireless Driver' >> " + descriptionFile)
-        return "RTL8187B Wireless Driver"
+        os.system("echo 'Wireless Card Driver' >> " + descriptionFile)
         
 class jme_nic():
     def install(self):
@@ -168,8 +177,7 @@ class jme_nic():
             os.system("sudo make install")
             
     def describe(self):
-        os.system("echo 'JME RAM driver 1.0.5' >> " + descriptionFile)
-        return "JME RAM driver 1.0.5"
+        os.system("echo 'RAM driver' >> " + descriptionFile)
         
 class rm_aticatalyst():
     def install(self):
@@ -178,8 +186,7 @@ class rm_aticatalyst():
         os.system('sudo rm /usr/share/applications/amdcccle.desktop /usr/share/applications/amdccclesu.desktop')
         
     def describe(self):
-        os.system("echo 'Remove Catalyst Driver Control' >> " + descriptionFile)
-        return "Remove Catalyst Driver Control"
+        os.system("echo 'Remove Catalyst driver control center' >> " + descriptionFile)
     
 class gnomeThemeRace():
     def install(self):
@@ -198,7 +205,6 @@ class gnomeThemeRace():
             
     def describe(self):
         os.system("echo 'Nvidia Driver race condition fix' >> " + descriptionFile)
-        return "Nvidia Driver Race Condition Fix"
         
 class elantech():
     def install(self): 
@@ -213,8 +219,7 @@ class elantech():
         os.system('sudo dkms install -m psmouse -v elantech-v6')
         
     def describe(self):
-        os.system("echo 'Elantech Touchpad Driver' >> " + descriptionFile)
-        return "Elantech Touchpad Driver"
+        os.system("echo 'Touchpad Driver' >> " + descriptionFile)
 
 class realtek_rts_bpp():
     def install(self):
@@ -239,7 +244,6 @@ class realtek_rts_bpp():
             os.system('echo \'DRIVERS=="rts_bpp", ENV{ID_DRIVE_FLASH_SD}="1"\' | sudo tee -a /lib/udev/rules.d/81-udisks-realtek.rules')
     def describe(self):
         os.system("echo 'Realtek Card Reader driver' >> " + descriptionFile)
-        return "Realtek Card Reader Driver"
     
 class test():
     def install(self):
@@ -248,7 +252,6 @@ class test():
         
     def describe(self):
         os.system("echo 'Test Driver 1' >> " + descriptionFile)
-        return "Test Driver 10"
 
 class test2():
     def install(self):

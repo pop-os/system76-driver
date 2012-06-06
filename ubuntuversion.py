@@ -33,7 +33,7 @@ def release():
     
 def driver():
     #returns current System76 Driver version
-    return "2.9.0.rc1"
+    return "3.0.0"
 
 def getOsName():
     #Find out the name of the OS we're running
