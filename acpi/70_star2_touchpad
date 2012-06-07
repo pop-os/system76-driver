@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Restart synaptic touchpad after resume
+
+case "$1" in
+        thaw|resume)
+                modprobe -r psmouse
+                modprobe psmouse
+                ;;
+esac
