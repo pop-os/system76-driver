@@ -5,6 +5,20 @@
 ## Released under the GNU General Public License (See LICENSE)
 ##
 ## Fixes Suspend and Hibernate on System76 machines
+
+## FORMATTING:
+## Add new entries like this template:
+"""
+class exampleDriver():
+    def install(self):
+        ##Install example Driver
+        {code to install goes here}
+        {More code}
+        
+    def describe(self):
+        os.system("echo 'Describe example driver here' >> " + descriptionFile)
+"""
+
 import os
 import fileinput
 import time

@@ -4,6 +4,20 @@
 ## Copyright System76, Inc.
 ## Released under the GNU General Public License (See LICENSE)
 ## Installs fprint dependencies, libraries, and application
+
+## FORMATTING:
+## Add new entries like this template:
+"""
+class exampleDriver():
+    def install(self):
+        ##Install example Driver
+        {code to install goes here}
+        {More code}
+        
+    def describe(self):
+        os.system("echo 'Describe example driver here' >> " + descriptionFile)
+"""
+
 import os
 
 DRIVERDIR = os.path.join(os.path.dirname(__file__), 'fprint')
@@ -60,7 +74,6 @@ class install():
         
     def describe(self):
         os.system("echo 'Fingerprint reader driver' >> " + descriptionFile)
-        return "Fingerprint Reader driver"
     
 class installPackages():
     def isntall(self):
@@ -74,7 +87,6 @@ class installPackages():
     
     def describe(self):
         os.system("echo 'Fingerprint reader GUI packages' >> " + descriptionFile)
-        return "Fingerprint Reader GUI packages"
     
 class installUpek1():
     def install(self):
@@ -96,7 +108,6 @@ class installUpek1():
         
     def describe(self):
         os.system("echo 'Fingerprint reader driver' >> " + descriptionFile)
-        return "Fingerprint reader driver"
     
 class fingerprintGUI():
     def install(self):
@@ -107,4 +118,3 @@ class fingerprintGUI():
         
     def describe(self):
         os.system("echo 'Fingerprint reader GUI' >> " + descriptionFile)
-        return "Fingerprint Reader GUI"

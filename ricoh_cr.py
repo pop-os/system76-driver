@@ -4,6 +4,20 @@
 ## Copyright System76, Inc.
 ## Released under the GNU General Public License (See LICENSE)
 ## Install Ricoh Card Reader Driver
+
+## FORMATTING:
+## Add new entries like this template:
+"""
+class exampleDriver():
+    def install(self):
+        ##Install example Driver
+        {code to install goes here}
+        {More code}
+        
+    def describe(self):
+        os.system("echo 'Describe example driver here' >> " + descriptionFile)
+"""
+
 import os
 
 DRIVERDIR = os.path.join(os.path.dirname(__file__), 'ricoh')
@@ -18,5 +32,4 @@ class card_reader():
     
     def describe(self):
         os.system("echo 'Card reader driver' >> " + descriptionFile)
-        return "Card reader driver"
     

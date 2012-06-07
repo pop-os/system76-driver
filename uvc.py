@@ -4,6 +4,20 @@
 ## Copyright System76, Inc.
 ## Released under the GNU General Public License (See LICENSE)
 ## Install uvc camera driver
+
+## FORMATTING:
+## Add new entries like this template:
+"""
+class exampleDriver():
+    def install(self):
+        ##Install example Driver
+        {code to install goes here}
+        {More code}
+        
+    def describe(self):
+        os.system("echo 'Describe example driver here' >> " + descriptionFile)
+"""
+
 import os
 
 DRIVERDIR = os.path.join(os.path.dirname(__file__), 'uvc')
@@ -21,7 +35,6 @@ class camera():
         
     def describe(self):
         os.system("echo 'Camera driver' >> " + descriptionFile)
-        return "Camera Driver"
 
 class quirks():
     def install(self):
@@ -33,7 +46,6 @@ class quirks():
     
     def describe(self):
         os.system("echo 'Webcam quirk fixes' >> " + descriptionFile)
-        return "Webcam quirk fixes"
 
 class lemur():
     def install(self):
@@ -64,4 +76,3 @@ class lemur():
         
     def describe(self):
         os.system("echo 'Camera driver' >> " + descriptionFile)
-        return "Camera Driver"
