@@ -187,8 +187,6 @@ class System76Driver:
         
         #Creates an archive of common support files and logs
         
-        username = getpass.getuser()
-        
         today = time.strftime('%Y%m%d_h%Hm%Ms%S')
         modelname = model.determine_model()
         version = ubuntuversion.release()
@@ -211,6 +209,9 @@ class System76Driver:
         os.system('cp /var/log/syslog %s/' % TARGETDIR)
         os.system('cp /var/log/Xorg.0.log %s/' % TARGETDIR)
         os.system('tar -zcvf logs.tar %s/' % TARGETDIR)
+        x = open("/tmp/sys76-username")
+        username = x.read()
+        x.close()
         os.system('cp logs.tar /home/%s/' % username)
         
         archiveCreatedDialog = archiveCreated(datadir);

@@ -15,6 +15,7 @@
 import os
 import sys
 import optparse
+import getpass
 
 #setup working directory
 dir='/opt/system76/system76-driver/src/'
@@ -23,6 +24,9 @@ if os.path.isdir(dir):
     sys.path.append(dir)
 
 os.chdir(dir)
+
+#need to get username before we become root
+os.system("echo '" + getpass.getuser() + "' > /tmp/sys76-username")
 
 #import System76 specific files
 import base_system
@@ -44,7 +48,7 @@ def main():
                 help="Restore Computer to Factory Defaults (requires sudo)")
     parser.add_option("-l", "--list", action="store_true", dest="list",
                 help="List drivers to be installed on this system (requires sudo)")
-
+    
     (options, args) = parser.parse_args()
 
     if options.restore:
@@ -60,6 +64,7 @@ def main():
             os.system("echo 'This application will install the following drivers/fixes:' > " + descriptionFile)
             driversdescribe.describeDrivers()
             os.system("cat " + descriptionFile)
+    
     else:
     
         if osversion != '6.06' and osversion != '6.10' and osversion != '7.04' and osversion != '7.10' and osversion != '8.04' and osversion != '8.10' and osversion != '9.04' and osversion != '9.10' and osversion != '10.04' and osversion != '10.10' and osversion != '11.04':

@@ -58,7 +58,7 @@ def onCreateClicked(driverCreate):
         setNotify("gtk-dialog-error", "The driver is currently processing another operation.\nPlease wait for it to finish")
     else:
         os.system('touch ' + lockFile)
-        username = getpass.getuser()
+#        username = getpass.getuser()
         
         today = time.strftime('%Y%m%d_h%Hm%Ms%S')
         modelname = model.determine_model()
@@ -82,8 +82,10 @@ def onCreateClicked(driverCreate):
         os.system('cp /var/log/syslog %s/' % TARGETDIR)
         os.system('cp /var/log/Xorg.0.log %s/' % TARGETDIR)
         os.system('tar -zcvf logs.tar %s/' % TARGETDIR)
+        x = open("/tmp/sys76-username")
+        username = x.read()
+        x.close()
         os.system('cp logs.tar /home/%s/' % username)
-#        os.system('sudo chmod 777 /home/%s/logs.tar' % username)
         os.system('rm ' + lockFile)
         
         setNotify("gtk-ok", "A log file (logs.tar) was created in your home folder. Please send it to\nsupport via www.system76.com/support")
@@ -261,5 +263,7 @@ else:
     notSupport().run()
 
 os.system('rm ' + lockFile + ' 2>/dev/null') #remove any stray lock files and...
-os.system("rm " + descriptionFile + " 2>/dev/null") #description files.
+os.system('rm " + descriptionFile + " 2>/dev/null') #description files.
+os.system(os.system('rm /tmp/sys76-username 2>/dev/null'))
 sys.exit(0)
+
