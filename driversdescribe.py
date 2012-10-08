@@ -28,7 +28,7 @@ global descriptionFile
 descriptionFile = "/tmp/sys76-drivers"
 
 def describeDrivers():
-    """This function installs the appropriate drivers for each machine"""
+    """This function describes drivers installed for each machine"""
     
     global nodrivers
     nodrivers = "false"
@@ -79,6 +79,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -113,6 +116,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -137,6 +143,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -152,6 +161,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -163,6 +175,8 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -205,6 +219,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -244,6 +261,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -272,6 +292,9 @@ def describeDrivers():
         elif version == ('11.10'):
             acpi.lemu1().describe()
         elif version == ('12.04'):
+            fprint.fingerprintGUI().describe()
+            acpi.lemu1().describe()
+        elif version == ('12.10'):
             fprint.fingerprintGUI().describe()
             acpi.lemu1().describe()
         else:
@@ -315,6 +338,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -354,6 +380,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -397,6 +426,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -437,6 +469,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -453,11 +488,16 @@ def describeDrivers():
             return nodrivers
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('gazp7'):
         if version == ('12.04'):
+            acpi.lemu1().describe()
+            misc.realtek_rts_bpp().describe()
+        elif version == ('12.10'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
         else:
@@ -503,6 +543,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -543,6 +586,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -586,6 +632,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -625,6 +674,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -654,6 +706,9 @@ def describeDrivers():
         elif version == ('11.10'):
             uvc.quirks().describe()
         elif version == ('12.04'):
+            uvc.quirks().describe()
+            fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
             uvc.quirks().describe()
             fprint.fingerprintGUI().describe()
         else:
@@ -698,6 +753,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -720,6 +778,8 @@ def describeDrivers():
             acpi.lemu1().describe()
         elif version == ('12.04'):
             acpi.lemu1().describe()
+        elif version == ('12.10'):
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -738,6 +798,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -748,6 +811,8 @@ def describeDrivers():
             acpi.lemu1().describe()
         elif version == ('12.04'):
             acpi.lemu1().describe()
+        elif version == ('12.10'):
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -756,6 +821,9 @@ def describeDrivers():
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
         elif version == ('12.04'):
+            acpi.lemu1().describe()
+            misc.realtek_rts_bpp().describe()
+        elif version == ('12.10'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
         else:
@@ -783,6 +851,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -799,6 +870,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -807,6 +881,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -837,6 +914,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -860,6 +940,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -887,6 +970,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -898,6 +984,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -934,6 +1023,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -963,6 +1055,8 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -994,6 +1088,8 @@ def describeDrivers():
             return nodrivers
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1024,6 +1120,8 @@ def describeDrivers():
             return nodrivers
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1047,6 +1145,8 @@ def describeDrivers():
             return nodrivers
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1058,6 +1158,8 @@ def describeDrivers():
             acpi.lemu1().describe()
         elif version == ('12.04'):
             acpi.lemu1().describe()
+        elif version == ('12.10'):
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1066,6 +1168,9 @@ def describeDrivers():
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
         elif version == ('12.04'):
+            acpi.lemu1().describe()
+            misc.realtek_rts_bpp().describe()
+        elif version == ('12.10'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
         else:
@@ -1107,6 +1212,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1145,6 +1253,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1164,6 +1275,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1177,11 +1291,17 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('ratp1'):
         if version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -1226,6 +1346,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1266,6 +1389,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -1310,6 +1436,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1343,6 +1472,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1374,6 +1506,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1403,6 +1538,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -1447,6 +1585,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1488,6 +1629,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1520,6 +1664,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -1563,6 +1710,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1602,6 +1752,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -1645,6 +1798,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1686,6 +1842,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1713,6 +1872,8 @@ def describeDrivers():
             return nodrivers
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1736,6 +1897,8 @@ def describeDrivers():
             return nodrivers
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1751,6 +1914,8 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -1786,6 +1951,10 @@ def describeDrivers():
             sound.alsa13().describe()
             acpi.star1().describe()
             misc.wireless8187b().describe()
+        elif version == ('12.10'):
+            sound.alsa13().describe()
+            acpi.star1().describe()
+            misc.wireless8187b().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1802,6 +1971,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -1823,6 +1995,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1842,6 +2017,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1859,6 +2037,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -1885,6 +2066,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1896,6 +2080,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -1941,6 +2128,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -1982,6 +2172,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:
@@ -2027,6 +2220,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -2064,6 +2260,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -2092,6 +2291,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -2114,6 +2316,9 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
@@ -2130,11 +2335,17 @@ def describeDrivers():
         elif version == ('12.04'):
             nodrivers = "true"
             return nodrivers
+        elif version == ('12.10'):
+            nodrivers = "true"
+            return nodrivers
         else:
             nodrivers = "true"
             return nodrivers
     elif modelname == ('wilp9'):
         if version == ('12.04'):
+            nodrivers = "true"
+            return nodrivers
+        elif version == ('12.10'):
             nodrivers = "true"
             return nodrivers
         else:

@@ -391,11 +391,9 @@ log file will be available in your home folder.</property>
             <property name="spacing">3</property>
             <child>
               <object class="GtkButton" id="driverInstall">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="relief">none</property>
                 <signal name="clicked" handler="onInstallClicked" swapped="no"/>
                 <child>
@@ -446,11 +444,9 @@ log file will be available in your home folder.</property>
             </child>
             <child>
               <object class="GtkButton" id="driverRestore">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="relief">none</property>
                 <signal name="clicked" handler="onRestoreClicked" swapped="no"/>
                 <child>
@@ -500,11 +496,9 @@ log file will be available in your home folder.</property>
             </child>
             <child>
               <object class="GtkButton" id="driverCreate">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="relief">none</property>
                 <signal name="clicked" handler="onCreateClicked" swapped="no"/>
                 <child>
@@ -565,11 +559,9 @@ log file will be available in your home folder.</property>
             <property name="can_focus">False</property>
             <child>
               <object class="GtkButton" id="aboutButton">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="relief">none</property>
                 <signal name="clicked" handler="onAboutClicked" swapped="no"/>
                 <child>
@@ -643,7 +635,7 @@ log file will be available in your home folder.</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="message_type">error</property>
     <property name="text" translatable="yes">Your system is unsupported.</property>
-    <property name="secondary_text" translatable="yes">This application is desgined for System76 computers running Ubuntu versions 6.06 through 12.04. It appears your system fails one or both of these requirements. 
+    <property name="secondary_text" translatable="yes">This application is desgined for System76 computers running Ubuntu versions 6.06 through 12.10. It appears your system fails one or both of these requirements. 
 
 If you are running one of these Ubuntu versions on a System76 computer, please contact support at www.system76.com/support</property>
     <signal name="close" handler="onDeleteWindow" swapped="no"/>
@@ -663,11 +655,9 @@ If you are running one of these Ubuntu versions on a System76 computer, please c
             <child>
               <object class="GtkButton" id="notSupportClose">
                 <property name="label" translatable="yes">Close</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="onCloseClicked" swapped="no"/>
               </object>
               <packing>
