@@ -197,6 +197,9 @@ def determine_model():
     elif system_product_version == 'gazp7':
         modelname = "gazp7"
         return modelname
+    elif system_product_version == 'gazp8':
+        modelname = "gazp8"
+        return modelname
     elif system_product_name == 'M720T/M730T':
         modelname = "daru3"
         return modelname

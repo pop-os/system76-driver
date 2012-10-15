@@ -244,6 +244,26 @@ class realtek_rts_bpp():
             os.system('echo \'DRIVERS=="rts_bpp", ENV{ID_DRIVE_FLASH_SD}="1"\' | sudo tee -a /lib/udev/rules.d/81-udisks-realtek.rules')
     def describe(self):
         os.system("echo 'Realtek Card Reader driver' >> " + descriptionFile)
+        
+class lightdm_race():
+    def install(self): 
+        """On fast systems, lightdm tries to start before the graphics
+        driver is ready. Insert a 2 second pause before starting lightdm"""
+        
+        os.system('sudo cp /etc/init/lightdm.conf /tmp/lightdm.conf_sys76backup_%s' % today)          
+
+        lightdm_start = fileinput.input('/etc/init/lightdm.conf', inplace=1)
+        for line in lightdm_start:
+            print line.replace('sleep 2; ',''),
+        lightdm_start = fileinput.input('/etc/init/lightdm.conf', inplace=1)
+        for line in lightdm_start:
+            print line.replace('sleep 2',''),
+        lightdm_start = fileinput.input('/etc/init/lightdm.conf', inplace=1)
+        for line in lightdm_start:
+            print line.replace('exec lightdm','sleep 2; exec lightdm'),
+        
+    def describe(self):
+        os.system("echo 'Fix race condition where the Ubuntu login screen doesn't show on occasion' >> " + descriptionFile)
     
 class test():
     def install(self):

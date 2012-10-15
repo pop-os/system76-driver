@@ -494,9 +494,23 @@ def installDrivers():
         if version == ('12.04'):
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
         elif version == ('12.10'):
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('gazp8'):
+        if version == ('12.04'):
+            acpi.lemu1().install()
+            misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
+        elif version == ('12.10'):
+            acpi.lemu1().install()
+            misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -820,9 +834,11 @@ def installDrivers():
         elif version == ('12.04'):
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
         elif version == ('12.10'):
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -878,11 +894,9 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().install()
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1167,9 +1181,11 @@ def installDrivers():
         elif version == ('12.04'):
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
         elif version == ('12.10'):
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1296,11 +1312,9 @@ def installDrivers():
             return nodrivers
     elif modelname == ('ratp1'):
         if version == ('12.04'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().install()
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2340,11 +2354,9 @@ def installDrivers():
             return nodrivers
     elif modelname == ('wilp9'):
         if version == ('12.04'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().install()
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().install()
         else:
             nodrivers = "true"
             return nodrivers

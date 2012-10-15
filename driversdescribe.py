@@ -497,9 +497,23 @@ def describeDrivers():
         if version == ('12.04'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
         elif version == ('12.10'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('gazp8'):
+        if version == ('12.04'):
+            acpi.lemu1().describe()
+            misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
+        elif version == ('12.10'):
+            acpi.lemu1().describe()
+            misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -823,9 +837,11 @@ def describeDrivers():
         elif version == ('12.04'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
         elif version == ('12.10'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -881,11 +897,9 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.04'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().describe()
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1170,9 +1184,11 @@ def describeDrivers():
         elif version == ('12.04'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
         elif version == ('12.10'):
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1299,11 +1315,9 @@ def describeDrivers():
             return nodrivers
     elif modelname == ('ratp1'):
         if version == ('12.04'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().describe()
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2343,11 +2357,9 @@ def describeDrivers():
             return nodrivers
     elif modelname == ('wilp9'):
         if version == ('12.04'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().describe()
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.lightdm_race().describe()
         else:
             nodrivers = "true"
             return nodrivers

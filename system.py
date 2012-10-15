@@ -171,6 +171,9 @@ def name():
     elif modelname == "gazp7":
         systemname = "Gazelle Professional"
         return systemname
+    elif modelname == "gazp8":
+        systemname = "Gazelle Professional"
+        return systemname
     elif modelname == "gazu1":
         systemname = "Gazelle Ultra"
         return systemname

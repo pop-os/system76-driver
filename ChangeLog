@@ -4,6 +4,29 @@ System76, Inc.
 Copyright System76, Inc.
 Released under the GNU General Public License (See LICENSE)
 
+Version 3.2.1
+
+1.) Fix lightdm startup race condition on ratp1, wilp9, leox3
+    lemu4, gazp7, gazp8, panp9. Applies to Ubuntu 12.04 and 12.10.
+2.) Add gazp8 model
+
+--------------------------------------
+
+Version 3.2.0
+
+1.) Add Ubuntu 12.10 support
+2.) Fix minor bug throwing apport errors
+
+--------------------------------------
+
+Version 3.0.0
+
+1.) interface on Ubuntu 11.10 and later to use GTK3
+2.) Clean up core logic for GTK3 version
+3.) Add details pane showing what drivers will be installed. 
+
+--------------------------------------
+
 Version 2.7.6
 
 1.) Add new Gazelle Professional (gazp7)
