@@ -198,7 +198,7 @@ def installDrivers():
         elif version == ('13.04'):
             fprint.fingerprintGUI().describe()
             misc.plymouth1080().describe()
-            misc.wifi_pm-disable().describe()
+            misc.wifi_pm_disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -538,7 +538,7 @@ def installDrivers():
             misc.lightdm_race().describe()
         elif version == ('13.04'):
             acpi.lemu1().describe()
-            misc.wifi_pm-disable().describe()
+            misc.wifi_pm_disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -555,7 +555,7 @@ def installDrivers():
             misc.lightdm_race().describe()
         elif version == ('13.04'):
             acpi.lemu1().describe()
-            misc.wifi_pm-disable().describe()
+            misc.wifi_pm_disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -904,7 +904,7 @@ def installDrivers():
             misc.lightdm_race().describe()
         elif version == ('13.04'):
             acpi.lemu1().describe()
-            misc.wifi_pm-disable().describe()
+            misc.wifi_pm_disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1283,7 +1283,7 @@ def installDrivers():
             misc.lightdm_race().describe()
         elif version == ('13.04'):
             acpi.lemu1().describe()
-            misc.wifi_pm-disable().describe()
+            misc.wifi_pm_disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
