@@ -24,7 +24,7 @@ import uvc
 
 ## KEEP ALL MODELS IN ALPHABETICAL ORDER
 
-def installDrivers():
+def describeDrivers():
     """This function installs the appropriate drivers for each machine"""
     
     global nodrivers
