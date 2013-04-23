@@ -22,6 +22,7 @@ import os
 import ubuntuversion
 import jme_kernel_latest
 import fileinput
+import time
 
 WORKDIR = os.path.join(os.path.dirname(__file__), '.')
 WIRELESS8187 = os.path.join(os.path.dirname(__file__), 'rtl8187B_linux_26.1052.0225.2009.release')
@@ -29,6 +30,7 @@ WIRELESS8187B = os.path.join(os.path.dirname(__file__), 'rtl8187B/rtl8187/')
 JMEDIR = os.path.join(os.path.dirname(__file__), 'jme-1.0.5')
 DKMSDIR = os.path.join(os.path.dirname(__file__), '/usr/src/')
 descriptionFile = "/tmp/sys76-drivers"
+today = time.strftime('%Y%m%d_h%Hm%Ms%S')
 
 class piix():
     def install(self):
@@ -236,7 +238,7 @@ class realtek_rts_bpp():
             os.system('sudo rm /lib/udev/rules.d/81-udisks-realtek.rules')
             os.system('echo \'DRIVERS=="rts_bpp", ENV{ID_DRIVE_FLASH_SD}="1"\' | sudo tee -a /lib/udev/rules.d/81-udisks-realtek.rules')
         else:
-            os.system('sudo apt-get --assume-yes install dkms')
+            os.system('sudo apt-get --assume-yes install dkms linux-headers-`uname -r`')
             os.chdir(DKMSDIR)
             os.system('sudo wget http://planet76.com/drivers/realtek/rts-bpp-dkms_1.1_all.deb')
             os.system('sudo dpkg -i rts-bpp-dkms_1.1_all.deb')
@@ -263,41 +265,44 @@ class lightdm_race():
             print line.replace('exec lightdm','sleep 2; exec lightdm'),
         
     def describe(self):
-        os.system("echo 'Fix race condition where the Ubuntu login screen doesn't show on occasion' >> " + descriptionFile)
-    
-class test():
-    def install(self):
-        #simple test method to see if the driver is working
-        print("Installing Test Driver 1")
+        os.system("echo 'Fix race condition causing the Ubuntu login screen to not show on occasion' >> " + descriptionFile)
+        
+class linux_headers():
+    def install(self): 
+        """In Ubuntu 12.10 Linux Headers are not installed causing
+        nvidia installation and compiled modules to fail"""
+        
+        os.system('sudo apt-get --assume-yes install dkms linux-headers-generic')          
         
     def describe(self):
-        os.system("echo 'Test Driver 1' >> " + descriptionFile)
+        os.system("echo 'Install linux-headers for driver support' >> " + descriptionFile)
+        
+class plymouth1080():
+    def install(self): 
+        """Configure Grub to correctly display Ubuntu logo on boot
+        (typically needed with nVidia graphics). This is for 1080p displays"""
+        
+        os.system('sudo cp /etc/default/grub /tmp/grub_sys76backup_%s' % today) 
 
-class test2():
-    def install(self):
-        print("Installing Test Driver 2")
+        grub_gfx = fileinput.input('/etc/default/grub', inplace=1)
+        for line in grub_gfx:
+            print line.replace('GRUB_GFXPAYLOAD_LINUX="1920x1080"',''),
+        with open('/etc/default/grub', "a") as f:
+            f.write('GRUB_GFXPAYLOAD_LINUX="1920x1080"')
+            
+        os.system('sudo update-grub')
         
     def describe(self):
-        os.system("echo 'Test Driver 2' >> " + descriptionFile)
-    
-class test3():
+        os.system("echo 'Correctly diplay Ubuntu logo on boot' >> " + descriptionFile)
+        
+class wifi_pm_disable():
     def install(self):
-        print("Installing Test Driver 3")
+        ##Disable Wireless Power Saving
+        os.system("sudo rm /etc/pm/power.d/wireless > /dev/null 2>&1")
+        os.system("echo '#!/bin/sh' | sudo tee -a /etc/pm/power.d/wireless")
+        os.system("echo '/sbin/iwconfig wlan0 power off' | sudo tee -a /etc/pm/power.d/wireless")
+        os.system("sudo chmod +x /etc/pm/power.d/wireless")
         
     def describe(self):
-        os.system("echo 'Test Driver 3' >> " + descriptionFile)
-    
-class test4():
-    def install(self):
-        print("Installing Test Driver 4")
-        
-    def describe(self):
-        os.system("echo 'Test Driver 4' >> " + descriptionFile)
-    
-class test5():
-    def install(self):
-        print("Installing Test Driver 5")
-        
-    def describe(self):
-        os.system("echo 'Test Driver 5' >> " + descriptionFile)
+        os.system("echo 'Disable Wireless Power Saving' >> " + descriptionFile)
     

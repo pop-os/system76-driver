@@ -1,0 +1,15 @@
+Source: system76-driver
+Section: utils
+Priority: extra
+Maintainer: System76, Inc. <dev@system76.com>
+Build-Depends: debhelper (>= 8.0.0), python-support, python (>=2.7)
+Standards-Version: 3.9.2
+Homepage: http://www.system76.com/
+#Vcs-Bzr: bzr+ssh://bazaar.launchpad.net/+branch/system76-driver/
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/system76-driver.git;a=summary
+
+Package: system76-driver
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python, python-gtk2, python-gnome2, python-glade2, librsvg2-common
+Description: Universal driver for System76 computers.
+ System76 Driver provides drivers, restore, and regression support for System76 computers running Ubuntu.  Click the Device Menu (power icon at the top right of your screen) and choose System Settings. Click System76 Driver to install drivers or restore your computer.

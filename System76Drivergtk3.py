@@ -198,7 +198,7 @@ def getSupported():
         supportStatus = "false"
     else:
         #Now, make sure it's running a supported OS and version. Includes Ubuntu 6.06 through 12.04 (unofficially, Elementary
-        if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10' and version != '9.04' and version != '9.10' and version != '10.04' and version != '10.10' and version != '11.04' and version != '11.10' and version != '12.04' and version != '0.2' and version != '12.10':
+        if version != '6.06' and version != '6.10' and version != '7.04' and version != '7.10' and version != '8.04' and version != '8.10' and version != '9.04' and version != '9.10' and version != '10.04' and version != '10.10' and version != '11.04' and version != '11.10' and version != '12.04' and version != '0.2' and version != '12.10' and version != '13.04':
             return False
         else:
             return True
