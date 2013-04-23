@@ -76,7 +76,7 @@ class install():
         os.system("echo 'Fingerprint reader driver' >> " + descriptionFile)
     
 class installPackages():
-    def isntall(self):
+    def install(self):
         
         os.system('sudo apt-get --assume-yes install libusb-1.0-0')
         os.chdir(DRIVERDIR)
@@ -117,4 +117,4 @@ class fingerprintGUI():
         os.system('sudo apt-get install --assume-yes fingerprint-gui policykit-1-fingerprint-gui libbsapi')
         
     def describe(self):
-        os.system("echo 'Fingerprint reader GUI' >> " + descriptionFile)
+        os.system("echo 'Fingerprint reader drivers and user interface' >> " + descriptionFile)

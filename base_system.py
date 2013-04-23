@@ -150,6 +150,24 @@ def app_install():
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
             os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+    # System76 Bonobo Extreme (bonx6)
+    elif modelname == ('bonx6'):
+        if version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
+        elif version == ('12.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+            for user in os.listdir('/home'):
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad horiz-scroll-enabled "true"\'' % user)
+                os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
     # System76 Meerkat NetTop (ment1)
     elif modelname == ('ment1'):
         if version == ('8.10'):
@@ -2090,6 +2108,14 @@ def app_install():
             sources.add()
             os.system('sudo apt-get --assume-yes install system76-driver')
         elif version == ('12.04'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+        elif version == ('12.10'):
+            sources.add()
+            os.system('sudo apt-get --assume-yes install system76-driver')
+    # Sable Complete (sabc1)
+    elif modelname == ('sabc1'):
+        if version == ('12.04'):
             sources.add()
             os.system('sudo apt-get --assume-yes install system76-driver')
         elif version == ('12.10'):

@@ -132,6 +132,9 @@ def name():
     elif modelname == "ratp1":
         systemname = "Ratel Performance"
         return systemname
+    elif modelname == "sabc1":
+        systemname = "Sable Complete"
+        return systemname
     elif modelname == "gazv2":
         systemname = "Gazelle Value"
         return systemname
@@ -221,6 +224,9 @@ def name():
         return systemname
     elif modelname == "bonp5":
         systemname = "Bonobo Professional"
+        return systemname
+    elif modelname == "bonx6":
+        systemname = "Bonobo Extreme"
         return systemname
     elif modelname == "panp4i":
         systemname = "Pangolin Performance"

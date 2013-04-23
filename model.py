@@ -188,6 +188,9 @@ def determine_model():
     elif system_product_version == 'bonp5':
         modelname = "bonp5"
         return modelname
+    elif system_product_version == 'bonx6':
+        modelname = "bonx6"
+        return modelname
     elif system_product_version == 'gazu1':
         modelname = "gazu1"
         return modelname
@@ -274,6 +277,9 @@ def determine_model():
         return modelname
     elif system_product_version == 'ratp1':
         modelname = "ratp1"
+        return modelname
+    elif system_product_version == 'sabc1':
+        modelname = "sabc1"
         return modelname
     elif system_product_version == 'star3':
         modelname = "star3"

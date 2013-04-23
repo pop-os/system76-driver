@@ -77,8 +77,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -114,8 +113,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -141,8 +139,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -159,8 +156,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -174,7 +170,20 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('bonx6'):
+        if version == ('12.04'):
+            fprint.fingerprintGUI().install()
+        elif version == ('12.10'):
+            misc.linux_headers().install()
+            fprint.fingerprintGUI().install()
+            misc.realtek_rts_bpp().install()
+            misc.lightdm_race().install()
+            misc.plymouth1080().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -217,8 +226,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -259,8 +267,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -292,6 +299,7 @@ def installDrivers():
             fprint.fingerprintGUI().install()
             acpi.lemu1().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
             acpi.lemu1().install()
         else:
@@ -336,8 +344,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -380,8 +387,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -424,8 +430,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -467,8 +472,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -486,6 +490,7 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
@@ -496,6 +501,7 @@ def installDrivers():
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
@@ -508,6 +514,7 @@ def installDrivers():
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
@@ -555,8 +562,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -600,8 +606,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -644,8 +649,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -686,8 +690,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -720,6 +723,7 @@ def installDrivers():
             uvc.quirks().install()
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             uvc.quirks().install()
             fprint.fingerprintGUI().install()
         else:
@@ -765,8 +769,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -790,6 +793,7 @@ def installDrivers():
         elif version == ('12.04'):
             acpi.lemu1().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             acpi.lemu1().install()
         else:
             nodrivers = "true"
@@ -810,8 +814,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -823,6 +826,7 @@ def installDrivers():
         elif version == ('12.04'):
             acpi.lemu1().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             acpi.lemu1().install()
         else:
             nodrivers = "true"
@@ -836,6 +840,7 @@ def installDrivers():
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
@@ -865,8 +870,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -884,8 +888,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -896,6 +899,7 @@ def installDrivers():
         elif version == ('12.04'):
             misc.lightdm_race().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             misc.lightdm_race().install()
         else:
             nodrivers = "true"
@@ -926,8 +930,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -954,8 +957,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -982,8 +984,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -998,8 +999,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1035,8 +1035,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1068,6 +1067,7 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
@@ -1100,6 +1100,7 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
@@ -1132,6 +1133,7 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
@@ -1157,6 +1159,7 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
@@ -1170,6 +1173,7 @@ def installDrivers():
         elif version == ('12.04'):
             acpi.lemu1().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             acpi.lemu1().install()
         else:
             nodrivers = "true"
@@ -1183,6 +1187,7 @@ def installDrivers():
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             acpi.lemu1().install()
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
@@ -1226,8 +1231,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1267,8 +1271,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1289,8 +1292,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1305,8 +1307,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1314,6 +1315,7 @@ def installDrivers():
         if version == ('12.04'):
             misc.lightdm_race().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             misc.lightdm_race().install()
         else:
             nodrivers = "true"
@@ -1358,8 +1360,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1403,8 +1404,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1448,8 +1448,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1484,8 +1483,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1518,8 +1516,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1552,8 +1549,16 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
+            misc.linux_headers().install()
+        else:
             nodrivers = "true"
             return nodrivers
+    elif modelname == ('sabc1'):
+        if version == ('12.04'):
+            misc.lightdm_race().install()
+        elif version == ('12.10'):
+            misc.linux_headers().install()
+            misc.lightdm_race().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1597,8 +1602,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1641,8 +1645,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1678,8 +1681,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1722,8 +1724,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1766,8 +1767,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1810,8 +1810,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1854,8 +1853,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1884,6 +1882,7 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
@@ -1909,6 +1908,7 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
@@ -1927,6 +1927,7 @@ def installDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             fprint.fingerprintGUI().install()
         else:
             nodrivers = "true"
@@ -1963,6 +1964,7 @@ def installDrivers():
             acpi.star1().install()
             misc.wireless8187b().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             sound.alsa13().install()
             acpi.star1().install()
             misc.wireless8187b().install()
@@ -2078,8 +2080,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2094,8 +2095,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2140,8 +2140,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2186,8 +2185,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2232,8 +2230,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2272,8 +2269,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2303,8 +2299,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2328,8 +2323,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2347,8 +2341,7 @@ def installDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2356,6 +2349,7 @@ def installDrivers():
         if version == ('12.04'):
             misc.lightdm_race().install()
         elif version == ('12.10'):
+            misc.linux_headers().install()
             misc.lightdm_race().install()
         else:
             nodrivers = "true"

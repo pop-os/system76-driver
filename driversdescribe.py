@@ -80,8 +80,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -117,8 +116,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -144,8 +142,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -162,8 +159,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -177,7 +173,20 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        else:
+            nodrivers = "true"
+            return nodrivers
+    elif modelname == ('bonx6'):
+        if version == ('12.04'):
+            fprint.fingerprintGUI().describe()
+        elif version == ('12.10'):
+            misc.linux_headers().describe()
+            fprint.fingerprintGUI().describe()
+            misc.realtek_rts_bpp().describe()
+            misc.lightdm_race().describe()
+            misc.plymouth1080().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -220,8 +229,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -262,8 +270,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -295,6 +302,7 @@ def describeDrivers():
             fprint.fingerprintGUI().describe()
             acpi.lemu1().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
             acpi.lemu1().describe()
         else:
@@ -339,8 +347,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -383,8 +390,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -427,8 +433,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -470,8 +475,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -489,6 +493,7 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -499,6 +504,7 @@ def describeDrivers():
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
@@ -511,6 +517,7 @@ def describeDrivers():
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
@@ -558,8 +565,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -603,8 +609,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -647,8 +652,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -689,8 +693,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -723,6 +726,7 @@ def describeDrivers():
             uvc.quirks().describe()
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             uvc.quirks().describe()
             fprint.fingerprintGUI().describe()
         else:
@@ -768,8 +772,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -793,6 +796,7 @@ def describeDrivers():
         elif version == ('12.04'):
             acpi.lemu1().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             acpi.lemu1().describe()
         else:
             nodrivers = "true"
@@ -813,8 +817,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -826,6 +829,7 @@ def describeDrivers():
         elif version == ('12.04'):
             acpi.lemu1().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             acpi.lemu1().describe()
         else:
             nodrivers = "true"
@@ -839,6 +843,7 @@ def describeDrivers():
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
@@ -868,8 +873,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -887,8 +891,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -899,6 +902,7 @@ def describeDrivers():
         elif version == ('12.04'):
             misc.lightdm_race().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             misc.lightdm_race().describe()
         else:
             nodrivers = "true"
@@ -929,8 +933,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -957,8 +960,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -985,8 +987,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1001,8 +1002,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1038,8 +1038,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1071,6 +1070,7 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -1103,6 +1103,7 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -1135,6 +1136,7 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -1160,6 +1162,7 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -1173,6 +1176,7 @@ def describeDrivers():
         elif version == ('12.04'):
             acpi.lemu1().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             acpi.lemu1().describe()
         else:
             nodrivers = "true"
@@ -1186,6 +1190,7 @@ def describeDrivers():
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
@@ -1229,8 +1234,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1270,8 +1274,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1292,8 +1295,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1308,8 +1310,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1317,6 +1318,7 @@ def describeDrivers():
         if version == ('12.04'):
             misc.lightdm_race().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             misc.lightdm_race().describe()
         else:
             nodrivers = "true"
@@ -1361,8 +1363,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1406,8 +1407,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1451,8 +1451,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1487,8 +1486,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1521,8 +1519,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1555,8 +1552,16 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
+            misc.linux_headers().describe()
+        else:
             nodrivers = "true"
             return nodrivers
+    elif modelname == ('sabc1'):
+        if version == ('12.04'):
+            misc.lightdm_race().describe()
+        elif version == ('12.10'):
+            misc.linux_headers().describe()
+            misc.lightdm_race().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1600,8 +1605,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1644,8 +1648,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1681,8 +1684,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1725,8 +1727,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1769,8 +1770,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1813,8 +1813,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1857,8 +1856,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1887,6 +1885,7 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -1912,6 +1911,7 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -1930,6 +1930,7 @@ def describeDrivers():
         elif version == ('12.04'):
             fprint.fingerprintGUI().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
@@ -1966,6 +1967,7 @@ def describeDrivers():
             acpi.star1().describe()
             misc.wireless8187b().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             sound.alsa13().describe()
             acpi.star1().describe()
             misc.wireless8187b().describe()
@@ -2081,8 +2083,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2097,8 +2098,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2143,8 +2143,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2189,8 +2188,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2235,8 +2233,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2275,8 +2272,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2306,8 +2302,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2331,8 +2326,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2350,8 +2344,7 @@ def describeDrivers():
             nodrivers = "true"
             return nodrivers
         elif version == ('12.10'):
-            nodrivers = "true"
-            return nodrivers
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -2359,6 +2352,7 @@ def describeDrivers():
         if version == ('12.04'):
             misc.lightdm_race().describe()
         elif version == ('12.10'):
+            misc.linux_headers().describe()
             misc.lightdm_race().describe()
         else:
             nodrivers = "true"
