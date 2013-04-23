@@ -24,11 +24,8 @@ import uvc
 
 ## KEEP ALL MODELS IN ALPHABETICAL ORDER
 
-global descriptionFile
-descriptionFile = "/tmp/sys76-drivers"
-
-def describeDrivers():
-    """This function describes drivers installed for each machine"""
+def installDrivers():
+    """This function installs the appropriate drivers for each machine"""
     
     global nodrivers
     nodrivers = "false"
@@ -40,7 +37,7 @@ def describeDrivers():
     
     if version == ('8.04.1'):
         version = '8.04'
-    
+    #Bonobo
     if modelname == ('bonp1'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -81,9 +78,12 @@ def describeDrivers():
             return nodrivers
         elif version == ('12.10'):
             misc.linux_headers().describe()
+        elif version == ('13.04'):
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('bonp2'):
         if version == ('8.04'):
             sound.alsa10().describe()
@@ -117,9 +117,12 @@ def describeDrivers():
             return nodrivers
         elif version == ('12.10'):
             misc.linux_headers().describe()
+        elif version == ('13.04'):
+            misc.linux_headers().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('bonp3'):
         if version == ('9.10'):
             acpi.os_linux().describe()
@@ -146,6 +149,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('bonp4'):
         if version == ('10.10'):
             acpi.xhcihcdModule().describe()
@@ -163,6 +167,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('bonp5'):
         if version == ('11.04'):
             acpi.pcie_aspm().describe()
@@ -175,9 +180,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('bonx6'):
         if version == ('12.04'):
             fprint.fingerprintGUI().describe()
@@ -187,9 +195,14 @@ def describeDrivers():
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
             misc.plymouth1080().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
+            misc.plymouth1080().describe()
         else:
             nodrivers = "true"
             return nodrivers
+    
+    #Darter        
     elif modelname == ('daru1'):
         if version == ('6.06'):
             sound.alsa6().describe()
@@ -233,6 +246,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('daru2'):
         if version == ('7.04'):
             misc.piix2().describe()
@@ -274,6 +288,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('daru3'):
         if version == ('8.04'):
             sound.alsa10().describe()
@@ -305,9 +320,14 @@ def describeDrivers():
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
             acpi.lemu1().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
+    
+    #Gazelle        
     elif modelname == ('gazp1'):
         if version == ('6.06'):
             sound.alsa6().describe()
@@ -351,6 +371,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazp2'):
         if version == ('6.06'):
             sound.alsa6().describe()
@@ -394,6 +415,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazp3'):
         if version == ('6.06'):
             sound.alsa6().describe()
@@ -437,6 +459,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazp5'):
         if version == ('7.04'):
             misc.piix2().describe()
@@ -479,6 +502,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazp6'):
         if version == ('10.10'):
             fprint.fingerprintGUI().describe()
@@ -495,9 +519,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazp7'):
         if version == ('12.04'):
             acpi.lemu1().describe()
@@ -508,9 +535,12 @@ def describeDrivers():
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
+        elif version == ('13.04'):
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazp8'):
         if version == ('12.04'):
             acpi.lemu1().describe()
@@ -521,9 +551,12 @@ def describeDrivers():
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
+        elif version == ('13.04'):
+            misc.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazv1'):
         nodrivers = "true"
         return nodrivers
@@ -569,6 +602,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazv3'):
         if version == ('6.06'):
             sound.alsa6().describe()
@@ -613,6 +647,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazv4'):
         if version == ('6.06'):
             sound.alsa6().describe()
@@ -656,6 +691,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazv5'):
         if version == ('7.04'):
             misc.piix2().describe()
@@ -697,6 +733,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('gazu1'):
         if version == ('8.04'):
             sound.alsa10().describe()
@@ -729,9 +766,14 @@ def describeDrivers():
             misc.linux_headers().describe()
             uvc.quirks().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
+            uvc.quirks().describe()
         else:
             nodrivers = "true"
             return nodrivers
+    
+    #Koala        
     elif modelname == ('koap1'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -776,6 +818,8 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+    
+    #Lemur        
     elif modelname == ('lemu1'):
         if version == ('9.04'):
             uvc.lemur().describe()
@@ -798,9 +842,13 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             acpi.lemu1().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('lemu2'):
         if version == ('10.04'):
             uvc.lemur().describe()
@@ -821,6 +869,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('lemu3'):
         if version == ('11.04'):
             acpi.lemu1().describe()
@@ -831,9 +880,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             acpi.lemu1().describe()
+        elif version == ('13.04'):
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('lemu4'):
         if version == ('11.10'):
             acpi.lemu1().describe()
@@ -847,9 +899,13 @@ def describeDrivers():
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
+        elif version == ('13.04'):
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
+    
+    #Leopard        
     elif modelname == ('leo1'):
         if version == ('9.04'):
             nodrivers = "true"
@@ -877,6 +933,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('leox2'):
         if version == ('10.10'):
             acpi.xhcihcdModule().describe()
@@ -895,6 +952,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('leox3'):
         if version == ('11.10'):
             nodrivers = "true"
@@ -907,6 +965,8 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+    
+    #Meerkat        
     elif modelname == ('ment1'):
         if version == ('8.10'):
             nodrivers = "true"
@@ -937,6 +997,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ment2'):
         if version == ('9.04'):
             nodrivers = "true"
@@ -964,6 +1025,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ment3'):
         if version == ('9.04'):
             nodrivers = "true"
@@ -991,6 +1053,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ment5'):
         if version == ('11.04'):
             nodrivers = "true"
@@ -1006,9 +1069,13 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
+    #Non-System76
     elif modelname == ('nonsystem76'):
         nodrivers = "true"
         return nodrivers
+        
+    #Pangolin
     elif modelname == ('panp4i'):
         if version == ('8.04'):
             uvc.camera().describe()
@@ -1042,6 +1109,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('panp4n'):
         if version == ('8.04'):
             uvc.camera().describe()
@@ -1072,9 +1140,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('panp5'):
         if version == ('8.04'):
             uvc.camera().describe()
@@ -1105,9 +1176,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('panp6'):
         if version == ('8.04'):
             uvc.camera().describe()
@@ -1138,9 +1212,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('panp7'):
         if version == ('9.10'):
             acpi.os_linux().describe()
@@ -1164,9 +1241,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('panp8'):
         if version == ('11.04'):
             acpi.lemu1().describe()
@@ -1178,9 +1258,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             acpi.lemu1().describe()
+        elif version == ('13.04'):
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('panp9'):
         if version == ('11.10'):
             acpi.lemu1().describe()
@@ -1194,9 +1277,12 @@ def describeDrivers():
             acpi.lemu1().describe()
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
+        elif version == ('13.04'):
+            acpi.lemu1().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('panv2'):
         if version == ('6.06'):
             sound.alsa6().describe()
@@ -1238,6 +1324,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('panv3'):
         if version == ('7.04'):
             misc.piix2().describe()
@@ -1278,6 +1365,8 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
+    #Ratel
     elif modelname == ('ratu1'):
         if version == ('10.04'):
             nodrivers = "true"
@@ -1299,6 +1388,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ratu2'):
         if version == ('11.04'):
             nodrivers = "true"
@@ -1314,6 +1404,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ratp1'):
         if version == ('12.04'):
             misc.lightdm_race().describe()
@@ -1323,6 +1414,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ratv1'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -1367,6 +1459,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ratv2'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -1411,6 +1504,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ratv3'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -1455,6 +1549,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ratv4'):
         if version == ('7.10'):
             sound.alsa7().describe()
@@ -1490,6 +1585,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ratv5'):
         if version == ('7.10'):
             sound.alsa7().describe()
@@ -1523,6 +1619,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('ratv6'):
         if version == ('8.04'):
             nodrivers = "true"
@@ -1556,6 +1653,8 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
+    #Sable
     elif modelname == ('sabc1'):
         if version == ('12.04'):
             misc.lightdm_race().describe()
@@ -1565,6 +1664,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('sabv1'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -1609,6 +1709,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('sabv2'):
         if version == ('6.06'):
             sound.alsa6().describe()
@@ -1652,6 +1753,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('sabv3'):
         if version == ('7.10'):
             nodrivers = "true"
@@ -1688,6 +1790,8 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
+    #Serval
     elif modelname == ('serp1'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -1731,6 +1835,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('serp2'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -1774,6 +1879,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('serp3'):
         if version == ('7.04'):
             acpi.acpi1().describe()
@@ -1817,6 +1923,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('serp4'):
         if version == ('7.04'):
             acpi.acpi1().describe()
@@ -1860,6 +1967,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('serp5'):
         if version == ('8.10'):
             sound.alsa10().describe()
@@ -1887,9 +1995,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('serp6'):
         if version == ('9.10'):
             acpi.os_linux().describe()
@@ -1913,9 +2024,12 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('serp7'):
         if version == ('10.10'):
             fprint.fingerprintGUI().describe()
@@ -1932,9 +2046,13 @@ def describeDrivers():
         elif version == ('12.10'):
             misc.linux_headers().describe()
             fprint.fingerprintGUI().describe()
+        elif version == ('13.04'):
+            fprint.fingerprintGUI().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
+    #Starling
     elif modelname == ('star1'):
         if version == ('9.04'):
             sound.alsa12().describe()
@@ -1971,9 +2089,15 @@ def describeDrivers():
             sound.alsa13().describe()
             acpi.star1().describe()
             misc.wireless8187b().describe()
+        elif version == ('13.04'):
+            misc.linux_headers().describe()
+            sound.alsa13().describe()
+            acpi.star1().describe()
+            misc.wireless8187b().describe()
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('star2'):
         if version == ('10.04'):
             acpi.star2().describe()
@@ -1995,6 +2119,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('star3'):
         if version == ('10.04'):
             sound.alsabackportsLucid().describe()
@@ -2017,6 +2142,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('star4'):
         if version == ('10.04'):
             sound.alsabackportsLucid().describe()
@@ -2039,6 +2165,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('star5'):
         if version == ('10.04'):
             sound.alsabackportsLucid().describe()
@@ -2061,6 +2188,8 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
+    #Wildebeest
     elif modelname == ('wilb1'):
         if version == ('9.04'):
             nodrivers = "true"
@@ -2087,6 +2216,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('wilb2'):
         if version == ('11.04'):
             nodrivers = "true"
@@ -2102,6 +2232,8 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
+    #Wild Dog
     elif modelname == ('wilp1'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -2147,6 +2279,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('wilp2'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -2192,6 +2325,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('wilp3'):
         if version == ('6.06'):
             nodrivers = "true"
@@ -2237,6 +2371,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('wilp5'):
         if version == ('7.10'):
             if arch == ('x86'):
@@ -2276,6 +2411,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('wilp6'):
         if version == ('8.10'):
             nodrivers = "true"
@@ -2306,6 +2442,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('wilp7'):
         if version == ('9.10'):
             nodrivers = "true"
@@ -2330,6 +2467,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('wilp8'):
         if version == ('10.10'):
             acpi.xhcihcdModule().describe()
@@ -2348,6 +2486,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     elif modelname == ('wilp9'):
         if version == ('12.04'):
             misc.lightdm_race().describe()
@@ -2357,6 +2496,7 @@ def describeDrivers():
         else:
             nodrivers = "true"
             return nodrivers
+            
     else:
         nodrivers = "true"
         return nodrivers
