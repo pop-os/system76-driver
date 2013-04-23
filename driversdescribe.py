@@ -4,7 +4,7 @@
 ## Copyright System76, Inc.
 ## Released under the GNU General Public License (See LICENSE)
 ##
-## Controls driver installation
+## Describes driver installation
 
 #import driver files
 import ubuntuversion
@@ -198,6 +198,7 @@ def installDrivers():
         elif version == ('13.04'):
             fprint.fingerprintGUI().describe()
             misc.plymouth1080().describe()
+            misc.wifi_pm-disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -537,6 +538,7 @@ def installDrivers():
             misc.lightdm_race().describe()
         elif version == ('13.04'):
             acpi.lemu1().describe()
+            misc.wifi_pm-disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -552,7 +554,8 @@ def installDrivers():
             misc.realtek_rts_bpp().describe()
             misc.lightdm_race().describe()
         elif version == ('13.04'):
-            misc.lemu1().describe()
+            acpi.lemu1().describe()
+            misc.wifi_pm-disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -901,6 +904,7 @@ def installDrivers():
             misc.lightdm_race().describe()
         elif version == ('13.04'):
             acpi.lemu1().describe()
+            misc.wifi_pm-disable().describe()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1279,6 +1283,7 @@ def installDrivers():
             misc.lightdm_race().describe()
         elif version == ('13.04'):
             acpi.lemu1().describe()
+            misc.wifi_pm-disable().describe()
         else:
             nodrivers = "true"
             return nodrivers

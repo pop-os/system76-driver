@@ -294,4 +294,15 @@ class plymouth1080():
         
     def describe(self):
         os.system("echo 'Correctly diplay Ubuntu logo on boot' >> " + descriptionFile)
+        
+class wifi_pm-disable():
+    def install(self):
+        ##Disable Wireless Power Saving
+        os.system("sudo rm /etc/pm/power.d/wireless > /dev/null 2>&1")
+        os.system("echo '#!/bin/sh' | sudo tee -a /etc/pm/power.d/wireless")
+        os.system("echo '/sbin/iwconfig wlan0 power off' | sudo tee -a /etc/pm/power.d/wireless")
+        os.system("sudo chmod +x /etc/pm/power.d/wireless")
+        
+    def describe(self):
+        os.system("echo 'Disable Wireless Power Saving' >> " + descriptionFile)
     
