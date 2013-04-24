@@ -167,7 +167,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Bonobo Extreme (bonx6)
@@ -193,7 +193,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Meerkat NetTop (ment1)
@@ -766,7 +766,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Gazelle Performance (gazp7)
@@ -792,7 +792,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Gazelle Performance (gazp8)
@@ -818,7 +818,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # Model SW1 / System76 model Gazelle Value
@@ -1241,7 +1241,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Lemur Ultrathin (lemu2)
@@ -1288,7 +1288,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Lemur Ultra (lemu3)
@@ -1329,7 +1329,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Lemur Ultra (lemu4)
@@ -1363,7 +1363,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Leopard Extreme (leo1)
@@ -1658,7 +1658,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Pangolin Performance panp8
@@ -1699,7 +1699,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Pangolin Performance (panp9)
@@ -1733,7 +1733,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # Model S96F / System76 model Pangolin Value
@@ -2827,7 +2827,7 @@ def app_install():
             os.system('sudo apt-get --assume-yes install system76-driver')
             for user in os.listdir('/home'):
                 os.system('su %s -c \'gsettings set org.gnome.settings-daemon.peripherals.touchpad scroll-method "two-finger-scrolling"\'' % user)
-            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad.gschema.override /usr/share/glib-2.0/schemas/')
+            os.system('sudo cp /opt/system76/system76-driver/src/system76-touchpad-horizontal.gschema.override /usr/share/glib-2.0/schemas/')
             os.system('sudo glib-compile-schemas /usr/share/glib-2.0/schemas')
             
     # System76 Starling Netbook (star1)
