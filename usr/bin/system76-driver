@@ -75,10 +75,10 @@ def main():
             except:
                 print("NOTE: 11.10 or later detected! Running GTK3 version.")
                 os.environ['GDMSESSION'] == 'default'
-                os.system('gksu --description /usr/share/applications/system76-driver.desktop python /opt/system76/system76-driver/src/System76Drivergtk3.py')
+                os.system('gksudo --description /usr/share/applications/system76-driver.desktop python /opt/system76/system76-driver/src/System76Drivergtk3.py')
             else:
                 print("NOTE: 11.10 or later detected! Running GTK3 version.")
-                os.system('gksu --description /usr/share/applications/system76-driver.desktop python /opt/system76/system76-driver/src/System76Drivergtk3.py')
+                os.system('gksudo --description /usr/share/applications/system76-driver.desktop python /opt/system76/system76-driver/src/System76Drivergtk3.py')
         else:
             try:
                 print("NOTE: 11.04 or earlier detected! Running GTK2 version.")
