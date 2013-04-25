@@ -304,5 +304,5 @@ class wifi_pm_disable():
         os.system("sudo chmod +x /etc/pm/power.d/wireless")
         
     def describe(self):
-        os.system("echo 'Disable Wireless Power Saving' >> " + descriptionFile)
+        os.system("echo 'Improve WiFi performance on Battery' >> " + descriptionFile)
     

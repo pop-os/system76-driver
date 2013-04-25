@@ -323,7 +323,6 @@ def installDrivers():
             acpi.lemu1().install()
         elif version == ('13.04'):
             fprint.fingerprintGUI().install()
-            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -537,7 +536,6 @@ def installDrivers():
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
         elif version == ('13.04'):
-            acpi.lemu1().install()
             misc.wifi_pm_disable().install()
         else:
             nodrivers = "true"
@@ -554,7 +552,6 @@ def installDrivers():
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
         elif version == ('13.04'):
-            acpi.lemu1().install()
             misc.wifi_pm_disable().install()
         else:
             nodrivers = "true"
@@ -847,7 +844,6 @@ def installDrivers():
             acpi.lemu1().install()
         elif version == ('13.04'):
             fprint.fingerprintGUI().install()
-            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -883,8 +879,6 @@ def installDrivers():
         elif version == ('12.10'):
             misc.linux_headers().install()
             acpi.lemu1().install()
-        elif version == ('13.04'):
-            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -903,7 +897,6 @@ def installDrivers():
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
         elif version == ('13.04'):
-            acpi.lemu1().install()
             misc.wifi_pm_disable().install()
         else:
             nodrivers = "true"
@@ -1262,8 +1255,6 @@ def installDrivers():
         elif version == ('12.10'):
             misc.linux_headers().install()
             acpi.lemu1().install()
-        elif version == ('13.04'):
-            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1282,7 +1273,6 @@ def installDrivers():
             misc.realtek_rts_bpp().install()
             misc.lightdm_race().install()
         elif version == ('13.04'):
-            acpi.lemu1().install()
             misc.wifi_pm_disable().install()
         else:
             nodrivers = "true"
