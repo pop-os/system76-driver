@@ -537,6 +537,7 @@ def installDrivers():
             misc.lightdm_race().install()
         elif version == ('13.04'):
             misc.wifi_pm_disable().install()
+            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -553,6 +554,7 @@ def installDrivers():
             misc.lightdm_race().install()
         elif version == ('13.04'):
             misc.wifi_pm_disable().install()
+            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -898,6 +900,7 @@ def installDrivers():
             misc.lightdm_race().install()
         elif version == ('13.04'):
             misc.wifi_pm_disable().install()
+            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers
@@ -1274,6 +1277,7 @@ def installDrivers():
             misc.lightdm_race().install()
         elif version == ('13.04'):
             misc.wifi_pm_disable().install()
+            acpi.lemu1().install()
         else:
             nodrivers = "true"
             return nodrivers

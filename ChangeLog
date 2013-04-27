@@ -2,7 +2,35 @@ System76 Driver
 
 System76, Inc.
 Copyright System76, Inc.
-Released under the GNU General Public License (See LICENSE)
+Released under the GNU General Public License version 2 (See LICENSE)
+
+Version 3.2.7
+
+1.) Fix wireless and bluetooth hotkey bug on the lemu4
+    panp9, gazp7, gazp8 in Ubuntu 13.04
+
+--------------------------------------
+
+Version 3.2.6
+
+1.) Replace gksu with gksudo for compatibility
+2.) driverscontrol.py - Remove brightness key fix for 13.04 - No longer necessary.
+    misc.py - Update WiFi performance fix with better description.
+
+--------------------------------------
+
+Version 3.2.5
+
+1.) base_system.py - Remove horizontal scrolling from 13.04
+    Remove Inline Debian packaging to simplfy package creation.
+
+--------------------------------------
+
+Version 3.2.4
+
+1.) Add Ubuntu 13.04 support
+
+--------------------------------------
 
 Version 3.2.3
 
