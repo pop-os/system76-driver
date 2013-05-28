@@ -1,0 +1,19 @@
+Source: system76-driver
+Section: utils
+Priority: extra
+Maintainer: System76, Inc. <dev@system76.com>
+Build-Depends: debhelper (>= 9),
+    python3-all (>= 3.3),
+Standards-Version: 3.9.4
+X-Python3-Version: >= 3.3
+Homepage: https://launchpad.net/system76-driver
+
+Package: system76-driver
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: Universal driver for System76 computers
+ System76 Driver provides drivers, restore, and regression support for System76
+ computers running Ubuntu.  Click the Device Menu (power icon at the top right
+ of your screen) and choose System Settings.  Click System76 Driver to install
+ drivers or restore your computer.
+

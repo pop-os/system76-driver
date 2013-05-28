@@ -1,4 +1,4 @@
-# system76-driver: hardware-specific enhancements for System76 products 
+# system76-driver: Universal driver for System76 computers
 # Copyright (C) 2005-2013 System76, Inc.
 #
 # This file is part of `system76-driver`.
@@ -18,7 +18,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 """
-Driver for System76 Products.
+Universal driver for System76 computers
 """
 
 __version__ = '13.04.0'

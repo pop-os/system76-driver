@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --with=python3
+
+
+override_dh_auto_clean:
+	rm -rf build/
+
+override_dh_auto_build:
+	set -ex; for python in $(shell py3versions -r); do \
+		$$python setup.py build \
+				--executable=/usr/bin/python3; \
+	done
+
+override_dh_auto_test:
+	set -ex; for python in $(shell py3versions -r); do \
+		LC_ALL=C.UTF-8 $$python setup.py test; \
+	done
+
+override_dh_auto_install:
+	set -ex; for python in $(shell py3versions -r); do \
+		$$python setup.py install \
+				--install-layout=deb \
+				--root=$(CURDIR)/debian/system76-driver; \
+	done
+
