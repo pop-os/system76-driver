@@ -148,7 +148,7 @@ class TestFunctions(TestCase):
 
     def test_determine_model_1(self):
         """
-        Test `determine_model()` when *info* is provided.
+        Test `determine_model()` when *info* is not provided.
         """
         SubProcess.reset(True, OUTPUTS)
         self.assertEqual(model.determine_model(), 'gazp7')
