@@ -53,16 +53,77 @@ class TestConstants(TestCase):
         self.assertIsInstance(model.TABLES, dict)
         self.assertEqual(len(model.TABLES), 4)
         self.assertEqual(set(model.TABLES), set(model.KEYWORDS))
-        for (key, value) in model.TABLES.items():
-            self.assertIsInstance(key, str)
-            self.assertIsInstance(value, dict)
-            self.assertGreater(len(value), 0)
-            for (k, v) in value.items():
-                self.assertIsInstance(k, str)
-                self.assertIsInstance(v, str)
+        for (keyword, table) in model.TABLES.items():
+            self.assertIsInstance(keyword, str)
+            self.assertIsInstance(table, dict)
+            self.assertGreater(len(table), 0)
+            for (key, value) in table.items():
+                self.assertIsInstance(key, str)
+                self.assertIsInstance(value, str)
         # 'system-version' is currently always the same:
-        for (k, v) in model.TABLES['system-version'].items():
-            self.assertEqual(k, v)
+        for (key, value) in model.TABLES['system-version'].items():
+            self.assertEqual(key, value)
+
+        # Extra careful checks for models that occur more than once in TABLES:
+        reverse = {}
+        for (keyword, table) in model.TABLES.items():
+            for (key, value) in table.items():
+                if value not in reverse:
+                    reverse[value] = set()
+                reverse[value].add((keyword, key))
+        multi = {}
+        for (value, occurances) in reverse.items():
+            if len(occurances) > 1:
+                multi[value] = occurances
+        expected = {
+            'daru1': set([
+                ('baseboard-product-name', 'Z35FM'),
+                ('baseboard-product-name', 'Z35F'),
+            ]),
+            'gazp3': set([
+                ('system-product-name', 'Z62JM'),
+                ('system-product-name', 'Z62JP'),
+
+            ]),
+            'panv2': set([
+                ('system-product-name', 'Z96F'),
+                ('system-product-name', 'Centoris V661'),
+                ('system-product-name', 'Z96FM'),
+            ]),
+            'serp1': set([
+                ('system-product-name', 'HEL80I'),
+                ('system-product-name', 'HEL8X'),
+            ]),
+            'star1': set([
+                ('system-product-name', 'UW1'),
+                ('system-product-name', 'star1'),
+            ]),
+            'star2': set([
+                ('system-product-name', 'E10IS'),
+                ('system-product-name', 'E10IS2'),
+                ('system-product-name', 'Star2'),
+            ]),
+            'bonp2': set([
+                ('system-product-name', 'M570TU'),
+                ('system-version', 'bonp2'),
+            ]),
+            'daru3': set([
+                ('system-product-name', 'M720T/M730T'),
+                ('system-version', 'daru3'),
+            ]),
+            'panp4n': set([
+                ('system-product-name', 'M740TU/M760TU'),
+                ('system-version', 'panp4n'),
+            ]),
+            'serp5': set([
+                ('system-product-name', 'M860TU'),
+                ('system-version', 'serp5'),
+            ]), 
+        }
+        self.assertEqual(set(multi), set(expected))
+        for key in sorted(multi):
+            self.assertEqual(multi[key], expected[key], key)
+        self.assertEqual(multi, expected)
 
 
 class TestFunctions(TestCase):
