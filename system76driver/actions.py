@@ -22,6 +22,9 @@ Base class for system changes the driver can perform.
 """
 
 from gettext import gettext as _
+import os
+from os import path
+import stat
 
 
 class Action:
@@ -58,4 +61,36 @@ class Action:
         raise NotImplementedError(
             '{}.perform()'.format(name)
         )
+
+
+WIFI_PM_DISABLE = """#!/bin/sh
+# Installed by system76-driver
+# Fixes poor Intel wireless performance when on battery power
+/sbin/iwconfig wlan0 power off
+"""
+
+class wifi_pm_disable(Action):
+    def __init__(self, etcdir='/etc'):
+        self.filename = path.join(etcdir, 'pm', 'power.d', 'wireless')
+
+    def read(self):
+        try:
+            return open(self.filename, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def describe(self):
+        return _('Improve WiFi performance on Battery')
+
+    def isneeded(self):
+        if self.read() != WIFI_PM_DISABLE:
+            return True
+        st = os.stat(self.filename)
+        if stat.S_IMODE(st.st_mode) != 0o755:
+            return True
+        return False
+
+    def perform(self):
+        open(self.filename, 'w').write(WIFI_PM_DISABLE)
+        os.chmod(self.filename, 0o755)
 
