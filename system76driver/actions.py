@@ -28,6 +28,16 @@ import stat
 import re
 
 
+CMDLINE_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$')
+CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
+
+WIFI_PM_DISABLE = """#!/bin/sh
+# Installed by system76-driver
+# Fixes poor Intel wireless performance when on battery power
+/sbin/iwconfig wlan0 power off
+"""
+
+
 class Action:
     def describe(self):
         """
@@ -91,9 +101,6 @@ class EtcFileAction(Action):
         os.chmod(self.filename, self.mode)
 
 
-CMDLINE_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$')
-CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
-
 class GrubAction(Action):
     """
     Base class for actions that modify cmdline in /etc/default/grub.
@@ -129,12 +136,6 @@ class GrubAction(Action):
         new = '\n'.join(self.iter_lines())
         open(self.filename, 'w').write(new)
 
-
-WIFI_PM_DISABLE = """#!/bin/sh
-# Installed by system76-driver
-# Fixes poor Intel wireless performance when on battery power
-/sbin/iwconfig wlan0 power off
-"""
 
 class wifi_pm_disable(EtcFileAction):
     relpath = ('pm', 'power.d', 'wireless')
