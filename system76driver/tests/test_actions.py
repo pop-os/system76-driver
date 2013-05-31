@@ -29,6 +29,81 @@ from .helpers import TempDir
 from system76driver import actions
 
 
+GRUB_ORIG = """
+# If you change this file, run 'update-grub' afterwards to update
+# /boot/grub/grub.cfg.
+# For full documentation of the options in this file, see:
+#   info -f grub -n 'Simple configuration'
+
+GRUB_DEFAULT=0
+GRUB_HIDDEN_TIMEOUT=0
+GRUB_HIDDEN_TIMEOUT_QUIET=true
+GRUB_TIMEOUT=10
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX=""
+
+# Uncomment to enable BadRAM filtering, modify to suit your needs
+# This works with Linux (no patch required) and with any kernel that obtains
+# the memory map information from GRUB (GNU Mach, kernel of FreeBSD ...)
+#GRUB_BADRAM="0x01234567,0xfefefefe,0x89abcdef,0xefefefef"
+
+# Uncomment to disable graphical terminal (grub-pc only)
+#GRUB_TERMINAL=console
+
+# The resolution used on graphical terminal
+# note that you can use only modes which your graphic card supports via VBE
+# you can see them in real GRUB with the command `vbeinfo'
+#GRUB_GFXMODE=640x480
+
+# Uncomment if you don't want GRUB to pass "root=UUID=xxx" parameter to Linux
+#GRUB_DISABLE_LINUX_UUID=true
+
+# Uncomment to disable generation of recovery mode menu entries
+#GRUB_DISABLE_RECOVERY="true"
+
+# Uncomment to get a beep at grub start
+#GRUB_INIT_TUNE="480 440 1"
+""".strip()
+
+GRUB_MOD = """
+# If you change this file, run 'update-grub' afterwards to update
+# /boot/grub/grub.cfg.
+# For full documentation of the options in this file, see:
+#   info -f grub -n 'Simple configuration'
+
+GRUB_DEFAULT=0
+GRUB_HIDDEN_TIMEOUT=0
+GRUB_HIDDEN_TIMEOUT_QUIET=true
+GRUB_TIMEOUT=10
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash acpi_os_name=Linux acpi_osi="
+GRUB_CMDLINE_LINUX=""
+
+# Uncomment to enable BadRAM filtering, modify to suit your needs
+# This works with Linux (no patch required) and with any kernel that obtains
+# the memory map information from GRUB (GNU Mach, kernel of FreeBSD ...)
+#GRUB_BADRAM="0x01234567,0xfefefefe,0x89abcdef,0xefefefef"
+
+# Uncomment to disable graphical terminal (grub-pc only)
+#GRUB_TERMINAL=console
+
+# The resolution used on graphical terminal
+# note that you can use only modes which your graphic card supports via VBE
+# you can see them in real GRUB with the command `vbeinfo'
+#GRUB_GFXMODE=640x480
+
+# Uncomment if you don't want GRUB to pass "root=UUID=xxx" parameter to Linux
+#GRUB_DISABLE_LINUX_UUID=true
+
+# Uncomment to disable generation of recovery mode menu entries
+#GRUB_DISABLE_RECOVERY="true"
+
+# Uncomment to get a beep at grub start
+#GRUB_INIT_TUNE="480 440 1"
+""".strip()
+
+
 class TestAction(TestCase):
     def test_describe(self):
         a = actions.Action()
@@ -71,6 +146,139 @@ class TestAction(TestCase):
         with self.assertRaises(NotImplementedError) as cm:
             a.perform()
         self.assertEqual(str(cm.exception), 'Example.perform()')
+
+
+class TestGrubAction(TestCase):
+    def test_init(self):
+        inst = actions.GrubAction()
+        self.assertEqual(inst.filename, '/etc/default/grub')
+        self.assertEqual(inst.cmdline, 'quiet splash')
+        tmp = TempDir()
+        inst = actions.GrubAction(etcdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+        self.assertEqual(inst.cmdline, 'quiet splash')
+
+    def test_read(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.GrubAction(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.read()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        tmp.write(b'foobar\n', 'default', 'grub')
+        self.assertEqual(inst.read(), 'foobar\n')
+
+    def test_get_cmdline(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.GrubAction(etcdir=tmp.dir)
+
+        # Missing file:
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.get_cmdline()
+        self.assertEqual(cm.exception.filename, inst.filename)
+
+        # Bad content:
+        open(inst.filename, 'x').write('wont work\n')
+        with self.assertRaises(Exception) as cm:
+            inst.get_cmdline()
+        self.assertEqual(str(cm.exception),
+            'Could not parse GRUB_CMDLINE_LINUX_DEFAULT'
+        )
+
+        # Good content:
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertEqual(inst.get_cmdline(), 'quiet splash')
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertEqual(inst.get_cmdline(),
+            'quiet splash acpi_os_name=Linux acpi_osi='
+        )
+
+    def test_iter_lines(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.GrubAction(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            list(inst.iter_lines())
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
+
+        # Test subclass with different GrubAction.cmdline:
+        class Example(actions.GrubAction):
+            cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = Example(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            list(inst.iter_lines())
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
+
+    def test_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.GrubAction(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.isneeded()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIs(inst.isneeded(), False)
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertIs(inst.isneeded(), True)
+
+        # Test subclass with different GrubAction.cmdline:
+        class Example(actions.GrubAction):
+            cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = Example(etcdir=tmp.dir)
+
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.isneeded()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIs(inst.isneeded(), True)
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertIs(inst.isneeded(), False)
+
+    def test_perform(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.GrubAction(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
+
+        # Test subclass with different GrubAction.cmdline:
+        class Example(actions.GrubAction):
+            cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = Example(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
 
 
 class Test_wifi_pm_disable(TestCase):

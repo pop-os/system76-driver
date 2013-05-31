@@ -25,6 +25,7 @@ from gettext import gettext as _
 import os
 from os import path
 import stat
+import re
 
 
 class Action:
@@ -63,15 +64,13 @@ class Action:
         )
 
 
-WIFI_PM_DISABLE = """#!/bin/sh
-# Installed by system76-driver
-# Fixes poor Intel wireless performance when on battery power
-/sbin/iwconfig wlan0 power off
-"""
+class EtcFileAction(Action):
+    relpath = None
+    content = None
+    mode = 0o644
 
-class wifi_pm_disable(Action):
     def __init__(self, etcdir='/etc'):
-        self.filename = path.join(etcdir, 'pm', 'power.d', 'wireless')
+        self.filename = path.join(etcdir, *self.relpath)
 
     def read(self):
         try:
@@ -79,18 +78,76 @@ class wifi_pm_disable(Action):
         except FileNotFoundError:
             return None
 
-    def describe(self):
-        return _('Improve WiFi performance on Battery')
-
     def isneeded(self):
-        if self.read() != WIFI_PM_DISABLE:
+        if self.read() != self.content:
             return True
         st = os.stat(self.filename)
-        if stat.S_IMODE(st.st_mode) != 0o755:
+        if stat.S_IMODE(st.st_mode) != self.mode:
             return True
         return False
 
     def perform(self):
-        open(self.filename, 'w').write(WIFI_PM_DISABLE)
-        os.chmod(self.filename, 0o755)
+        open(self.filename, 'w').write(self.content)
+        os.chmod(self.filename, self.mode)
+
+
+CMDLINE_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$')
+CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
+
+class GrubAction(Action):
+    """
+    Base class for actions that modify cmdline in /etc/default/grub.
+    """
+
+    cmdline = 'quiet splash'
+
+    def __init__(self, etcdir='/etc'):
+        self.filename = path.join(etcdir, 'default', 'grub')
+
+    def read(self):
+        return open(self.filename, 'r').read()
+
+    def get_cmdline(self):
+        for line in self.read().splitlines():
+            match = CMDLINE_RE.match(line)
+            if match:
+                return match.group(1)
+        raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
+
+    def iter_lines(self):
+        for line in self.read().splitlines():
+            match = CMDLINE_RE.match(line)
+            if match:
+                yield CMDLINE_TEMPLATE.format(self.cmdline)
+            else:
+                yield line
+
+    def isneeded(self):
+        return self.get_cmdline() != self.cmdline
+
+    def perform(self):
+        new = '\n'.join(self.iter_lines())
+        open(self.filename, 'w').write(new)
+
+
+WIFI_PM_DISABLE = """#!/bin/sh
+# Installed by system76-driver
+# Fixes poor Intel wireless performance when on battery power
+/sbin/iwconfig wlan0 power off
+"""
+
+class wifi_pm_disable(EtcFileAction):
+    relpath = ('pm', 'power.d', 'wireless')
+    content = WIFI_PM_DISABLE
+    mode = 0o755
+
+    def describe(self):
+        return _('Improve WiFi performance on Battery')
+
+
+class lemu1(GrubAction):
+    cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+
+    def describe(self):
+        return _('Enable brightness hot keys')
 
