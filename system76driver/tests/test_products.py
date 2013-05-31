@@ -35,4 +35,5 @@ class TestConstants(TestCase):
             self.assertIsInstance(value, dict)
             self.assertIn('name', value)
             self.assertIsInstance(value['name'], str)
+            self.assertTrue(value['name'])
 
