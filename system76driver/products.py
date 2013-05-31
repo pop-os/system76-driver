@@ -27,8 +27,8 @@ PRODUCTS = {
     'bonp1': {'name': 'Bonobo Performance'},
     'bonp2': {'name': 'Bonobo Performance'},
     'bonp3': {'name': 'Bonobo Performance'},
-    'bonp4': {'name': 'Bonobo Performance'},
-    'bonp5': {'name': 'Bonobo Performance'},
+    'bonp4': {'name': 'Bonobo Professional'},
+    'bonp5': {'name': 'Bonobo Professional'},
     'bonx6': {'name': 'Bonobo Extreme'},
 
     # Darter:
@@ -57,8 +57,8 @@ PRODUCTS = {
     # Lemur:
     'lemu1': {'name': 'Lemur UltraThin'},
     'lemu2': {'name': 'Lemur UltraThin'},
-    'lemu3': {'name': 'Lemur UltraThin'},
-    'lemu4': {'name': 'Lemur UltraThin'},
+    'lemu3': {'name': 'Lemur Ultra'},
+    'lemu4': {'name': 'Lemur Ultra'},
 
     # Leopard:
     'leo1': {'name': 'The Leopard Extreme'},
@@ -106,9 +106,9 @@ PRODUCTS = {
     'serp2': {'name': 'Serval Performance'},
     'serp3': {'name': 'Serval Performance'},
     'serp4': {'name': 'Serval Performance'},
-    'serp5': {'name': 'Serval Performance'},
-    'serp6': {'name': 'Serval Performance'},
-    'serp7': {'name': 'Serval Performance'},
+    'serp5': {'name': 'Serval Professional'},
+    'serp6': {'name': 'Serval Professional'},
+    'serp7': {'name': 'Serval Professional'},
 
     # Starling:
     'star1': {'name': 'Starling NetBook'},
@@ -125,7 +125,6 @@ PRODUCTS = {
     'wilp1': {'name': 'Wild Dog Performance'},
     'wilp2': {'name': 'Wild Dog Performance'},
     'wilp3': {'name': 'Wild Dog Performance'},
-    # FIXME: Make sure there was no wilp4
     'wilp5': {'name': 'Wild Dog Performance'},
     'wilp6': {'name': 'Wild Dog Performance'},
     'wilp7': {'name': 'Wild Dog Performance'},
