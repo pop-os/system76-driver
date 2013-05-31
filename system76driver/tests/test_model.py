@@ -71,16 +71,7 @@ class TestConstants(TestCase):
                 if value not in reverse:
                     reverse[value] = set()
                 reverse[value].add((keyword, key))
-
-        # FIXME:
-        #self.assertEqual(set(reverse), set(products.PRODUCTS))
-        # AssertionError: Items in the first set but not the second:
-        # 'meec1'
-        # Items in the second set but not the first:
-        # 'wilp4'
-        # 'bonp6'
-        # 'sabc1'
-        # 'bonx6'
+        self.assertEqual(set(reverse), set(products.PRODUCTS))
 
         multi = {}
         for (value, occurances) in reverse.items():

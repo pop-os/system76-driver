@@ -90,6 +90,7 @@ TABLES = {
         'bonp3': 'bonp3',
         'bonp4': 'bonp4',
         'bonp5': 'bonp5',
+        'bonx6': 'bonx6',
         'gazu1': 'gazu1',
         'gazp6': 'gazp6',
         'gazp7': 'gazp7',
@@ -128,6 +129,7 @@ TABLES = {
         'serp5': 'serp5',
         'serp6': 'serp6',
         'serp7': 'serp7',
+        'sabc1': 'sabc1',
     },
 }
 

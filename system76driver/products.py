@@ -29,7 +29,6 @@ PRODUCTS = {
     'bonp3': [],
     'bonp4': [],
     'bonp5': [],
-    'bonp6': [],
     'bonx6': [],
 
     # Darter:
@@ -67,6 +66,7 @@ PRODUCTS = {
     'leox3': [],
 
     # Meerkat:
+    'meec1': [],
     'ment1': [],
     'ment2': [],
     'ment3': [],
@@ -124,7 +124,6 @@ PRODUCTS = {
     'wilp1': [],
     'wilp2': [],
     'wilp3': [],
-    'wilp4': [],
     'wilp5': [],
     'wilp6': [],
     'wilp7': [],
