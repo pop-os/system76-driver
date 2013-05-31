@@ -240,7 +240,6 @@ class TestGrubAction(TestCase):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
-
         with self.assertRaises(FileNotFoundError) as cm:
             inst.isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
@@ -370,3 +369,43 @@ class Test_wifi_pm_disable(TestCase):
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
+
+class Test_lemu1(TestCase):
+    def test_init(self):
+        inst = actions.lemu1()
+        self.assertEqual(inst.filename, '/etc/default/grub')
+        self.assertEqual(inst.cmdline,
+            'quiet splash acpi_os_name=Linux acpi_osi='
+        )
+        tmp = TempDir()
+        inst = actions.lemu1(etcdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+        self.assertEqual(inst.cmdline,
+            'quiet splash acpi_os_name=Linux acpi_osi='
+        )
+
+    def test_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.lemu1(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.isneeded()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIs(inst.isneeded(), True)
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertIs(inst.isneeded(), False)
+
+    def test_perform(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.lemu1(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
