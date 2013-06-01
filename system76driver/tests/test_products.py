@@ -23,7 +23,7 @@ Unit tests for `system76driver.products` module.
 
 from unittest import TestCase
 
-from system76driver import products
+from system76driver import actions, products
 
 
 class TestConstants(TestCase):
@@ -36,4 +36,11 @@ class TestConstants(TestCase):
             self.assertIn('name', value)
             self.assertIsInstance(value['name'], str)
             self.assertTrue(value['name'])
+            self.assertIsInstance(value['drivers'], list)
+            for driver in value['drivers']:
+                self.assertTrue(issubclass(driver, actions.Action))
+                inst = driver()
+                text = inst.describe()
+                self.assertIsInstance(text, str)
+                self.assertTrue(text, text)
 

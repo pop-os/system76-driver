@@ -183,7 +183,7 @@ class fingerprintGUI(Action):
         install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
 
 
-class plymouth1080():
+class plymouth1080(Action):
     value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'
 
     def __init__(self, etcdir='/etc'):
