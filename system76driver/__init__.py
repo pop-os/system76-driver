@@ -21,5 +21,5 @@
 Universal driver for System76 computers
 """
 
-__version__ = '13.04.0'
+__version__ = '13.04.1'
 
