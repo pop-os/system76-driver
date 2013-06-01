@@ -26,6 +26,7 @@ import os
 import stat
 
 from .helpers import TempDir
+from system76driver.mockable import SubProcess
 from system76driver import actions
 
 
@@ -102,6 +103,35 @@ GRUB_CMDLINE_LINUX=""
 # Uncomment to get a beep at grub start
 #GRUB_INIT_TUNE="480 440 1"
 """.strip()
+
+
+
+class TestFunctions(TestCase):
+    def test_add_ppa(self):
+        SubProcess.reset(mocking=True)
+        self.assertIsNone(actions.add_ppa('ppa:novacut/stable'))
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['sudo', 'add-apt-repository', '-y', 'ppa:novacut/stable'], {}),
+        ])
+
+    def test_update(self):
+        SubProcess.reset(mocking=True)
+        self.assertIsNone(actions.update())
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['sudo', 'apt-get', 'update'], {}),
+        ])
+
+    def test_install(self):
+        SubProcess.reset(mocking=True)
+        self.assertIsNone(actions.install('novacut'))
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'novacut'], {}),
+        ])
+        SubProcess.reset(mocking=True)
+        self.assertIsNone(actions.install('novacut', 'blender'))
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'novacut', 'blender'], {}),
+        ])
 
 
 class TestAction(TestCase):
@@ -384,6 +414,12 @@ class Test_lemu1(TestCase):
             'quiet splash acpi_os_name=Linux acpi_osi='
         )
 
+    def test_decribe(self):
+        inst = actions.lemu1()
+        self.assertEqual(inst.describe(),
+            'Enable brightness hot keys'
+        )
+
     def test_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('default')
@@ -409,3 +445,25 @@ class Test_lemu1(TestCase):
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+
+
+class Test_fingerprintGUI(TestCase):
+    def test_describe(self):
+        inst = actions.fingerprintGUI()
+        self.assertEqual(inst.describe(), 
+            'Fingerprint reader drivers and user interface'
+        )
+
+    def test_isneeded(self):
+        inst = actions.fingerprintGUI()
+        self.assertIs(inst.isneeded(), True)
+
+    def test_perform(self):
+        SubProcess.reset(mocking=True)
+        inst = actions.fingerprintGUI()
+        self.assertIsNone(inst.perform())
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['sudo', 'add-apt-repository', '-y', 'ppa:fingerprint/fingerprint-gui'], {}),
+            ('check_call', ['sudo', 'apt-get', 'update'], {}),
+            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi'], {}),
+        ])

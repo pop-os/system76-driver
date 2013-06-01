@@ -27,6 +27,8 @@ from os import path
 import stat
 import re
 
+from .mockable import SubProcess
+
 
 CMDLINE_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$')
 CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
@@ -36,6 +38,21 @@ WIFI_PM_DISABLE = """#!/bin/sh
 # Fixes poor Intel wireless performance when on battery power
 /sbin/iwconfig wlan0 power off
 """
+
+
+def add_ppa(ppa):
+    SubProcess.check_call(['sudo', 'add-apt-repository', '-y', ppa])
+
+
+def update():
+    SubProcess.check_call(['sudo', 'apt-get', 'update'])
+
+
+def install(*packages):
+    assert packages
+    cmd = ['sudo', 'apt-get', '-y', 'install']
+    cmd.extend(packages)
+    SubProcess.check_call(cmd)
 
 
 class Action:
@@ -151,4 +168,17 @@ class lemu1(GrubAction):
 
     def describe(self):
         return _('Enable brightness hot keys')
+
+
+class fingerprintGUI(Action):
+    def describe(self):
+        return _('Fingerprint reader drivers and user interface')
+
+    def isneeded(self):
+        return True  # FIXME: Properly detect whether package is installed
+
+    def perform(self):
+        add_ppa('ppa:fingerprint/fingerprint-gui')
+        update()
+        install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
 
