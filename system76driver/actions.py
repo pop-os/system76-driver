@@ -208,3 +208,11 @@ class plymouth1080(Action):
         new = '\n'.join(self.iter_lines())
         open(self.filename, 'w').write(new)
 
+
+class uvcquirks(EtcFileAction):
+    relpath = ('modprobe.d', 'uvc.conf')
+    content = 'options uvcvideo quirks=2'
+
+    def describe(self):
+        return _('Webcam quirk fixes')
+
