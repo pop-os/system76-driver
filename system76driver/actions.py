@@ -182,3 +182,29 @@ class fingerprintGUI(Action):
         update()
         install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
 
+
+class plymouth1080():
+    value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'
+
+    def __init__(self, etcdir='/etc'):
+        self.filename = path.join(etcdir, 'default', 'grub')
+
+    def readlines(self):
+        return open(self.filename, 'r').read().splitlines()
+
+    def describe(self):
+        return _('Correctly diplay Ubuntu logo on boot')
+
+    def isneeded(self):
+        return self.readlines()[-1] != self.value
+
+    def iter_lines(self):
+        for line in self.readlines():
+            if not line.startswith('GRUB_GFXPAYLOAD_LINUX='):
+                yield line
+        yield self.value
+
+    def perform(self):
+        new = '\n'.join(self.iter_lines())
+        open(self.filename, 'w').write(new)
+

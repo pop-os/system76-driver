@@ -105,7 +105,6 @@ GRUB_CMDLINE_LINUX=""
 """.strip()
 
 
-
 class TestFunctions(TestCase):
     def test_add_ppa(self):
         SubProcess.reset(mocking=True)
@@ -467,3 +466,63 @@ class Test_fingerprintGUI(TestCase):
             ('check_call', ['sudo', 'apt-get', 'update'], {}),
             ('check_call', ['sudo', 'apt-get', '-y', 'install', 'fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi'], {}),
         ])
+
+
+class Test_plymouth1080(TestCase):
+    def test_init(self):
+        inst = actions.plymouth1080()
+        self.assertEqual(inst.filename, '/etc/default/grub')
+        self.assertEqual(inst.value, 'GRUB_GFXPAYLOAD_LINUX="1920x1080"')
+        tmp = TempDir()
+        inst = actions.plymouth1080(etcdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+        self.assertEqual(inst.value, 'GRUB_GFXPAYLOAD_LINUX="1920x1080"')
+
+    def test_describe(self):
+        inst = actions.plymouth1080()
+        self.assertEqual(inst.describe(),
+            'Correctly diplay Ubuntu logo on boot'
+        )
+
+    def test_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.plymouth1080(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.isneeded()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIs(inst.isneeded(), True)
+        open(inst.filename, 'a').write('\nGRUB_GFXPAYLOAD_LINUX="1920x1080"')
+        self.assertIs(inst.isneeded(), False)
+
+    def test_perform(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.plymouth1080(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
+        )
+
+        open(inst.filename, 'w').write(
+            'GRUB_GFXPAYLOAD_LINUX="foo bar"\n' + GRUB_ORIG
+        )
+        self.assertIsNone(inst.perform())
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
+        )
+
+        self.assertIsNone(inst.perform())
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
+        )
+
