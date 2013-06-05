@@ -609,3 +609,90 @@ class Test_uvcquirks(TestCase):
         # Action didn't need to be performed:
         self.assertIsNone(inst.perform())
         self._check_file(inst)
+
+
+class Test_sata_alpm(TestCase):
+    def test_init(self):
+        inst = actions.sata_alpm()
+        self.assertEqual(inst.filename, '/etc/pm/config.d/sata_alpm')
+        tmp = TempDir()
+        inst = actions.sata_alpm(etcdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('pm', 'config.d', 'sata_alpm'))
+
+    def test_read(self):
+        tmp = TempDir()
+        tmp.mkdir('pm')
+        tmp.mkdir('pm', 'config.d')
+        inst = actions.sata_alpm(etcdir=tmp.dir)
+        self.assertIsNone(inst.read())
+        tmp.write(b'Hello, World', 'pm', 'config.d', 'sata_alpm')
+        self.assertEqual(inst.read(), 'Hello, World')
+
+    def test_describe(self):
+        inst = actions.sata_alpm()
+        self.assertEqual(inst.describe(),
+            'Enable SATA Link Power Management (ALPM)')
+
+    def test_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('pm')
+        tmp.mkdir('pm', 'config.d')
+        inst = actions.sata_alpm(etcdir=tmp.dir)
+
+        # Missing file
+        self.assertIs(inst.isneeded(), True)
+
+        # Wrong file content:
+        open(inst.filename, 'w').write('blah blah')
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.isneeded(), True)
+
+        # Correct content, wrong perms:
+        open(inst.filename, 'w').write(inst.content)
+        os.chmod(inst.filename, 0o666)
+        self.assertIs(inst.isneeded(), True)
+        os.chmod(inst.filename, 0o600)
+        self.assertIs(inst.isneeded(), True)
+
+        # All good:
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.isneeded(), False)
+
+    def _check_file(self, inst):
+        self.assertEqual(open(inst.filename, 'r').read(), inst.content)
+        st = os.stat(inst.filename)
+        self.assertEqual(stat.S_IMODE(st.st_mode), 0o644)
+
+    def test_perform(self):
+        tmp = TempDir()
+        inst = actions.sata_alpm(etcdir=tmp.dir)
+
+        # Missing directories
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+
+        # Missing file
+        tmp.mkdir('pm')
+        tmp.mkdir('pm', 'config.d')
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Wrong file content:
+        open(inst.filename, 'w').write('blah blah')
+        os.chmod(inst.filename, 0o644)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Correct content, wrong perms:
+        open(inst.filename, 'w').write(inst.content)
+        os.chmod(inst.filename, 0o666)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+        os.chmod(inst.filename, 0o600)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Action didn't need to be performed:
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)

@@ -216,3 +216,11 @@ class uvcquirks(EtcFileAction):
     def describe(self):
         return _('Webcam quirk fixes')
 
+
+class sata_alpm(EtcFileAction):
+    relpath = ('pm', 'config.d', 'sata_alpm')
+    content = 'SATA_ALPM_ENABLE=true'
+
+    def describe(self):
+        return _('Enable SATA Link Power Management (ALPM)')
+
