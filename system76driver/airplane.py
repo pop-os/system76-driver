@@ -69,13 +69,23 @@ def toggle_bit6(value):
     return set_bit6(value)
 
 
+def iter_radios():
+    rfkill = '/sys/class/rfkill'
+    for name in os.listdir(rfkill):
+        yield path.join(rfkill, name, 'state')
+
+
 def run_loop():
+    radios = tuple(iter_radios())
     fp = open_ec()
     fd = fp.fileno()
     while True:
         time.sleep(0.25)
         key = read_int(fd, 0xDB)
         if bit6_is_set(key):
-            led = read_int(fd, 0xD9)
             write_int(fd, 0xDB, clear_bit6(key))
+            led = read_int(fd, 0xD9)
+            state = (b'1' if bit6_is_set(led) else b'0')
             write_int(fd, 0xD9, toggle_bit6(led))
+            for f in radios:
+                open(f, 'wb').write(state)
