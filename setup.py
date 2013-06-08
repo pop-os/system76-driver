@@ -66,6 +66,7 @@ setup(
         'system76driver.tests'
     ],
     scripts=[
+        'system76-airplane',
         #'system76driver-gtk',
     ],
     package_data={

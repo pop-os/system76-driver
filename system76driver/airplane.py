@@ -63,6 +63,19 @@ def clear_bit6(value):
 
 def toggle_bit6(value):
     if bit6_is_set(value):
+        print('LED was on')
         return clear_bit6(value)
+    print('LED was OFF')
     return set_bit6(value)
 
+
+def run_loop():
+    fp = open_ec()
+    fd = fp.fileno()
+    while True:
+        time.sleep(0.25)
+        key = read_int(fd, 0xDB)
+        if bit6_is_set(key):
+            led = read_int(fd, 0xD9)
+            write_int(fd, 0xDB, clear_bit6(key))
+            write_int(fd, 0xD9, toggle_bit6(led))
