@@ -36,10 +36,19 @@ class TestConstants(TestCase):
             self.assertIn('name', value)
             self.assertIsInstance(value['name'], str)
             self.assertTrue(value['name'])
+
             self.assertIsInstance(value['drivers'], list)
-            for driver in value['drivers']:
-                self.assertTrue(issubclass(driver, actions.Action))
-                inst = driver()
+            for action in value['drivers']:
+                self.assertTrue(issubclass(action, actions.Action))
+                inst = action()
+                text = inst.describe()
+                self.assertIsInstance(text, str)
+                self.assertTrue(text, text)
+
+            self.assertIsInstance(value['defaults'], list)
+            for action in value['defaults']:
+                self.assertTrue(issubclass(action, actions.Action))
+                inst = action()
                 text = inst.describe()
                 self.assertIsInstance(text, str)
                 self.assertTrue(text, text)
