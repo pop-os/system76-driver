@@ -101,3 +101,21 @@ class TestFunctions(TestCase):
         self.assertEqual(airplane.toggle_bit6(0b11111111), 0b10111111)
         self.assertEqual(airplane.toggle_bit6(0b01000000), 0b00000000)
 
+    def test_read_state(self):
+        tmp = TempDir()
+        state_file = tmp.write(b'junk\n', 'state')
+        with self.assertRaises(KeyError) as cm:
+            airplane.read_state(state_file)
+        self.assertEqual(str(cm.exception), repr('junk\n'))
+        open(state_file, 'w').write('0\n')
+        self.assertIs(airplane.read_state(state_file), False)
+        open(state_file, 'w').write('1\n')
+        self.assertIs(airplane.read_state(state_file), True)
+
+    def test_write_state(self):
+        tmp = TempDir()
+        state_file = tmp.write(b'junk\n', 'state')
+        self.assertIsNone(airplane.write_state(state_file, False))
+        self.assertEqual(open(state_file, 'r').read(), '0\n')
+        self.assertIsNone(airplane.write_state(state_file, True))
+        self.assertEqual(open(state_file, 'r').read(), '1\n')

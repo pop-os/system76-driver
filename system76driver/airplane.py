@@ -25,8 +25,6 @@ import time
 import os
 from os import path
 
-from microfiber import dumps
-
 from .mockable import SubProcess
 
 
@@ -66,21 +64,43 @@ def clear_bit6(value):
 
 def toggle_bit6(value):
     if bit6_is_set(value):
-        print('LED was on')
         return clear_bit6(value)
-    print('LED was OFF')
     return set_bit6(value)
+
+
+def read_state(state_file):
+    key = open(state_file, 'r').read()
+    return {'0\n': False, '1\n': True}[key] 
+
+
+def write_state(state_file, value):
+    assert isinstance(value, bool)
+    open(state_file, 'w').write('{:d}\n'.format(value))
 
 
 def iter_radios():
     rfkill = '/sys/class/rfkill'
-    for name in os.listdir(rfkill):
-        fullname = path.join(rfkill, name, 'state')
-        yield (fullname, open(fullname, 'rb').read())
+    for radio in os.listdir(rfkill):
+        key = open(path.join(rfkill, radio, 'name'), 'r').read().strip()
+        state_file = path.join(rfkill, radio, 'state')
+        yield (key, state_file)
+
+
+def iter_state():
+    for (key, state_file) in iter_radios():
+        yield (key, read_state(state_file))
+
+
+def get_state():
+    state = dict(iter_state())
+    if not any(state.values()):
+        for key in state:
+            state[key] = True
+    return state
 
 
 def run_loop():
-    radios = dict(iter_radios())
+    state = dict(iter_state())
     fp = open_ec()
     fd = fp.fileno()
     while True:
@@ -91,8 +111,9 @@ def run_loop():
             led = toggle_bit6(read_int(fd, 0xD9))
             write_int(fd, 0xD9, led)
             if bit6_is_set(led):
-                for f in radios:
-                    open(f, 'wb').write(b'0\n')
+                state = get_state()
+                for (key, state_file) in iter_radios():
+                    write_state(state_file, False)
             else:
-                for (f, state) in radios.items():
-                    open(f, 'wb').write(state)
+                for (key, state_file) in iter_radios():
+                    write_state(state_file, state[key])
