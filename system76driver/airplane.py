@@ -25,7 +25,10 @@ import time
 import os
 from os import path
 
+from microfiber import dumps
+
 from .mockable import SubProcess
+
 
 MASK1 = 0b01000000
 MASK2 = 0b10111111
@@ -72,11 +75,12 @@ def toggle_bit6(value):
 def iter_radios():
     rfkill = '/sys/class/rfkill'
     for name in os.listdir(rfkill):
-        yield path.join(rfkill, name, 'state')
+        fullname = path.join(rfkill, name, 'state')
+        yield (fullname, open(fullname, 'rb').read())
 
 
 def run_loop():
-    radios = tuple(iter_radios())
+    radios = dict(iter_radios())
     fp = open_ec()
     fd = fp.fileno()
     while True:
@@ -84,8 +88,11 @@ def run_loop():
         key = read_int(fd, 0xDB)
         if bit6_is_set(key):
             write_int(fd, 0xDB, clear_bit6(key))
-            led = read_int(fd, 0xD9)
-            state = (b'1' if bit6_is_set(led) else b'0')
-            write_int(fd, 0xD9, toggle_bit6(led))
-            for f in radios:
-                open(f, 'wb').write(state)
+            led = toggle_bit6(read_int(fd, 0xD9))
+            write_int(fd, 0xD9, led)
+            if bit6_is_set(led):
+                for f in radios:
+                    open(f, 'wb').write(b'0\n')
+            else:
+                for (f, state) in radios.items():
+                    open(f, 'wb').write(state)
