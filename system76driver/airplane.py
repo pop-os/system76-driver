@@ -92,14 +92,10 @@ def iter_state():
 
 
 def get_state():
-    state = dict(iter_state())
-    if not any(state.values()):
-        for key in state:
-            state[key] = True
-    return state
+    return dict(iter_state())
 
 
-def run_loop():
+def run_loop_old():
     state = dict(iter_state())
     fp = open_ec()
     fd = fp.fileno()
@@ -117,3 +113,21 @@ def run_loop():
             else:
                 for (key, state_file) in iter_radios():
                     write_state(state_file, state[key])
+
+
+def run_loop():
+    old = None
+    fp = open_ec()
+    fd = fp.fileno()
+    while True:
+        time.sleep(0.25)
+        new = get_state()
+        if new != old:
+            print('change')
+            old = new
+            led = read_int(fd, 0xD9)
+            if any(new.values()):
+                write_int(fd, 0xD9, clear_bit6(led))
+            else:
+                write_int(fd, 0xD9, set_bit6(led))
+
