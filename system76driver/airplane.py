@@ -107,7 +107,6 @@ def sync_led(fd, airplane_mode):
     """
     Set LED state based on whether we are in *airplane_mode*.
     """
-    log('airplane_mode: {!r}\n'.format(airplane_mode))
     old = read_int(fd, 0xD9)
     new = (set_bit6(old) if airplane_mode else clear_bit6(old))
     write_int(fd, 0xD9, new)
@@ -127,6 +126,7 @@ def run_loop():
             log('Fn+F11 keypress')
             write_int(fd, 0xDB, clear_bit6(keypress)) 
             airplane_mode = any(new.values())
+            sync_led(fd, airplane_mode)
             if airplane_mode:
                 restore = new
                 for (key, state_file) in iter_radios():
@@ -136,10 +136,10 @@ def run_loop():
                 for (key, state_file) in iter_radios():
                     write_state(state_file, restore.get(key, True))
             old = get_state()
-            sync_led(fd, airplane_mode)
+            log('airplane_mode: {!r}\n'.format(airplane_mode))
         elif new != old:
             log('{!r} != {!r}'.format(new, old))
             old = new
             airplane_mode = not any(new.values())
             sync_led(fd, airplane_mode)
-
+            log('airplane_mode: {!r}\n'.format(airplane_mode))
