@@ -130,7 +130,7 @@ def run_loop():
     fp = open_ec()
     fd = fp.fileno()
     while True:
-        time.sleep(0.25)
+        time.sleep(0.375)
         keypress = read_int(fd, 0xDB)
         new = dict(iter_state())
         if bit6_is_set(keypress):
