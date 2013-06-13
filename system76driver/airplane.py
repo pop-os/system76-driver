@@ -25,12 +25,17 @@ import time
 import os
 from os import path
 import fcntl
+import sys
 
 from .mockable import SubProcess
 
 
 MASK1 = 0b01000000
 MASK2 = 0b10111111
+
+
+def log(msg):
+    print('{:>8.2f}  {}'.format(time.monotonic(), msg))
 
 
 def open_ec(sysdir='/sys'):
@@ -102,13 +107,14 @@ def sync_led(fd, airplane_mode):
     """
     Set LED state based on whether we are in *airplane_mode*.
     """
-    print('airplane_mode: {!r}\n'.format(airplane_mode))
+    log('airplane_mode: {!r}\n'.format(airplane_mode))
     old = read_int(fd, 0xD9)
     new = (set_bit6(old) if airplane_mode else clear_bit6(old))
     write_int(fd, 0xD9, new)
 
 
 def run_loop():
+    log('** process start **')
     old = None
     restore = {}
     fp = open_ec()
@@ -118,7 +124,7 @@ def run_loop():
         keypress = read_int(fd, 0xDB)
         new = get_state()
         if bit6_is_set(keypress):
-            print('Keypress.')
+            log('Fn+F11 keypress')
             write_int(fd, 0xDB, clear_bit6(keypress)) 
             airplane_mode = any(new.values())
             if airplane_mode:
@@ -126,13 +132,13 @@ def run_loop():
                 for (key, state_file) in iter_radios():
                     write_state(state_file, False)
             else:
-                print('Restoring: {!r}'.format(restore))
+                log('restoring: {!r}'.format(restore))
                 for (key, state_file) in iter_radios():
                     write_state(state_file, restore.get(key, True))
             old = get_state()
             sync_led(fd, airplane_mode)
         elif new != old:
-            print('Change: {!r} != {!r}'.format(new, old))
+            log('{!r} != {!r}'.format(new, old))
             old = new
             airplane_mode = not any(new.values())
             sync_led(fd, airplane_mode)
