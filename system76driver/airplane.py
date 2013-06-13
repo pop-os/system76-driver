@@ -99,8 +99,19 @@ def iter_state():
         yield (key, read_state(state_file))
 
 
-def get_state():
-    return dict(iter_state())
+def iter_write_airplane_on():
+    for (key, state_file) in iter_radios():
+        write_state(state_file, False)
+        yield (key, False)
+
+
+def iter_write_airplane_off(restore):
+    assert isinstance(restore, dict)
+    log('restoring: {!r}'.format(restore))
+    for (key, state_file) in iter_radios():
+        value = restore.get(key, True)
+        write_state(state_file, value)
+        yield (key, value)
 
 
 def sync_led(fd, airplane_mode):
@@ -121,20 +132,16 @@ def run_loop():
     while True:
         time.sleep(0.25)
         keypress = read_int(fd, 0xDB)
-        new = get_state()
+        new = dict(iter_state())
         if bit6_is_set(keypress):
             log('Fn+F11 keypress')
             airplane_mode = any(new.values())
             sync_led(fd, airplane_mode)
             if airplane_mode:
                 restore = new
-                for (key, state_file) in iter_radios():
-                    write_state(state_file, False)
+                old = dict(iter_write_airplane_on())
             else:
-                log('restoring: {!r}'.format(restore))
-                for (key, state_file) in iter_radios():
-                    write_state(state_file, restore.get(key, True))
-            old = get_state()
+                old = dict(iter_write_airplane_off(restore))
             write_int(fd, 0xDB, clear_bit6(keypress))
             log('airplane_mode: {!r}\n'.format(airplane_mode))
         elif new != old:
