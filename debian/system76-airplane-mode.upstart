@@ -1,0 +1,13 @@
+# system76-airplane-mode - Support for Airplane Mode hotkey on System76 Laptops
+#
+# 
+
+description	"System76 airplane-mode hotkey and LED support"
+
+start on local-filesystems
+stop on deconfiguring-networking
+
+respawn
+
+exec /usr/lib/system76-driver/system76-airplane-mode
+
