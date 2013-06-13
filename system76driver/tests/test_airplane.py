@@ -31,7 +31,7 @@ from system76driver import airplane
 
 
 class TestFunctions(TestCase):
-    def test_open_etc(self):
+    def test_open_ec(self):
         SubProcess.reset(mocking=True)
         tmp = TempDir()
         tmp.mkdir('kernel')
@@ -50,6 +50,26 @@ class TestFunctions(TestCase):
         ])
         self.assertEqual(fp.tell(), 0)
         self.assertEqual(fp.read(), data)
+
+        # Make sure an exclusive lock is aquired:
+        SubProcess.reset(mocking=True)
+        with self.assertRaises(BlockingIOError) as cm:
+            airplane.open_ec(sysdir=tmp.dir)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['modprobe', 'ec_sys', 'write_support'], {}),
+        ])
+
+        # But should work after `fp` is garbage collected:
+        SubProcess.reset(mocking=True)
+        del fp
+        fp = airplane.open_ec(sysdir=tmp.dir)
+        self.assertIsInstance(fp, io.BufferedRandom)
+        self.assertEqual(fp.name, name)
+        self.assertIs(fp.closed, False)
+        self.assertEqual(fp.mode, 'rb+')
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['modprobe', 'ec_sys', 'write_support'], {}),
+        ])
 
     def test_read_int(self):
         data = os.urandom(256)

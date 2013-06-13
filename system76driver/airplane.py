@@ -24,6 +24,7 @@ User-space work-around for Airplane Mode hotkey (Fn+F11).
 import time
 import os
 from os import path
+import fcntl
 
 from .mockable import SubProcess
 
@@ -35,7 +36,9 @@ MASK2 = 0b10111111
 def open_ec(sysdir='/sys'):
     SubProcess.check_call(['modprobe', 'ec_sys', 'write_support'])
     name = path.join(sysdir, 'kernel', 'debug', 'ec', 'ec0', 'io')
-    return open(name, 'rb+')
+    fp = open(name, 'rb+')
+    fcntl.flock(fp.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    return fp
 
 
 def read_int(fd, address):
