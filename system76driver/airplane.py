@@ -95,39 +95,42 @@ def get_state():
     return dict(iter_state())
 
 
-def run_loop_old():
-    state = dict(iter_state())
-    fp = open_ec()
-    fd = fp.fileno()
-    while True:
-        time.sleep(0.25)
-        key = read_int(fd, 0xDB)
-        if bit6_is_set(key):
-            write_int(fd, 0xDB, clear_bit6(key))
-            led = toggle_bit6(read_int(fd, 0xD9))
-            write_int(fd, 0xD9, led)
-            if bit6_is_set(led):
-                state = get_state()
-                for (key, state_file) in iter_radios():
-                    write_state(state_file, False)
-            else:
-                for (key, state_file) in iter_radios():
-                    write_state(state_file, state[key])
+def sync_led(fd, airplane_mode):
+    """
+    Set LED state based on whether we are in *airplane_mode*.
+    """
+    print('airplane_mode: {!r}\n'.format(airplane_mode))
+    old = read_int(fd, 0xD9)
+    new = (set_bit6(old) if airplane_mode else clear_bit6(old))
+    write_int(fd, 0xD9, new)
 
 
 def run_loop():
     old = None
+    restore = {}
     fp = open_ec()
     fd = fp.fileno()
     while True:
         time.sleep(0.25)
+        keypress = read_int(fd, 0xDB)
         new = get_state()
-        if new != old:
-            print('change')
-            old = new
-            led = read_int(fd, 0xD9)
-            if any(new.values()):
-                write_int(fd, 0xD9, clear_bit6(led))
+        if bit6_is_set(keypress):
+            print('Keypress.')
+            write_int(fd, 0xDB, clear_bit6(keypress)) 
+            airplane_mode = any(new.values())
+            if airplane_mode:
+                restore = new
+                for (key, state_file) in iter_radios():
+                    write_state(state_file, False)
             else:
-                write_int(fd, 0xD9, set_bit6(led))
+                print('Restoring: {!r}'.format(restore))
+                for (key, state_file) in iter_radios():
+                    write_state(state_file, restore.get(key, True))
+            old = get_state()
+            sync_led(fd, airplane_mode)
+        elif new != old:
+            print('Change: {!r} != {!r}'.format(new, old))
+            old = new
+            airplane_mode = not any(new.values())
+            sync_led(fd, airplane_mode)
 

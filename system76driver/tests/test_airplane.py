@@ -119,3 +119,26 @@ class TestFunctions(TestCase):
         self.assertEqual(open(state_file, 'r').read(), '0\n')
         self.assertIsNone(airplane.write_state(state_file, True))
         self.assertEqual(open(state_file, 'r').read(), '1\n')
+
+    def test_sync_led(self):
+        # Test syncing False first:
+        data = os.urandom(256)
+        tmp = TempDir()
+        name = tmp.write(data, 'io')
+        fp = open(name, 'rb+')
+        fd = fp.fileno()
+        self.assertIsNone(airplane.sync_led(fd, False))
+        self.assertFalse(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
+        self.assertIsNone(airplane.sync_led(fd, True))
+        self.assertTrue(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
+
+        # Test syncing True first:
+        data = os.urandom(256)
+        tmp = TempDir()
+        name = tmp.write(data, 'io')
+        fp = open(name, 'rb+')
+        fd = fp.fileno()
+        self.assertIsNone(airplane.sync_led(fd, True))
+        self.assertTrue(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
+        self.assertIsNone(airplane.sync_led(fd, False))
+        self.assertFalse(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
