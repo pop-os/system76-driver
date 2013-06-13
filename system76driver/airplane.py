@@ -124,7 +124,6 @@ def run_loop():
         new = get_state()
         if bit6_is_set(keypress):
             log('Fn+F11 keypress')
-            write_int(fd, 0xDB, clear_bit6(keypress)) 
             airplane_mode = any(new.values())
             sync_led(fd, airplane_mode)
             if airplane_mode:
@@ -136,6 +135,7 @@ def run_loop():
                 for (key, state_file) in iter_radios():
                     write_state(state_file, restore.get(key, True))
             old = get_state()
+            write_int(fd, 0xDB, clear_bit6(keypress))
             log('airplane_mode: {!r}\n'.format(airplane_mode))
         elif new != old:
             log('{!r} != {!r}'.format(new, old))
