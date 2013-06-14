@@ -26,6 +26,7 @@ import os
 from os import path
 import stat
 import re
+from base64 import b32encode
 
 from .mockable import SubProcess
 
@@ -38,6 +39,11 @@ WIFI_PM_DISABLE = """#!/bin/sh
 # Fixes poor Intel wireless performance when on battery power
 /sbin/iwconfig wlan0 power off
 """
+
+
+def random_tmp_filename(filename):
+    random = b32encode(os.urandom(15)).decode('utf-8')
+    return '.'.join([filename, random])
 
 
 def add_ppa(ppa):
@@ -89,6 +95,33 @@ class Action:
         raise NotImplementedError(
             '{}.perform()'.format(name)
         )
+
+
+class FileAction(Action):
+    relpath = tuple()
+    content = ''
+    mode = 0o644
+
+    def __init__(self, rootdir='/'):
+        self.filename = path.join(rootdir, *self.relpath)
+
+    def read(self):
+        try:
+            return open(self.filename, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def isneeded(self):
+        if self.read() != self.content:
+            return True
+        st = os.stat(self.filename)
+        if stat.S_IMODE(st.st_mode) != self.mode:
+            return True
+        return False
+
+    def perform(self):
+        open(self.filename, 'w').write(self.content)
+        os.chmod(self.filename, self.mode)
 
 
 class EtcFileAction(Action):
@@ -154,8 +187,8 @@ class GrubAction(Action):
         open(self.filename, 'w').write(new)
 
 
-class wifi_pm_disable(EtcFileAction):
-    relpath = ('pm', 'power.d', 'wireless')
+class wifi_pm_disable(FileAction):
+    relpath = ('etc', 'pm', 'power.d', 'wireless')
     content = WIFI_PM_DISABLE
     mode = 0o755
 

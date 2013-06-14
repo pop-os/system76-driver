@@ -24,6 +24,7 @@ Unit tests for `system76driver.actions` module.
 from unittest import TestCase
 import os
 import stat
+from base64 import b32decode, b32encode
 
 from .helpers import TempDir
 from system76driver.mockable import SubProcess
@@ -106,6 +107,13 @@ GRUB_CMDLINE_LINUX=""
 
 
 class TestFunctions(TestCase):
+    def test_random_tmp_filename(self):
+        tmp = actions.random_tmp_filename('/foo/bar')
+        (base, random) = tmp.split('.')
+        self.assertEqual(base, '/foo/bar')
+        self.assertEqual(len(random), 24)
+        self.assertEqual(b32encode(b32decode(random)).decode('utf-8'), random)
+
     def test_add_ppa(self):
         SubProcess.reset(mocking=True)
         self.assertIsNone(actions.add_ppa('ppa:novacut/stable'))
@@ -175,6 +183,108 @@ class TestAction(TestCase):
         with self.assertRaises(NotImplementedError) as cm:
             a.perform()
         self.assertEqual(str(cm.exception), 'Example.perform()')
+
+
+class TestFileAction(TestCase):
+    def test_init(self):
+        class Example(actions.FileAction):
+            relpath = ('foo', 'bar', 'baz')
+
+        tmp = TempDir()
+        inst = actions.FileAction()
+        self.assertEqual(inst.filename, '/')
+        inst = actions.FileAction(rootdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.dir)
+        inst = Example()
+        self.assertEqual(inst.filename, '/foo/bar/baz')
+        inst = Example(rootdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('foo', 'bar', 'baz'))
+
+    def test_read(self):
+        tmp = TempDir()
+        name = tmp.join('some', 'file')
+        inst = actions.FileAction()
+        inst.filename = name
+        self.assertIsNone(inst.read())
+        tmp.mkdir('some')
+        self.assertIsNone(inst.read())
+        open(name, 'x').write('foo\nbar\n')
+        self.assertEqual(inst.read(), 'foo\nbar\n')
+
+    def test_isneeded(self):
+        class Example(actions.FileAction):
+            relpath = ('some', 'file')
+            content = 'foo'
+
+        tmp = TempDir()
+        inst = Example(rootdir=tmp.dir)
+
+        # Missing parentdir:
+        self.assertIs(inst.isneeded(), True)
+
+        # Missing file:
+        tmp.mkdir('some')
+        self.assertIs(inst.isneeded(), True)
+
+        # Wrong content:
+        open(inst.filename, 'x').write('bar')
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.isneeded(), True)
+
+        # Wrong permissions:
+        open(inst.filename, 'w').write('foo')
+        os.chmod(inst.filename, 0o600)
+        self.assertIs(inst.isneeded(), True)
+        os.chmod(inst.filename, 0o666)
+        self.assertIs(inst.isneeded(), True)
+
+        # Not needed:
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.isneeded(), False)
+
+    def _check_file(self, inst):
+        self.assertEqual(open(inst.filename, 'r').read(), 'foo')
+        st = os.stat(inst.filename)
+        self.assertEqual(stat.S_IMODE(st.st_mode), 0o600)
+
+    def test_perform(self):
+        class Example(actions.FileAction):
+            relpath = ('some', 'file')
+            content = 'foo'
+            mode = 0o600
+
+        tmp = TempDir()
+        inst = Example(rootdir=tmp.dir)
+
+        # Missing parentdir:
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+
+        # Missing file:
+        tmp.mkdir('some')
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Wrong content:
+        open(inst.filename, 'w').write('bar')
+        os.chmod(inst.filename, 0o600)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Wrong permissions:
+        open(inst.filename, 'w').write('foo')
+        os.chmod(inst.filename, 0o444)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+        os.chmod(inst.filename, 0o666)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Not needed:
+        os.chmod(inst.filename, 0o644)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
 
 
 class TestGrubAction(TestCase):
@@ -315,16 +425,19 @@ class Test_wifi_pm_disable(TestCase):
         self.assertEqual(inst.filename, '/etc/pm/power.d/wireless')
 
         tmp = TempDir()
-        inst = actions.wifi_pm_disable(etcdir=tmp.dir)
-        self.assertEqual(inst.filename, tmp.join('pm', 'power.d', 'wireless'))
+        inst = actions.wifi_pm_disable(rootdir=tmp.dir)
+        self.assertEqual(inst.filename,
+            tmp.join('etc', 'pm', 'power.d', 'wireless')
+        )
 
     def test_read(self):
         tmp = TempDir()
-        tmp.mkdir('pm')
-        tmp.mkdir('pm', 'power.d')
-        inst = actions.wifi_pm_disable(etcdir=tmp.dir)
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'power.d')
+        inst = actions.wifi_pm_disable(rootdir=tmp.dir)
         self.assertIsNone(inst.read())
-        tmp.write(b'Hello, World', 'pm', 'power.d', 'wireless')
+        tmp.write(b'Hello, World', 'etc', 'pm', 'power.d', 'wireless')
         self.assertEqual(inst.read(), 'Hello, World')
 
     def test_describe(self):
@@ -333,9 +446,10 @@ class Test_wifi_pm_disable(TestCase):
 
     def test_isneeded(self):
         tmp = TempDir()
-        tmp.mkdir('pm')
-        tmp.mkdir('pm', 'power.d')
-        inst = actions.wifi_pm_disable(etcdir=tmp.dir)
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'power.d')
+        inst = actions.wifi_pm_disable(rootdir=tmp.dir)
 
         # Missing file
         self.assertIs(inst.isneeded(), True)
@@ -366,7 +480,7 @@ class Test_wifi_pm_disable(TestCase):
 
     def test_perform(self):
         tmp = TempDir()
-        inst = actions.wifi_pm_disable(etcdir=tmp.dir)
+        inst = actions.wifi_pm_disable(rootdir=tmp.dir)
 
         # Missing directories
         with self.assertRaises(FileNotFoundError) as cm:
@@ -374,8 +488,9 @@ class Test_wifi_pm_disable(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
 
         # Missing file
-        tmp.mkdir('pm')
-        tmp.mkdir('pm', 'power.d')
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'power.d')
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
