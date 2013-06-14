@@ -594,6 +594,25 @@ class Test_backlight_vendor(TestCase):
         self.assertEqual(inst.describe(), 'Enable brightness hot keys')
 
 
+class Test_airplane_mode(TestCase):
+    def test_describe(self):
+        inst = actions.airplane_mode()
+        self.assertEqual(inst.describe(), 'Enable airplane-mode hot key')
+
+    def test_isneeded(self):
+        inst = actions.airplane_mode()
+        self.assertIs(inst.isneeded(), True)
+
+    def test_perform(self):
+        SubProcess.reset(mocking=True)
+        inst = actions.airplane_mode()
+        self.assertIsNone(inst.perform())
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['sudo', 'apt-get', 'update'], {}),
+            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'system76-airplane-mode'], {}),
+        ])
+
+
 class Test_fingerprintGUI(TestCase):
     def test_describe(self):
         inst = actions.fingerprintGUI()

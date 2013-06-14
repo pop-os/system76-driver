@@ -194,6 +194,18 @@ class backlight_vendor(GrubAction):
         return _('Enable brightness hot keys')
 
 
+class airplane_mode(Action):
+    def describe(self):
+        return _('Enable airplane-mode hot key')
+ 
+    def isneeded(self):
+        return True  # FIXME: Properly detect whether package is installed
+
+    def perform(self):
+        update()
+        install('system76-airplane-mode')
+
+
 class fingerprintGUI(Action):
     def describe(self):
         return _('Fingerprint reader drivers and user interface')
