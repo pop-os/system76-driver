@@ -29,13 +29,16 @@ from system76driver.model import determine_model
 from system76driver.products import PRODUCTS
 
 
-if os.getuid() != 0:
-    sys.exit('Error: must be run as root')
-
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', help='force model rather than detecting it')
+parser.add_argument('--dry', action='store_true', default=False,
+    help='print what would be done but without calling Action.perform()',
+)
 args = parser.parse_args()
+
+
+if os.getuid() != 0:
+    sys.exit('Error: must be run as root')
 
 
 if args.model is None:
@@ -54,7 +57,8 @@ def run_actions(key):
     for cls in actions:
         inst = cls()
         print('  * {}: {}'.format(cls.__name__, inst.describe()))
-        inst.perform()
+        if not args.dry:
+            inst.perform()
     count = len(actions)
     msg = ngettext('Ran {count} action.', 'Ran {count} actions.', count)
     print(msg.format(count=count))
