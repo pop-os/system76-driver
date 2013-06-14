@@ -115,12 +115,6 @@ class TestFunctions(TestCase):
         self.assertEqual(airplane.clear_bit6(0b10111111), 0b10111111)
         self.assertEqual(airplane.clear_bit6(0b00000000), 0b00000000)
 
-    def test_toggle_bit6(self):
-        self.assertEqual(airplane.toggle_bit6(0b00000000), 0b01000000)
-        self.assertEqual(airplane.toggle_bit6(0b00000001), 0b01000001)
-        self.assertEqual(airplane.toggle_bit6(0b11111111), 0b10111111)
-        self.assertEqual(airplane.toggle_bit6(0b01000000), 0b00000000)
-
     def test_read_state(self):
         tmp = TempDir()
         state_file = tmp.write(b'junk\n', 'state')
