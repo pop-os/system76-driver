@@ -19,6 +19,8 @@
 
 """
 User-space work-around for Airplane Mode hotkey (Fn+F11).
+
+In the near future this will be replaced with a kernel driver to do the same.
 """
 
 import time
@@ -68,12 +70,6 @@ def set_bit6(value):
 
 def clear_bit6(value):
     return value & MASK2
-
-
-def toggle_bit6(value):
-    if bit6_is_set(value):
-        return clear_bit6(value)
-    return set_bit6(value)
 
 
 def read_state(state_file):

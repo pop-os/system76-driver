@@ -26,6 +26,7 @@ import os
 from os import path
 import stat
 import re
+from base64 import b32encode
 
 from .mockable import SubProcess
 
@@ -38,6 +39,14 @@ WIFI_PM_DISABLE = """#!/bin/sh
 # Fixes poor Intel wireless performance when on battery power
 /sbin/iwconfig wlan0 power off
 """
+
+
+def random_id(numbytes=15):
+    return b32encode(os.urandom(numbytes)).decode('utf-8')
+
+
+def random_tmp_filename(filename):
+    return '.'.join([filename, random_id()])
 
 
 def add_ppa(ppa):
@@ -91,13 +100,13 @@ class Action:
         )
 
 
-class EtcFileAction(Action):
-    relpath = None
-    content = None
+class FileAction(Action):
+    relpath = tuple()
+    content = ''
     mode = 0o644
 
-    def __init__(self, etcdir='/etc'):
-        self.filename = path.join(etcdir, *self.relpath)
+    def __init__(self, rootdir='/'):
+        self.filename = path.join(rootdir, *self.relpath)
 
     def read(self):
         try:
@@ -114,18 +123,22 @@ class EtcFileAction(Action):
         return False
 
     def perform(self):
-        open(self.filename, 'w').write(self.content)
-        os.chmod(self.filename, self.mode)
+        self.tmp = random_tmp_filename(self.filename)
+        open(self.tmp, 'w').write(self.content)
+        os.chmod(self.tmp, self.mode)
+        os.rename(self.tmp, self.filename)
 
 
 class GrubAction(Action):
     """
     Base class for actions that modify cmdline in /etc/default/grub.
     """
-
-    cmdline = 'quiet splash'
+    base = ('quiet', 'splash')
+    extra = tuple()
 
     def __init__(self, etcdir='/etc'):
+        params = self.base + self.extra
+        self.cmdline = ' '.join(params)
         self.filename = path.join(etcdir, 'default', 'grub')
 
     def read(self):
@@ -154,8 +167,8 @@ class GrubAction(Action):
         open(self.filename, 'w').write(new)
 
 
-class wifi_pm_disable(EtcFileAction):
-    relpath = ('pm', 'power.d', 'wireless')
+class wifi_pm_disable(FileAction):
+    relpath = ('etc', 'pm', 'power.d', 'wireless')
     content = WIFI_PM_DISABLE
     mode = 0o755
 
@@ -164,10 +177,33 @@ class wifi_pm_disable(EtcFileAction):
 
 
 class lemu1(GrubAction):
-    cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+    extra = ('acpi_os_name=Linux', 'acpi_osi=')
 
     def describe(self):
         return _('Enable brightness hot keys')
+
+
+class backlight_vendor(GrubAction):
+    """
+    Added acpi_backlight=vendor to GRUB_CMDLINE_LINUX_DEFAULT (for gazp9).
+    """
+
+    extra = ('acpi_backlight=vendor',)
+
+    def describe(self):
+        return _('Enable brightness hot keys')
+
+
+class airplane_mode(Action):
+    def describe(self):
+        return _('Enable airplane-mode hot key')
+ 
+    def isneeded(self):
+        return True  # FIXME: Properly detect whether package is installed
+
+    def perform(self):
+        update()
+        install('system76-airplane-mode')
 
 
 class fingerprintGUI(Action):
@@ -209,16 +245,16 @@ class plymouth1080(Action):
         open(self.filename, 'w').write(new)
 
 
-class uvcquirks(EtcFileAction):
-    relpath = ('modprobe.d', 'uvc.conf')
+class uvcquirks(FileAction):
+    relpath = ('etc', 'modprobe.d', 'uvc.conf')
     content = 'options uvcvideo quirks=2'
 
     def describe(self):
         return _('Webcam quirk fixes')
 
 
-class sata_alpm(EtcFileAction):
-    relpath = ('pm', 'config.d', 'sata_alpm')
+class sata_alpm(FileAction):
+    relpath = ('etc', 'pm', 'config.d', 'sata_alpm')
     content = 'SATA_ALPM_ENABLE=true'
 
     def describe(self):
