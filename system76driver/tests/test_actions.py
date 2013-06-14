@@ -354,8 +354,12 @@ class TestGrubAction(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
@@ -369,8 +373,12 @@ class TestGrubAction(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
     def test_isneeded(self):
         tmp = TempDir()

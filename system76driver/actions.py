@@ -27,6 +27,7 @@ from os import path
 import stat
 import re
 from base64 import b32encode
+import datetime
 
 from .mockable import SubProcess
 
@@ -47,6 +48,12 @@ def random_id(numbytes=15):
 
 def random_tmp_filename(filename):
     return '.'.join([filename, random_id()])
+
+
+def backup_filename(filename, date=None):
+    if date is None:
+        date = datetime.date.today()
+    return '.'.join([filename, 'system76-{}'.format(date)])
 
 
 def add_ppa(ppa):
@@ -124,7 +131,7 @@ class FileAction(Action):
 
     def perform(self):
         self.tmp = random_tmp_filename(self.filename)
-        open(self.tmp, 'w').write(self.content)
+        open(self.tmp, 'x').write(self.content)
         os.chmod(self.tmp, self.mode)
         os.rename(self.tmp, self.filename)
 
@@ -140,6 +147,14 @@ class GrubAction(Action):
         params = self.base + self.extra
         self.cmdline = ' '.join(params)
         self.filename = path.join(etcdir, 'default', 'grub')
+        self._tmp = None
+        self._bak = None
+        
+    @property
+    def bak(self):
+        if self._bak is None:
+            self._bak = backup_filename(self.filename)
+        return self._bak
 
     def read(self):
         return open(self.filename, 'r').read()
@@ -152,7 +167,12 @@ class GrubAction(Action):
         raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
 
     def iter_lines(self):
-        for line in self.read().splitlines():
+        content = self.read()
+        try:
+            open(self.bak, 'x').write(content)
+        except FileExistsError:
+            pass
+        for line in content.splitlines():
             match = CMDLINE_RE.match(line)
             if match:
                 yield CMDLINE_TEMPLATE.format(self.cmdline)
@@ -163,8 +183,10 @@ class GrubAction(Action):
         return self.get_cmdline() != self.cmdline
 
     def perform(self):
+        self.tmp = random_tmp_filename(self.filename)
         new = '\n'.join(self.iter_lines())
-        open(self.filename, 'w').write(new)
+        open(self.tmp, 'x').write(new)
+        os.rename(self.tmp, self.filename)
 
 
 class wifi_pm_disable(FileAction):
