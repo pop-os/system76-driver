@@ -106,6 +106,16 @@ class Action:
             '{}.perform()'.format(name)
         )
 
+    def atomic_write(self, content, mode=None):
+        self.tmp = random_tmp_filename(self.filename)
+        fp = open(self.tmp, 'x')
+        fp.write(content)
+        fp.flush()
+        os.fsync(fp.fileno())
+        if mode is not None:
+            os.chmod(fp.fileno(), mode)
+        os.rename(self.tmp, self.filename)
+
 
 class FileAction(Action):
     relpath = tuple()
@@ -130,10 +140,7 @@ class FileAction(Action):
         return False
 
     def perform(self):
-        self.tmp = random_tmp_filename(self.filename)
-        open(self.tmp, 'x').write(self.content)
-        os.chmod(self.tmp, self.mode)
-        os.rename(self.tmp, self.filename)
+        self.atomic_write(self.content, self.mode)
 
 
 class GrubAction(Action):
@@ -176,10 +183,8 @@ class GrubAction(Action):
         return self.get_cmdline() != self.cmdline
 
     def perform(self):
-        self.tmp = random_tmp_filename(self.filename)
-        new = '\n'.join(self.iter_lines())
-        open(self.tmp, 'x').write(new)
-        os.rename(self.tmp, self.filename)
+        content = '\n'.join(self.iter_lines())
+        self.atomic_write(content)
 
 
 class wifi_pm_disable(FileAction):
@@ -262,10 +267,8 @@ class plymouth1080(Action):
         yield self.value
 
     def perform(self):
-        self.tmp = random_tmp_filename(self.filename)
-        new = '\n'.join(self.iter_lines())
-        open(self.tmp, 'x').write(new)
-        os.rename(self.tmp, self.filename)
+        content = '\n'.join(self.iter_lines())
+        self.atomic_write(content)
 
 
 class uvcquirks(FileAction):
