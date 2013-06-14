@@ -133,10 +133,12 @@ class GrubAction(Action):
     """
     Base class for actions that modify cmdline in /etc/default/grub.
     """
-
-    cmdline = 'quiet splash'
+    base = ('quiet', 'splash')
+    extra = tuple()
 
     def __init__(self, etcdir='/etc'):
+        params = self.base + self.extra
+        self.cmdline = ' '.join(params)
         self.filename = path.join(etcdir, 'default', 'grub')
 
     def read(self):
@@ -175,7 +177,18 @@ class wifi_pm_disable(FileAction):
 
 
 class lemu1(GrubAction):
-    cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+    extra = ('acpi_os_name=Linux', 'acpi_osi=')
+
+    def describe(self):
+        return _('Enable brightness hot keys')
+
+
+class backlight_vendor(GrubAction):
+    """
+    Added acpi_backlight=vendor to GRUB_CMDLINE_LINUX_DEFAULT (for gazp9).
+    """
+
+    extra = ('acpi_backlight=vendor',)
 
     def describe(self):
         return _('Enable brightness hot keys')

@@ -359,7 +359,7 @@ class TestGrubAction(TestCase):
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
-            cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+            extra = ('acpi_os_name=Linux', 'acpi_osi=')
 
         tmp = TempDir()
         tmp.mkdir('default')
@@ -386,11 +386,14 @@ class TestGrubAction(TestCase):
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
-            cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+            extra = ('acpi_os_name=Linux', 'acpi_osi=')
 
         tmp = TempDir()
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
+        self.assertEqual(inst.cmdline,
+            'quiet splash acpi_os_name=Linux acpi_osi='
+        )
         with self.assertRaises(FileNotFoundError) as cm:
             inst.isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
@@ -415,11 +418,14 @@ class TestGrubAction(TestCase):
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
-            cmdline = 'quiet splash acpi_os_name=Linux acpi_osi='
+            extra = ('acpi_os_name=Linux', 'acpi_osi=')
 
         tmp = TempDir()
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
+        self.assertEqual(inst.cmdline,
+            'quiet splash acpi_os_name=Linux acpi_osi='
+        )
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
@@ -571,6 +577,21 @@ class Test_lemu1(TestCase):
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+
+
+class Test_backlight_vendor(TestCase):
+    def test_init(self):
+        inst = actions.backlight_vendor()
+        self.assertEqual(inst.filename, '/etc/default/grub')
+        self.assertEqual(inst.cmdline, 'quiet splash acpi_backlight=vendor')
+        tmp = TempDir()
+        inst = actions.backlight_vendor(etcdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+        self.assertEqual(inst.cmdline, 'quiet splash acpi_backlight=vendor')
+
+    def test_decribe(self):
+        inst = actions.backlight_vendor()
+        self.assertEqual(inst.describe(), 'Enable brightness hot keys')
 
 
 class Test_fingerprintGUI(TestCase):
