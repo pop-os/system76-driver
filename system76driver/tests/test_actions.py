@@ -107,6 +107,18 @@ GRUB_CMDLINE_LINUX=""
 
 
 class TestFunctions(TestCase):
+    def test_random_id(self):
+        _id = actions.random_id()
+        self.assertIsInstance(_id, str)
+        self.assertEqual(len(_id), 24)
+        self.assertEqual(b32encode(b32decode(_id)).decode('utf-8'), _id)
+        _id = actions.random_id(numbytes=10)
+        self.assertIsInstance(_id, str)
+        self.assertEqual(len(_id), 16)
+        self.assertEqual(b32encode(b32decode(_id)).decode('utf-8'), _id)
+        accum = set(actions.random_id() for i in range(100))
+        self.assertEqual(len(accum), 100)
+
     def test_random_tmp_filename(self):
         tmp = actions.random_tmp_filename('/foo/bar')
         (base, random) = tmp.split('.')

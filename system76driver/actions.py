@@ -41,9 +41,12 @@ WIFI_PM_DISABLE = """#!/bin/sh
 """
 
 
+def random_id(numbytes=15):
+    return b32encode(os.urandom(numbytes)).decode('utf-8')
+
+
 def random_tmp_filename(filename):
-    random = b32encode(os.urandom(15)).decode('utf-8')
-    return '.'.join([filename, random])
+    return '.'.join([filename, random_id()])
 
 
 def add_ppa(ppa):

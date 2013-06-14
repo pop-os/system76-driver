@@ -26,3 +26,14 @@ from gettext import gettext as _
 from .mockable import SubProcess
 from .actions import Action
 
+
+def set_two_finger(user):
+    cmd = [
+        'su', user, '-c',
+        'gsettings',
+        'set',
+        'org.gnome.settings-daemon.peripherals.touchpad',
+        'scroll-method',
+        'two-finger-scrolling',
+    ]
+    SubProcess.check_call(cmd)

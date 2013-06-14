@@ -25,5 +25,23 @@ from unittest import TestCase
 
 from .helpers import TempDir
 from system76driver.mockable import SubProcess
+from system76driver.actions import random_id
 from system76driver import prefs
 
+
+class TestFunctions(TestCase):
+    def test_set_two_finger(self):
+        SubProcess.reset(mocking=True)
+        user = random_id()
+        self.assertIsNone(prefs.set_two_finger(user))
+        cmd = [
+            'su', user, '-c',
+            'gsettings',
+            'set',
+            'org.gnome.settings-daemon.peripherals.touchpad',
+            'scroll-method',
+            'two-finger-scrolling',
+        ]
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', cmd, {}),
+        ])
