@@ -736,16 +736,19 @@ class Test_sata_alpm(TestCase):
         inst = actions.sata_alpm()
         self.assertEqual(inst.filename, '/etc/pm/config.d/sata_alpm')
         tmp = TempDir()
-        inst = actions.sata_alpm(etcdir=tmp.dir)
-        self.assertEqual(inst.filename, tmp.join('pm', 'config.d', 'sata_alpm'))
+        inst = actions.sata_alpm(rootdir=tmp.dir)
+        self.assertEqual(inst.filename,
+            tmp.join('etc', 'pm', 'config.d', 'sata_alpm')
+        )
 
     def test_read(self):
         tmp = TempDir()
-        tmp.mkdir('pm')
-        tmp.mkdir('pm', 'config.d')
-        inst = actions.sata_alpm(etcdir=tmp.dir)
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'config.d')
+        inst = actions.sata_alpm(rootdir=tmp.dir)
         self.assertIsNone(inst.read())
-        tmp.write(b'Hello, World', 'pm', 'config.d', 'sata_alpm')
+        tmp.write(b'Hello, World', 'etc', 'pm', 'config.d', 'sata_alpm')
         self.assertEqual(inst.read(), 'Hello, World')
 
     def test_describe(self):
@@ -755,9 +758,10 @@ class Test_sata_alpm(TestCase):
 
     def test_isneeded(self):
         tmp = TempDir()
-        tmp.mkdir('pm')
-        tmp.mkdir('pm', 'config.d')
-        inst = actions.sata_alpm(etcdir=tmp.dir)
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'config.d')
+        inst = actions.sata_alpm(rootdir=tmp.dir)
 
         # Missing file
         self.assertIs(inst.isneeded(), True)
@@ -785,16 +789,17 @@ class Test_sata_alpm(TestCase):
 
     def test_perform(self):
         tmp = TempDir()
-        inst = actions.sata_alpm(etcdir=tmp.dir)
+        inst = actions.sata_alpm(rootdir=tmp.dir)
 
         # Missing directories
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
-        self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(cm.exception.filename, inst.tmp)
 
         # Missing file
-        tmp.mkdir('pm')
-        tmp.mkdir('pm', 'config.d')
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'config.d')
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
@@ -816,3 +821,4 @@ class Test_sata_alpm(TestCase):
         # Action didn't need to be performed:
         self.assertIsNone(inst.perform())
         self._check_file(inst)
+

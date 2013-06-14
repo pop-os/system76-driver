@@ -126,33 +126,6 @@ class FileAction(Action):
         os.rename(self.tmp, self.filename)
 
 
-class EtcFileAction(Action):
-    relpath = None
-    content = None
-    mode = 0o644
-
-    def __init__(self, etcdir='/etc'):
-        self.filename = path.join(etcdir, *self.relpath)
-
-    def read(self):
-        try:
-            return open(self.filename, 'r').read()
-        except FileNotFoundError:
-            return None
-
-    def isneeded(self):
-        if self.read() != self.content:
-            return True
-        st = os.stat(self.filename)
-        if stat.S_IMODE(st.st_mode) != self.mode:
-            return True
-        return False
-
-    def perform(self):
-        open(self.filename, 'w').write(self.content)
-        os.chmod(self.filename, self.mode)
-
-
 class GrubAction(Action):
     """
     Base class for actions that modify cmdline in /etc/default/grub.
@@ -252,8 +225,8 @@ class uvcquirks(FileAction):
         return _('Webcam quirk fixes')
 
 
-class sata_alpm(EtcFileAction):
-    relpath = ('pm', 'config.d', 'sata_alpm')
+class sata_alpm(FileAction):
+    relpath = ('etc', 'pm', 'config.d', 'sata_alpm')
     content = 'SATA_ALPM_ENABLE=true'
 
     def describe(self):
