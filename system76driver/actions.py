@@ -116,6 +116,15 @@ class Action:
             os.chmod(fp.fileno(), mode)
         os.rename(self.tmp, self.filename)
 
+    def read_and_backup(self):
+        content = self.read()
+        self.bak = backup_filename(self.filename)
+        try:
+            open(self.bak, 'x').write(content)
+        except FileExistsError:
+            pass
+        return content
+
 
 class FileAction(Action):
     relpath = tuple()
@@ -166,12 +175,7 @@ class GrubAction(Action):
         raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
 
     def iter_lines(self):
-        content = self.read()
-        self.bak = backup_filename(self.filename)
-        try:
-            open(self.bak, 'x').write(content)
-        except FileExistsError:
-            pass
+        content = self.read_and_backup()
         for line in content.splitlines():
             match = CMDLINE_RE.match(line)
             if match:
@@ -255,12 +259,7 @@ class plymouth1080(Action):
         return self.read().splitlines()[-1] != self.value
 
     def iter_lines(self):
-        content = self.read()
-        self.bak = backup_filename(self.filename)
-        try:
-            open(self.bak, 'x').write(content)
-        except FileExistsError:
-            pass
+        content = self.read_and_backup()
         for line in content.splitlines():
             if not line.startswith('GRUB_GFXPAYLOAD_LINUX='):
                 yield line
