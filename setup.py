@@ -66,7 +66,7 @@ setup(
         'system76driver.tests'
     ],
     scripts=[
-        #'system76driver-gtk',
+        'system76-driver',
     ],
     package_data={
         #'system76driver': ['data/*'],

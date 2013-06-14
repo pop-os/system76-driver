@@ -1,0 +1,67 @@
+#!/usr/bin/python3
+
+# system76-driver: Universal driver for System76 computers
+# Copyright (C) 2005-2013 System76, Inc.
+#
+# This file is part of `system76-driver`.
+#
+# `system76-driver` is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# `system76-driver` is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+import argparse
+import os
+import sys
+from gettext import ngettext
+
+from system76driver.model import determine_model
+from system76driver.products import PRODUCTS
+
+
+if os.getuid() != 0:
+    sys.exit('Error: must be run as root')
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--model', help='force model rather than detecting it')
+args = parser.parse_args()
+
+
+if args.model is None:
+    args.model = determine_model()
+try:
+    product = PRODUCTS[args.model]
+except KeyError:
+    sys.exit('Error: no such product: {}'.format(args.model))
+
+print('model:', args.model)
+print('name:', product['name'])
+
+
+def run_actions(key):
+    actions = product[key]
+    for cls in actions:
+        inst = cls()
+        print('  * {}: {}'.format(cls.__name__, inst.describe()))
+        inst.perform()
+    count = len(actions)
+    msg = ngettext('Ran {count} action.', 'Ran {count} actions.', count)
+    print(msg.format(count=count))
+
+
+print('\nRunning driver actions...')
+run_actions('drivers')
+print('\nRunning preference actions...')
+run_actions('prefs')
+
