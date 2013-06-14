@@ -147,14 +147,6 @@ class GrubAction(Action):
         params = self.base + self.extra
         self.cmdline = ' '.join(params)
         self.filename = path.join(etcdir, 'default', 'grub')
-        self._tmp = None
-        self._bak = None
-        
-    @property
-    def bak(self):
-        if self._bak is None:
-            self._bak = backup_filename(self.filename)
-        return self._bak
 
     def read(self):
         return open(self.filename, 'r').read()
@@ -168,6 +160,7 @@ class GrubAction(Action):
 
     def iter_lines(self):
         content = self.read()
+        self.bak = backup_filename(self.filename)
         try:
             open(self.bak, 'x').write(content)
         except FileExistsError:
@@ -247,24 +240,32 @@ class plymouth1080(Action):
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'default', 'grub')
 
-    def readlines(self):
-        return open(self.filename, 'r').read().splitlines()
+    def read(self):
+        return open(self.filename, 'r').read()
 
     def describe(self):
         return _('Correctly diplay Ubuntu logo on boot')
 
     def isneeded(self):
-        return self.readlines()[-1] != self.value
+        return self.read().splitlines()[-1] != self.value
 
     def iter_lines(self):
-        for line in self.readlines():
+        content = self.read()
+        self.bak = backup_filename(self.filename)
+        try:
+            open(self.bak, 'x').write(content)
+        except FileExistsError:
+            pass
+        for line in content.splitlines():
             if not line.startswith('GRUB_GFXPAYLOAD_LINUX='):
                 yield line
         yield self.value
 
     def perform(self):
+        self.tmp = random_tmp_filename(self.filename)
         new = '\n'.join(self.iter_lines())
-        open(self.filename, 'w').write(new)
+        open(self.tmp, 'x').write(new)
+        os.rename(self.tmp, self.filename)
 
 
 class uvcquirks(FileAction):

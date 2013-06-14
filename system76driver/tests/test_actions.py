@@ -685,6 +685,8 @@ class Test_plymouth1080(TestCase):
             open(inst.filename, 'r').read(),
             GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
         )
+        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
         open(inst.filename, 'w').write(
             'GRUB_GFXPAYLOAD_LINUX="foo bar"\n' + GRUB_ORIG
