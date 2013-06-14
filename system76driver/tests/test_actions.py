@@ -648,15 +648,18 @@ class Test_uvcquirks(TestCase):
         self.assertEqual(inst.filename, '/etc/modprobe.d/uvc.conf')
 
         tmp = TempDir()
-        inst = actions.uvcquirks(etcdir=tmp.dir)
-        self.assertEqual(inst.filename, tmp.join('modprobe.d', 'uvc.conf'))
+        inst = actions.uvcquirks(rootdir=tmp.dir)
+        self.assertEqual(inst.filename,
+            tmp.join('etc', 'modprobe.d', 'uvc.conf')
+        )
 
     def test_read(self):
         tmp = TempDir()
-        tmp.mkdir('modprobe.d')
-        inst = actions.uvcquirks(etcdir=tmp.dir)
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'modprobe.d')
+        inst = actions.uvcquirks(rootdir=tmp.dir)
         self.assertIsNone(inst.read())
-        tmp.write(b'Hello, World', 'modprobe.d', 'uvc.conf')
+        tmp.write(b'Hello, World', 'etc', 'modprobe.d', 'uvc.conf')
         self.assertEqual(inst.read(), 'Hello, World')
 
     def test_describe(self):
@@ -665,8 +668,9 @@ class Test_uvcquirks(TestCase):
 
     def test_isneeded(self):
         tmp = TempDir()
-        tmp.mkdir('modprobe.d')
-        inst = actions.uvcquirks(etcdir=tmp.dir)
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'modprobe.d')
+        inst = actions.uvcquirks(rootdir=tmp.dir)
 
         # Missing file
         self.assertIs(inst.isneeded(), True)
@@ -694,15 +698,16 @@ class Test_uvcquirks(TestCase):
 
     def test_perform(self):
         tmp = TempDir()
-        inst = actions.uvcquirks(etcdir=tmp.dir)
+        inst = actions.uvcquirks(rootdir=tmp.dir)
 
         # Missing directories
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
-        self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(cm.exception.filename, inst.tmp)
 
         # Missing file
-        tmp.mkdir('modprobe.d')
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'modprobe.d')
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 

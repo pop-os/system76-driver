@@ -244,8 +244,8 @@ class plymouth1080(Action):
         open(self.filename, 'w').write(new)
 
 
-class uvcquirks(EtcFileAction):
-    relpath = ('modprobe.d', 'uvc.conf')
+class uvcquirks(FileAction):
+    relpath = ('etc', 'modprobe.d', 'uvc.conf')
     content = 'options uvcvideo quirks=2'
 
     def describe(self):
