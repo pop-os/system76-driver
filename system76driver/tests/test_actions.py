@@ -259,7 +259,7 @@ class TestFileAction(TestCase):
         # Missing parentdir:
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
-        self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(cm.exception.filename, inst.tmp)
 
         # Missing file:
         tmp.mkdir('some')
@@ -485,7 +485,7 @@ class Test_wifi_pm_disable(TestCase):
         # Missing directories
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
-        self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(cm.exception.filename, inst.tmp)
 
         # Missing file
         tmp.mkdir('etc')
@@ -505,7 +505,7 @@ class Test_wifi_pm_disable(TestCase):
         os.chmod(inst.filename, 0o644)
         self.assertIsNone(inst.perform())
         self._check_file(inst)
-        os.chmod(inst.filename, 0o777)
+        os.chmod(inst.filename, 0o000)
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 

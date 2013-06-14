@@ -120,8 +120,10 @@ class FileAction(Action):
         return False
 
     def perform(self):
-        open(self.filename, 'w').write(self.content)
-        os.chmod(self.filename, self.mode)
+        self.tmp = random_tmp_filename(self.filename)
+        open(self.tmp, 'w').write(self.content)
+        os.chmod(self.tmp, self.mode)
+        os.rename(self.tmp, self.filename)
 
 
 class EtcFileAction(Action):
