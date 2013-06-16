@@ -178,7 +178,10 @@ PRODUCTS = {
     },
     'lemu4': {
         'name': 'Lemur Ultra',
-        'drivers': [],
+        'drivers': [
+            actions.wifi_pm_disable,
+            actions.lemu1,
+        ],
         'prefs': [],
     },
 
@@ -259,7 +262,10 @@ PRODUCTS = {
     },
     'panp9': {
         'name': 'Pangolin Performance',
-        'drivers': [],
+        'drivers': [
+            actions.wifi_pm_disable,
+            actions.lemu1,
+        ],
         'prefs': [],
     },
     #'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
