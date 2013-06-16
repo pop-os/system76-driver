@@ -81,4 +81,4 @@ class TestUI(TestCase):
             ui.builder.get_object('driverVersion').get_text(),
             system76driver.__version__
         )
-        
+

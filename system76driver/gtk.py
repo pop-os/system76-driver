@@ -42,14 +42,33 @@ class UI:
         self.builder = Gtk.Builder()
         self.builder.add_from_file(get_datafile('gtk3.glade'))
         self.window = self.builder.get_object('mainWindow')
-        self.window.connect('destroy', Gtk.main_quit)
 
         self.builder.get_object('sysName').set_text(product['name'])
         self.builder.get_object('sysModel').set_text(model)
         self.builder.get_object('ubuntuVersion').set_text(platform.dist()[1])
         self.builder.get_object('driverVersion').set_text(__version__)
 
+        self.builder.connect_signals({
+            'onDeleteWindow': Gtk.main_quit,
+            'onCloseClicked': Gtk.main_quit,
+            'onInstallClicked': self.onInstallClicked,
+            'onRestoreClicked': self.onRestoreClicked,
+            'onCreateClicked': self.onCreateClicked,
+            'onAboutClicked': self.onAboutClicked,
+        })
+
     def run(self):
         self.window.show()
         Gtk.main()
 
+    def onInstallClicked(self, button):
+        print('onInstallClicked')
+
+    def onRestoreClicked(self, button):
+        print('onRestoreClicked')
+
+    def onCreateClicked(self, button):
+        print('onCreateClicked')
+
+    def onAboutClicked(self, button):
+        print('onAboutClicked')
