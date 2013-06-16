@@ -19,26 +19,36 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from gi.repository import GLib, Gtk
+import argparse
+import os
+import sys
+from gettext import ngettext
 
-import system76driver
+from system76driver.model import determine_model
+from system76driver.products import PRODUCTS
+from system76driver.gtk import UI
 
 
-GLib.threads_init()
+parser = argparse.ArgumentParser()
+parser.add_argument('--model', help='force model rather than detecting it')
+parser.add_argument('--dry', action='store_true', default=False,
+    help='print what would be done but without calling Action.perform()',
+)
+args = parser.parse_args()
 
 
-class UI:
-    def __init__(self):
-        self.builder = Gtk.Builder()
-        self.builder.add_from_file(system76driver.get_datafile('gtk3.glade'))
-        self.window = self.builder.get_object('mainWindow')
-        self.window.connect('destroy', Gtk.main_quit)
+if os.getuid() != 0:
+    sys.exit('Error: must be run as root')
 
-    def run(self):
-        self.window.show()
-        Gtk.main()
- 
 
-ui = UI()
+if args.model is None:
+    args.model = determine_model()
+try:
+    product = PRODUCTS[args.model]
+except KeyError:
+    sys.exit('Error: no such product: {}'.format(args.model))
+
+
+ui = UI(args.model, product)
 ui.run()
-        
+ 
