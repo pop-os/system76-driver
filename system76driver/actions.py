@@ -269,6 +269,7 @@ class plymouth1080(Action):
     def perform(self):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
+        SubProcess.check_call(['update-grub'])
 
 
 class uvcquirks(FileAction):

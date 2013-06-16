@@ -696,12 +696,14 @@ class Test_plymouth1080(TestCase):
         self.assertIs(inst.isneeded(), False)
 
     def test_perform(self):
+        SubProcess.reset(mocking=True)
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.plymouth1080(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(SubProcess.calls, [])
 
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
@@ -711,7 +713,11 @@ class Test_plymouth1080(TestCase):
         )
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
+        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(
             'GRUB_GFXPAYLOAD_LINUX="foo bar"\n' + GRUB_ORIG
         )
@@ -720,12 +726,19 @@ class Test_plymouth1080(TestCase):
             open(inst.filename, 'r').read(),
             GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
         )
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
+        SubProcess.reset(mocking=True)
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
             GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
         )
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
 
 class Test_uvcquirks(TestCase):
