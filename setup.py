@@ -67,9 +67,10 @@ setup(
     ],
     scripts=[
         'system76-driver',
+        'system76-driver-gtk',
     ],
     package_data={
-        #'system76driver': ['data/*'],
+        'system76driver': ['data/*'],
     },
     cmdclass={'test': Test},
 )

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # system76-driver: Universal driver for System76 computers
 # Copyright (C) 2005-2013 System76, Inc.
 #
@@ -17,17 +19,26 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-"""
-Universal driver for System76 computers
-"""
+from gi.repository import GLib, Gtk
 
-from os import path
+import system76driver
 
 
-__version__ = '13.04.1'
-
-datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
+GLib.threads_init()
 
 
-def get_datafile(name):
-    return path.join(datadir, name)
+class UI:
+    def __init__(self):
+        self.builder = Gtk.Builder()
+        self.builder.add_from_file(system76driver.get_datafile('gtk3.glade'))
+        self.window = self.builder.get_object('mainWindow')
+        self.window.connect('destroy', Gtk.main_quit)
+
+    def run(self):
+        self.window.show()
+        Gtk.main()
+ 
+
+ui = UI()
+ui.run()
+        
