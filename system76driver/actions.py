@@ -27,6 +27,7 @@ from os import path
 import stat
 import re
 from base64 import b32encode
+import datetime
 
 from .mockable import SubProcess
 
@@ -47,6 +48,12 @@ def random_id(numbytes=15):
 
 def random_tmp_filename(filename):
     return '.'.join([filename, random_id()])
+
+
+def backup_filename(filename, date=None):
+    if date is None:
+        date = datetime.date.today()
+    return '.'.join([filename, 'system76-{}'.format(date)])
 
 
 def add_ppa(ppa):
@@ -99,6 +106,25 @@ class Action:
             '{}.perform()'.format(name)
         )
 
+    def atomic_write(self, content, mode=None):
+        self.tmp = random_tmp_filename(self.filename)
+        fp = open(self.tmp, 'x')
+        fp.write(content)
+        fp.flush()
+        os.fsync(fp.fileno())
+        if mode is not None:
+            os.chmod(fp.fileno(), mode)
+        os.rename(self.tmp, self.filename)
+
+    def read_and_backup(self):
+        content = self.read()
+        self.bak = backup_filename(self.filename)
+        try:
+            open(self.bak, 'x').write(content)
+        except FileExistsError:
+            pass
+        return content
+
 
 class FileAction(Action):
     relpath = tuple()
@@ -123,10 +149,7 @@ class FileAction(Action):
         return False
 
     def perform(self):
-        self.tmp = random_tmp_filename(self.filename)
-        open(self.tmp, 'w').write(self.content)
-        os.chmod(self.tmp, self.mode)
-        os.rename(self.tmp, self.filename)
+        self.atomic_write(self.content, self.mode)
 
 
 class GrubAction(Action):
@@ -152,7 +175,8 @@ class GrubAction(Action):
         raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
 
     def iter_lines(self):
-        for line in self.read().splitlines():
+        content = self.read_and_backup()
+        for line in content.splitlines():
             match = CMDLINE_RE.match(line)
             if match:
                 yield CMDLINE_TEMPLATE.format(self.cmdline)
@@ -163,8 +187,9 @@ class GrubAction(Action):
         return self.get_cmdline() != self.cmdline
 
     def perform(self):
-        new = '\n'.join(self.iter_lines())
-        open(self.filename, 'w').write(new)
+        content = '\n'.join(self.iter_lines())
+        self.atomic_write(content)
+        SubProcess.check_call(['update-grub'])
 
 
 class wifi_pm_disable(FileAction):
@@ -225,24 +250,26 @@ class plymouth1080(Action):
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'default', 'grub')
 
-    def readlines(self):
-        return open(self.filename, 'r').read().splitlines()
+    def read(self):
+        return open(self.filename, 'r').read()
 
     def describe(self):
         return _('Correctly diplay Ubuntu logo on boot')
 
     def isneeded(self):
-        return self.readlines()[-1] != self.value
+        return self.read().splitlines()[-1] != self.value
 
     def iter_lines(self):
-        for line in self.readlines():
+        content = self.read_and_backup()
+        for line in content.splitlines():
             if not line.startswith('GRUB_GFXPAYLOAD_LINUX='):
                 yield line
         yield self.value
 
     def perform(self):
-        new = '\n'.join(self.iter_lines())
-        open(self.filename, 'w').write(new)
+        content = '\n'.join(self.iter_lines())
+        self.atomic_write(content)
+        SubProcess.check_call(['update-grub'])
 
 
 class uvcquirks(FileAction):

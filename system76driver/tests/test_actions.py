@@ -354,8 +354,12 @@ class TestGrubAction(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
@@ -369,8 +373,12 @@ class TestGrubAction(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
     def test_isneeded(self):
         tmp = TempDir()
@@ -403,38 +411,62 @@ class TestGrubAction(TestCase):
         self.assertIs(inst.isneeded(), False)
 
     def test_perform(self):
+        SubProcess.reset(mocking=True)
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.GrubAction(etcdir=tmp.dir)
+
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(SubProcess.calls, [])
+
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
+
+        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
             extra = ('acpi_os_name=Linux', 'acpi_osi=')
 
+        SubProcess.reset(mocking=True)
         tmp = TempDir()
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
+
         self.assertEqual(inst.cmdline,
             'quiet splash acpi_os_name=Linux acpi_osi='
         )
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(SubProcess.calls, [])
+
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
+
+        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
 
 class Test_wifi_pm_disable(TestCase):
@@ -664,12 +696,14 @@ class Test_plymouth1080(TestCase):
         self.assertIs(inst.isneeded(), False)
 
     def test_perform(self):
+        SubProcess.reset(mocking=True)
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.plymouth1080(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(SubProcess.calls, [])
 
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
@@ -677,7 +711,13 @@ class Test_plymouth1080(TestCase):
             open(inst.filename, 'r').read(),
             GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
         )
+        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
+        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(
             'GRUB_GFXPAYLOAD_LINUX="foo bar"\n' + GRUB_ORIG
         )
@@ -686,12 +726,19 @@ class Test_plymouth1080(TestCase):
             open(inst.filename, 'r').read(),
             GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
         )
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
+        SubProcess.reset(mocking=True)
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
             GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
         )
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
 
 class Test_uvcquirks(TestCase):
