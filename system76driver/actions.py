@@ -189,6 +189,7 @@ class GrubAction(Action):
     def perform(self):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
+        SubProcess.check_call(['update-grub'])
 
 
 class wifi_pm_disable(FileAction):

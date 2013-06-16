@@ -411,38 +411,62 @@ class TestGrubAction(TestCase):
         self.assertIs(inst.isneeded(), False)
 
     def test_perform(self):
+        SubProcess.reset(mocking=True)
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.GrubAction(etcdir=tmp.dir)
+
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(SubProcess.calls, [])
+
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
+
+        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
             extra = ('acpi_os_name=Linux', 'acpi_osi=')
 
+        SubProcess.reset(mocking=True)
         tmp = TempDir()
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
+
         self.assertEqual(inst.cmdline,
             'quiet splash acpi_os_name=Linux acpi_osi='
         )
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(SubProcess.calls, [])
+
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
+
+        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
 
 
 class Test_wifi_pm_disable(TestCase):
