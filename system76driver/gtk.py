@@ -68,22 +68,10 @@ class UI:
         self.window.show()
         Gtk.main()
 
-    def run_actions(self, key):
-        actions = self.product[key]
-        for cls in actions:
-            inst = cls()
-            GLib.idle_add(self.set_notify, 'gtk-execute', inst.describe())
-            if self.dry:
-                time.sleep(1)
-            else:
-                inst.perform()
-
     def worker_thread(self, actions):
-        run_actions(actions, self.on_action_progress, self.dry)
+        for description in run_actions(actions, mocking=self.dry):
+            GLib.idle_add(self.set_notify, 'gtk-execute', description)
         GLib.idle_add(self.on_worker_complete)
-
-    def on_action_progress(self, description):
-        GLib.idle_add(self.set_notify, 'gtk-execute', description)
 
     def on_worker_complete(self):
         self.thread.join()

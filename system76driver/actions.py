@@ -76,25 +76,25 @@ def update_grub():
     SubProcess.check_call(['update-grub'])
 
 
-def run_actions(actions, callback, mocking=False):
+def run_actions(actions, mocking=False):
     SubProcess.reset(mocking=mocking)
     for a in actions:
         if a.ppa:
-            callback(_('Adding {ppa}').format(ppa=a.ppa))
+            yield _('Adding {ppa}').format(ppa=a.ppa)
             add_apt_repository(a.ppa)
 
     if any(a.update_package_list for a in actions):
-        callback(_('Updating package list'))
+        yield _('Updating package list')
         apt_get_update()
 
     for cls in actions:
         inst = cls()
-        callback(inst.describe())
+        yield inst.describe()
         if not mocking:
             inst.perform()
 
     if any(a.update_grub for a in actions):
-        callback(_('Running `update-grub`'))
+        yield _('Running `update-grub`')
         update_grub()
 
 
