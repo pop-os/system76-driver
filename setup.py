@@ -76,5 +76,6 @@ setup(
     data_files=[
         ('share/applications', ['system76-driver.desktop']),
         ('share/icons/hicolor/scalable/apps', ['system76-driver.svg']),
+        ('share/polkit-1/actions/', ['com.system76.pkexec.system76-driver-gtk.policy']),
     ],
 )
