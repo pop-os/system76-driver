@@ -82,3 +82,8 @@ class TestUI(TestCase):
             system76driver.__version__
         )
 
+    def test_set_notify(self):
+        ui = gtk.UI('gazp9', {'name': 'Gazelle Professional'})
+        text = random_id()
+        self.assertIsNone(ui.set_notify('gtk-execute', text))
+        self.assertEqual(ui.notify_text.get_text(), text)

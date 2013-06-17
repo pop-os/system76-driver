@@ -49,6 +49,6 @@ except KeyError:
     sys.exit('Error: no such product: {}'.format(args.model))
 
 
-ui = UI(args.model, product)
+ui = UI(args.model, product, args.dry)
 ui.run()
  

@@ -22,6 +22,8 @@ Gtk UI.
 """
 
 import platform
+import time
+import threading
 
 from gi.repository import GLib, Gtk
 
@@ -42,6 +44,8 @@ class UI:
         self.builder = Gtk.Builder()
         self.builder.add_from_file(get_datafile('gtk3.glade'))
         self.window = self.builder.get_object('mainWindow')
+        self.notify_icon = self.builder.get_object('notifyImage')
+        self.notify_text = self.builder.get_object('notifyLabel')
 
         self.builder.get_object('sysName').set_text(product['name'])
         self.builder.get_object('sysModel').set_text(model)
@@ -57,18 +61,64 @@ class UI:
             'onAboutClicked': self.onAboutClicked,
         })
 
+        self.thread = None
+
     def run(self):
         self.window.show()
         Gtk.main()
 
+    def run_actions(self, key):
+        actions = self.product[key]
+        for cls in actions:
+            inst = cls()
+            GLib.idle_add(self.set_notify, 'gtk-execute', inst.describe())
+            if self.dry:
+                time.sleep(1)
+            else:
+                inst.perform()
+
+    def worker_thread(self, apply_preferences):
+        self.run_actions('drivers')
+        if apply_preferences:
+            self.run_actions('prefs')
+        GLib.idle_add(self.on_worker_complete)
+
+    def on_worker_complete(self):
+        self.thread.join()
+        self.thread = None
+        self.set_notify('gtk-apply',
+            'Installation is complete! Please reboot for changes to take effect.'
+        )
+
+    def start_worker(self, apply_preferences):
+        if self.thread is None:
+            self.thread = threading.Thread(
+                target=self.worker_thread,
+                args=(apply_preferences,),
+                daemon=True,
+            )
+            self.thread.start()
+
+    def set_notify(self, icon, text):
+        self.notify_text.show()
+        self.notify_icon.show()
+        self.notify_text.set_text(text)
+        self.notify_icon.set_from_stock(icon, 4)
+
     def onInstallClicked(self, button):
         print('onInstallClicked')
+        self.start_worker(False)
 
     def onRestoreClicked(self, button):
         print('onRestoreClicked')
+        self.start_worker(True)
 
     def onCreateClicked(self, button):
         print('onCreateClicked')
 
     def onAboutClicked(self, button):
         print('onAboutClicked')
+        aboutDialog = self.builder.get_object('aboutDialog')
+        aboutDialog.set_version(__version__)
+        aboutDialog.run()
+        aboutDialog.hide()
