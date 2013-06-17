@@ -665,6 +665,10 @@ class Test_backlight_vendor(TestCase):
 
 
 class Test_airplane_mode(TestCase):
+    def test_init(self):
+        inst = actions.airplane_mode()
+        self.assertIs(inst.update_package_list, True)
+
     def test_describe(self):
         inst = actions.airplane_mode()
         self.assertEqual(inst.describe(), 'Enable airplane-mode hot key')
@@ -678,7 +682,6 @@ class Test_airplane_mode(TestCase):
         inst = actions.airplane_mode()
         self.assertIsNone(inst.perform())
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', 'update'], {}),
             ('check_call', ['apt-get', '-y', 'install', 'system76-airplane-mode'], {}),
         ])
 

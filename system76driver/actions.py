@@ -260,7 +260,6 @@ class airplane_mode(Action):
         return True  # FIXME: Properly detect whether package is installed
 
     def perform(self):
-        apt_get_update()
         apt_get_install('system76-airplane-mode')
 
 
