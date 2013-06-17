@@ -26,6 +26,7 @@ import sys
 from gettext import ngettext
 
 from system76driver.model import determine_model
+from system76driver.actions import run_actions
 from system76driver.products import PRODUCTS
 
 
@@ -51,21 +52,6 @@ except KeyError:
 print('model:', args.model)
 print('name:', product['name'])
 
-
-def run_actions(key):
-    actions = product[key]
-    for cls in actions:
-        inst = cls()
-        print('  * {}: {}'.format(cls.__name__, inst.describe()))
-        if not args.dry:
-            inst.perform()
-    count = len(actions)
-    msg = ngettext('Ran {count} action.', 'Ran {count} actions.', count)
-    print(msg.format(count=count))
-
-
-print('\nRunning driver actions...')
-run_actions('drivers')
-print('\nRunning preference actions...')
-run_actions('prefs')
-
+actions = product['drivers'] + product['prefs']
+for description in run_actions(actions, mocking=args.dry):
+    print('  * {}'.format(description))
