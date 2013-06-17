@@ -126,30 +126,37 @@ class TestFunctions(TestCase):
         self.assertEqual(len(random), 24)
         self.assertEqual(b32encode(b32decode(random)).decode('utf-8'), random)
 
-    def test_add_ppa(self):
+    def test_add_apt_repository(self):
         SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.add_ppa('ppa:novacut/stable'))
+        self.assertIsNone(actions.add_apt_repository('ppa:novacut/stable'))
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'add-apt-repository', '-y', 'ppa:novacut/stable'], {}),
+            ('check_call', ['add-apt-repository', '-y', 'ppa:novacut/stable'], {}),
         ])
 
-    def test_update(self):
+    def test_apt_get_update(self):
         SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.update())
+        self.assertIsNone(actions.apt_get_update())
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'apt-get', 'update'], {}),
+            ('check_call', ['apt-get', 'update'], {}),
         ])
 
-    def test_install(self):
+    def test_apt_get_install(self):
         SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.install('novacut'))
+        self.assertIsNone(actions.apt_get_install('novacut'))
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'novacut'], {}),
+            ('check_call', ['apt-get', '-y', 'install', 'novacut'], {}),
         ])
         SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.install('novacut', 'blender'))
+        self.assertIsNone(actions.apt_get_install('novacut', 'blender'))
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'novacut', 'blender'], {}),
+            ('check_call', ['apt-get', '-y', 'install', 'novacut', 'blender'], {}),
+        ])
+
+    def test_update_grub(self):
+        SubProcess.reset(mocking=True)
+        self.assertIsNone(actions.update_grub())
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
         ])
 
 
@@ -640,8 +647,8 @@ class Test_airplane_mode(TestCase):
         inst = actions.airplane_mode()
         self.assertIsNone(inst.perform())
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'apt-get', 'update'], {}),
-            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'system76-airplane-mode'], {}),
+            ('check_call', ['apt-get', 'update'], {}),
+            ('check_call', ['apt-get', '-y', 'install', 'system76-airplane-mode'], {}),
         ])
 
 
@@ -661,9 +668,9 @@ class Test_fingerprintGUI(TestCase):
         inst = actions.fingerprintGUI()
         self.assertIsNone(inst.perform())
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'add-apt-repository', '-y', 'ppa:fingerprint/fingerprint-gui'], {}),
-            ('check_call', ['sudo', 'apt-get', 'update'], {}),
-            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi'], {}),
+            ('check_call', ['add-apt-repository', '-y', 'ppa:fingerprint/fingerprint-gui'], {}),
+            ('check_call', ['apt-get', 'update'], {}),
+            ('check_call', ['apt-get', '-y', 'install', 'fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi'], {}),
         ])
 
 

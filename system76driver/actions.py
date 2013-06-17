@@ -57,23 +57,23 @@ def backup_filename(filename, date=None):
     return '.'.join([filename, 'system76-{}'.format(date)])
 
 
-def add_ppa(ppa):
-    SubProcess.check_call(['sudo', 'add-apt-repository', '-y', ppa])
+def add_apt_repository(ppa):
+    SubProcess.check_call(['add-apt-repository', '-y', ppa])
 
 
-def update():
-    SubProcess.check_call(['sudo', 'apt-get', 'update'])
+def apt_get_update():
+    SubProcess.check_call(['apt-get', 'update'])
+
+
+def apt_get_install(*packages):
+    assert packages
+    cmd = ['apt-get', '-y', 'install']
+    cmd.extend(packages)
+    SubProcess.check_call(cmd)
 
 
 def update_grub():
     SubProcess.check_call(['update-grub'])
-
-
-def install(*packages):
-    assert packages
-    cmd = ['sudo', 'apt-get', '-y', 'install']
-    cmd.extend(packages)
-    SubProcess.check_call(cmd)
 
 
 def run_actions(actions, callback, dry):
@@ -82,7 +82,7 @@ def run_actions(actions, callback, dry):
         if dry:
             time.sleep(1)
         else:
-            update()
+            apt_get_update()
     for cls in actions:
         inst = cls()
         callback(inst.describe())
@@ -261,8 +261,8 @@ class airplane_mode(Action):
         return True  # FIXME: Properly detect whether package is installed
 
     def perform(self):
-        update()
-        install('system76-airplane-mode')
+        apt_get_update()
+        apt_get_install('system76-airplane-mode')
 
 
 class fingerprintGUI(Action):
@@ -273,9 +273,9 @@ class fingerprintGUI(Action):
         return True  # FIXME: Properly detect whether package is installed
 
     def perform(self):
-        add_ppa('ppa:fingerprint/fingerprint-gui')
-        update()
-        install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
+        add_apt_repository('ppa:fingerprint/fingerprint-gui')
+        apt_get_update()
+        apt_get_install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
 
 
 class plymouth1080(Action):
