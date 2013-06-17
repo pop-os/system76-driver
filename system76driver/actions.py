@@ -26,6 +26,7 @@ import os
 from os import path
 import stat
 import re
+import time
 from base64 import b32encode
 import datetime
 
@@ -64,6 +65,10 @@ def update():
     SubProcess.check_call(['sudo', 'apt-get', 'update'])
 
 
+def update_grub():
+    SubProcess.check_call(['update-grub'])
+
+
 def install(*packages):
     assert packages
     cmd = ['sudo', 'apt-get', '-y', 'install']
@@ -71,7 +76,33 @@ def install(*packages):
     SubProcess.check_call(cmd)
 
 
+def run_actions(actions, callback, dry):
+    if any(a.update_package_list for a in actions):
+        callback(_('Updating package list'))
+        if dry:
+            time.sleep(1)
+        else:
+            update()
+    for cls in actions:
+        inst = cls()
+        callback(inst.describe())
+        if dry:
+            time.sleep(1)
+        else:
+            inst.perform()
+
+    if any(a.update_grub for a in actions):
+        callback(_('Running `update-grub`'))
+        if dry:
+            time.sleep(1)
+        else:
+            update()
+
+
 class Action:
+    update_package_list = False
+    update_grub = False
+
     def describe(self):
         """
         Return the user visible description of this action.
@@ -156,6 +187,7 @@ class GrubAction(Action):
     """
     Base class for actions that modify cmdline in /etc/default/grub.
     """
+    update_grub = True
     base = ('quiet', 'splash')
     extra = tuple()
 
@@ -220,6 +252,8 @@ class backlight_vendor(GrubAction):
 
 
 class airplane_mode(Action):
+    update_package_list = True
+
     def describe(self):
         return _('Enable airplane-mode hot key')
  

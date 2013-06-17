@@ -28,6 +28,7 @@ import threading
 from gi.repository import GLib, Gtk
 
 from . import __version__, get_datafile
+from .actions import run_actions
 
 
 GLib.threads_init()
@@ -77,11 +78,12 @@ class UI:
             else:
                 inst.perform()
 
-    def worker_thread(self, apply_preferences):
-        self.run_actions('drivers')
-        if apply_preferences:
-            self.run_actions('prefs')
+    def worker_thread(self, actions):
+        run_actions(actions, self.on_action_progress, self.dry)
         GLib.idle_add(self.on_worker_complete)
+
+    def on_action_progress(self, description):
+        GLib.idle_add(self.set_notify, 'gtk-execute', description)
 
     def on_worker_complete(self):
         self.thread.join()
@@ -90,11 +92,11 @@ class UI:
             'Installation is complete! Please reboot for changes to take effect.'
         )
 
-    def start_worker(self, apply_preferences):
+    def start_worker(self, actions):
         if self.thread is None:
             self.thread = threading.Thread(
                 target=self.worker_thread,
-                args=(apply_preferences,),
+                args=(actions,),
                 daemon=True,
             )
             self.thread.start()
@@ -107,11 +109,11 @@ class UI:
 
     def onInstallClicked(self, button):
         print('onInstallClicked')
-        self.start_worker(False)
+        self.start_worker(self.product['drivers'])
 
     def onRestoreClicked(self, button):
         print('onRestoreClicked')
-        self.start_worker(True)
+        self.start_worker(self.product['drivers'] + self.product['prefs'])
 
     def onCreateClicked(self, button):
         print('onCreateClicked')
