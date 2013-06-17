@@ -76,30 +76,30 @@ def update_grub():
     SubProcess.check_call(['update-grub'])
 
 
-def run_actions(actions, callback, dry):
+def run_actions(actions, callback, mocking=False):
+    SubProcess.reset(mocking=mocking)
+    for a in actions:
+        if a.ppa:
+            callback(_('Adding {ppa}').format(ppa=a.ppa))
+            add_apt_repository(a.ppa)
+
     if any(a.update_package_list for a in actions):
         callback(_('Updating package list'))
-        if dry:
-            time.sleep(1)
-        else:
-            apt_get_update()
+        apt_get_update()
+
     for cls in actions:
         inst = cls()
         callback(inst.describe())
-        if dry:
-            time.sleep(1)
-        else:
+        if not mocking:
             inst.perform()
 
     if any(a.update_grub for a in actions):
         callback(_('Running `update-grub`'))
-        if dry:
-            time.sleep(1)
-        else:
-            update()
+        update_grub()
 
 
 class Action:
+    ppa = None
     update_package_list = False
     update_grub = False
 
@@ -266,6 +266,9 @@ class airplane_mode(Action):
 
 
 class fingerprintGUI(Action):
+    ppa = 'ppa:fingerprint/fingerprint-gui'
+    update_package_list = True
+
     def describe(self):
         return _('Fingerprint reader drivers and user interface')
 
@@ -279,6 +282,7 @@ class fingerprintGUI(Action):
 
 
 class plymouth1080(Action):
+    update_grub = True
     value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'
 
     def __init__(self, etcdir='/etc'):

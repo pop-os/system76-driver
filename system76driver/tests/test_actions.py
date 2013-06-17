@@ -106,6 +106,14 @@ GRUB_CMDLINE_LINUX=""
 """.strip()
 
 
+class Callback:
+    def __init__(self):
+        self.calls = []
+
+    def __call__(self, description):
+        self.calls.append(description)
+
+
 class TestFunctions(TestCase):
     def test_random_id(self):
         _id = actions.random_id()
@@ -157,6 +165,38 @@ class TestFunctions(TestCase):
         self.assertIsNone(actions.update_grub())
         self.assertEqual(SubProcess.calls, [
             ('check_call', ['update-grub'], {}),
+        ])
+
+    def test_run_actions(self):
+        torun = [actions.airplane_mode, actions.backlight_vendor]
+        cb = Callback()
+        self.assertIsNone(actions.run_actions(torun, cb, mocking=True))
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['apt-get', 'update'], {}),
+            ('check_call', ['update-grub'], {}),
+        ])
+        self.assertEqual(cb.calls, [
+            'Updating package list',
+            'Enable airplane-mode hot key',
+            'Enable brightness hot keys',
+            'Running `update-grub`',
+        ])
+
+        torun = [actions.fingerprintGUI, actions.plymouth1080, actions.wifi_pm_disable]
+        cb = Callback()
+        self.assertIsNone(actions.run_actions(torun, cb, mocking=True))
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['add-apt-repository', '-y', 'ppa:fingerprint/fingerprint-gui'], {}),
+            ('check_call', ['apt-get', 'update'], {}),
+            ('check_call', ['update-grub'], {}),
+        ])
+        self.assertEqual(cb.calls, [
+            'Adding ppa:fingerprint/fingerprint-gui',
+            'Updating package list',
+            'Fingerprint reader drivers and user interface',
+            'Correctly diplay Ubuntu logo on boot',
+            'Improve WiFi performance on Battery',
+            'Running `update-grub`',
         ])
 
 
