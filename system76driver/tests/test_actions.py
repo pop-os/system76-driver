@@ -684,6 +684,11 @@ class Test_airplane_mode(TestCase):
 
 
 class Test_fingerprintGUI(TestCase):
+    def test_init(self):
+        inst = actions.fingerprintGUI()
+        self.assertEqual(inst.ppa, 'ppa:fingerprint/fingerprint-gui')
+        self.assertIs(inst.update_package_list, True)
+
     def test_describe(self):
         inst = actions.fingerprintGUI()
         self.assertEqual(inst.describe(), 
@@ -699,8 +704,6 @@ class Test_fingerprintGUI(TestCase):
         inst = actions.fingerprintGUI()
         self.assertIsNone(inst.perform())
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['add-apt-repository', '-y', 'ppa:fingerprint/fingerprint-gui'], {}),
-            ('check_call', ['apt-get', 'update'], {}),
             ('check_call', ['apt-get', '-y', 'install', 'fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi'], {}),
         ])
 

@@ -275,8 +275,6 @@ class fingerprintGUI(Action):
         return True  # FIXME: Properly detect whether package is installed
 
     def perform(self):
-        add_apt_repository('ppa:fingerprint/fingerprint-gui')
-        apt_get_update()
         apt_get_install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
 
 
