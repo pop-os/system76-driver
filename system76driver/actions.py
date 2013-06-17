@@ -47,7 +47,7 @@ def random_id(numbytes=15):
     return b32encode(os.urandom(numbytes)).decode('utf-8')
 
 
-def random_tmp_filename(filename):
+def tmp_filename(filename):
     return '.'.join([filename, random_id()])
 
 
@@ -138,7 +138,7 @@ class Action:
         )
 
     def atomic_write(self, content, mode=None):
-        self.tmp = random_tmp_filename(self.filename)
+        self.tmp = tmp_filename(self.filename)
         fp = open(self.tmp, 'x')
         fp.write(content)
         fp.flush()

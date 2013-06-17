@@ -119,8 +119,8 @@ class TestFunctions(TestCase):
         accum = set(actions.random_id() for i in range(100))
         self.assertEqual(len(accum), 100)
 
-    def test_random_tmp_filename(self):
-        tmp = actions.random_tmp_filename('/foo/bar')
+    def test_tmp_filename(self):
+        tmp = actions.tmp_filename('/foo/bar')
         (base, random) = tmp.split('.')
         self.assertEqual(base, '/foo/bar')
         self.assertEqual(len(random), 24)
