@@ -43,11 +43,7 @@ if os.getuid() != 0:
 
 if args.model is None:
     args.model = determine_model()
-try:
-    product = PRODUCTS[args.model]
-except KeyError:
-    sys.exit('Error: no such product: {}'.format(args.model))
-
+product = PRODUCTS.get(args.model)
 
 ui = UI(args.model, product, args.dry)
 ui.run()
