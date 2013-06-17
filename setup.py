@@ -61,6 +61,7 @@ setup(
     author='System76, Inc.',
     author_email='dev@system76.com',
     license='GPLv2+',
+    cmdclass={'test': Test},
     packages=[
         'system76driver',
         'system76driver.tests'
@@ -72,5 +73,8 @@ setup(
     package_data={
         'system76driver': ['data/*'],
     },
-    cmdclass={'test': Test},
+    data_files=[
+        ('share/applications', ['system76-driver.desktop']),
+        ('share/icons/hicolor/scalable/apps', ['system76-driver.svg']),
+    ],
 )
