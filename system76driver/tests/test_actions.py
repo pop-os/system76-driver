@@ -119,37 +119,72 @@ class TestFunctions(TestCase):
         accum = set(actions.random_id() for i in range(100))
         self.assertEqual(len(accum), 100)
 
-    def test_random_tmp_filename(self):
-        tmp = actions.random_tmp_filename('/foo/bar')
+    def test_tmp_filename(self):
+        tmp = actions.tmp_filename('/foo/bar')
         (base, random) = tmp.split('.')
         self.assertEqual(base, '/foo/bar')
         self.assertEqual(len(random), 24)
         self.assertEqual(b32encode(b32decode(random)).decode('utf-8'), random)
 
-    def test_add_ppa(self):
+    def test_add_apt_repository(self):
         SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.add_ppa('ppa:novacut/stable'))
+        self.assertIsNone(actions.add_apt_repository('ppa:novacut/stable'))
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'add-apt-repository', '-y', 'ppa:novacut/stable'], {}),
+            ('check_call', ['add-apt-repository', '-y', 'ppa:novacut/stable'], {}),
         ])
 
-    def test_update(self):
+    def test_apt_get_update(self):
         SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.update())
+        self.assertIsNone(actions.apt_get_update())
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'apt-get', 'update'], {}),
+            ('check_call', ['apt-get', 'update'], {}),
         ])
 
-    def test_install(self):
+    def test_apt_get_install(self):
         SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.install('novacut'))
+        self.assertIsNone(actions.apt_get_install('novacut'))
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'novacut'], {}),
+            ('check_call', ['apt-get', '-y', 'install', 'novacut'], {}),
         ])
         SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.install('novacut', 'blender'))
+        self.assertIsNone(actions.apt_get_install('novacut', 'blender'))
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'novacut', 'blender'], {}),
+            ('check_call', ['apt-get', '-y', 'install', 'novacut', 'blender'], {}),
+        ])
+
+    def test_update_grub(self):
+        SubProcess.reset(mocking=True)
+        self.assertIsNone(actions.update_grub())
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['update-grub'], {}),
+        ])
+
+    def test_run_actions(self):
+        torun = [actions.airplane_mode, actions.backlight_vendor]
+        self.assertEqual(list(actions.run_actions(torun, mocking=True)), [
+            'Updating package list',
+            'Enable airplane-mode hot key',
+            'Enable brightness hot keys',
+            'Running `update-grub`',
+        ])
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['apt-get', 'update'], {}),
+            ('check_call', ['update-grub'], {}),
+        ])
+
+        torun = [actions.fingerprintGUI, actions.plymouth1080, actions.wifi_pm_disable]
+        self.assertEqual(list(actions.run_actions(torun, mocking=True)), [
+            'Adding ppa:fingerprint/fingerprint-gui',
+            'Updating package list',
+            'Fingerprint reader drivers and user interface',
+            'Correctly diplay Ubuntu logo on boot',
+            'Improve WiFi performance on Battery',
+            'Running `update-grub`',
+        ])
+        self.assertEqual(SubProcess.calls, [
+            ('check_call', ['add-apt-repository', '-y', 'ppa:fingerprint/fingerprint-gui'], {}),
+            ('check_call', ['apt-get', 'update'], {}),
+            ('check_call', ['update-grub'], {}),
         ])
 
 
@@ -302,10 +337,13 @@ class TestFileAction(TestCase):
 class TestGrubAction(TestCase):
     def test_init(self):
         inst = actions.GrubAction()
+        self.assertIs(inst.update_grub, True)
         self.assertEqual(inst.filename, '/etc/default/grub')
         self.assertEqual(inst.cmdline, 'quiet splash')
+
         tmp = TempDir()
         inst = actions.GrubAction(etcdir=tmp.dir)
+        self.assertIs(inst.update_grub, True)
         self.assertEqual(inst.filename, tmp.join('default', 'grub'))
         self.assertEqual(inst.cmdline, 'quiet splash')
 
@@ -412,6 +450,7 @@ class TestGrubAction(TestCase):
 
     def test_perform(self):
         SubProcess.reset(mocking=True)
+
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.GrubAction(etcdir=tmp.dir)
@@ -419,28 +458,21 @@ class TestGrubAction(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
-        self.assertEqual(SubProcess.calls, [])
 
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['update-grub'], {}),
-        ])
 
-        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['update-grub'], {}),
-        ])
+
+        self.assertEqual(SubProcess.calls, [])
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
             extra = ('acpi_os_name=Linux', 'acpi_osi=')
 
-        SubProcess.reset(mocking=True)
         tmp = TempDir()
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
@@ -451,22 +483,16 @@ class TestGrubAction(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
-        self.assertEqual(SubProcess.calls, [])
 
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['update-grub'], {}),
-        ])
 
-        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(GRUB_MOD)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['update-grub'], {}),
-        ])
+
+        self.assertEqual(SubProcess.calls, [])
 
 
 class Test_wifi_pm_disable(TestCase):
@@ -627,6 +653,10 @@ class Test_backlight_vendor(TestCase):
 
 
 class Test_airplane_mode(TestCase):
+    def test_init(self):
+        inst = actions.airplane_mode()
+        self.assertIs(inst.update_package_list, True)
+
     def test_describe(self):
         inst = actions.airplane_mode()
         self.assertEqual(inst.describe(), 'Enable airplane-mode hot key')
@@ -640,12 +670,16 @@ class Test_airplane_mode(TestCase):
         inst = actions.airplane_mode()
         self.assertIsNone(inst.perform())
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'apt-get', 'update'], {}),
-            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'system76-airplane-mode'], {}),
+            ('check_call', ['apt-get', '-y', 'install', 'system76-airplane-mode'], {}),
         ])
 
 
 class Test_fingerprintGUI(TestCase):
+    def test_init(self):
+        inst = actions.fingerprintGUI()
+        self.assertEqual(inst.ppa, 'ppa:fingerprint/fingerprint-gui')
+        self.assertIs(inst.update_package_list, True)
+
     def test_describe(self):
         inst = actions.fingerprintGUI()
         self.assertEqual(inst.describe(), 
@@ -661,18 +695,19 @@ class Test_fingerprintGUI(TestCase):
         inst = actions.fingerprintGUI()
         self.assertIsNone(inst.perform())
         self.assertEqual(SubProcess.calls, [
-            ('check_call', ['sudo', 'add-apt-repository', '-y', 'ppa:fingerprint/fingerprint-gui'], {}),
-            ('check_call', ['sudo', 'apt-get', 'update'], {}),
-            ('check_call', ['sudo', 'apt-get', '-y', 'install', 'fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi'], {}),
+            ('check_call', ['apt-get', '-y', 'install', 'fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi'], {}),
         ])
 
 
 class Test_plymouth1080(TestCase):
     def test_init(self):
         inst = actions.plymouth1080()
+        self.assertIs(inst.update_grub, True)
         self.assertEqual(inst.filename, '/etc/default/grub')
         self.assertEqual(inst.value, 'GRUB_GFXPAYLOAD_LINUX="1920x1080"')
+
         tmp = TempDir()
+        self.assertIs(inst.update_grub, True)
         inst = actions.plymouth1080(etcdir=tmp.dir)
         self.assertEqual(inst.filename, tmp.join('default', 'grub'))
         self.assertEqual(inst.value, 'GRUB_GFXPAYLOAD_LINUX="1920x1080"')
@@ -703,7 +738,6 @@ class Test_plymouth1080(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
-        self.assertEqual(SubProcess.calls, [])
 
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
@@ -713,11 +747,7 @@ class Test_plymouth1080(TestCase):
         )
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['update-grub'], {}),
-        ])
 
-        SubProcess.reset(mocking=True)
         open(inst.filename, 'w').write(
             'GRUB_GFXPAYLOAD_LINUX="foo bar"\n' + GRUB_ORIG
         )
@@ -726,19 +756,14 @@ class Test_plymouth1080(TestCase):
             open(inst.filename, 'r').read(),
             GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
         )
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['update-grub'], {}),
-        ])
 
-        SubProcess.reset(mocking=True)
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
             GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX="1920x1080"'
         )
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['update-grub'], {}),
-        ])
+
+        self.assertEqual(SubProcess.calls, [])
 
 
 class Test_uvcquirks(TestCase):

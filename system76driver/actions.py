@@ -26,6 +26,7 @@ import os
 from os import path
 import stat
 import re
+import time
 from base64 import b32encode
 import datetime
 
@@ -46,7 +47,7 @@ def random_id(numbytes=15):
     return b32encode(os.urandom(numbytes)).decode('utf-8')
 
 
-def random_tmp_filename(filename):
+def tmp_filename(filename):
     return '.'.join([filename, random_id()])
 
 
@@ -56,22 +57,52 @@ def backup_filename(filename, date=None):
     return '.'.join([filename, 'system76-{}'.format(date)])
 
 
-def add_ppa(ppa):
-    SubProcess.check_call(['sudo', 'add-apt-repository', '-y', ppa])
+def add_apt_repository(ppa):
+    SubProcess.check_call(['add-apt-repository', '-y', ppa])
 
 
-def update():
-    SubProcess.check_call(['sudo', 'apt-get', 'update'])
+def apt_get_update():
+    SubProcess.check_call(['apt-get', 'update'])
 
 
-def install(*packages):
+def apt_get_install(*packages):
     assert packages
-    cmd = ['sudo', 'apt-get', '-y', 'install']
+    cmd = ['apt-get', '-y', 'install']
     cmd.extend(packages)
     SubProcess.check_call(cmd)
 
 
+def update_grub():
+    SubProcess.check_call(['update-grub'])
+
+
+def run_actions(actions, mocking=False):
+    SubProcess.reset(mocking=mocking)
+    for a in actions:
+        if a.ppa:
+            yield _('Adding {ppa}').format(ppa=a.ppa)
+            add_apt_repository(a.ppa)
+
+    if any(a.update_package_list for a in actions):
+        yield _('Updating package list')
+        apt_get_update()
+
+    for cls in actions:
+        inst = cls()
+        yield inst.describe()
+        if not mocking:
+            inst.perform()
+
+    if any(a.update_grub for a in actions):
+        yield _('Running `update-grub`')
+        update_grub()
+
+
 class Action:
+    ppa = None
+    update_package_list = False
+    update_grub = False
+
     def describe(self):
         """
         Return the user visible description of this action.
@@ -107,7 +138,7 @@ class Action:
         )
 
     def atomic_write(self, content, mode=None):
-        self.tmp = random_tmp_filename(self.filename)
+        self.tmp = tmp_filename(self.filename)
         fp = open(self.tmp, 'x')
         fp.write(content)
         fp.flush()
@@ -156,6 +187,7 @@ class GrubAction(Action):
     """
     Base class for actions that modify cmdline in /etc/default/grub.
     """
+    update_grub = True
     base = ('quiet', 'splash')
     extra = tuple()
 
@@ -189,7 +221,6 @@ class GrubAction(Action):
     def perform(self):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
-        SubProcess.check_call(['update-grub'])
 
 
 class wifi_pm_disable(FileAction):
@@ -220,6 +251,8 @@ class backlight_vendor(GrubAction):
 
 
 class airplane_mode(Action):
+    update_package_list = True
+
     def describe(self):
         return _('Enable airplane-mode hot key')
  
@@ -227,11 +260,13 @@ class airplane_mode(Action):
         return True  # FIXME: Properly detect whether package is installed
 
     def perform(self):
-        update()
-        install('system76-airplane-mode')
+        apt_get_install('system76-airplane-mode')
 
 
 class fingerprintGUI(Action):
+    ppa = 'ppa:fingerprint/fingerprint-gui'
+    update_package_list = True
+
     def describe(self):
         return _('Fingerprint reader drivers and user interface')
 
@@ -239,12 +274,11 @@ class fingerprintGUI(Action):
         return True  # FIXME: Properly detect whether package is installed
 
     def perform(self):
-        add_ppa('ppa:fingerprint/fingerprint-gui')
-        update()
-        install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
+        apt_get_install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
 
 
 class plymouth1080(Action):
+    update_grub = True
     value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'
 
     def __init__(self, etcdir='/etc'):
@@ -269,7 +303,6 @@ class plymouth1080(Action):
     def perform(self):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
-        SubProcess.check_call(['update-grub'])
 
 
 class uvcquirks(FileAction):

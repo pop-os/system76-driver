@@ -61,15 +61,21 @@ setup(
     author='System76, Inc.',
     author_email='dev@system76.com',
     license='GPLv2+',
+    cmdclass={'test': Test},
     packages=[
         'system76driver',
         'system76driver.tests'
     ],
     scripts=[
         'system76-driver',
+        'system76-driver-gtk',
     ],
     package_data={
-        #'system76driver': ['data/*'],
+        'system76driver': ['data/*'],
     },
-    cmdclass={'test': Test},
+    data_files=[
+        ('share/applications', ['system76-driver.desktop']),
+        ('share/icons/hicolor/scalable/apps', ['system76-driver.svg']),
+        ('share/polkit-1/actions/', ['com.system76.pkexec.system76-driver-gtk.policy']),
+    ],
 )
