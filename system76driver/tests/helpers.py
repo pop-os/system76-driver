@@ -42,6 +42,11 @@ class TempDir:
         os.mkdir(dirname)
         return dirname
 
+    def makedirs(self, *parts):
+        dirname = self.join(*parts)
+        os.makedirs(dirname)
+        return dirname
+
     def touch(self, *parts):
         filename = self.join(*parts)
         open(filename, 'xb').close()
