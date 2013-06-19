@@ -21,6 +21,8 @@
 Determin model of System76 product.
 """
 
+from os import path
+
 from .mockable import SubProcess
 
 
@@ -160,3 +162,10 @@ def determine_model(info=None):
             return table[value]
 
     return 'nonsystem76'
+
+
+def read_edid(sysdir='/sys'):
+    # Soon we need to be able to read from the nvidia equivalent also
+    backlight = path.join(sysdir, 'class', 'backlight')
+    filename = path.join(backlight, 'intel_backlight', 'device', 'edid')
+    return open(filename, 'rb').read()
