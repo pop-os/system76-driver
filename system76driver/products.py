@@ -119,6 +119,7 @@ PRODUCTS = {
         'drivers': [
             actions.airplane_mode,
             actions.backlight_vendor,
+            actions.gazp9_icc,
         ],
         'prefs': [],
     },

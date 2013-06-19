@@ -30,6 +30,9 @@ import time
 from base64 import b32encode
 import datetime
 
+import dbus
+
+from . import get_datafile
 from .mockable import SubProcess
 
 
@@ -320,3 +323,80 @@ class sata_alpm(FileAction):
     def describe(self):
         return _('Enable SATA Link Power Management (ALPM)')
 
+
+# ICC Color Profiles:
+NAME = 'org.freedesktop.ColorManager'
+DEVICE = NAME + '.Device'
+ICC = '/var/lib/colord/icc'
+
+
+def get_object(obj, iface=None):
+    proxy = dbus.SystemBus().get_object(NAME, obj)
+    if iface:
+        return dbus.Interface(proxy, dbus_interface=iface)
+    return proxy
+
+
+def get_prop(proxy, iface, key):
+    return proxy.Get(iface, key,
+        dbus_interface='org.freedesktop.DBus.Properties'
+    )
+
+
+def get_device(obj):
+    return get_object(obj, DEVICE)
+
+
+def get_profile_dst(name):
+    return path.join(ICC, name)
+
+
+def get_profile_obj(colord, filename):
+    return colord.FindProfileByFilename(filename)
+
+
+class ColorAction(Action):
+    profiles = {}
+
+    def describe(self):
+        return _('ICC color profile for display')
+
+    def isneeded(self):
+        return True
+
+    def atomic_write(self, icc, dst):
+        self.tmp = tmp_filename(dst)
+        fp = open(self.tmp, 'xb')
+        fp.write(icc)
+        fp.flush()
+        os.fsync(fp.fileno())
+        os.rename(self.tmp, dst)
+
+    def perform(self):
+        colord = get_object('/org/freedesktop/ColorManager', NAME)
+        for device_obj in colord.GetDevicesByKind('display'):
+            device = get_device(device_obj)
+            _id = get_prop(device, DEVICE, 'DeviceId')
+            print(_id)
+            if _id in self.profiles:
+                name = self.profiles[_id]
+                src = get_datafile(name)
+                dst = get_profile_dst(name)
+                print(src)
+                print(dst)
+                icc = open(src, 'rb').read()
+                self.atomic_write(icc, dst)
+                time.sleep(0.25)
+                profile_obj = get_profile_obj(colord, dst)
+                print(profile_obj)
+                try:
+                    device.AddProfile('hard', profile_obj)
+                except dbus.DBusException:
+                    print('Warning: profile was already added to device')
+
+
+class gazp9_icc(ColorAction):
+    profiles = {
+        'xrandr-Lenovo Group Limited': 'system76-gazp9-glossy.icc',
+        'xrandr-eDP1': 'system76-gazp9-ips-matte.icc',
+    }
