@@ -355,6 +355,8 @@ def get_profile_obj(colord, filename):
     return colord.FindProfileByFilename(filename)
 
 
+
+
 class ColorAction(Action):
     profiles = {}
 
@@ -365,7 +367,7 @@ class ColorAction(Action):
         return True
 
     def atomic_write(self, icc, dst):
-        self.tmp = tmp_filename(dst)
+        self.tmp = path.join('/var/tmp', random_id())
         fp = open(self.tmp, 'xb')
         fp.write(icc)
         fp.flush()
