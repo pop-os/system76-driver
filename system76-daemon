@@ -23,6 +23,41 @@
 Test Airplane Mode workaround.
 """
 
+import argparse
+import os
+import sys
+
+from gi.repository import GLib
+
+from system76driver.model import dmidecode
 from system76driver.airplane import run_loop
 
-run_loop()
+
+GLib.threads_init()
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--model', help='force model rather than detecting it')
+args = parser.parse_args()
+if os.getuid() != 0:
+    sys.exit('Error: system76-daemon must be run as root')
+
+
+if not args.model:
+    args.model = dmidecode('system-version')
+print('model:', args.model)
+
+
+brightness = {
+    'gazp9': '638\n',
+}
+
+
+filename = '/sys/class/backlight/intel_backlight/brightness'
+if args.model in brightness:
+    value = brightness[args.model]
+    print('writting brightness {!r}'.format(value))
+    open(filename, 'w').write(value)
+
+
+mainloop = GLib.MainLoop()
+mainloop.run()
