@@ -24,4 +24,5 @@ override_dh_auto_install:
 				--install-layout=deb \
 				--root=$(CURDIR)/debian/system76-driver; \
 	done
+	mkdir -p $(CURDIR)/debian/tmp/var/lib/system76-driver
 
