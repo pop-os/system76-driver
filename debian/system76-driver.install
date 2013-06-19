@@ -1,1 +1,2 @@
 debian/system76-driver-pkexec usr/bin/
+system76-daemon usr/lib/system76-driver/

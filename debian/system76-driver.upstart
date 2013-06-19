@@ -1,4 +1,4 @@
-# system76-airplane-mode - Support for Airplane Mode hotkey on System76 Laptops
+# system76-daemon - Support for Airplane Mode hotkey on System76 Laptops
 #
 # 
 
@@ -9,5 +9,5 @@ stop on deconfiguring-networking
 
 respawn
 
-exec /usr/lib/system76-driver/system76-airplane-mode
+exec /usr/lib/system76-driver/system76-daemon
 

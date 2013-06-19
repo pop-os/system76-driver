@@ -10,6 +10,8 @@ Homepage: https://launchpad.net/system76-driver
 
 Package: system76-driver
 Architecture: all
+Conflicts: system76-airplane-mode
+Replaces: system76-airplane-mode
 Depends: ${python3:Depends}, ${misc:Depends},
     gnome-color-manager,
 Description: Universal driver for System76 computers
@@ -18,16 +20,3 @@ Description: Universal driver for System76 computers
  of your screen) and choose System Settings.  Click System76 Driver to install
  drivers or restore your computer.
 
-Package: system76-airplane-mode
-Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends},
-    system76-driver (>= ${binary:Version}),
-Description: Universal driver for System76 computers (Airplane Mode)
- System76 Driver provides drivers, restore, and regression support for System76
- computers running Ubuntu.  Click the Device Menu (power icon at the top right
- of your screen) and choose System Settings.  Click System76 Driver to install
- drivers or restore your computer.
- .
- This optional package provides support for the Airplane Mode hotkey (Fn+F11) on
- certain System76 laptops.  If needed, it will be automatically installed by the
- System76 Driver.
