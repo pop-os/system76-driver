@@ -199,7 +199,7 @@ def run_airplane(model):
 
 
 default_brightness = {
-    'gazp9': 638,
+    'gazp9': 690,
 }
 
 
