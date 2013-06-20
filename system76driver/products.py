@@ -117,7 +117,6 @@ PRODUCTS = {
     'gazp9': {
         'name': 'Gazelle Professional',
         'drivers': [
-            actions.airplane_mode,
             actions.backlight_vendor,
             actions.gazp9_icc,
         ],

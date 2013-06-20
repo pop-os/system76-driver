@@ -40,10 +40,6 @@ MASK1 = 0b01000000
 MASK2 = 0b10111111
 
 
-def oldlog(msg):
-    print('{:>8.2f}  {}'.format(time.monotonic(), msg))
-
-
 def open_ec(sysdir='/sys'):
     SubProcess.check_call(['modprobe', 'ec_sys', 'write_support'])
     name = path.join(sysdir, 'kernel', 'debug', 'ec', 'ec0', 'io')
@@ -107,7 +103,7 @@ def iter_write_airplane_on():
 
 def iter_write_airplane_off(restore):
     assert isinstance(restore, dict)
-    oldlog('restoring: {!r}'.format(restore))
+    log.info('restoring: %r', restore)
     for (key, state_file) in iter_radios():
         value = restore.get(key, True)
         write_state(state_file, value)
@@ -124,7 +120,6 @@ def sync_led(fd, airplane_mode):
 
 
 def run_loop():
-    oldlog('** process start **')
     old = None
     restore = {}
     fp = open_ec()
@@ -150,6 +145,57 @@ def run_loop():
             airplane_mode = not any(new.values())
             sync_led(fd, airplane_mode)
             oldlog('airplane_mode: {!r}\n'.format(airplane_mode))
+  
+
+class Airplane:
+    def __init__(self):
+        self.fp = open_ec()
+        self.old = None
+        self.restore = {}
+
+    def run(self):
+        self.timeout_id = GLib.timeout_add(375, self.on_timeout)
+
+    def on_timeout(self):
+        try:
+            self.update()
+            return True
+        except Exception:
+            log.exception('Error calling AirplaneMode.update():')
+            return False
+
+    def update(self):
+        fd = self.fp.fileno()
+        keypress = read_int(fd, 0xDB)
+        new = dict(iter_state())
+        if bit6_is_set(keypress):
+            log.info('Fn+F11 keypress')
+            airplane_mode = any(new.values())
+            sync_led(fd, airplane_mode)
+            if airplane_mode:
+                self.restore = new
+                self.old = dict(iter_write_airplane_on())
+            else:
+                self.old = dict(iter_write_airplane_off(self.restore))
+            write_int(fd, 0xDB, clear_bit6(keypress))
+            log.info('airplane_mode: %r', airplane_mode)
+        elif new != self.old:
+            log.info('%r != %r', new, self.old)
+            self.old = new
+            airplane_mode = not any(new.values())
+            sync_led(fd, airplane_mode)
+            log.info('airplane_mode: %r', airplane_mode)
+
+
+needs_airplane = frozenset(['gazp9'])
+
+
+def run_airplane(model):
+    if model not in needs_airplane:
+        return
+    airplane_mode = Airplane()
+    airplane_mode.run()
+    return airplane_mode
 
 
 default_brightness = {
@@ -182,10 +228,10 @@ class Brightness:
         try:
             brightness = int(open(self.saved_file, 'r').read())
             if brightness > 0:
-                print('saved brightness:', brightness)
                 return brightness
         except (FileNotFoundError, ValueError):
             pass
+        log.info('restoring with default brightness')
         return self.default
 
     def save(self, brightness):
@@ -195,14 +241,13 @@ class Brightness:
 
     def restore(self):
         self.current = self.load()
-        print('restoring brightness to', self.current)
+        log.info('restoring brightness to %d', self.current)
         self.write(self.current)
 
-    def monitor(self):
-        self.timeout_id = GLib.timeout_add(5 * 1000, self.on_timeout)
+    def run(self):
+        self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
 
     def on_timeout(self):
-        log.info('on_timeout')
         try:
             self.update()
             return True
@@ -219,9 +264,9 @@ class Brightness:
                 self.save(brightness)
 
 
-def start_brightness_if_needed(model):
+def run_brightness(model):
     if model in default_brightness:
         brightness = Brightness(default_brightness[model])
         brightness.restore()
-        brightness.monitor()
+        brightness.run()
         return brightness

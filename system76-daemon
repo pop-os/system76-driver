@@ -31,10 +31,15 @@ import logging
 from gi.repository import GLib
 
 from system76driver.model import dmidecode
-from system76driver.airplane import start_brightness_if_needed
+from system76driver.airplane import run_airplane, run_brightness
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    level=logging.DEBUG,
+    style='{',
+    format='{created:.3f}  {levelname}  {message}',
+)
+log = logging.getLogger()
 GLib.threads_init()
 
 parser = argparse.ArgumentParser()
@@ -46,9 +51,10 @@ if os.getuid() != 0:
 
 if not args.model:
     args.model = dmidecode('system-version')
-print('model:', args.model)
+log.info('model: %s', args.model)
 
-brightness = start_brightness_if_needed(args.model)
+brightness = run_brightness(args.model)
+airplane = run_airplane(args.model)
 
 
 mainloop = GLib.MainLoop()
