@@ -124,6 +124,9 @@ class UI:
 
     def onRestoreClicked(self, button):
         print('onRestoreClicked')
+        self.set_notify('gtk-execute',
+            _('Now installing drivers. This may take a while...')
+        )
         self.start_worker(self.product['drivers'] + self.product['prefs'])
 
     def onCreateClicked(self, button):
