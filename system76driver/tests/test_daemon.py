@@ -27,7 +27,7 @@ import io
 
 from .helpers import TempDir
 from system76driver.mockable import SubProcess
-from system76driver import airplane
+from system76driver import daemon
 
 
 class TestFunctions(TestCase):
@@ -40,7 +40,7 @@ class TestFunctions(TestCase):
         tmp.mkdir('kernel', 'debug', 'ec', 'ec0')
         data = os.urandom(256)
         name = tmp.write(data, 'kernel', 'debug', 'ec', 'ec0', 'io')
-        fp = airplane.open_ec(sysdir=tmp.dir)
+        fp = daemon.open_ec(sysdir=tmp.dir)
         self.assertIsInstance(fp, io.BufferedRandom)
         self.assertEqual(fp.name, name)
         self.assertIs(fp.closed, False)
@@ -54,7 +54,7 @@ class TestFunctions(TestCase):
         # Make sure an exclusive lock is aquired:
         SubProcess.reset(mocking=True)
         with self.assertRaises(BlockingIOError) as cm:
-            airplane.open_ec(sysdir=tmp.dir)
+            daemon.open_ec(sysdir=tmp.dir)
         self.assertEqual(SubProcess.calls, [
             ('check_call', ['modprobe', 'ec_sys', 'write_support'], {}),
         ])
@@ -62,7 +62,7 @@ class TestFunctions(TestCase):
         # But should work after `fp` is garbage collected:
         SubProcess.reset(mocking=True)
         del fp
-        fp = airplane.open_ec(sysdir=tmp.dir)
+        fp = daemon.open_ec(sysdir=tmp.dir)
         self.assertIsInstance(fp, io.BufferedRandom)
         self.assertEqual(fp.name, name)
         self.assertIs(fp.closed, False)
@@ -78,7 +78,7 @@ class TestFunctions(TestCase):
         fp = open(name, 'rb+')
         fileno = fp.fileno()
         for addr in range(256):
-            self.assertEqual(airplane.read_int(fileno, addr), data[addr])
+            self.assertEqual(daemon.read_int(fileno, addr), data[addr])
             self.assertEqual(fp.tell(), 0)
         self.assertIs(fp.closed, False)
         self.assertEqual(fp.read(), data)
@@ -92,46 +92,46 @@ class TestFunctions(TestCase):
         fileno = fp.fileno()
         for i in range(256):
             addr = 255 - i
-            self.assertIsNone(airplane.write_int(fileno, addr, data2[addr]))
+            self.assertIsNone(daemon.write_int(fileno, addr, data2[addr]))
             self.assertEqual(fp.tell(), 0)
         self.assertIs(fp.closed, False)
         self.assertEqual(fp.read(), data2)
 
     def test_bit6_is_set(self):
-        self.assertTrue( airplane.bit6_is_set(0b01000000))
-        self.assertTrue( airplane.bit6_is_set(0b11111111))
-        self.assertFalse(airplane.bit6_is_set(0b10111111))
-        self.assertFalse(airplane.bit6_is_set(0b00000000))
+        self.assertTrue( daemon.bit6_is_set(0b01000000))
+        self.assertTrue( daemon.bit6_is_set(0b11111111))
+        self.assertFalse(daemon.bit6_is_set(0b10111111))
+        self.assertFalse(daemon.bit6_is_set(0b00000000))
 
     def test_set_bit6(self):
-        self.assertEqual(airplane.set_bit6(0b00000000), 0b01000000)
-        self.assertEqual(airplane.set_bit6(0b00000001), 0b01000001)
-        self.assertEqual(airplane.set_bit6(0b01000000), 0b01000000)
-        self.assertEqual(airplane.set_bit6(0b11111111), 0b11111111)
+        self.assertEqual(daemon.set_bit6(0b00000000), 0b01000000)
+        self.assertEqual(daemon.set_bit6(0b00000001), 0b01000001)
+        self.assertEqual(daemon.set_bit6(0b01000000), 0b01000000)
+        self.assertEqual(daemon.set_bit6(0b11111111), 0b11111111)
 
     def test_clear_bit6(self):
-        self.assertEqual(airplane.clear_bit6(0b11111111), 0b10111111)
-        self.assertEqual(airplane.clear_bit6(0b01000000), 0b00000000)
-        self.assertEqual(airplane.clear_bit6(0b10111111), 0b10111111)
-        self.assertEqual(airplane.clear_bit6(0b00000000), 0b00000000)
+        self.assertEqual(daemon.clear_bit6(0b11111111), 0b10111111)
+        self.assertEqual(daemon.clear_bit6(0b01000000), 0b00000000)
+        self.assertEqual(daemon.clear_bit6(0b10111111), 0b10111111)
+        self.assertEqual(daemon.clear_bit6(0b00000000), 0b00000000)
 
     def test_read_state(self):
         tmp = TempDir()
         state_file = tmp.write(b'junk\n', 'state')
         with self.assertRaises(KeyError) as cm:
-            airplane.read_state(state_file)
+            daemon.read_state(state_file)
         self.assertEqual(str(cm.exception), repr('junk\n'))
         open(state_file, 'w').write('0\n')
-        self.assertIs(airplane.read_state(state_file), False)
+        self.assertIs(daemon.read_state(state_file), False)
         open(state_file, 'w').write('1\n')
-        self.assertIs(airplane.read_state(state_file), True)
+        self.assertIs(daemon.read_state(state_file), True)
 
     def test_write_state(self):
         tmp = TempDir()
         state_file = tmp.write(b'junk\n', 'state')
-        self.assertIsNone(airplane.write_state(state_file, False))
+        self.assertIsNone(daemon.write_state(state_file, False))
         self.assertEqual(open(state_file, 'r').read(), '0\n')
-        self.assertIsNone(airplane.write_state(state_file, True))
+        self.assertIsNone(daemon.write_state(state_file, True))
         self.assertEqual(open(state_file, 'r').read(), '1\n')
 
     def test_sync_led(self):
@@ -141,10 +141,10 @@ class TestFunctions(TestCase):
         name = tmp.write(data, 'io')
         fp = open(name, 'rb+')
         fd = fp.fileno()
-        self.assertIsNone(airplane.sync_led(fd, False))
-        self.assertFalse(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
-        self.assertIsNone(airplane.sync_led(fd, True))
-        self.assertTrue(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
+        self.assertIsNone(daemon.sync_led(fd, False))
+        self.assertFalse(daemon.bit6_is_set(daemon.read_int(fd, 0xD9)))
+        self.assertIsNone(daemon.sync_led(fd, True))
+        self.assertTrue(daemon.bit6_is_set(daemon.read_int(fd, 0xD9)))
 
         # Test syncing True first:
         data = os.urandom(256)
@@ -152,15 +152,15 @@ class TestFunctions(TestCase):
         name = tmp.write(data, 'io')
         fp = open(name, 'rb+')
         fd = fp.fileno()
-        self.assertIsNone(airplane.sync_led(fd, True))
-        self.assertTrue(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
-        self.assertIsNone(airplane.sync_led(fd, False))
-        self.assertFalse(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
+        self.assertIsNone(daemon.sync_led(fd, True))
+        self.assertTrue(daemon.bit6_is_set(daemon.read_int(fd, 0xD9)))
+        self.assertIsNone(daemon.sync_led(fd, False))
+        self.assertFalse(daemon.bit6_is_set(daemon.read_int(fd, 0xD9)))
 
 
 class TestBrightness(TestCase):
     def test_init(self):
-        inst = airplane.Brightness(638)
+        inst = daemon.Brightness(638)
         self.assertEqual(inst.default, 638)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.brightness_file,
@@ -171,7 +171,7 @@ class TestBrightness(TestCase):
         )
 
         tmp = TempDir()
-        inst = airplane.Brightness(69, rootdir=tmp.dir)
+        inst = daemon.Brightness(69, rootdir=tmp.dir)
         self.assertEqual(inst.default, 69)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.brightness_file,
@@ -183,7 +183,7 @@ class TestBrightness(TestCase):
 
     def test_read(self):
         tmp = TempDir()
-        inst = airplane.Brightness(638, rootdir=tmp.dir)
+        inst = daemon.Brightness(638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -214,7 +214,7 @@ class TestBrightness(TestCase):
 
     def test_write(self):
         tmp = TempDir()
-        inst = airplane.Brightness(638, rootdir=tmp.dir)
+        inst = daemon.Brightness(638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -235,7 +235,7 @@ class TestBrightness(TestCase):
     def test_load(self):
         tmp = TempDir()
         tmp.makedirs('var', 'lib', 'system76-driver')
-        inst = airplane.Brightness(638, rootdir=tmp.dir)
+        inst = daemon.Brightness(638, rootdir=tmp.dir)
 
         # No file
         self.assertEqual(inst.load(), 638)
@@ -265,7 +265,7 @@ class TestBrightness(TestCase):
 
     def test_save(self):
         tmp = TempDir()
-        inst = airplane.Brightness(638, rootdir=tmp.dir)
+        inst = daemon.Brightness(638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:

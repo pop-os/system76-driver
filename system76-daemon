@@ -31,7 +31,7 @@ import logging
 from gi.repository import GLib
 
 from system76driver.model import dmidecode
-from system76driver.airplane import run_airplane, run_brightness
+from system76driver.daemon import run_airplane, run_brightness
 
 
 logging.basicConfig(
