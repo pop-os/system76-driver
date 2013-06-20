@@ -127,6 +127,7 @@ class UI:
         self.set_notify('gtk-execute',
             _('Now installing drivers. This may take a while...')
         )
+        self.set_sensitive(False)
         self.start_worker(self.product['drivers'] + self.product['prefs'])
 
     def onCreateClicked(self, button):
