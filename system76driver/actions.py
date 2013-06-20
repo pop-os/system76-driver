@@ -388,7 +388,7 @@ class ColorAction(Action):
                 print(dst)
                 icc = open(src, 'rb').read()
                 self.atomic_write(icc, dst)
-                time.sleep(0.25)
+                time.sleep(3)
                 profile_obj = get_profile_obj(colord, dst)
                 print(profile_obj)
                 try:
