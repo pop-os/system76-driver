@@ -1,3 +1,9 @@
 [org.gnome.settings-daemon.peripherals.touchpad]
-scroll-method="two-finger-scrolling"
+scroll-method = "two-finger-scrolling"
+tap-to-click = false
+
+[org.gnome.gedit.preferences.editor]
+tabs-size = 4
+insert-spaces = true
+auto-indent = true
 
