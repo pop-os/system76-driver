@@ -26,3 +26,6 @@ override_dh_auto_install:
 	done
 	mkdir -p $(CURDIR)/debian/system76-driver/var/lib/system76-driver
 
+override_dh_installgsettings:
+	dh_installgsettings --priority=90
+
