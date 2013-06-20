@@ -33,6 +33,7 @@ import datetime
 import dbus
 
 from . import get_datafile
+from .model import get_edid_md5
 from .mockable import SubProcess
 
 
@@ -375,30 +376,35 @@ class ColorAction(Action):
         os.rename(self.tmp, dst)
 
     def perform(self):
+        edid = get_edid_md5()
+        print('edid md5:', edid)
+        if edid not in self.profiles:
+            print('Warning: no profile available for this screen')
+            return
+        name = self.profiles[edid]
+        src = get_datafile(name)
+        dst = get_profile_dst(name)
+        icc = open(src, 'rb').read()
+        self.atomic_write(icc, dst)
+        time.sleep(4)  # Give colord time to see the profile
+
         colord = get_object('/org/freedesktop/ColorManager', NAME)
         for device_obj in colord.GetDevicesByKind('display'):
             device = get_device(device_obj)
-            _id = get_prop(device, DEVICE, 'DeviceId')
-            print(_id)
-            if _id in self.profiles:
-                name = self.profiles[_id]
-                src = get_datafile(name)
-                dst = get_profile_dst(name)
-                print(src)
-                print(dst)
-                icc = open(src, 'rb').read()
-                self.atomic_write(icc, dst)
-                time.sleep(3)
+            model = get_prop(device, DEVICE, 'Model')
+            print(device_obj, model)
+            if model == 'Gazelle Professional':
                 profile_obj = get_profile_obj(colord, dst)
-                print(profile_obj)
+                print('Profile:', profile_obj)
                 try:
                     device.AddProfile('hard', profile_obj)
                 except dbus.DBusException:
-                    print('Warning: profile was already added to device')
+                    print('Warning: profile likely was already added to device')
+                break
 
 
 class gazp9_icc(ColorAction):
     profiles = {
-        'xrandr-Lenovo Group Limited': 'system76-gazp9-glossy.icc',
-        'xrandr-eDP1': 'system76-gazp9-ips-matte.icc',
+        '38306ee6ae5ccf81d2951aa95ae823f4': 'system76-gazp9-glossy.icc',
+        '6c4c6b27d0a90b99322e487510455230': 'system76-gazp9-ips-matte.icc',
     }

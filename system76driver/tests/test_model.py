@@ -24,6 +24,7 @@ Unit tests for `system76driver.model` module.
 from unittest import TestCase
 import os
 from os import path
+from hashlib import md5
 
 from .helpers import TempDir
 from system76driver.mockable import SubProcess
@@ -253,4 +254,27 @@ class TestFunctions(TestCase):
         # File exists:
         self.assertEqual(tmp.write(data, *parts), filename)
         self.assertEqual(model.read_edid(sysdir=tmp.dir), data)
+        self.assertEqual(open(filename, 'rb').read(), data)
+
+    def test_get_edid_md5(self):
+        tmp = TempDir()
+        data = os.urandom(128)
+        digest = md5(data).hexdigest()
+        parts = ('class', 'backlight', 'intel_backlight', 'device', 'edid')
+        filename = tmp.join(*parts)
+
+        # Dir missing:
+        with self.assertRaises(FileNotFoundError) as cm:
+            model.get_edid_md5(sysdir=tmp.dir)
+        self.assertEqual(cm.exception.filename, filename)
+
+        # File missing
+        tmp.makedirs(*parts[:-1])
+        with self.assertRaises(FileNotFoundError) as cm:
+            model.get_edid_md5(sysdir=tmp.dir)
+        self.assertEqual(cm.exception.filename, filename)
+
+        # File exists:
+        self.assertEqual(tmp.write(data, *parts), filename)
+        self.assertEqual(model.get_edid_md5(sysdir=tmp.dir), digest)
         self.assertEqual(open(filename, 'rb').read(), data)

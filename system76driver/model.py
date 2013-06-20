@@ -22,6 +22,7 @@ Determin model of System76 product.
 """
 
 from os import path
+from hashlib import md5
 
 from .mockable import SubProcess
 
@@ -169,3 +170,7 @@ def read_edid(sysdir='/sys'):
     backlight = path.join(sysdir, 'class', 'backlight')
     filename = path.join(backlight, 'intel_backlight', 'device', 'edid')
     return open(filename, 'rb').read()
+
+
+def get_edid_md5(sysdir='/sys'):
+    return md5(read_edid(sysdir)).hexdigest()
