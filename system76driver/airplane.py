@@ -28,15 +28,19 @@ import os
 from os import path
 import fcntl
 import sys
+import logging
+
+from gi.repository import GLib
 
 from .mockable import SubProcess
 
 
+log = logging.getLogger()
 MASK1 = 0b01000000
 MASK2 = 0b10111111
 
 
-def log(msg):
+def oldlog(msg):
     print('{:>8.2f}  {}'.format(time.monotonic(), msg))
 
 
@@ -103,7 +107,7 @@ def iter_write_airplane_on():
 
 def iter_write_airplane_off(restore):
     assert isinstance(restore, dict)
-    log('restoring: {!r}'.format(restore))
+    oldlog('restoring: {!r}'.format(restore))
     for (key, state_file) in iter_radios():
         value = restore.get(key, True)
         write_state(state_file, value)
@@ -120,7 +124,7 @@ def sync_led(fd, airplane_mode):
 
 
 def run_loop():
-    log('** process start **')
+    oldlog('** process start **')
     old = None
     restore = {}
     fp = open_ec()
@@ -130,7 +134,7 @@ def run_loop():
         keypress = read_int(fd, 0xDB)
         new = dict(iter_state())
         if bit6_is_set(keypress):
-            log('Fn+F11 keypress')
+            oldlog('Fn+F11 keypress')
             airplane_mode = any(new.values())
             sync_led(fd, airplane_mode)
             if airplane_mode:
@@ -139,10 +143,85 @@ def run_loop():
             else:
                 old = dict(iter_write_airplane_off(restore))
             write_int(fd, 0xDB, clear_bit6(keypress))
-            log('airplane_mode: {!r}\n'.format(airplane_mode))
+            oldlog('airplane_mode: {!r}\n'.format(airplane_mode))
         elif new != old:
-            log('{!r} != {!r}'.format(new, old))
+            oldlog('{!r} != {!r}'.format(new, old))
             old = new
             airplane_mode = not any(new.values())
             sync_led(fd, airplane_mode)
-            log('airplane_mode: {!r}\n'.format(airplane_mode))
+            oldlog('airplane_mode: {!r}\n'.format(airplane_mode))
+
+
+default_brightness = {
+    'gazp9': 638,
+}
+
+
+class Brightness:
+    def __init__(self, default, rootdir='/'):
+        assert isinstance(default, int)
+        assert default > 0
+        self.default = default
+        self.current = None
+        self.brightness_file = path.join(rootdir,
+            'sys', 'class', 'backlight', 'intel_backlight', 'brightness'
+        )
+        self.saved_file = path.join(rootdir,
+            'var', 'lib', 'system76-driver', 'brightness'
+        )
+
+    def read(self):
+        return int(open(self.brightness_file, 'r').read())
+
+    def write(self, brightness):
+        assert isinstance(brightness, int)
+        assert brightness > 0
+        open(self.brightness_file, 'w').write(str(brightness))
+
+    def load(self):
+        try:
+            brightness = int(open(self.saved_file, 'r').read())
+            if brightness > 0:
+                print('saved brightness:', brightness)
+                return brightness
+        except (FileNotFoundError, ValueError):
+            pass
+        return self.default
+
+    def save(self, brightness):
+        assert isinstance(brightness, int)
+        assert brightness > 0
+        open(self.saved_file, 'w').write(str(brightness))
+
+    def restore(self):
+        self.current = self.load()
+        print('restoring brightness to', self.current)
+        self.write(self.current)
+
+    def monitor(self):
+        self.timeout_id = GLib.timeout_add(5 * 1000, self.on_timeout)
+
+    def on_timeout(self):
+        log.info('on_timeout')
+        try:
+            self.update()
+            return True
+        except Exception:
+            log.exception('Error calling Brightness.update():')
+            return False
+
+    def update(self):
+        brightness = self.read()
+        if self.current != brightness:
+            self.current = brightness
+            if brightness > 0:
+                log.info('saving brightness at %d', brightness)
+                self.save(brightness)
+
+
+def start_brightness_if_needed(model):
+    if model in default_brightness:
+        brightness = Brightness(default_brightness[model])
+        brightness.restore()
+        brightness.monitor()
+        return brightness

@@ -156,3 +156,129 @@ class TestFunctions(TestCase):
         self.assertTrue(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
         self.assertIsNone(airplane.sync_led(fd, False))
         self.assertFalse(airplane.bit6_is_set(airplane.read_int(fd, 0xD9)))
+
+
+class TestBrightness(TestCase):
+    def test_init(self):
+        inst = airplane.Brightness(638)
+        self.assertEqual(inst.default, 638)
+        self.assertIsNone(inst.current)
+        self.assertEqual(inst.brightness_file,
+            '/sys/class/backlight/intel_backlight/brightness'
+        )
+        self.assertEqual(inst.saved_file,
+            '/var/lib/system76-driver/brightness'
+        )
+
+        tmp = TempDir()
+        inst = airplane.Brightness(69, rootdir=tmp.dir)
+        self.assertEqual(inst.default, 69)
+        self.assertIsNone(inst.current)
+        self.assertEqual(inst.brightness_file,
+            tmp.join('sys', 'class', 'backlight', 'intel_backlight', 'brightness')
+        )
+        self.assertEqual(inst.saved_file,
+            tmp.join('var', 'lib', 'system76-driver', 'brightness')
+        )
+
+    def test_read(self):
+        tmp = TempDir()
+        inst = airplane.Brightness(638, rootdir=tmp.dir)
+
+        # Missing dir
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.read()
+        self.assertEqual(cm.exception.filename, inst.brightness_file)
+
+        # Mising file:
+        tmp.makedirs('sys', 'class', 'backlight', 'intel_backlight')
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.read()
+        self.assertEqual(cm.exception.filename, inst.brightness_file)
+
+        # Bad file content
+        open(inst.brightness_file, 'x').write('foobar\n')
+        with self.assertRaises(ValueError) as cm:
+            inst.read()
+        self.assertEqual(str(cm.exception),
+            "invalid literal for int() with base 10: 'foobar\\n'"
+        )
+
+        # Good values
+        open(inst.brightness_file, 'w').write('0\n')
+        self.assertEqual(inst.read(), 0)
+        open(inst.brightness_file, 'w').write('17\n')
+        self.assertEqual(inst.read(), 17)
+        open(inst.brightness_file, 'w').write('1776\n')
+        self.assertEqual(inst.read(), 1776)
+
+    def test_write(self):
+        tmp = TempDir()
+        inst = airplane.Brightness(638, rootdir=tmp.dir)
+
+        # Missing dir
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.write(303)
+        self.assertEqual(cm.exception.filename, inst.brightness_file)
+
+        # No file:
+        tmp.makedirs('sys', 'class', 'backlight', 'intel_backlight')
+        self.assertIsNone(inst.write(303))
+        self.assertEqual(open(inst.brightness_file, 'r').read(), '303')
+        self.assertEqual(inst.read(), 303)
+
+        # Existing file:
+        self.assertIsNone(inst.write(76))
+        self.assertEqual(open(inst.brightness_file, 'r').read(), '76')        
+        self.assertEqual(inst.read(), 76)
+
+    def test_load(self):
+        tmp = TempDir()
+        tmp.makedirs('var', 'lib', 'system76-driver')
+        inst = airplane.Brightness(638, rootdir=tmp.dir)
+
+        # No file
+        self.assertEqual(inst.load(), 638)
+
+        # Bad value in file
+        open(inst.saved_file, 'x').write('no int here')
+        self.assertEqual(inst.load(), 638)
+        open(inst.saved_file, 'w').write('17.69')
+        self.assertEqual(inst.load(), 638)
+
+        # Less than or equal to zero
+        open(inst.saved_file, 'w').write('-1')
+        self.assertEqual(inst.load(), 638)
+        open(inst.saved_file, 'w').write('0')
+        self.assertEqual(inst.load(), 638)
+
+        # One and other good values
+        open(inst.saved_file, 'w').write('1')
+        self.assertEqual(inst.load(), 1)
+        open(inst.saved_file, 'w').write('1054')
+        self.assertEqual(inst.load(), 1054)
+
+        open(inst.saved_file, 'w').write('1\n')
+        self.assertEqual(inst.load(), 1)
+        open(inst.saved_file, 'w').write('1054\n')
+        self.assertEqual(inst.load(), 1054)
+
+    def test_save(self):
+        tmp = TempDir()
+        inst = airplane.Brightness(638, rootdir=tmp.dir)
+
+        # Missing dir
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.save(303)
+        self.assertEqual(cm.exception.filename, inst.saved_file)
+
+        # No file:
+        tmp.makedirs('var', 'lib', 'system76-driver')
+        self.assertIsNone(inst.save(303))
+        self.assertEqual(open(inst.saved_file, 'r').read(), '303')
+        self.assertEqual(inst.load(), 303)
+
+        # Existing file:
+        self.assertIsNone(inst.save(76))
+        self.assertEqual(open(inst.saved_file, 'r').read(), '76')
+        self.assertEqual(inst.load(), 76)

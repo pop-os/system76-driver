@@ -26,13 +26,15 @@ Test Airplane Mode workaround.
 import argparse
 import os
 import sys
+import logging
 
 from gi.repository import GLib
 
 from system76driver.model import dmidecode
-from system76driver.airplane import run_loop
+from system76driver.airplane import start_brightness_if_needed
 
 
+logging.basicConfig(level=logging.DEBUG)
 GLib.threads_init()
 
 parser = argparse.ArgumentParser()
@@ -46,17 +48,7 @@ if not args.model:
     args.model = dmidecode('system-version')
 print('model:', args.model)
 
-
-brightness = {
-    'gazp9': '638\n',
-}
-
-
-filename = '/sys/class/backlight/intel_backlight/brightness'
-if args.model in brightness:
-    value = brightness[args.model]
-    print('writting brightness {!r}'.format(value))
-    open(filename, 'w').write(value)
+brightness = start_brightness_if_needed(args.model)
 
 
 mainloop = GLib.MainLoop()
