@@ -1,2 +1,0 @@
-#!/bin/bash
-python /opt/system76/system76-driver/src/rtl8187b_kernel_update.py
