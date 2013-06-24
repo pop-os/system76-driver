@@ -29,6 +29,7 @@ from gettext import gettext as _
 from gi.repository import GLib, Gtk
 
 from . import __version__, get_datafile
+from .util import create_logs
 from .actions import run_actions
 
 
@@ -36,18 +37,19 @@ GLib.threads_init()
 
 
 class UI:
-    def __init__(self, model, product, dry=False):
+    def __init__(self, model, product, args):
         assert isinstance(model, str)
         assert product is None or isinstance(product, dict)
-        assert isinstance(dry, bool)
+        assert isinstance(args.dry, bool)
         self.model = model
         self.product = product
-        self.dry = dry
+        self.args = args
         self.builder = Gtk.Builder()
         self.builder.add_from_file(get_datafile('gtk3.glade'))
         self.window = self.builder.get_object('mainWindow')
         self.notify_icon = self.builder.get_object('notifyImage')
         self.notify_text = self.builder.get_object('notifyLabel')
+        self.details = self.builder.get_object('detailsText')
 
         self.builder.connect_signals({
             'onDeleteWindow': Gtk.main_quit,
@@ -75,6 +77,15 @@ class UI:
                 _('Not a System76 product, nothing to do!')
             )
         self.builder.get_object('sysName').set_text(name)
+        if not product.get('drivers'):
+            self.buttons['driverInstall'].set_sensitive(False)
+            self.buttons['driverRestore'].set_sensitive(False)
+            msg = _('All of the drivers for this system are provided by Ubuntu.')
+            self.set_notify('gtk-ok', msg)
+            self.details.set_text(msg)
+        else:
+            msg = '\n'.join(d().describe() for d in product['drivers'])
+            self.details.set_text(msg)
 
         self.thread = None
 
@@ -93,7 +104,7 @@ class UI:
         Gtk.main()
 
     def worker_thread(self, actions):
-        for description in run_actions(actions, mocking=self.dry):
+        for description in run_actions(actions, mocking=self.args.dry):
             pass
         GLib.idle_add(self.on_worker_complete)
 
@@ -105,36 +116,50 @@ class UI:
         )
         self.set_sensitive(True)
 
-    def start_worker(self, actions):
+    def start_worker(self):
         if self.thread is None:
+            self.set_sensitive(False)
+            self.set_notify('gtk-execute',
+                _('Now installing drivers. This may take a while...')
+            )
             self.thread = threading.Thread(
                 target=self.worker_thread,
-                args=(actions,),
+                args=(self.product['drivers'],),
                 daemon=True,
             )
             self.thread.start()
 
     def onInstallClicked(self, button):
         print('onInstallClicked')
-        self.set_notify('gtk-execute',
-            _('Now installing drivers. This may take a while...')
-        )
-        self.set_sensitive(False)
-        self.start_worker(self.product['drivers'])
+        self.start_worker()
 
     def onRestoreClicked(self, button):
         print('onRestoreClicked')
-        self.set_notify('gtk-execute',
-            _('Now installing drivers. This may take a while...')
+        self.start_worker()
+
+    def create_worker(self):
+        tgz = create_logs(self.args.home)
+        GLib.idle_add(self.on_create_complete, tgz)
+
+    def on_create_complete(self, tgz):
+        self.thread.join()
+        self.thread = None
+        self.set_sensitive(True)
+        self.set_notify('gtk-ok',
+            _('A log file (system76-logs.tgz) was created in your home folder.\nPlease send it to support via www.system76.com/support')
         )
-        self.set_sensitive(False)
-        self.start_worker(self.product['drivers'] + self.product['prefs'])
 
     def onCreateClicked(self, button):
-        print('onCreateClicked')
+        if self.thread is None:
+            self.set_sensitive(False)
+            self.set_notify('gtk-execute', _('Creating logs...'))
+            self.thread = threading.Thread(
+                target=self.create_worker,
+                daemon=True,
+            )
+            self.thread.start()
 
     def onAboutClicked(self, button):
-        print('onAboutClicked')
         aboutDialog = self.builder.get_object('aboutDialog')
         aboutDialog.set_version(__version__)
         aboutDialog.run()

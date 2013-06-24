@@ -1,6 +1,0 @@
-# /etc/acpid/events/asus-display-switch
-# This is called when the user presses the display switch button (Fn-F8).
-# The actual hotkey code tells the state of the switch: (LCD, CRT, Both).
-
-event=hotkey ATKD 0000006[123]
-action=/etc/acpi/asus-display-switch.sh '%e'

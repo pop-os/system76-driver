@@ -19,39 +19,33 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 import argparse
 import os
 import sys
 from gettext import ngettext
 
 from system76driver.model import determine_model
-from system76driver.actions import run_actions
 from system76driver.products import PRODUCTS
+from system76driver.gtk import UI
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--home', help='specify home directory')
 parser.add_argument('--model', help='force model rather than detecting it')
 parser.add_argument('--dry', action='store_true', default=False,
     help='print what would be done but without calling Action.perform()',
 )
 args = parser.parse_args()
 
-
 if os.getuid() != 0:
     sys.exit('Error: must be run as root')
 
-
+if args.home is None:
+    args.home = os.environ['HOME']
 if args.model is None:
     args.model = determine_model()
-try:
-    product = PRODUCTS[args.model]
-except KeyError:
-    sys.exit('Error: no such product: {}'.format(args.model))
+product = PRODUCTS.get(args.model)
 
-print('model:', args.model)
-print('name:', product['name'])
-
-actions = product['drivers'] + product['prefs']
-for description in run_actions(actions, mocking=args.dry):
-    print('  * {}'.format(description))
+ui = UI(args.model, product, args)
+ui.run()
+ 
