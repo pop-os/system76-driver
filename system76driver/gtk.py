@@ -49,6 +49,7 @@ class UI:
         self.window = self.builder.get_object('mainWindow')
         self.notify_icon = self.builder.get_object('notifyImage')
         self.notify_text = self.builder.get_object('notifyLabel')
+        self.details = self.builder.get_object('detailsText')
 
         self.builder.connect_signals({
             'onDeleteWindow': Gtk.main_quit,
@@ -79,9 +80,12 @@ class UI:
         if not product.get('drivers'):
             self.buttons['driverInstall'].set_sensitive(False)
             self.buttons['driverRestore'].set_sensitive(False)
-            self.set_notify('gtk-ok',
-                _('All of the drivers for this system are provided by Ubuntu.')
-            )
+            msg = _('All of the drivers for this system are provided by Ubuntu.')
+            self.set_notify('gtk-ok', msg)
+            self.details.set_text(msg)
+        else:
+            msg = '\n'.join(d().describe() for d in product['drivers'])
+            self.details.set_text(msg)
 
         self.thread = None
 
