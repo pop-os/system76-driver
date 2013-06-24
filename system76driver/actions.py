@@ -61,21 +61,6 @@ def backup_filename(filename, date=None):
     return '.'.join([filename, 'system76-{}'.format(date)])
 
 
-def add_apt_repository(ppa):
-    SubProcess.check_call(['add-apt-repository', '-y', ppa])
-
-
-def apt_get_update():
-    SubProcess.check_call(['apt-get', 'update'])
-
-
-def apt_get_install(*packages):
-    assert packages
-    cmd = ['apt-get', '-y', 'install']
-    cmd.extend(packages)
-    SubProcess.check_call(cmd)
-
-
 def update_grub():
     SubProcess.check_call(['update-grub'])
 

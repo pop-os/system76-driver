@@ -126,32 +126,6 @@ class TestFunctions(TestCase):
         self.assertEqual(len(random), 24)
         self.assertEqual(b32encode(b32decode(random)).decode('utf-8'), random)
 
-    def test_add_apt_repository(self):
-        SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.add_apt_repository('ppa:novacut/stable'))
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['add-apt-repository', '-y', 'ppa:novacut/stable'], {}),
-        ])
-
-    def test_apt_get_update(self):
-        SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.apt_get_update())
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', 'update'], {}),
-        ])
-
-    def test_apt_get_install(self):
-        SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.apt_get_install('novacut'))
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', '-y', 'install', 'novacut'], {}),
-        ])
-        SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.apt_get_install('novacut', 'blender'))
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', '-y', 'install', 'novacut', 'blender'], {}),
-        ])
-
     def test_update_grub(self):
         SubProcess.reset(mocking=True)
         self.assertIsNone(actions.update_grub())
