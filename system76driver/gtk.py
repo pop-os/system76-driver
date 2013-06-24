@@ -76,6 +76,12 @@ class UI:
                 _('Not a System76 product, nothing to do!')
             )
         self.builder.get_object('sysName').set_text(name)
+        if not product.get('drivers'):
+            self.buttons['driverInstall'].set_sensitive(False)
+            self.buttons['driverRestore'].set_sensitive(False)
+            self.set_notify('gtk-ok',
+                _('All of the drivers for this system are provided by Ubuntu.')
+            )
 
         self.thread = None
 
