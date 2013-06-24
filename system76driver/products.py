@@ -49,7 +49,6 @@ PRODUCTS = {
     'bonx6': {
         'name': 'Bonobo Extreme',
         'drivers': [
-            #actions.fingerprintGUI,
             actions.plymouth1080,
             actions.wifi_pm_disable,
         ],
@@ -102,6 +101,7 @@ PRODUCTS = {
         'name': 'Gazelle Professional',
         'drivers': [
             actions.backlight_vendor,
+            actions.wifi_pm_disable,
             actions.gazp9_icc,
         ],
     },
