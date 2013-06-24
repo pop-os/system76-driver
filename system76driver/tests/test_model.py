@@ -137,7 +137,7 @@ class TestFunctions(TestCase):
         SubProcess.reset(True, [b'bar\n'])
         self.assertEqual(model.dmidecode('foo'), 'bar')
         self.assertEqual(SubProcess.calls, [
-            ('check_output', ['sudo', 'dmidecode', '-s', 'foo'], {}),
+            ('check_output', ['dmidecode', '-s', 'foo'], {}),
         ])
         self.assertEqual(SubProcess.outputs, [])
 
@@ -145,10 +145,10 @@ class TestFunctions(TestCase):
         SubProcess.reset(True, OUTPUTS)
         self.assertEqual(model.get_dmi_info(), dict(EXPECTED))
         self.assertEqual(SubProcess.calls, [
-            ('check_output', ['sudo', 'dmidecode', '-s', 'system-uuid'], {}),
-            ('check_output', ['sudo', 'dmidecode', '-s', 'baseboard-product-name'], {}),
-            ('check_output', ['sudo', 'dmidecode', '-s', 'system-product-name'], {}),
-            ('check_output', ['sudo', 'dmidecode', '-s', 'system-version'], {}),
+            ('check_output', ['dmidecode', '-s', 'system-uuid'], {}),
+            ('check_output', ['dmidecode', '-s', 'baseboard-product-name'], {}),
+            ('check_output', ['dmidecode', '-s', 'system-product-name'], {}),
+            ('check_output', ['dmidecode', '-s', 'system-version'], {}),
         ])
         self.assertEqual(SubProcess.outputs, [])
 
@@ -159,10 +159,10 @@ class TestFunctions(TestCase):
         SubProcess.reset(True, OUTPUTS)
         self.assertEqual(model.determine_model(), 'gazp7')
         self.assertEqual(SubProcess.calls, [
-            ('check_output', ['sudo', 'dmidecode', '-s', 'system-uuid'], {}),
-            ('check_output', ['sudo', 'dmidecode', '-s', 'baseboard-product-name'], {}),
-            ('check_output', ['sudo', 'dmidecode', '-s', 'system-product-name'], {}),
-            ('check_output', ['sudo', 'dmidecode', '-s', 'system-version'], {}),
+            ('check_output', ['dmidecode', '-s', 'system-uuid'], {}),
+            ('check_output', ['dmidecode', '-s', 'baseboard-product-name'], {}),
+            ('check_output', ['dmidecode', '-s', 'system-product-name'], {}),
+            ('check_output', ['dmidecode', '-s', 'system-version'], {}),
         ])
         self.assertEqual(SubProcess.outputs, [])
 

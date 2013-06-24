@@ -139,7 +139,7 @@ TABLES = {
 
 
 def dmidecode(keyword):
-    cmd = ['sudo', 'dmidecode', '-s', keyword]
+    cmd = ['dmidecode', '-s', keyword]
     return SubProcess.check_output(cmd).decode('utf-8').strip()
 
 
