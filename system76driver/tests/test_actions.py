@@ -152,19 +152,19 @@ class TestAction(TestCase):
             a.describe()
         self.assertEqual(str(cm.exception), 'Example.describe()')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         a = actions.Action()
         with self.assertRaises(NotImplementedError) as cm:
-            a.isneeded()
-        self.assertEqual(str(cm.exception), 'Action.isneeded()')
+            a.get_isneeded()
+        self.assertEqual(str(cm.exception), 'Action.get_isneeded()')
 
         class Example(actions.Action):
             pass
 
         a = Example()
         with self.assertRaises(NotImplementedError) as cm:
-            a.isneeded()
-        self.assertEqual(str(cm.exception), 'Example.isneeded()')
+            a.get_isneeded()
+        self.assertEqual(str(cm.exception), 'Example.get_isneeded()')
 
     def test_perform(self):
         a = actions.Action()
@@ -207,7 +207,7 @@ class TestFileAction(TestCase):
         open(name, 'x').write('foo\nbar\n')
         self.assertEqual(inst.read(), 'foo\nbar\n')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         class Example(actions.FileAction):
             relpath = ('some', 'file')
             content = 'foo'
@@ -216,27 +216,27 @@ class TestFileAction(TestCase):
         inst = Example(rootdir=tmp.dir)
 
         # Missing parentdir:
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Missing file:
         tmp.mkdir('some')
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong content:
         open(inst.filename, 'x').write('bar')
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong permissions:
         open(inst.filename, 'w').write('foo')
         os.chmod(inst.filename, 0o600)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         os.chmod(inst.filename, 0o666)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Not needed:
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def _check_file(self, inst):
         self.assertEqual(open(inst.filename, 'r').read(), 'foo')
@@ -367,17 +367,17 @@ class TestGrubAction(TestCase):
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.GrubAction(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.isneeded()
+            inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
         open(inst.filename, 'w').write(GRUB_MOD)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
@@ -390,12 +390,12 @@ class TestGrubAction(TestCase):
             'quiet splash acpi_os_name=Linux acpi_osi='
         )
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.isneeded()
+            inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         open(inst.filename, 'w').write(GRUB_MOD)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         SubProcess.reset(mocking=True)
@@ -469,7 +469,7 @@ class Test_wifi_pm_disable(TestCase):
         inst = actions.wifi_pm_disable()
         self.assertEqual(inst.describe(), 'Improve WiFi performance on Battery')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('etc')
         tmp.mkdir('etc', 'pm')
@@ -477,23 +477,23 @@ class Test_wifi_pm_disable(TestCase):
         inst = actions.wifi_pm_disable(rootdir=tmp.dir)
 
         # Missing file
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong file content:
         open(inst.filename, 'w').write('blah blah')
         os.chmod(inst.filename, 0o755)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Correct content, wrong perms:
         open(inst.filename, 'w').write(actions.WIFI_PM_DISABLE)
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         os.chmod(inst.filename, 0o777)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # All good:
         os.chmod(inst.filename, 0o755)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def _check_file(self, inst):
         self.assertEqual(
@@ -559,17 +559,17 @@ class Test_lemu1(TestCase):
             'Enable brightness hot keys'
         )
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.lemu1(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.isneeded()
+            inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         open(inst.filename, 'w').write(GRUB_MOD)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         tmp = TempDir()
@@ -620,17 +620,17 @@ class Test_plymouth1080(TestCase):
             'Correctly diplay Ubuntu logo on boot'
         )
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.plymouth1080(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.isneeded()
+            inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         open(inst.filename, 'a').write('\nGRUB_GFXPAYLOAD_LINUX="1920x1080"')
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         SubProcess.reset(mocking=True)
@@ -692,30 +692,30 @@ class Test_uvcquirks(TestCase):
         inst = actions.uvcquirks()
         self.assertEqual(inst.describe(), 'Webcam quirk fixes')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('etc')
         tmp.mkdir('etc', 'modprobe.d')
         inst = actions.uvcquirks(rootdir=tmp.dir)
 
         # Missing file
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong file content:
         open(inst.filename, 'w').write('blah blah')
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Correct content, wrong perms:
         open(inst.filename, 'w').write(inst.content)
         os.chmod(inst.filename, 0o666)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         os.chmod(inst.filename, 0o600)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # All good:
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def _check_file(self, inst):
         self.assertEqual(open(inst.filename, 'r').read(), inst.content)
@@ -782,7 +782,7 @@ class Test_sata_alpm(TestCase):
         self.assertEqual(inst.describe(),
             'Enable SATA Link Power Management (ALPM)')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('etc')
         tmp.mkdir('etc', 'pm')
@@ -790,23 +790,23 @@ class Test_sata_alpm(TestCase):
         inst = actions.sata_alpm(rootdir=tmp.dir)
 
         # Missing file
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong file content:
         open(inst.filename, 'w').write('blah blah')
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Correct content, wrong perms:
         open(inst.filename, 'w').write(inst.content)
         os.chmod(inst.filename, 0o666)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         os.chmod(inst.filename, 0o600)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # All good:
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def _check_file(self, inst):
         self.assertEqual(open(inst.filename, 'r').read(), inst.content)

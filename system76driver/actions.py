@@ -93,7 +93,7 @@ class Action:
             '{}.describe()'.format(name)
         )
 
-    def isneeded(self):
+    def get_isneeded(self):
         """
         Return `True` if this action is needed.
 
@@ -102,7 +102,7 @@ class Action:
         """
         name = self.__class__.__name__
         raise NotImplementedError(
-            '{}.isneeded()'.format(name)
+            '{}.get_isneeded()'.format(name)
         )
 
     def perform(self):
@@ -150,7 +150,7 @@ class FileAction(Action):
         except FileNotFoundError:
             return None
 
-    def isneeded(self):
+    def get_isneeded(self):
         if self.read() != self.content:
             return True
         st = os.stat(self.filename)
@@ -194,7 +194,7 @@ class GrubAction(Action):
             else:
                 yield line
 
-    def isneeded(self):
+    def get_isneeded(self):
         return self.get_cmdline() != self.cmdline
 
     def perform(self):
@@ -242,7 +242,7 @@ class plymouth1080(Action):
     def describe(self):
         return _('Correctly diplay Ubuntu logo on boot')
 
-    def isneeded(self):
+    def get_isneeded(self):
         return self.read().splitlines()[-1] != self.value
 
     def iter_lines(self):
@@ -312,7 +312,7 @@ class ColorAction(Action):
     def describe(self):
         return _('ICC color profile for display')
 
-    def isneeded(self):
+    def get_isneeded(self):
         return True
 
     def atomic_write(self, icc, dst):
