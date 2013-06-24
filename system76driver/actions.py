@@ -67,14 +67,6 @@ def update_grub():
 
 def run_actions(actions, mocking=False):
     SubProcess.reset(mocking=mocking)
-    for a in actions:
-        if a.ppa:
-            yield _('Adding {ppa}').format(ppa=a.ppa)
-            add_apt_repository(a.ppa)
-
-    if any(a.update_package_list for a in actions):
-        yield _('Updating package list')
-        apt_get_update()
 
     for cls in actions:
         inst = cls()
@@ -88,8 +80,6 @@ def run_actions(actions, mocking=False):
 
 
 class Action:
-    ppa = None
-    update_package_list = False
     update_grub = False
 
     def describe(self):
