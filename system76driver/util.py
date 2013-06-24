@@ -57,7 +57,7 @@ def dump_logs(base):
             shutil.copy(src, dst)
 
 
-def create_support_logs(func=dump_logs):
+def create_tmp_logs(func=dump_logs):
     tmp = tempfile.mkdtemp(prefix='logs.')
     base = path.join(tmp, 'system76-logs')
     os.mkdir(base)
@@ -73,3 +73,11 @@ def create_support_logs(func=dump_logs):
     SubProcess.check_call(cmd)
     return (tmp, tgz)
 
+
+def create_logs(homedir, func=dump_logs):
+    (tmp, src) = create_tmp_logs(func)
+    assert path.isdir(homedir)
+    dst = path.join(homedir, path.basename(src))
+    shutil.copy(src, dst)
+    shutil.rmtree(tmp)
+    return dst

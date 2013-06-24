@@ -32,9 +32,9 @@ from system76driver import util
 
 
 class TestFunctions(TestCase):
-    def test_create_support_logs(self):
+    def test_create_tmp_logs(self):
         SubProcess.reset(mocking=False)
-        (tmp, tgz) = util.create_support_logs(func=None)
+        (tmp, tgz) = util.create_tmp_logs(func=None)
         self.assertTrue(path.isdir(tmp))
         self.assertTrue(tmp.startswith('/tmp/logs.'))
         self.assertEqual(
@@ -45,3 +45,10 @@ class TestFunctions(TestCase):
         self.assertTrue(path.isfile(tgz))
         self.assertTrue(path.isdir(path.join(tmp, 'system76-logs')))
         shutil.rmtree(tmp)
+
+    def test_create_logs(self):
+        SubProcess.reset(mocking=False)
+        tmp = TempDir()
+        tgz = util.create_logs(tmp.dir, func=None)
+        self.assertEqual(tgz, tmp.join('system76-logs.tgz'))
+        self.assertTrue(path.isfile(tgz))

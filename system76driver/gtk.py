@@ -29,6 +29,7 @@ from gettext import gettext as _
 from gi.repository import GLib, Gtk
 
 from . import __version__, get_datafile
+from .util import create_logs
 from .actions import run_actions
 
 
@@ -105,36 +106,50 @@ class UI:
         )
         self.set_sensitive(True)
 
-    def start_worker(self, actions):
+    def start_worker(self):
         if self.thread is None:
+            self.set_sensitive(False)
+            self.set_notify('gtk-execute',
+                _('Now installing drivers. This may take a while...')
+            )
             self.thread = threading.Thread(
                 target=self.worker_thread,
-                args=(actions,),
+                args=(self.product['drivers'],),
                 daemon=True,
             )
             self.thread.start()
 
     def onInstallClicked(self, button):
         print('onInstallClicked')
-        self.set_notify('gtk-execute',
-            _('Now installing drivers. This may take a while...')
-        )
-        self.set_sensitive(False)
-        self.start_worker(self.product['drivers'])
+        self.start_worker()
 
     def onRestoreClicked(self, button):
         print('onRestoreClicked')
-        self.set_notify('gtk-execute',
-            _('Now installing drivers. This may take a while...')
+        self.start_worker()
+
+    def create_worker(self):
+        tgz = create_logs(self.args.home)
+        GLib.idle_add(self.on_create_complete, tgz)
+
+    def on_create_complete(self, tgz):
+        self.thread.join()
+        self.thread = None
+        self.set_sensitive(True)
+        self.set_notify('gtk-ok',
+            _('A log file (system76-logs.tgz) was created in your home folder.\nPlease send it to support via www.system76.com/support')
         )
-        self.set_sensitive(False)
-        self.start_worker(self.product['drivers'] + self.product['prefs'])
 
     def onCreateClicked(self, button):
-        print('onCreateClicked')
+        if self.thread is None:
+            self.set_sensitive(False)
+            self.set_notify('gtk-execute', _('Creating logs...'))
+            self.thread = threading.Thread(
+                target=self.create_worker,
+                daemon=True,
+            )
+            self.thread.start()
 
     def onAboutClicked(self, button):
-        print('onAboutClicked')
         aboutDialog = self.builder.get_object('aboutDialog')
         aboutDialog.set_version(__version__)
         aboutDialog.run()
