@@ -254,33 +254,6 @@ class backlight_vendor(GrubAction):
         return _('Enable brightness hot keys')
 
 
-class airplane_mode(Action):
-    update_package_list = True
-
-    def describe(self):
-        return _('Enable airplane-mode hot key')
- 
-    def isneeded(self):
-        return True  # FIXME: Properly detect whether package is installed
-
-    def perform(self):
-        apt_get_install('system76-airplane-mode')
-
-
-class fingerprintGUI(Action):
-    ppa = 'ppa:fingerprint/fingerprint-gui'
-    update_package_list = True
-
-    def describe(self):
-        return _('Fingerprint reader drivers and user interface')
-
-    def isneeded(self):
-        return True  # FIXME: Properly detect whether package is installed
-
-    def perform(self):
-        apt_get_install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
-
-
 class plymouth1080(Action):
     update_grub = True
     value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'
