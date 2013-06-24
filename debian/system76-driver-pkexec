@@ -1,2 +1,2 @@
 #!/bin/sh
-pkexec "/usr/bin/system76-driver-gtk" "$@"
+pkexec "/usr/bin/system76-driver-gtk" --home $HOME

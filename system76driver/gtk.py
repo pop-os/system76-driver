@@ -36,13 +36,13 @@ GLib.threads_init()
 
 
 class UI:
-    def __init__(self, model, product, dry=False):
+    def __init__(self, model, product, args):
         assert isinstance(model, str)
         assert product is None or isinstance(product, dict)
-        assert isinstance(dry, bool)
+        assert isinstance(args.dry, bool)
         self.model = model
         self.product = product
-        self.dry = dry
+        self.args = args
         self.builder = Gtk.Builder()
         self.builder.add_from_file(get_datafile('gtk3.glade'))
         self.window = self.builder.get_object('mainWindow')
@@ -93,7 +93,7 @@ class UI:
         Gtk.main()
 
     def worker_thread(self, actions):
-        for description in run_actions(actions, mocking=self.dry):
+        for description in run_actions(actions, mocking=self.args.dry):
             pass
         GLib.idle_add(self.on_worker_complete)
 

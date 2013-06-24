@@ -30,12 +30,16 @@ from system76driver.gtk import UI
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--home', help='specify home directory')
 parser.add_argument('--model', help='force model rather than detecting it')
 parser.add_argument('--dry', action='store_true', default=False,
     help='print what would be done but without calling Action.perform()',
 )
 args = parser.parse_args()
 
+if args.home is None:
+    args.home = os.environ['HOME']
+print(args.home)
 
 if os.getuid() != 0:
     sys.exit('Error: must be run as root')
@@ -45,6 +49,6 @@ if args.model is None:
     args.model = determine_model()
 product = PRODUCTS.get(args.model)
 
-ui = UI(args.model, product, args.dry)
+ui = UI(args.model, product, args)
 ui.run()
  

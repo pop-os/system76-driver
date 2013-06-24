@@ -23,6 +23,7 @@ Unit tests for `system76driver.gtk` module.
 
 from unittest import TestCase
 import platform
+from collections import namedtuple
 
 from gi.repository import Gtk
 
@@ -31,17 +32,21 @@ from system76driver.actions import random_id
 from system76driver import gtk
 
 
+DummyArgs = namedtuple('DummyArgs', 'home dry')
+
+
 class TestUI(TestCase):
     def test_init(self):
+        args = DummyArgs('/home/oem', False)
         product = {
             'name': 'Gazelle Professional',
             'drivers': [],
             'prefs': [],
         }
-        ui = gtk.UI('gazp9', product)
+        ui = gtk.UI('gazp9', product, args)
         self.assertEqual(ui.model, 'gazp9')
         self.assertIs(ui.product, product)
-        self.assertIs(ui.dry, False)
+        self.assertIs(ui.args, args)
         self.assertIsInstance(ui.builder, Gtk.Builder)
         self.assertIsInstance(ui.window, Gtk.Window)
         self.assertEqual(
@@ -64,11 +69,11 @@ class TestUI(TestCase):
         model = random_id()
         name = random_id()
         product = {'name': name}
-        ui = gtk.UI(model, product, dry=True)
+        ui = gtk.UI(model, product, args)
         self.assertEqual(ui.model, model)
         self.assertIs(ui.product, product)
         self.assertEqual(ui.product, {'name': name})
-        self.assertIs(ui.dry, True)
+        self.assertIs(ui.args, args)
         self.assertIsInstance(ui.builder, Gtk.Builder)
         self.assertIsInstance(ui.window, Gtk.Window)
         self.assertEqual(ui.builder.get_object('sysName').get_text(), name)
@@ -83,7 +88,8 @@ class TestUI(TestCase):
         )
 
     def test_set_notify(self):
-        ui = gtk.UI('gazp9', {'name': 'Gazelle Professional'})
+        args = DummyArgs('/home/oem', False)
+        ui = gtk.UI('gazp9', {'name': 'Gazelle Professional'}, args)
         text = random_id()
         self.assertIsNone(ui.set_notify('gtk-execute', text))
         self.assertEqual(ui.notify_text.get_text(), text)
