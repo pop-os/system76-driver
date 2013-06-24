@@ -138,6 +138,17 @@ class TestFunctions(TestCase):
 
 
 class TestAction(TestCase):
+    def test_isneeded(self):
+        a = actions.Action()
+        a._isneeded = True
+        self.assertIs(a.isneeded, True)
+        a._isneeded = False
+        self.assertIs(a.isneeded, False)
+        a._isneeded = None
+        with self.assertRaises(NotImplementedError) as cm:
+            a.isneeded
+        self.assertEqual(str(cm.exception), 'Action.get_isneeded()')
+
     def test_describe(self):
         a = actions.Action()
         with self.assertRaises(NotImplementedError) as cm:

@@ -80,7 +80,15 @@ def run_actions(actions, mocking=False):
 
 
 class Action:
+    _isneeded = None
     update_grub = False
+
+    @property
+    def isneeded(self):
+        if self._isneeded is None:
+            self._isneeded = self.get_isneeded()
+        assert isinstance(self._isneeded, bool)
+        return self._isneeded
 
     def describe(self):
         """
