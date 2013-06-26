@@ -29,6 +29,7 @@ import re
 import time
 from base64 import b32encode
 import datetime
+import logging
 
 import dbus
 
@@ -37,6 +38,7 @@ from .model import get_edid_md5
 from .mockable import SubProcess
 
 
+log = logging.getLogger()
 CMDLINE_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$')
 CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
 
@@ -312,13 +314,12 @@ def get_profile_obj(colord, filename):
     return colord.FindProfileByFilename(filename)
 
 
-
-
 class ColorAction(Action):
+    model = 'override this is subclasses'
     profiles = {}
 
     def describe(self):
-        return _('ICC color profile for display')
+        return _('Install ICC color profile for display')
 
     def get_isneeded(self):
         return True
@@ -333,9 +334,9 @@ class ColorAction(Action):
 
     def perform(self):
         edid = get_edid_md5()
-        print('edid md5:', edid)
+        log.info('edid md5: %r', edid)
         if edid not in self.profiles:
-            print('Warning: no profile available for this screen')
+            log.warning('no profile available for this screen')
             return
         name = self.profiles[edid]
         src = get_datafile(name)
@@ -348,18 +349,18 @@ class ColorAction(Action):
         for device_obj in colord.GetDevicesByKind('display'):
             device = get_device(device_obj)
             model = get_prop(device, DEVICE, 'Model')
-            print(device_obj, model)
-            if model == 'Gazelle Professional':
+            if model == self.model:
                 profile_obj = get_profile_obj(colord, dst)
-                print('Profile:', profile_obj)
+                log.info('Profile: %r', profile_obj)
                 try:
                     device.AddProfile('hard', profile_obj)
                 except dbus.DBusException:
-                    print('Warning: profile likely was already added to device')
+                    log.warning('profile likely was already added to device')
                 break
 
 
 class gazp9_icc(ColorAction):
+    model = 'Gazelle Professional'
     profiles = {
         '38306ee6ae5ccf81d2951aa95ae823f4': 'system76-gazp9-glossy.icc',
         '6c4c6b27d0a90b99322e487510455230': 'system76-gazp9-ips-matte.icc',

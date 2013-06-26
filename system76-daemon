@@ -38,7 +38,7 @@ from system76driver.daemon import run_airplane, run_brightness
 logging.basicConfig(
     level=logging.DEBUG,
     style='{',
-    format='{created:.3f}  {levelname}  {message}',
+    format='{asctime}  {levelname}  {message}',
 )
 log = logging.getLogger()
 GLib.threads_init()
