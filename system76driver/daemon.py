@@ -190,12 +190,19 @@ class Airplane:
 needs_airplane = frozenset(['gazp9'])
 
 
-def run_airplane(model):
+def _run_airplane(model):
     if model not in needs_airplane:
         return
     airplane_mode = Airplane()
     airplane_mode.run()
     return airplane_mode
+
+
+def run_airplane(model):
+    try:
+        return _run_airplane(model)
+    except Exception:
+        log.exception('Error calling _run_airplane(%r):', model)
 
 
 default_brightness = {
@@ -266,10 +273,18 @@ class Brightness:
                 self.save(brightness)
 
 
+def _run_brightness(model):
+    if model not in default_brightness:
+        return
+    (name, default) = default_brightness[model]
+    brightness = Brightness(name, default)
+    brightness.restore()
+    brightness.run()
+    return brightness
+
+
 def run_brightness(model):
-    if model in default_brightness:
-        (name, default) = default_brightness[model]
-        brightness = Brightness(name, default)
-        brightness.restore()
-        brightness.run()
-        return brightness
+    try:
+        return _run_brightness(model)
+    except Exception:
+        log.exception('Error calling _run_brightness(%r):', model)
