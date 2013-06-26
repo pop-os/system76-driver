@@ -199,18 +199,20 @@ def run_airplane(model):
 
 
 default_brightness = {
-    'gazp9': 690,
+    'gazp9': ('intel_backlight', 690),
+    'sabc1': ('acpi_video0', 82),
 }
 
 
 class Brightness:
-    def __init__(self, default, rootdir='/'):
+    def __init__(self, name, default, rootdir='/'):
         assert isinstance(default, int)
         assert default > 0
+        self.name = name
         self.default = default
         self.current = None
         self.brightness_file = path.join(rootdir,
-            'sys', 'class', 'backlight', 'intel_backlight', 'brightness'
+            'sys', 'class', 'backlight', name, 'brightness'
         )
         self.saved_file = path.join(rootdir,
             'var', 'lib', 'system76-driver', 'brightness'
@@ -266,7 +268,8 @@ class Brightness:
 
 def run_brightness(model):
     if model in default_brightness:
-        brightness = Brightness(default_brightness[model])
+        (name, default) = default_brightness[model]
+        brightness = Brightness(name, default)
         brightness.restore()
         brightness.run()
         return brightness

@@ -160,7 +160,8 @@ class TestFunctions(TestCase):
 
 class TestBrightness(TestCase):
     def test_init(self):
-        inst = daemon.Brightness(638)
+        inst = daemon.Brightness('intel_backlight', 638)
+        self.assertEqual(inst.name, 'intel_backlight')
         self.assertEqual(inst.default, 638)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.brightness_file,
@@ -171,11 +172,12 @@ class TestBrightness(TestCase):
         )
 
         tmp = TempDir()
-        inst = daemon.Brightness(69, rootdir=tmp.dir)
-        self.assertEqual(inst.default, 69)
+        inst = daemon.Brightness('acpi_video0', 82, rootdir=tmp.dir)
+        self.assertEqual(inst.name, 'acpi_video0')
+        self.assertEqual(inst.default, 82)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.brightness_file,
-            tmp.join('sys', 'class', 'backlight', 'intel_backlight', 'brightness')
+            tmp.join('sys', 'class', 'backlight', 'acpi_video0', 'brightness')
         )
         self.assertEqual(inst.saved_file,
             tmp.join('var', 'lib', 'system76-driver', 'brightness')
@@ -183,7 +185,7 @@ class TestBrightness(TestCase):
 
     def test_read(self):
         tmp = TempDir()
-        inst = daemon.Brightness(638, rootdir=tmp.dir)
+        inst = daemon.Brightness('intel_backlight', 638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -214,7 +216,7 @@ class TestBrightness(TestCase):
 
     def test_write(self):
         tmp = TempDir()
-        inst = daemon.Brightness(638, rootdir=tmp.dir)
+        inst = daemon.Brightness('intel_backlight', 638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -235,7 +237,7 @@ class TestBrightness(TestCase):
     def test_load(self):
         tmp = TempDir()
         tmp.makedirs('var', 'lib', 'system76-driver')
-        inst = daemon.Brightness(638, rootdir=tmp.dir)
+        inst = daemon.Brightness('intel_backlight', 638, rootdir=tmp.dir)
 
         # No file
         self.assertEqual(inst.load(), 638)
@@ -265,7 +267,7 @@ class TestBrightness(TestCase):
 
     def test_save(self):
         tmp = TempDir()
-        inst = daemon.Brightness(638, rootdir=tmp.dir)
+        inst = daemon.Brightness('intel_backlight', 638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
