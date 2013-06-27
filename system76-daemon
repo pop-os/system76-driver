@@ -27,6 +27,7 @@ import argparse
 import os
 import sys
 import logging
+import time
 
 from gi.repository import GLib
 
@@ -37,7 +38,7 @@ from system76driver.daemon import run_airplane, run_brightness
 logging.basicConfig(
     level=logging.DEBUG,
     style='{',
-    format='{created:.3f}  {levelname}  {message}',
+    format='{asctime}  {levelname}  {message}',
 )
 log = logging.getLogger()
 GLib.threads_init()
@@ -51,8 +52,10 @@ if os.getuid() != 0:
 
 if not args.model:
     args.model = dmidecode('system-version')
-log.info('model: %s', args.model)
 
+
+log.info('** Process start at monotonic time %r', time.monotonic())
+log.info('model: %s', args.model)
 brightness = run_brightness(args.model)
 airplane = run_airplane(args.model)
 

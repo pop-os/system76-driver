@@ -126,32 +126,6 @@ class TestFunctions(TestCase):
         self.assertEqual(len(random), 24)
         self.assertEqual(b32encode(b32decode(random)).decode('utf-8'), random)
 
-    def test_add_apt_repository(self):
-        SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.add_apt_repository('ppa:novacut/stable'))
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['add-apt-repository', '-y', 'ppa:novacut/stable'], {}),
-        ])
-
-    def test_apt_get_update(self):
-        SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.apt_get_update())
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', 'update'], {}),
-        ])
-
-    def test_apt_get_install(self):
-        SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.apt_get_install('novacut'))
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', '-y', 'install', 'novacut'], {}),
-        ])
-        SubProcess.reset(mocking=True)
-        self.assertIsNone(actions.apt_get_install('novacut', 'blender'))
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', '-y', 'install', 'novacut', 'blender'], {}),
-        ])
-
     def test_update_grub(self):
         SubProcess.reset(mocking=True)
         self.assertIsNone(actions.update_grub())
@@ -159,36 +133,31 @@ class TestFunctions(TestCase):
             ('check_call', ['update-grub'], {}),
         ])
 
-    def test_run_actions(self):
-        torun = [actions.airplane_mode, actions.backlight_vendor]
-        self.assertEqual(list(actions.run_actions(torun, mocking=True)), [
-            'Updating package list',
-            'Enable airplane-mode hot key',
-            'Enable brightness hot keys',
-            'Running `update-grub`',
-        ])
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', 'update'], {}),
-            ('check_call', ['update-grub'], {}),
-        ])
-
-        torun = [actions.fingerprintGUI, actions.plymouth1080, actions.wifi_pm_disable]
-        self.assertEqual(list(actions.run_actions(torun, mocking=True)), [
-            'Adding ppa:fingerprint/fingerprint-gui',
-            'Updating package list',
-            'Fingerprint reader drivers and user interface',
-            'Correctly diplay Ubuntu logo on boot',
-            'Improve WiFi performance on Battery',
-            'Running `update-grub`',
-        ])
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['add-apt-repository', '-y', 'ppa:fingerprint/fingerprint-gui'], {}),
-            ('check_call', ['apt-get', 'update'], {}),
-            ('check_call', ['update-grub'], {}),
-        ])
-
 
 class TestAction(TestCase):
+    def test_isneeded(self):
+        a = actions.Action()
+        a._isneeded = True
+        self.assertIs(a.isneeded, True)
+        a._isneeded = False
+        self.assertIs(a.isneeded, False)
+        a._isneeded = None
+        with self.assertRaises(NotImplementedError) as cm:
+            a.isneeded
+        self.assertEqual(str(cm.exception), 'Action.get_isneeded()')
+
+    def test_description(self):
+        a = actions.Action()
+        a._description = 'Driver for stuff'
+        self.assertEqual(a.description, 'Driver for stuff')
+        desc = actions.random_id()
+        a._description = desc
+        self.assertIs(a.description, desc)
+        a._description = None
+        with self.assertRaises(NotImplementedError) as cm:
+            a.description
+        self.assertEqual(str(cm.exception), 'Action.describe()')
+
     def test_describe(self):
         a = actions.Action()
         with self.assertRaises(NotImplementedError) as cm:
@@ -203,19 +172,19 @@ class TestAction(TestCase):
             a.describe()
         self.assertEqual(str(cm.exception), 'Example.describe()')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         a = actions.Action()
         with self.assertRaises(NotImplementedError) as cm:
-            a.isneeded()
-        self.assertEqual(str(cm.exception), 'Action.isneeded()')
+            a.get_isneeded()
+        self.assertEqual(str(cm.exception), 'Action.get_isneeded()')
 
         class Example(actions.Action):
             pass
 
         a = Example()
         with self.assertRaises(NotImplementedError) as cm:
-            a.isneeded()
-        self.assertEqual(str(cm.exception), 'Example.isneeded()')
+            a.get_isneeded()
+        self.assertEqual(str(cm.exception), 'Example.get_isneeded()')
 
     def test_perform(self):
         a = actions.Action()
@@ -230,6 +199,30 @@ class TestAction(TestCase):
         with self.assertRaises(NotImplementedError) as cm:
             a.perform()
         self.assertEqual(str(cm.exception), 'Example.perform()')
+
+
+class NeededAction(actions.Action):
+    def get_isneeded(self):
+        return True
+
+class UnneededAction(actions.Action):
+    def get_isneeded(self):
+        return False
+
+
+class TestActionRunner(TestCase):
+    def test_init(self):
+        klasses = [UnneededAction, NeededAction]
+        inst = actions.ActionRunner(klasses)
+        self.assertIs(inst.klasses, klasses)
+        self.assertEqual(inst.klasses, [UnneededAction, NeededAction])
+        self.assertIsInstance(inst.actions, list)
+        self.assertEqual(len(inst.actions), 2)
+        self.assertIsInstance(inst.actions[0], UnneededAction)
+        self.assertIsInstance(inst.actions[1], NeededAction)
+        self.assertIsInstance(inst.needed, list)
+        self.assertEqual(len(inst.needed), 1)
+        self.assertIsInstance(inst.needed[0], NeededAction)
 
 
 class TestFileAction(TestCase):
@@ -258,7 +251,7 @@ class TestFileAction(TestCase):
         open(name, 'x').write('foo\nbar\n')
         self.assertEqual(inst.read(), 'foo\nbar\n')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         class Example(actions.FileAction):
             relpath = ('some', 'file')
             content = 'foo'
@@ -267,27 +260,27 @@ class TestFileAction(TestCase):
         inst = Example(rootdir=tmp.dir)
 
         # Missing parentdir:
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Missing file:
         tmp.mkdir('some')
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong content:
         open(inst.filename, 'x').write('bar')
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong permissions:
         open(inst.filename, 'w').write('foo')
         os.chmod(inst.filename, 0o600)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         os.chmod(inst.filename, 0o666)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Not needed:
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def _check_file(self, inst):
         self.assertEqual(open(inst.filename, 'r').read(), 'foo')
@@ -418,17 +411,17 @@ class TestGrubAction(TestCase):
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.GrubAction(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.isneeded()
+            inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
         open(inst.filename, 'w').write(GRUB_MOD)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
@@ -441,12 +434,12 @@ class TestGrubAction(TestCase):
             'quiet splash acpi_os_name=Linux acpi_osi='
         )
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.isneeded()
+            inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         open(inst.filename, 'w').write(GRUB_MOD)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         SubProcess.reset(mocking=True)
@@ -520,7 +513,7 @@ class Test_wifi_pm_disable(TestCase):
         inst = actions.wifi_pm_disable()
         self.assertEqual(inst.describe(), 'Improve WiFi performance on Battery')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('etc')
         tmp.mkdir('etc', 'pm')
@@ -528,23 +521,23 @@ class Test_wifi_pm_disable(TestCase):
         inst = actions.wifi_pm_disable(rootdir=tmp.dir)
 
         # Missing file
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong file content:
         open(inst.filename, 'w').write('blah blah')
         os.chmod(inst.filename, 0o755)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Correct content, wrong perms:
         open(inst.filename, 'w').write(actions.WIFI_PM_DISABLE)
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         os.chmod(inst.filename, 0o777)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # All good:
         os.chmod(inst.filename, 0o755)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def _check_file(self, inst):
         self.assertEqual(
@@ -610,17 +603,17 @@ class Test_lemu1(TestCase):
             'Enable brightness hot keys'
         )
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.lemu1(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.isneeded()
+            inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         open(inst.filename, 'w').write(GRUB_MOD)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         tmp = TempDir()
@@ -652,53 +645,6 @@ class Test_backlight_vendor(TestCase):
         self.assertEqual(inst.describe(), 'Enable brightness hot keys')
 
 
-class Test_airplane_mode(TestCase):
-    def test_init(self):
-        inst = actions.airplane_mode()
-        self.assertIs(inst.update_package_list, True)
-
-    def test_describe(self):
-        inst = actions.airplane_mode()
-        self.assertEqual(inst.describe(), 'Enable airplane-mode hot key')
-
-    def test_isneeded(self):
-        inst = actions.airplane_mode()
-        self.assertIs(inst.isneeded(), True)
-
-    def test_perform(self):
-        SubProcess.reset(mocking=True)
-        inst = actions.airplane_mode()
-        self.assertIsNone(inst.perform())
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', '-y', 'install', 'system76-airplane-mode'], {}),
-        ])
-
-
-class Test_fingerprintGUI(TestCase):
-    def test_init(self):
-        inst = actions.fingerprintGUI()
-        self.assertEqual(inst.ppa, 'ppa:fingerprint/fingerprint-gui')
-        self.assertIs(inst.update_package_list, True)
-
-    def test_describe(self):
-        inst = actions.fingerprintGUI()
-        self.assertEqual(inst.describe(), 
-            'Fingerprint reader drivers and user interface'
-        )
-
-    def test_isneeded(self):
-        inst = actions.fingerprintGUI()
-        self.assertIs(inst.isneeded(), True)
-
-    def test_perform(self):
-        SubProcess.reset(mocking=True)
-        inst = actions.fingerprintGUI()
-        self.assertIsNone(inst.perform())
-        self.assertEqual(SubProcess.calls, [
-            ('check_call', ['apt-get', '-y', 'install', 'fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi'], {}),
-        ])
-
-
 class Test_plymouth1080(TestCase):
     def test_init(self):
         inst = actions.plymouth1080()
@@ -718,17 +664,17 @@ class Test_plymouth1080(TestCase):
             'Correctly diplay Ubuntu logo on boot'
         )
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.plymouth1080(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.isneeded()
+            inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         open(inst.filename, 'a').write('\nGRUB_GFXPAYLOAD_LINUX="1920x1080"')
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         SubProcess.reset(mocking=True)
@@ -790,30 +736,30 @@ class Test_uvcquirks(TestCase):
         inst = actions.uvcquirks()
         self.assertEqual(inst.describe(), 'Webcam quirk fixes')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('etc')
         tmp.mkdir('etc', 'modprobe.d')
         inst = actions.uvcquirks(rootdir=tmp.dir)
 
         # Missing file
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong file content:
         open(inst.filename, 'w').write('blah blah')
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Correct content, wrong perms:
         open(inst.filename, 'w').write(inst.content)
         os.chmod(inst.filename, 0o666)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         os.chmod(inst.filename, 0o600)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # All good:
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def _check_file(self, inst):
         self.assertEqual(open(inst.filename, 'r').read(), inst.content)
@@ -880,7 +826,7 @@ class Test_sata_alpm(TestCase):
         self.assertEqual(inst.describe(),
             'Enable SATA Link Power Management (ALPM)')
 
-    def test_isneeded(self):
+    def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('etc')
         tmp.mkdir('etc', 'pm')
@@ -888,23 +834,23 @@ class Test_sata_alpm(TestCase):
         inst = actions.sata_alpm(rootdir=tmp.dir)
 
         # Missing file
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Wrong file content:
         open(inst.filename, 'w').write('blah blah')
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # Correct content, wrong perms:
         open(inst.filename, 'w').write(inst.content)
         os.chmod(inst.filename, 0o666)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
         os.chmod(inst.filename, 0o600)
-        self.assertIs(inst.isneeded(), True)
+        self.assertIs(inst.get_isneeded(), True)
 
         # All good:
         os.chmod(inst.filename, 0o644)
-        self.assertIs(inst.isneeded(), False)
+        self.assertIs(inst.get_isneeded(), False)
 
     def _check_file(self, inst):
         self.assertEqual(open(inst.filename, 'r').read(), inst.content)

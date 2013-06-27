@@ -45,11 +45,3 @@ class TestConstants(TestCase):
                 self.assertIsInstance(text, str)
                 self.assertTrue(text, text)
 
-            self.assertIsInstance(value['prefs'], list)
-            for action in value['prefs']:
-                self.assertTrue(issubclass(action, actions.Action))
-                inst = action()
-                text = inst.describe()
-                self.assertIsInstance(text, str)
-                self.assertTrue(text, text)
-

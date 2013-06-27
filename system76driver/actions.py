@@ -29,6 +29,7 @@ import re
 import time
 from base64 import b32encode
 import datetime
+import logging
 
 import dbus
 
@@ -37,6 +38,7 @@ from .model import get_edid_md5
 from .mockable import SubProcess
 
 
+log = logging.getLogger()
 CMDLINE_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$')
 CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
 
@@ -61,51 +63,29 @@ def backup_filename(filename, date=None):
     return '.'.join([filename, 'system76-{}'.format(date)])
 
 
-def add_apt_repository(ppa):
-    SubProcess.check_call(['add-apt-repository', '-y', ppa])
-
-
-def apt_get_update():
-    SubProcess.check_call(['apt-get', 'update'])
-
-
-def apt_get_install(*packages):
-    assert packages
-    cmd = ['apt-get', '-y', 'install']
-    cmd.extend(packages)
-    SubProcess.check_call(cmd)
-
-
 def update_grub():
+    log.info('Calling `update-grub`...')
     SubProcess.check_call(['update-grub'])
 
 
-def run_actions(actions, mocking=False):
-    SubProcess.reset(mocking=mocking)
-    for a in actions:
-        if a.ppa:
-            yield _('Adding {ppa}').format(ppa=a.ppa)
-            add_apt_repository(a.ppa)
-
-    if any(a.update_package_list for a in actions):
-        yield _('Updating package list')
-        apt_get_update()
-
-    for cls in actions:
-        inst = cls()
-        yield inst.describe()
-        if not mocking:
-            inst.perform()
-
-    if any(a.update_grub for a in actions):
-        yield _('Running `update-grub`')
-        update_grub()
-
-
 class Action:
-    ppa = None
-    update_package_list = False
+    _isneeded = None
+    _description = None
     update_grub = False
+
+    @property
+    def isneeded(self):
+        if self._isneeded is None:
+            self._isneeded = self.get_isneeded()
+        assert isinstance(self._isneeded, bool)
+        return self._isneeded
+
+    @property
+    def description(self):
+        if self._description is None:
+            self._description = self.describe()
+        assert isinstance(self._description, str)
+        return self._description
 
     def describe(self):
         """
@@ -118,7 +98,7 @@ class Action:
             '{}.describe()'.format(name)
         )
 
-    def isneeded(self):
+    def get_isneeded(self):
         """
         Return `True` if this action is needed.
 
@@ -127,7 +107,7 @@ class Action:
         """
         name = self.__class__.__name__
         raise NotImplementedError(
-            '{}.isneeded()'.format(name)
+            '{}.get_isneeded()'.format(name)
         )
 
     def perform(self):
@@ -161,6 +141,36 @@ class Action:
         return content
 
 
+class ActionRunner:
+    def __init__(self, klasses):
+        self.klasses = klasses
+        self.actions = []
+        self.needed = []
+        for klass in klasses:
+            assert issubclass(klass, Action)
+            action = klass()
+            self.actions.append(action)
+            if action.isneeded:
+                self.needed.append(action)
+
+    def run_iter(self):
+        for action in self.actions:
+            name = action.__class__.__name__
+            log.info('%s: %s', name, action.description)
+            if action.isneeded:
+                assert action in self.needed
+                log.info('Running %r', name)
+                yield action.description
+                action.perform()
+            else:
+                assert action not in self.needed
+                log.warning('Skipping %r as it was already applied', name)
+
+        if any(action.update_grub for action in self.needed):
+            yield _('Running `update-grub`')
+            update_grub()
+
+
 class FileAction(Action):
     relpath = tuple()
     content = ''
@@ -175,7 +185,7 @@ class FileAction(Action):
         except FileNotFoundError:
             return None
 
-    def isneeded(self):
+    def get_isneeded(self):
         if self.read() != self.content:
             return True
         st = os.stat(self.filename)
@@ -219,7 +229,7 @@ class GrubAction(Action):
             else:
                 yield line
 
-    def isneeded(self):
+    def get_isneeded(self):
         return self.get_cmdline() != self.cmdline
 
     def perform(self):
@@ -254,33 +264,6 @@ class backlight_vendor(GrubAction):
         return _('Enable brightness hot keys')
 
 
-class airplane_mode(Action):
-    update_package_list = True
-
-    def describe(self):
-        return _('Enable airplane-mode hot key')
- 
-    def isneeded(self):
-        return True  # FIXME: Properly detect whether package is installed
-
-    def perform(self):
-        apt_get_install('system76-airplane-mode')
-
-
-class fingerprintGUI(Action):
-    ppa = 'ppa:fingerprint/fingerprint-gui'
-    update_package_list = True
-
-    def describe(self):
-        return _('Fingerprint reader drivers and user interface')
-
-    def isneeded(self):
-        return True  # FIXME: Properly detect whether package is installed
-
-    def perform(self):
-        apt_get_install('fingerprint-gui', 'policykit-1-fingerprint-gui', 'libbsapi')
-
-
 class plymouth1080(Action):
     update_grub = True
     value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'
@@ -294,7 +277,7 @@ class plymouth1080(Action):
     def describe(self):
         return _('Correctly diplay Ubuntu logo on boot')
 
-    def isneeded(self):
+    def get_isneeded(self):
         return self.read().splitlines()[-1] != self.value
 
     def iter_lines(self):
@@ -356,15 +339,23 @@ def get_profile_obj(colord, filename):
     return colord.FindProfileByFilename(filename)
 
 
-
-
 class ColorAction(Action):
+    _edid_md5 = None
+    model = 'override this is subclasses'
     profiles = {}
 
-    def describe(self):
-        return _('ICC color profile for display')
+    @property
+    def edid_md5(self):
+        if self._edid_md5 is None:
+            self._edid_md5 = get_edid_md5()
+            log.info('edid md5: %r', self._edid_md5)
+        assert isinstance(self._edid_md5, str)
+        return self._edid_md5
 
-    def isneeded(self):
+    def describe(self):
+        return _('Install ICC color profile for display')
+
+    def get_isneeded(self):
         return True
 
     def atomic_write(self, icc, dst):
@@ -376,12 +367,10 @@ class ColorAction(Action):
         os.rename(self.tmp, dst)
 
     def perform(self):
-        edid = get_edid_md5()
-        print('edid md5:', edid)
-        if edid not in self.profiles:
-            print('Warning: no profile available for this screen')
+        if self.edid_md5 not in self.profiles:
+            log.warning('no profile available for this screen')
             return
-        name = self.profiles[edid]
+        name = self.profiles[self.edid_md5]
         src = get_datafile(name)
         dst = get_profile_dst(name)
         icc = open(src, 'rb').read()
@@ -392,18 +381,18 @@ class ColorAction(Action):
         for device_obj in colord.GetDevicesByKind('display'):
             device = get_device(device_obj)
             model = get_prop(device, DEVICE, 'Model')
-            print(device_obj, model)
-            if model == 'Gazelle Professional':
+            if model == self.model:
                 profile_obj = get_profile_obj(colord, dst)
-                print('Profile:', profile_obj)
+                log.info('Profile: %r', profile_obj)
                 try:
                     device.AddProfile('hard', profile_obj)
                 except dbus.DBusException:
-                    print('Warning: profile likely was already added to device')
+                    log.warning('profile likely was already added to device')
                 break
 
 
 class gazp9_icc(ColorAction):
+    model = 'Gazelle Professional'
     profiles = {
         '38306ee6ae5ccf81d2951aa95ae823f4': 'system76-gazp9-glossy.icc',
         '6c4c6b27d0a90b99322e487510455230': 'system76-gazp9-ips-matte.icc',

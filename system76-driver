@@ -22,8 +22,11 @@
 import argparse
 import os
 import sys
-from gettext import ngettext
+import time
+import logging
+import platform
 
+import system76driver
 from system76driver.model import determine_model
 from system76driver.products import PRODUCTS
 from system76driver.gtk import UI
@@ -40,12 +43,26 @@ args = parser.parse_args()
 if os.getuid() != 0:
     sys.exit('Error: must be run as root')
 
+logging.basicConfig(
+    filename='/var/log/system76-driver.log',
+    level=logging.DEBUG,
+    style='{',
+    format='{asctime}  {levelname}  {message}',
+)
+log = logging.getLogger()
+
 if args.home is None:
     args.home = os.environ['HOME']
 if args.model is None:
     args.model = determine_model()
 product = PRODUCTS.get(args.model)
 
+log.info('** Process start at monotonic time %r', time.monotonic())
+log.info('system76driver.__version__: %r', system76driver.__version__)
+log.info('OS: %r', platform.dist())
+log.info('kernel: %r', platform.uname().release)
+log.info('model: %r', args.model)
+
 ui = UI(args.model, product, args)
 ui.run()
- 
+

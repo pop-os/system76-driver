@@ -30,7 +30,7 @@ from gi.repository import GLib, Gtk
 
 from . import __version__, get_datafile
 from .util import create_logs
-from .actions import run_actions
+from .actions import ActionRunner
 
 
 GLib.threads_init()
@@ -41,6 +41,7 @@ class UI:
         assert isinstance(model, str)
         assert product is None or isinstance(product, dict)
         assert isinstance(args.dry, bool)
+        self.thread = None
         self.model = model
         self.product = product
         self.args = args
@@ -50,6 +51,10 @@ class UI:
         self.notify_icon = self.builder.get_object('notifyImage')
         self.notify_text = self.builder.get_object('notifyLabel')
         self.details = self.builder.get_object('detailsText')
+
+        self.builder.get_object('sysModel').set_text(model)
+        self.builder.get_object('ubuntuVersion').set_text(platform.dist()[1])
+        self.builder.get_object('driverVersion').set_text(__version__)
 
         self.builder.connect_signals({
             'onDeleteWindow': Gtk.main_quit,
@@ -64,34 +69,46 @@ class UI:
             (key, self.builder.get_object(key))
             for key in ['driverInstall', 'driverRestore', 'driverCreate']
         )
+        self.enabled = {
+            'driverInstall': False,
+            'driverRestore': False,
+            'driverCreate': False,
+        }
+        self.set_sensitive(False)
 
-        self.builder.get_object('sysModel').set_text(model)
-        self.builder.get_object('ubuntuVersion').set_text(platform.dist()[1])
-        self.builder.get_object('driverVersion').set_text(__version__)
         if product:
             name = product['name']
         else:
             name = _('Non System76 Product')
-            self.set_sensitive(False)
             self.set_notify('gtk-dialog-error',
                 _('Not a System76 product, nothing to do!')
             )
         self.builder.get_object('sysName').set_text(name)
-        if not product.get('drivers'):
-            self.buttons['driverInstall'].set_sensitive(False)
-            self.buttons['driverRestore'].set_sensitive(False)
+
+    def prepare_action_runner(self):
+        self.enabled['driverCreate'] = True
+        self.action_runner = ActionRunner(self.product['drivers'])
+        if not self.action_runner.actions:
             msg = _('All of the drivers for this system are provided by Ubuntu.')
             self.set_notify('gtk-ok', msg)
             self.details.set_text(msg)
         else:
-            msg = '\n'.join(d().describe() for d in product['drivers'])
-            self.details.set_text(msg)
-
-        self.thread = None
+            lines = []
+            for action in self.action_runner.actions:
+                template = ('+ {}' if action.isneeded else '* {}')
+                lines.append(template.format(action.description))
+            self.details.set_text('\n'.join(lines))
+            if self.action_runner.needed:
+                self.enabled['driverInstall'] = True
+                self.enabled['driverRestore'] = True
+            else:
+                msg = _('All drivers have been applied, nothing to do.')
+                self.set_notify('gtk-ok', msg)
+        self.set_sensitive(True)
 
     def set_sensitive(self, sensitive):
-        for button in self.buttons.values():
-            button.set_sensitive(sensitive)
+        for (key, button) in self.buttons.items():
+            button.set_sensitive(sensitive and self.enabled[key])
  
     def set_notify(self, icon, text):
         self.notify_text.show()
@@ -101,11 +118,13 @@ class UI:
 
     def run(self):
         self.window.show()
+        if self.product:
+            GLib.idle_add(self.prepare_action_runner)
         Gtk.main()
 
     def worker_thread(self, actions):
-        for description in run_actions(actions, mocking=self.args.dry):
-            pass
+        for msg in self.action_runner.run_iter():
+            print(msg)
         GLib.idle_add(self.on_worker_complete)
 
     def on_worker_complete(self):

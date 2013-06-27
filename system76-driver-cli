@@ -52,6 +52,6 @@ except KeyError:
 print('model:', args.model)
 print('name:', product['name'])
 
-actions = product['drivers'] + product['prefs']
+actions = product['drivers']
 for description in run_actions(actions, mocking=args.dry):
     print('  * {}'.format(description))
