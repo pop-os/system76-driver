@@ -23,10 +23,14 @@
 import argparse
 import os
 import sys
+import time
+import platform
 from gettext import ngettext
+import logging
 
+import system76driver
 from system76driver.model import determine_model
-from system76driver.actions import run_actions
+from system76driver.actions import ActionRunner
 from system76driver.products import PRODUCTS
 
 
@@ -42,6 +46,15 @@ if os.getuid() != 0:
     sys.exit('Error: must be run as root')
 
 
+logging.basicConfig(
+    filename='/var/log/system76-driver.log',
+    level=logging.DEBUG,
+    style='{',
+    format='{asctime}  {levelname}  {message}',
+)
+log = logging.getLogger()
+
+
 if args.model is None:
     args.model = determine_model()
 try:
@@ -49,9 +62,15 @@ try:
 except KeyError:
     sys.exit('Error: no such product: {}'.format(args.model))
 
+log.info('** Process start at monotonic time %r', time.monotonic())
+log.info('system76driver.__version__: %r', system76driver.__version__)
+log.info('OS: %r', platform.dist())
+log.info('kernel: %r', platform.uname().release)
+log.info('model: %r', args.model)
+
 print('model:', args.model)
 print('name:', product['name'])
 
-actions = product['drivers']
-for description in run_actions(actions, mocking=args.dry):
-    print('  * {}'.format(description))
+action_runner = ActionRunner(product['drivers'])
+for msg in action_runner.run_iter():
+    print('  * ' + msg)

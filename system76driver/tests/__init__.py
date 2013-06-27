@@ -22,8 +22,14 @@ Unit test for the `system76driver` package.
 """
 
 from unittest import TestCase
+from os import path
+from subprocess import check_call
 
 import system76driver
+
+
+TREE = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
+IN_TREE = path.isfile(path.join(TREE, 'setup.py'))
 
 
 class TestConstants(TestCase):
@@ -36,3 +42,33 @@ class TestConstants(TestCase):
         self.assertEqual(rev, str(int(rev)))
         self.assertGreaterEqual(int(rev), 0) 
 
+
+class TestScripts(TestCase):
+    def setUp(self):
+        if not IN_TREE:
+            self.skipTest('not running tests in-tree')
+
+    def check_script(self, name):
+        script = path.join(TREE, name)
+        self.assertTrue(path.isfile(script))
+        # All the scripts need to be run as root, but you should always be able
+        # to do a -h as a normal user:
+        check_call([script, '-h'])
+
+    def test_system76_driver(self):
+        """
+        Test the `system76-driver` Gtk UI script.
+        """
+        self.check_script('system76-driver')
+
+    def test_system76_driver_cli(self):
+        """
+        Test the `system76-driver-cli` CLI script.
+        """
+        self.check_script('system76-driver-cli')
+
+    def test_system76_daemon(self):
+        """
+        Test the `system76-daemon` CLI script.
+        """
+        self.check_script('system76-daemon')
