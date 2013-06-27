@@ -67,22 +67,9 @@ def update_grub():
     SubProcess.check_call(['update-grub'])
 
 
-def run_actions(actions, mocking=False):
-    SubProcess.reset(mocking=mocking)
-
-    for cls in actions:
-        inst = cls()
-        yield inst.describe()
-        if not mocking:
-            inst.perform()
-
-    if any(a.update_grub for a in actions):
-        yield _('Running `update-grub`')
-        update_grub()
-
-
 class Action:
     _isneeded = None
+    _description = None
     update_grub = False
 
     @property
@@ -91,6 +78,13 @@ class Action:
             self._isneeded = self.get_isneeded()
         assert isinstance(self._isneeded, bool)
         return self._isneeded
+
+    @property
+    def description(self):
+        if self._description is None:
+            self._description = self.describe()
+        assert isinstance(self._description, str)
+        return self._description
 
     def describe(self):
         """
@@ -144,6 +138,36 @@ class Action:
         except FileExistsError:
             pass
         return content
+
+
+class ActionRunner:
+    def __init__(self, klasses):
+        self.klasses = klasses
+        self.actions = []
+        self.needed = []
+        for klass in klasses:
+            assert issubclass(klass, Action)
+            action = klass()
+            self.actions.append(action)
+            if action.isneeded:
+                self.needed.append(action)
+
+    def run_iter(self):
+        for action in self.actions:
+            name = action.__class__.__name__
+            log.info('%s: %s', name, action.description)
+            if action.isneeded:
+                assert action in self.needed
+                log.info('Running %r', name)
+                yield action.description
+                action.perform()
+            else:
+                assert action not in self.needed
+                log.warning('Skipping %r as it was already applied', name)
+
+        if any(action.update_grub for action in self.needed):
+            yield _('Running `update-grub`')
+            update_grub()
 
 
 class FileAction(Action):

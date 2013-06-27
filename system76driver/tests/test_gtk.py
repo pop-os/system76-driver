@@ -44,6 +44,7 @@ class TestUI(TestCase):
             'prefs': [],
         }
         ui = gtk.UI('gazp9', product, args)
+        self.assertIsNone(ui.thread)
         self.assertEqual(ui.model, 'gazp9')
         self.assertIs(ui.product, product)
         self.assertIs(ui.args, args)
@@ -70,6 +71,7 @@ class TestUI(TestCase):
         name = random_id()
         product = {'name': name}
         ui = gtk.UI(model, product, args)
+        self.assertIsNone(ui.thread)
         self.assertEqual(ui.model, model)
         self.assertIs(ui.product, product)
         self.assertEqual(ui.product, {'name': name})

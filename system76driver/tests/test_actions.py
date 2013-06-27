@@ -133,9 +133,6 @@ class TestFunctions(TestCase):
             ('check_call', ['update-grub'], {}),
         ])
 
-    def test_run_actions(self):
-        self.skipTest('FIXME')
-
 
 class TestAction(TestCase):
     def test_isneeded(self):
@@ -148,6 +145,18 @@ class TestAction(TestCase):
         with self.assertRaises(NotImplementedError) as cm:
             a.isneeded
         self.assertEqual(str(cm.exception), 'Action.get_isneeded()')
+
+    def test_description(self):
+        a = actions.Action()
+        a._description = 'Driver for stuff'
+        self.assertEqual(a.description, 'Driver for stuff')
+        desc = actions.random_id()
+        a._description = desc
+        self.assertIs(a.description, desc)
+        a._description = None
+        with self.assertRaises(NotImplementedError) as cm:
+            a.description
+        self.assertEqual(str(cm.exception), 'Action.describe()')
 
     def test_describe(self):
         a = actions.Action()
@@ -190,6 +199,30 @@ class TestAction(TestCase):
         with self.assertRaises(NotImplementedError) as cm:
             a.perform()
         self.assertEqual(str(cm.exception), 'Example.perform()')
+
+
+class NeededAction(actions.Action):
+    def get_isneeded(self):
+        return True
+
+class UnneededAction(actions.Action):
+    def get_isneeded(self):
+        return False
+
+
+class TestActionRunner(TestCase):
+    def test_init(self):
+        klasses = [UnneededAction, NeededAction]
+        inst = actions.ActionRunner(klasses)
+        self.assertIs(inst.klasses, klasses)
+        self.assertEqual(inst.klasses, [UnneededAction, NeededAction])
+        self.assertIsInstance(inst.actions, list)
+        self.assertEqual(len(inst.actions), 2)
+        self.assertIsInstance(inst.actions[0], UnneededAction)
+        self.assertIsInstance(inst.actions[1], NeededAction)
+        self.assertIsInstance(inst.needed, list)
+        self.assertEqual(len(inst.needed), 1)
+        self.assertIsInstance(inst.needed[0], NeededAction)
 
 
 class TestFileAction(TestCase):
