@@ -97,11 +97,13 @@ class UI:
             for action in self.action_runner.actions:
                 template = ('+ {}' if action.isneeded else '* {}')
                 lines.append(template.format(action.description))
-            msg = '\n'.join(lines)
-            self.details.set_text(msg)
+            self.details.set_text('\n'.join(lines))
             if self.action_runner.needed:
                 self.enabled['driverInstall'] = True
                 self.enabled['driverRestore'] = True
+            else:
+                msg = _('All drivers have been applied, nothing to do.')
+                self.set_notify('gtk-ok', msg)
         self.set_sensitive(True)
 
     def set_sensitive(self, sensitive):

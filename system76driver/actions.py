@@ -64,6 +64,7 @@ def backup_filename(filename, date=None):
 
 
 def update_grub():
+    log.info('Calling `update-grub`...')
     SubProcess.check_call(['update-grub'])
 
 
@@ -339,8 +340,17 @@ def get_profile_obj(colord, filename):
 
 
 class ColorAction(Action):
+    _edid_md5 = None
     model = 'override this is subclasses'
     profiles = {}
+
+    @property
+    def edid_md5(self):
+        if self._edid_md5 is None:
+            self._edid_md5 = get_edid_md5()
+            log.info('edid md5: %r', self._edid_md5)
+        assert isinstance(self._edid_md5, str)
+        return self._edid_md5
 
     def describe(self):
         return _('Install ICC color profile for display')
@@ -357,12 +367,10 @@ class ColorAction(Action):
         os.rename(self.tmp, dst)
 
     def perform(self):
-        edid = get_edid_md5()
-        log.info('edid md5: %r', edid)
-        if edid not in self.profiles:
+        if self.edid_md5 not in self.profiles:
             log.warning('no profile available for this screen')
             return
-        name = self.profiles[edid]
+        name = self.profiles[self.edid_md5]
         src = get_datafile(name)
         dst = get_profile_dst(name)
         icc = open(src, 'rb').read()
