@@ -27,3 +27,19 @@ Description: Universal driver for System76 computers
  of your screen) and choose System Settings.  Click System76 Driver to install
  drivers or restore your computer.
 
+Package: system76-driver-nvidia
+Architecture: amd64
+Depends: nvidia-313-updates
+Conflicts: nvidia-current-updates
+Description: Latest nvidia driver for System76 computers
+ This dummy package depends on the latest driver tested with and recommended for
+ System76 products with an nvidia GPU.
+ .
+ When this package is installed, you will automatically be upgraded to newer
+ nvidia driver versions after System76 has thouroughly tested them.
+ .
+ This driver will generally depend on a newer nvidia driver than the official
+ nvidia-current-updates Ubuntu package.
+ .
+ If you don't want to be automatically upgraded to newer nvidia drivers, simply
+ remove this package.
