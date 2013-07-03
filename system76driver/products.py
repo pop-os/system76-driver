@@ -91,11 +91,17 @@ PRODUCTS = {
     },
     'gazp7': {
         'name': 'Gazelle Professional',
-        'drivers': [],
+        'drivers': [
+            actions.lemu1,
+            actions.wifi_pm_disable,
+        ],
     },
     'gazp8': {
         'name': 'Gazelle Professional',
-        'drivers': [],
+        'drivers': [
+            actions.lemu1,
+            actions.wifi_pm_disable,
+        ],
     },
     'gazp9': {
         'name': 'Gazelle Professional',
@@ -107,7 +113,9 @@ PRODUCTS = {
     },
     'gazu1': {
         'name': 'Gazelle Ultra',
-        'drivers': [],
+        'drivers': [
+            actions.uvcquirks,
+        ],
     },
     'gazv1': {
         'name': 'Gazelle Value',
