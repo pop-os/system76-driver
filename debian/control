@@ -28,7 +28,7 @@ Description: Universal driver for System76 computers
  drivers or restore your computer.
 
 Package: system76-driver-nvidia
-Architecture: amd64
+Architecture: all
 Depends: nvidia-313-updates
 Conflicts: nvidia-current-updates
 Description: Latest nvidia driver for System76 computers
