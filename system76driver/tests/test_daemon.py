@@ -27,7 +27,26 @@ import io
 
 from .helpers import TempDir
 from system76driver.mockable import SubProcess
-from system76driver import daemon
+from system76driver import daemon, products
+
+
+class TestConstants(TestCase):
+    def test_NEEDS_AIRPLANE(self):
+        self.assertIsInstance(daemon.NEEDS_AIRPLANE, frozenset)
+        for key in daemon.NEEDS_AIRPLANE:
+            self.assertIsInstance(key, str)
+            self.assertIn(key, products.PRODUCTS)
+
+    def test_DEFAULT_BRIGHTNESS(self):
+        self.assertIsInstance(daemon.DEFAULT_BRIGHTNESS, dict)
+        for (key, value) in daemon.DEFAULT_BRIGHTNESS.items():
+            self.assertIsInstance(key, str)
+            self.assertIn(key, products.PRODUCTS)
+            self.assertIsInstance(value, tuple)
+            (name, default) = value
+            self.assertIn(name, ['intel_backlight', 'acpi_video0'])
+            self.assertIsInstance(default, int)
+            self.assertGreater(default, 0)
 
 
 class TestFunctions(TestCase):

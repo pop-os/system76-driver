@@ -35,6 +35,19 @@ from gi.repository import GLib
 from .mockable import SubProcess
 
 
+# Products in this frozenset need the airplane mode hack
+NEEDS_AIRPLANE = frozenset([
+    'galu1',
+    'gazp9',
+])
+
+# Products in this dict need the brightness hack
+DEFAULT_BRIGHTNESS = {
+    'gazp9': ('intel_backlight', 690),
+    'sabc1': ('acpi_video0', 82),
+}
+
+
 log = logging.getLogger()
 MASK1 = 0b01000000
 MASK2 = 0b10111111
@@ -187,11 +200,9 @@ class Airplane:
             log.info('airplane_mode: %r', airplane_mode)
 
 
-needs_airplane = frozenset(['gazp9', 'galu1'])
-
 
 def _run_airplane(model):
-    if model not in needs_airplane:
+    if model not in NEEDS_AIRPLANE:
         return
     airplane_mode = Airplane()
     airplane_mode.run()
@@ -205,10 +216,7 @@ def run_airplane(model):
         log.exception('Error calling _run_airplane(%r):', model)
 
 
-default_brightness = {
-    'gazp9': ('intel_backlight', 690),
-    'sabc1': ('acpi_video0', 82),
-}
+
 
 
 class Brightness:
@@ -274,9 +282,9 @@ class Brightness:
 
 
 def _run_brightness(model):
-    if model not in default_brightness:
+    if model not in DEFAULT_BRIGHTNESS:
         return
-    (name, default) = default_brightness[model]
+    (name, default) = DEFAULT_BRIGHTNESS[model]
     brightness = Brightness(name, default)
     brightness.restore()
     brightness.run()
