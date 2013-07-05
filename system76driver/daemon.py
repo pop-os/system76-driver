@@ -187,7 +187,7 @@ class Airplane:
             log.info('airplane_mode: %r', airplane_mode)
 
 
-needs_airplane = frozenset(['gazp9'])
+needs_airplane = frozenset(['gazp9', 'galu1'])
 
 
 def _run_airplane(model):

@@ -68,6 +68,14 @@ PRODUCTS = {
         'drivers': [],
     },
 
+    # Galago:
+    'galu1': {
+        'name': 'Galago UltraPro',
+        'drivers': [
+            actions.wifi_pm_disable,
+        ],
+    },
+
     # Gazelle:
     'gazp1': {
         'name': 'Gazelle Performance',
