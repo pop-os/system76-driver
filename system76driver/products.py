@@ -73,6 +73,7 @@ PRODUCTS = {
         'name': 'Galago UltraPro',
         'drivers': [
             actions.wifi_pm_disable,
+            actions.galu1_icc,
         ],
     },
 
