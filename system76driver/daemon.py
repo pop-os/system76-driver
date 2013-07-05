@@ -43,6 +43,7 @@ NEEDS_AIRPLANE = frozenset([
 
 # Products in this dict need the brightness hack
 DEFAULT_BRIGHTNESS = {
+    'galu1': ('acpi_video0', 70),
     'gazp9': ('intel_backlight', 690),
     'sabc1': ('acpi_video0', 82),
 }
