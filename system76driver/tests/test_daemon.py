@@ -24,9 +24,11 @@ Unit tests for `system76driver.airplane` module.
 from unittest import TestCase
 import os
 import io
+import json
 
 from .helpers import TempDir
 from system76driver.mockable import SubProcess
+from system76driver.actions import random_id
 from system76driver import daemon, products
 
 
@@ -50,6 +52,35 @@ class TestConstants(TestCase):
 
 
 class TestFunctions(TestCase):
+    def test_read_json_conf(self):
+        tmp = TempDir()
+        f = tmp.join('system76-daemon.json')
+
+        # Missing file:
+        self.assertEqual(daemon.read_json_conf(f), {})
+
+        # Invalid JSON:
+        open(f, 'x').write('invalid json')
+        self.assertEqual(daemon.read_json_conf(f), {})
+
+        # JSON does not contain a dict:
+        open(f, 'w').write(json.dumps(['hello', 'world']))
+        self.assertEqual(daemon.read_json_conf(f), {})
+
+        # dict is empty:
+        open(f, 'w').write(json.dumps({}))
+        self.assertEqual(daemon.read_json_conf(f), {})
+
+        # dict has stuffs:
+        open(f, 'w').write(json.dumps({'foo': 'bar'}))
+        self.assertEqual(daemon.read_json_conf(f), {'foo': 'bar'})
+
+        # dict has random_stuffs:
+        key = random_id()
+        value = random_id()
+        open(f, 'w').write(json.dumps({key: value}))
+        self.assertEqual(daemon.read_json_conf(f), {key: value})
+
     def test_open_ec(self):
         SubProcess.reset(mocking=True)
         tmp = TempDir()

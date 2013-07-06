@@ -29,6 +29,7 @@ from os import path
 import fcntl
 import sys
 import logging
+import json
 
 from gi.repository import GLib
 
@@ -52,6 +53,18 @@ DEFAULT_BRIGHTNESS = {
 log = logging.getLogger()
 MASK1 = 0b01000000
 MASK2 = 0b10111111
+
+
+def read_json_conf(filename):
+    try:
+        fp = open(filename, 'r')
+        obj = json.load(fp)
+        if isinstance(obj, dict):
+            return obj
+        log.warning('does not contain JSON dict: %r', filename) 
+    except Exception:
+        log.exception('Error loading JSON conf from %r', filename)
+    return {}
 
 
 def open_ec(sysdir='/sys'):
