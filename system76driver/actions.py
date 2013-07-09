@@ -397,3 +397,10 @@ class gazp9_icc(ColorAction):
         '38306ee6ae5ccf81d2951aa95ae823f4': 'system76-gazp9-glossy.icc',
         '6c4c6b27d0a90b99322e487510455230': 'system76-gazp9-ips-matte.icc',
     }
+
+
+class galu1_icc(ColorAction):
+    model = 'Galago UltraPro'
+    profiles = {
+        '1fcfbf3269ba92bdeb2f8a009f7894ef': 'system76-galu1-ips-matte.icc',
+    }

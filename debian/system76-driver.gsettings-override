@@ -6,4 +6,7 @@ tap-to-click = false
 tabs-size = 4
 insert-spaces = true
 auto-indent = true
+display-line-numbers = true
+display-right-margin = true
+highlight-current-line = true
 

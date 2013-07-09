@@ -29,6 +29,7 @@ from os import path
 import fcntl
 import sys
 import logging
+import json
 
 from gi.repository import GLib
 
@@ -52,6 +53,18 @@ DEFAULT_BRIGHTNESS = {
 log = logging.getLogger()
 MASK1 = 0b01000000
 MASK2 = 0b10111111
+
+
+def read_json_conf(filename):
+    try:
+        fp = open(filename, 'r')
+        obj = json.load(fp)
+        if isinstance(obj, dict):
+            return obj
+        log.warning('does not contain JSON dict: %r', filename) 
+    except Exception:
+        log.exception('Error loading JSON conf from %r', filename)
+    return {}
 
 
 def open_ec(sysdir='/sys'):
@@ -133,34 +146,6 @@ def sync_led(fd, airplane_mode):
     write_int(fd, 0xD9, new)
 
 
-def run_loop():
-    old = None
-    restore = {}
-    fp = open_ec()
-    fd = fp.fileno()
-    while True:
-        time.sleep(0.375)
-        keypress = read_int(fd, 0xDB)
-        new = dict(iter_state())
-        if bit6_is_set(keypress):
-            oldlog('Fn+F11 keypress')
-            airplane_mode = any(new.values())
-            sync_led(fd, airplane_mode)
-            if airplane_mode:
-                restore = new
-                old = dict(iter_write_airplane_on())
-            else:
-                old = dict(iter_write_airplane_off(restore))
-            write_int(fd, 0xDB, clear_bit6(keypress))
-            oldlog('airplane_mode: {!r}\n'.format(airplane_mode))
-        elif new != old:
-            oldlog('{!r} != {!r}'.format(new, old))
-            old = new
-            airplane_mode = not any(new.values())
-            sync_led(fd, airplane_mode)
-            oldlog('airplane_mode: {!r}\n'.format(airplane_mode))
-  
-
 class Airplane:
     def __init__(self):
         self.fp = open_ec()
@@ -201,7 +186,6 @@ class Airplane:
             log.info('airplane_mode: %r', airplane_mode)
 
 
-
 def _run_airplane(model):
     if model not in NEEDS_AIRPLANE:
         return
@@ -215,9 +199,6 @@ def run_airplane(model):
         return _run_airplane(model)
     except Exception:
         log.exception('Error calling _run_airplane(%r):', model)
-
-
-
 
 
 class Brightness:
