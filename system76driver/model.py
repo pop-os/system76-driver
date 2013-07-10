@@ -94,6 +94,7 @@ TABLES = {
         'bonp4': 'bonp4',
         'bonp5': 'bonp5',
         'bonx6': 'bonx6',
+        'bonx7': 'bonx7',
         'galu1': 'galu1',
         'gazu1': 'gazu1',
         'gazp6': 'gazp6',

@@ -53,6 +53,13 @@ PRODUCTS = {
             actions.wifi_pm_disable,
         ],
     },
+    'bonx7': {
+        'name': 'Bonobo Extreme',
+        'drivers': [
+            actions.plymouth1080,
+            actions.wifi_pm_disable,
+        ],
+    },
 
     # Darter:
     'daru1': {
