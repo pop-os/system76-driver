@@ -38,6 +38,7 @@ from .mockable import SubProcess
 
 # Products in this frozenset need the airplane mode hack
 NEEDS_AIRPLANE = frozenset([
+    'bonx7',
     'galu1',
     'gazp9',
 ])
