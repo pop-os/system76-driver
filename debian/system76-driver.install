@@ -2,5 +2,5 @@ com.system76.pkexec.system76-driver.policy usr/share/polkit-1/actions/
 system76-driver-pkexec usr/bin/
 system76-daemon usr/lib/system76-driver/
 debian/source_system76-driver.py usr/share/apport/package-hooks/
-old-man-smoked-his-pipe_by_ian-hex_of_lightsweep.jpg usr/share/backgrounds/
+System76_Old-Man-Smoked-His-Pipe_by_Ian-Hex_of_LightSweep.jpg usr/share/backgrounds/
 system76-wallpapers.xml usr/share/gnome-background-properties/
