@@ -281,7 +281,7 @@ def _run_brightness(model):
     if model not in DEFAULT_BRIGHTNESS:
         return
     (name, default) = DEFAULT_BRIGHTNESS[model]
-    brightness = Brightness(name, default)
+    brightness = Brightness(model, name, default)
     brightness.restore()
     brightness.run()
     return brightness
