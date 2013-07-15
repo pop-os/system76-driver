@@ -52,36 +52,36 @@ class TestConstants(TestCase):
 
 
 class TestFunctions(TestCase):
-    def test_read_json_conf(self):
+    def test_load_json_conf(self):
         tmp = TempDir()
         f = tmp.join('system76-daemon.json')
 
         # Missing file:
-        self.assertEqual(daemon.read_json_conf(f), {})
+        self.assertEqual(daemon.load_json_conf(f), {})
 
         # Invalid JSON:
         open(f, 'x').write('invalid json')
-        self.assertEqual(daemon.read_json_conf(f), {})
+        self.assertEqual(daemon.load_json_conf(f), {})
 
         # JSON does not contain a dict:
         open(f, 'w').write(json.dumps(['hello', 'world']))
-        self.assertEqual(daemon.read_json_conf(f), {})
+        self.assertEqual(daemon.load_json_conf(f), {})
 
         # dict is empty:
         open(f, 'w').write(json.dumps({}))
-        self.assertEqual(daemon.read_json_conf(f), {})
+        self.assertEqual(daemon.load_json_conf(f), {})
 
         # dict has stuffs:
         open(f, 'w').write(json.dumps({'foo': 'bar'}))
-        self.assertEqual(daemon.read_json_conf(f), {'foo': 'bar'})
+        self.assertEqual(daemon.load_json_conf(f), {'foo': 'bar'})
 
         # dict has random_stuffs:
         key = random_id()
         value = random_id()
         open(f, 'w').write(json.dumps({key: value}))
-        self.assertEqual(daemon.read_json_conf(f), {key: value})
+        self.assertEqual(daemon.load_json_conf(f), {key: value})
 
-    def test_write_json_conf(self):
+    def test_save_json_conf(self):
         tmp = TempDir()
         name = random_id() + '.json'
         f = tmp.join(name)
@@ -90,7 +90,7 @@ class TestFunctions(TestCase):
         key = random_id()
         value = random_id()
         conf = {'foo': 'bar', key: value}
-        self.assertIsNone(daemon.write_json_conf(f, conf))
+        self.assertIsNone(daemon.save_json_conf(f, conf))
         self.assertEqual(json.load(open(f, 'r')), {'foo': 'bar', key: value})
         self.assertEqual(os.listdir(tmp.dir), [name])
 
@@ -98,12 +98,12 @@ class TestFunctions(TestCase):
         key = random_id()
         value = random_id()
         conf = {'bar': 'baz', key: value}
-        self.assertIsNone(daemon.write_json_conf(f, conf))
+        self.assertIsNone(daemon.save_json_conf(f, conf))
         self.assertEqual(json.load(open(f, 'r')), {'bar': 'baz', key: value})
         self.assertEqual(os.listdir(tmp.dir), [name])
 
         # Empty conf:
-        self.assertIsNone(daemon.write_json_conf(f, {}))
+        self.assertIsNone(daemon.save_json_conf(f, {}))
         self.assertEqual(json.load(open(f, 'r')), {})
         self.assertEqual(os.listdir(tmp.dir), [name])
 

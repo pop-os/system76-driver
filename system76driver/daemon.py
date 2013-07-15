@@ -57,7 +57,7 @@ MASK1 = 0b01000000
 MASK2 = 0b10111111
 
 
-def read_json_conf(filename):
+def load_json_conf(filename):
     try:
         fp = open(filename, 'r')
         obj = json.load(fp)
@@ -69,7 +69,7 @@ def read_json_conf(filename):
     return {}
 
 
-def write_json_conf(filename, obj):
+def save_json_conf(filename, obj):
     assert isinstance(obj, dict)
     tmp = tmp_filename(filename)
     fp = open(tmp, 'x')
@@ -238,7 +238,7 @@ class Brightness:
         open(self.brightness_file, 'w').write(str(brightness))
 
     def load(self):
-        conf = read_json_conf(self.saved_file)
+        conf = load_json_conf(self.saved_file)
         brightness = conf.get(self.model)
         if isinstance(brightness, int) and brightness > 0:
             return brightness
@@ -248,9 +248,9 @@ class Brightness:
     def save(self, brightness):
         assert isinstance(brightness, int)
         assert brightness > 0
-        conf = read_json_conf(self.saved_file)
+        conf = load_json_conf(self.saved_file)
         conf[self.model] = brightness
-        write_json_conf(self.saved_file, conf)
+        save_json_conf(self.saved_file, conf)
 
     def restore(self):
         self.current = self.load()
