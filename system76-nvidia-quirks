@@ -4,7 +4,7 @@ Section "Quirk"
     Match "sys_vendor" "System76, Inc."
     XorgSnippet
         Section "Device"
-            Identifier "My Card"
+            Identifier "System76 nVidia Card"
             Driver "nvidia"
             Option "NoLogo" "True"
         EndSection
