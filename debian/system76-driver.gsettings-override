@@ -10,3 +10,5 @@ display-line-numbers = true
 display-right-margin = true
 highlight-current-line = true
 
+[org.gnome.desktop.background]
+picture-uri = 'file:///usr/share/backgrounds/old-man-smoked-his-pipe_by_ian-hex_of_lightsweep.jpg'
