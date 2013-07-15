@@ -1,0 +1,12 @@
+Section "Quirk"
+    Identifier "System76 PC"
+    Handler "nvidia-313-updates"
+    Match "sys_vendor" "System76, Inc."
+    XorgSnippet
+        Section "Device"
+            Identifier "My Card"
+            Driver "nvidia"
+            Option "NoLogo" "True"
+        EndSection
+    EndXorgSnippet
+EndSection

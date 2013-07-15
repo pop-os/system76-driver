@@ -29,7 +29,7 @@ Description: Universal driver for System76 computers
 
 Package: system76-driver-nvidia
 Architecture: all
-Depends: nvidia-313-updates
+Depends: nvidia-313-updates, ubuntu-drivers-common
 Conflicts: nvidia-current-updates
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
