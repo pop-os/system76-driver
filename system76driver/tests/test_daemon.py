@@ -23,6 +23,7 @@ Unit tests for `system76driver.airplane` module.
 
 from unittest import TestCase
 import os
+from os import path
 import io
 import json
 
@@ -369,3 +370,30 @@ class TestBrightness(TestCase):
             {'gazp9': 69, 'galu1': 70}
         )
         self.assertEqual(inst.load(), 69)
+
+    def test_restore(self):
+        tmp = TempDir()
+        backlight_dir = tmp.makedirs('sys', 'class', 'backlight')
+        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+
+        # Missing 'intel_backlight' directory:
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.restore()
+        self.assertEqual(cm.exception.filename, inst.brightness_file)
+        self.assertEqual(inst.current, 638)
+        self.assertFalse(path.exists(inst.brightness_file))
+        self.assertFalse(path.exists(path.join(backlight_dir, 'intel_backlight')))
+
+        # Missing brightness file:
+        tmp.mkdir('sys', 'class', 'backlight', 'intel_backlight')
+        self.assertTrue(path.exists(path.join(backlight_dir, 'intel_backlight')))
+        self.assertIsNone(inst.restore())
+        self.assertEqual(inst.current, 638)
+        self.assertEqual(open(inst.brightness_file, 'r').read(), '638')
+
+        # With a saved brightness value:
+        tmp.makedirs('var', 'lib', 'system76-driver')
+        json.dump({'gazp9': 1776}, open(inst.saved_file, 'w'))
+        self.assertIsNone(inst.restore())
+        self.assertEqual(inst.current, 1776)
+        self.assertEqual(open(inst.brightness_file, 'r').read(), '1776')

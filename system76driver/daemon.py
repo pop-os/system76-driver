@@ -256,6 +256,12 @@ class Brightness:
     def restore(self):
         self.current = self.load()
         log.info('restoring brightness to %d', self.current)
+        if not path.exists(self.brightness_file):
+            for i in range(10):
+                log.warning('Waiting for %r', self.brightness_file)
+                time.sleep(0.1)
+                if path.exists(self.brightness_file):
+                    break
         self.write(self.current)
 
     def run(self):
