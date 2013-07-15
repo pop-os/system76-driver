@@ -215,9 +215,10 @@ def run_airplane(model):
 
 
 class Brightness:
-    def __init__(self, name, default, rootdir='/'):
+    def __init__(self, model, name, default, rootdir='/'):
         assert isinstance(default, int)
         assert default > 0
+        self.model = model
         self.name = name
         self.default = default
         self.current = None
@@ -225,7 +226,7 @@ class Brightness:
             'sys', 'class', 'backlight', name, 'brightness'
         )
         self.saved_file = path.join(rootdir,
-            'var', 'lib', 'system76-driver', 'brightness'
+            'var', 'lib', 'system76-driver', 'brightness.json'
         )
 
     def read(self):
@@ -237,19 +238,19 @@ class Brightness:
         open(self.brightness_file, 'w').write(str(brightness))
 
     def load(self):
-        try:
-            brightness = int(open(self.saved_file, 'r').read())
-            if brightness > 0:
-                return brightness
-        except (FileNotFoundError, ValueError):
-            pass
-        log.info('restoring with default brightness')
+        conf = read_json_conf(self.saved_file)
+        brightness = conf.get(self.model)
+        if isinstance(brightness, int) and brightness > 0:
+            return brightness
+        log.info('restoring with default brightness of %r', self.default)
         return self.default
 
     def save(self, brightness):
         assert isinstance(brightness, int)
         assert brightness > 0
-        open(self.saved_file, 'w').write(str(brightness))
+        conf = read_json_conf(self.saved_file)
+        conf[self.model] = brightness
+        write_json_conf(self.saved_file, conf)
 
     def restore(self):
         self.current = self.load()

@@ -236,19 +236,21 @@ class TestFunctions(TestCase):
 
 class TestBrightness(TestCase):
     def test_init(self):
-        inst = daemon.Brightness('intel_backlight', 638)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', 690)
+        self.assertEqual(inst.model, 'gazp9')
         self.assertEqual(inst.name, 'intel_backlight')
-        self.assertEqual(inst.default, 638)
+        self.assertEqual(inst.default, 690)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.brightness_file,
             '/sys/class/backlight/intel_backlight/brightness'
         )
         self.assertEqual(inst.saved_file,
-            '/var/lib/system76-driver/brightness'
+            '/var/lib/system76-driver/brightness.json'
         )
 
         tmp = TempDir()
-        inst = daemon.Brightness('acpi_video0', 82, rootdir=tmp.dir)
+        inst = daemon.Brightness('sabc1', 'acpi_video0', 82, rootdir=tmp.dir)
+        self.assertEqual(inst.model, 'sabc1')
         self.assertEqual(inst.name, 'acpi_video0')
         self.assertEqual(inst.default, 82)
         self.assertIsNone(inst.current)
@@ -256,12 +258,12 @@ class TestBrightness(TestCase):
             tmp.join('sys', 'class', 'backlight', 'acpi_video0', 'brightness')
         )
         self.assertEqual(inst.saved_file,
-            tmp.join('var', 'lib', 'system76-driver', 'brightness')
+            tmp.join('var', 'lib', 'system76-driver', 'brightness.json')
         )
 
     def test_read(self):
         tmp = TempDir()
-        inst = daemon.Brightness('intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -292,7 +294,7 @@ class TestBrightness(TestCase):
 
     def test_write(self):
         tmp = TempDir()
-        inst = daemon.Brightness('intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -313,50 +315,57 @@ class TestBrightness(TestCase):
     def test_load(self):
         tmp = TempDir()
         tmp.makedirs('var', 'lib', 'system76-driver')
-        inst = daemon.Brightness('intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
 
         # No file
         self.assertEqual(inst.load(), 638)
 
         # Bad value in file
-        open(inst.saved_file, 'x').write('no int here')
+        open(inst.saved_file, 'x').write('no json here')
         self.assertEqual(inst.load(), 638)
-        open(inst.saved_file, 'w').write('17.69')
+        open(inst.saved_file, 'w').write(json.dumps({'gazp9': 17.69}))
         self.assertEqual(inst.load(), 638)
 
         # Less than or equal to zero
-        open(inst.saved_file, 'w').write('-1')
+        open(inst.saved_file, 'w').write(json.dumps({'gazp9': -1}))
         self.assertEqual(inst.load(), 638)
-        open(inst.saved_file, 'w').write('0')
+        open(inst.saved_file, 'w').write(json.dumps({'gazp9': -1}))
         self.assertEqual(inst.load(), 638)
 
         # One and other good values
-        open(inst.saved_file, 'w').write('1')
+        open(inst.saved_file, 'w').write(json.dumps({'gazp9': 1}))
         self.assertEqual(inst.load(), 1)
-        open(inst.saved_file, 'w').write('1054')
-        self.assertEqual(inst.load(), 1054)
-
-        open(inst.saved_file, 'w').write('1\n')
-        self.assertEqual(inst.load(), 1)
-        open(inst.saved_file, 'w').write('1054\n')
+        open(inst.saved_file, 'w').write(json.dumps({'gazp9': 1054}))
         self.assertEqual(inst.load(), 1054)
 
     def test_save(self):
         tmp = TempDir()
-        inst = daemon.Brightness('intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
             inst.save(303)
-        self.assertEqual(cm.exception.filename, inst.saved_file)
+        self.assertTrue(cm.exception.filename.startswith(inst.saved_file + '.'))
 
         # No file:
         tmp.makedirs('var', 'lib', 'system76-driver')
         self.assertIsNone(inst.save(303))
-        self.assertEqual(open(inst.saved_file, 'r').read(), '303')
+        self.assertEqual(json.load(open(inst.saved_file, 'r')), {'gazp9': 303})
         self.assertEqual(inst.load(), 303)
 
         # Existing file:
+        json.dump({'galu1': 70}, open(inst.saved_file, 'w'))
         self.assertIsNone(inst.save(76))
-        self.assertEqual(open(inst.saved_file, 'r').read(), '76')
+        self.assertEqual(
+            json.load(open(inst.saved_file, 'r')),
+            {'gazp9': 76, 'galu1': 70}
+        )
         self.assertEqual(inst.load(), 76)
+
+        # Existing file with existing 'gazp9' entry:
+        self.assertIsNone(inst.save(69))
+        self.assertEqual(
+            json.load(open(inst.saved_file, 'r')),
+            {'gazp9': 69, 'galu1': 70}
+        )
+        self.assertEqual(inst.load(), 69)
