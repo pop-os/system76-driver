@@ -81,6 +81,32 @@ class TestFunctions(TestCase):
         open(f, 'w').write(json.dumps({key: value}))
         self.assertEqual(daemon.read_json_conf(f), {key: value})
 
+    def test_write_json_conf(self):
+        tmp = TempDir()
+        name = random_id() + '.json'
+        f = tmp.join(name)
+
+        # No pre-existing file:
+        key = random_id()
+        value = random_id()
+        conf = {'foo': 'bar', key: value}
+        self.assertIsNone(daemon.write_json_conf(f, conf))
+        self.assertEqual(json.load(open(f, 'r')), {'foo': 'bar', key: value})
+        self.assertEqual(os.listdir(tmp.dir), [name])
+
+        # Pre-existing file:
+        key = random_id()
+        value = random_id()
+        conf = {'bar': 'baz', key: value}
+        self.assertIsNone(daemon.write_json_conf(f, conf))
+        self.assertEqual(json.load(open(f, 'r')), {'bar': 'baz', key: value})
+        self.assertEqual(os.listdir(tmp.dir), [name])
+
+        # Empty conf:
+        self.assertIsNone(daemon.write_json_conf(f, {}))
+        self.assertEqual(json.load(open(f, 'r')), {})
+        self.assertEqual(os.listdir(tmp.dir), [name])
+
     def test_open_ec(self):
         SubProcess.reset(mocking=True)
         tmp = TempDir()

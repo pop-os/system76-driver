@@ -34,6 +34,7 @@ import json
 from gi.repository import GLib
 
 from .mockable import SubProcess
+from .actions import tmp_filename
 
 
 # Products in this frozenset need the airplane mode hack
@@ -66,6 +67,17 @@ def read_json_conf(filename):
     except Exception:
         log.exception('Error loading JSON conf from %r', filename)
     return {}
+
+
+def write_json_conf(filename, obj):
+    assert isinstance(obj, dict)
+    tmp = tmp_filename(filename)
+    fp = open(tmp, 'x')
+    json.dump(obj, fp, sort_keys=True, separators=(',',': '), indent=4)
+    fp.flush()
+    os.fsync(fp.fileno())
+    os.rename(tmp, filename)
+    fp.close()
 
 
 def open_ec(sysdir='/sys'):

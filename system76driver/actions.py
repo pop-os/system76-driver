@@ -53,6 +53,8 @@ def random_id(numbytes=15):
     return b32encode(os.urandom(numbytes)).decode('utf-8')
 
 
+# FIXME: Should relocate these functions to a common file with just what's used
+# by both `actions` and `daemon`.
 def tmp_filename(filename):
     return '.'.join([filename, random_id()])
 
