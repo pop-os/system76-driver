@@ -56,7 +56,7 @@ PRODUCTS = {
     'bonx7': {
         'name': 'Bonobo Extreme',
         'drivers': [
-            actions.plymouth1080,
+            #actions.plymouth1080,
             actions.wifi_pm_disable,
         ],
     },
