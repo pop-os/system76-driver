@@ -22,9 +22,11 @@ Unit test for the `system76driver` package.
 """
 
 from unittest import TestCase
+import os
 from os import path
 from subprocess import check_call
 
+from system76driver.products import PRODUCTS
 import system76driver
 
 
@@ -72,3 +74,20 @@ class TestScripts(TestCase):
         Test the `system76-daemon` CLI script.
         """
         self.check_script('system76-daemon')
+
+
+class TestDataFiles(TestCase):
+    def iter_data_files(self, callback):
+        for name in sorted(os.listdir(system76driver.datadir)):
+            fullname = path.join(system76driver.datadir, name)
+            self.assertTrue(path.isfile(fullname))
+            if callback(name):
+                yield (name, fullname)
+
+    def test_icc(self):
+        for (name, fullname) in self.iter_data_files(lambda n: n.endswith('.icc')):
+            self.assertTrue(name.endswith('.icc'))
+            (prefix, model, *rest) = name.split('-')
+            self.assertEqual(prefix, 'system76')
+            self.assertIn(model, PRODUCTS)
+
