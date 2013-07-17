@@ -56,8 +56,9 @@ PRODUCTS = {
     'bonx7': {
         'name': 'Bonobo Extreme',
         'drivers': [
-            #actions.plymouth1080,
+            #actions.plymouth1080,  # Causes problems with nvidia-313-updates
             actions.wifi_pm_disable,
+            actions.bonx7_icc,
         ],
     },
 
