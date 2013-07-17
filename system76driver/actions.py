@@ -406,3 +406,50 @@ class galu1_icc(ColorAction):
     profiles = {
         '1fcfbf3269ba92bdeb2f8a009f7894ef': 'system76-galu1-ips-matte.icc',
     }
+
+
+class NvidiaColorAction(Action):
+    profiles = {}
+
+    def describe(self):
+        return _('Install ICC color profile for display')
+
+    def get_isneeded(self):
+        return True
+
+    def atomic_write(self, icc, dst):
+        log.info('writting file %r', dst)
+        self.tmp = path.join('/var/tmp', random_id() + '.icc')
+        fp = open(self.tmp, 'xb')
+        fp.write(icc)
+        fp.flush()
+        os.fsync(fp.fileno())
+        os.rename(self.tmp, dst)
+
+    def perform(self):
+        colord = get_object('/org/freedesktop/ColorManager', NAME)
+        for device_obj in colord.GetDevicesByKind('display'):
+            device = get_device(device_obj)
+            device_id = get_prop(device, DEVICE, 'DeviceId')
+            if device_id in self.profiles:
+                log.info('found matching DeviceID %r', device_id)
+                name = self.profiles[device_id]
+                src = get_datafile(name)
+                dst = get_profile_dst(name)
+                icc = open(src, 'rb').read()
+                self.atomic_write(icc, dst)
+                time.sleep(4)  # Give colord time to see the profile
+                profile_obj = get_profile_obj(colord, dst)
+                log.info('Profile: %r', profile_obj)
+                try:
+                    device.AddProfile('hard', profile_obj)
+                except dbus.DBusException:
+                    log.warning('profile likely was already added to device')
+                break
+
+
+class bonx7_icc(NvidiaColorAction):
+    profiles = {
+        'xrandr-Chi Mei Optoelectronics corp.': 'system76-bonx7-matte.icc',
+        'xrandr-AU Optronics': 'system76-bonx7-glossy.icc',
+    }
