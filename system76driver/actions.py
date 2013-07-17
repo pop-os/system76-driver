@@ -450,5 +450,6 @@ class NvidiaColorAction(Action):
 
 class bonx7_icc(NvidiaColorAction):
     profiles = {
-        'xrandr-Chi Mei Optoelectronics corp.': 'system76-bonx7-glossy.icc',
+        'xrandr-Chi Mei Optoelectronics corp.': 'system76-bonx7-matte.icc',
+        'xrandr-AU Optronics': 'system76-bonx7-glossy.icc',
     }
