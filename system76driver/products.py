@@ -60,6 +60,11 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.bonx7_icc,
         ],
+        'screens': {
+            'c73b258ef528c02b30beb0c8a35ef93c': 'matte',
+            'feeb71dac035e4d9184b0c39ca189eb4': 'glossy',
+            
+        }
     },
 
     # Darter:
@@ -83,6 +88,9 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.galu1_icc,
         ],
+        'screens': {
+            '1fcfbf3269ba92bdeb2f8a009f7894ef': 'IPS matte ColorPro',
+        }
     },
 
     # Gazelle:
@@ -127,6 +135,10 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.gazp9_icc,
         ],
+        'screens': {
+            '38306ee6ae5ccf81d2951aa95ae823f4': 'system76-gazp9-glossy.icc',
+            '6c4c6b27d0a90b99322e487510455230': 'system76-gazp9-ips-matte.icc',
+        },
     },
     'gazu1': {
         'name': 'Gazelle Ultra',

@@ -45,3 +45,9 @@ class TestConstants(TestCase):
                 self.assertIsInstance(text, str)
                 self.assertTrue(text, text)
 
+            if 'screens' in value:
+                screens = value['screens']
+                self.assertIsInstance(screens, dict)
+                for (edid_md5, description) in screens.items():
+                    self.assertIsInstance(edid_md5, str)
+                    self.assertIsInstance(description, str)
