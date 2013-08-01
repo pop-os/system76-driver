@@ -34,6 +34,31 @@ KEYWORDS = (
     'system-version',
 )
 
+ALL_KEYWORDS = (
+    'baseboard-asset-tag',
+    'baseboard-manufacturer',
+    'baseboard-product-name',
+    'baseboard-serial-number',
+    'baseboard-version',
+    'bios-release-date',
+    'bios-vendor',
+    'bios-version',
+    'chassis-asset-tag',
+    'chassis-manufacturer',
+    'chassis-serial-number',
+    'chassis-type',
+    'chassis-version',
+    'processor-family',
+    'processor-frequency',
+    'processor-manufacturer',
+    'processor-version',
+    'system-manufacturer',
+    'system-product-name',
+    'system-serial-number',
+    'system-uuid',
+    'system-version',
+)
+
 TABLES = {
     'system-uuid': {
         '00000000-0000-0000-0000-000000000001': 'koap1',
@@ -150,6 +175,12 @@ def dmidecode(keyword):
 def get_dmi_info():
     return dict(
         (keyword, dmidecode(keyword)) for keyword in KEYWORDS
+    )
+
+
+def get_all_dmi_info():
+    return dict(
+        (keyword, dmidecode(keyword)) for keyword in ALL_KEYWORDS
     )
 
 
