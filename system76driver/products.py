@@ -277,6 +277,10 @@ PRODUCTS = {
         'name': 'Ratel Performance',
         'drivers': [],
     },
+    'ratp2': {
+        'name': 'Ratel Performance',
+        'drivers': [],
+    },
     'ratu1': {
         'name': 'Ratel Ultra',
         'drivers': [],
@@ -420,6 +424,10 @@ PRODUCTS = {
         'drivers': [],
     },
     'wilp9': {
+        'name': 'Wild Dog Performance',
+        'drivers': [],
+    },
+    'wilp10': {
         'name': 'Wild Dog Performance',
         'drivers': [],
     },
