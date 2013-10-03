@@ -80,6 +80,12 @@ PRODUCTS = {
         'name': 'Darter Ultra',
         'drivers': [],
     },
+    'daru4': {
+        'name': 'Darter Ultra',
+        'drivers': [
+            actions.backlight_vendor,
+        ],
+    },
 
     # Galago:
     'galu1': {

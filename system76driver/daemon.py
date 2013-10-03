@@ -40,6 +40,7 @@ from .actions import tmp_filename
 # Products in this frozenset need the airplane mode hack
 NEEDS_AIRPLANE = frozenset([
     'bonx7',
+    'daru4',
     'galu1',
     'gazp9',
 ])
@@ -47,6 +48,7 @@ NEEDS_AIRPLANE = frozenset([
 # Products in this dict need the brightness hack
 DEFAULT_BRIGHTNESS = {
     'bonx7': ('acpi_video0', 64),
+    'daru4': ('intel_backlight', 661),
     'galu1': ('acpi_video0', 70),
     'gazp9': ('intel_backlight', 690),
     'sabc1': ('acpi_video0', 82),
