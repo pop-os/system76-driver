@@ -2,7 +2,7 @@
 scroll-method = "two-finger-scrolling"
 tap-to-click = false
 
-[org.compiz.profiles.unity.profiles.core]
+[org.compiz.profiles.unity.plugins.core]
 hsize = 2
 vsize = 2
 
