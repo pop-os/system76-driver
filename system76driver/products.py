@@ -84,6 +84,7 @@ PRODUCTS = {
         'name': 'Darter Ultra',
         'drivers': [
             actions.backlight_vendor,
+            actions.internal_mic_gain,
         ],
     },
 
@@ -92,6 +93,7 @@ PRODUCTS = {
         'name': 'Galago UltraPro',
         'drivers': [
             actions.wifi_pm_disable,
+            actions.internal_mic_gain,
             actions.galu1_icc,
         ],
         'screens': {
