@@ -1,5 +1,5 @@
-system76-driver (13.04.11) raring; urgency=low
+system76-driver (13.10.0) saucy; urgency=low
 
-  * Release
+  * Start 13.10 series, initial Saucy release
 
- -- Jason Gerard DeRose <jason@system76.com>  Tue, 10 Sep 2013 17:12:36 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 10 Oct 2013 21:40:53 -0600
