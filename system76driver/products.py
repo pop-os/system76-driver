@@ -81,7 +81,7 @@ PRODUCTS = {
         'drivers': [],
     },
     'daru4': {
-        'name': 'Darter Ultra',
+        'name': 'Darter UltraThin',
         'drivers': [
             actions.backlight_vendor,
             actions.internal_mic_gain,
