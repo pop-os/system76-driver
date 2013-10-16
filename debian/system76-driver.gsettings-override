@@ -1,5 +1,4 @@
 [org.gnome.settings-daemon.peripherals.touchpad]
-scroll-method = "two-finger-scrolling"
 tap-to-click = false
 
 [com.canonical.indicator.keyboard]
