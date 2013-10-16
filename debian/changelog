@@ -1,8 +1,10 @@
 system76-driver (13.10.1) saucy; urgency=low
 
-  * FILL ME IN
+  * gsettings-override changes:
+    - Don't show input source in the menu bar by default
+    - Two-finger scrolling is on by default in 13.10, no need for override
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 10 Oct 2013 21:47:17 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 15 Oct 2013 20:57:03 -0600
 
 system76-driver (13.10.0) saucy; urgency=low
 
