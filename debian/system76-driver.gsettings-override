@@ -2,6 +2,9 @@
 scroll-method = "two-finger-scrolling"
 tap-to-click = false
 
+[com.canonical.indicator.keyboard]
+visible=false
+
 [org.gnome.gedit.preferences.editor]
 tabs-size = 4
 insert-spaces = true
