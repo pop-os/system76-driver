@@ -1,3 +1,9 @@
+system76-driver (13.10.2) saucy; urgency=low
+
+  * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 15 Oct 2013 21:10:54 -0600
+
 system76-driver (13.10.1) saucy; urgency=low
 
   * gsettings-override changes:
