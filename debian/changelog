@@ -1,8 +1,8 @@
 system76-driver (13.10.2) saucy; urgency=low
 
-  * FILL ME IN
+  * Oops, bad side effects from hiding input source indicator
 
- -- Jason Gerard DeRose <jason@system76.com>  Tue, 15 Oct 2013 21:10:54 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 18 Oct 2013 16:25:20 -0600
 
 system76-driver (13.10.1) saucy; urgency=low
 
