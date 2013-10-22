@@ -378,11 +378,12 @@ class ColorAction(Action):
         return True
 
     def atomic_write(self, icc, dst):
-        self.tmp = path.join('/var/tmp', random_id())
+        self.tmp = path.join(ICC, random_id())
         fp = open(self.tmp, 'xb')
         fp.write(icc)
         fp.flush()
         os.fsync(fp.fileno())
+        fp.close()
         os.rename(self.tmp, dst)
 
     def perform(self):
@@ -436,11 +437,12 @@ class NvidiaColorAction(Action):
 
     def atomic_write(self, icc, dst):
         log.info('writting file %r', dst)
-        self.tmp = path.join('/var/tmp', random_id() + '.icc')
+        self.tmp = path.join(ICC, random_id())
         fp = open(self.tmp, 'xb')
         fp.write(icc)
         fp.flush()
         os.fsync(fp.fileno())
+        fp.close()
         os.rename(self.tmp, dst)
 
     def perform(self):
