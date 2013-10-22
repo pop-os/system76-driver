@@ -1,8 +1,9 @@
 system76-driver (13.10.3) saucy; urgency=low
 
-  * FILL ME IN
+  * Fix Color Profile actions for cases when /var/tmp and /var/lib are on
+    different filesystems (eg, /var/tmp on a tmpfs)
 
- -- Jason Gerard DeRose <jason@system76.com>  Tue, 22 Oct 2013 13:23:37 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 22 Oct 2013 16:36:30 -0600
 
 system76-driver (13.10.2) saucy; urgency=low
 
