@@ -358,18 +358,8 @@ def get_profile_obj(colord, filename):
     return colord.FindProfileByFilename(filename)
 
 
-class ColorAction(Action):
-    _edid_md5 = None
-    model = 'override this is subclasses'
+class BaseColorAction(Action):
     profiles = {}
-
-    @property
-    def edid_md5(self):
-        if self._edid_md5 is None:
-            self._edid_md5 = get_edid_md5()
-            log.info('edid md5: %r', self._edid_md5)
-        assert isinstance(self._edid_md5, str)
-        return self._edid_md5
 
     def describe(self):
         return _('Install ICC color profile for display')
@@ -378,13 +368,28 @@ class ColorAction(Action):
         return True
 
     def atomic_write(self, icc, dst):
-        self.tmp = path.join(ICC, random_id())
+        self.tmp = path.join(path.dirname(dst), random_id())
+        log.info('writing to %r', self.tmp)
         fp = open(self.tmp, 'xb')
         fp.write(icc)
         fp.flush()
         os.fsync(fp.fileno())
         fp.close()
+        log.info('renaming %r to %r', self.tmp, dst)
         os.rename(self.tmp, dst)
+
+
+class ColorAction(BaseColorAction):
+    _edid_md5 = None
+    model = 'override this is subclasses'
+
+    @property
+    def edid_md5(self):
+        if self._edid_md5 is None:
+            self._edid_md5 = get_edid_md5()
+            log.info('edid md5: %r', self._edid_md5)
+        assert isinstance(self._edid_md5, str)
+        return self._edid_md5
 
     def perform(self):
         if self.edid_md5 not in self.profiles:
@@ -426,25 +431,7 @@ class galu1_icc(ColorAction):
     }
 
 
-class NvidiaColorAction(Action):
-    profiles = {}
-
-    def describe(self):
-        return _('Install ICC color profile for display')
-
-    def get_isneeded(self):
-        return True
-
-    def atomic_write(self, icc, dst):
-        log.info('writting file %r', dst)
-        self.tmp = path.join(ICC, random_id())
-        fp = open(self.tmp, 'xb')
-        fp.write(icc)
-        fp.flush()
-        os.fsync(fp.fileno())
-        fp.close()
-        os.rename(self.tmp, dst)
-
+class NvidiaColorAction(BaseColorAction):
     def perform(self):
         colord = get_object('/org/freedesktop/ColorManager', NAME)
         for device_obj in colord.GetDevicesByKind('display'):

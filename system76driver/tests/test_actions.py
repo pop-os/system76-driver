@@ -23,6 +23,7 @@ Unit tests for `system76driver.actions` module.
 
 from unittest import TestCase
 import os
+from os import path
 import stat
 from base64 import b32decode, b32encode
 
@@ -981,3 +982,24 @@ class Test_internal_mic_gain(TestCase):
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
+
+class TestBaseColorAction(TestCase):
+    def test_describe(self):
+        inst = actions.BaseColorAction()
+        self.assertEqual(inst.describe(),
+            'Install ICC color profile for display'
+        )
+
+    def test_is_needed(self):
+        inst = actions.BaseColorAction()
+        self.assertIs(inst.get_isneeded(), True)
+
+    def test_atomic_write(self):
+        inst = actions.BaseColorAction()
+        tmp = TempDir()
+        icc = os.urandom(100)
+        dst = tmp.join('system76-gazp9-ips-matte.icc')
+        self.assertIsNone(inst.atomic_write(icc, dst))
+        self.assertFalse(path.exists(inst.tmp))
+        self.assertEqual(path.dirname(inst.tmp), tmp.dir)
+        self.assertEqual(open(dst, 'rb').read(), icc)
