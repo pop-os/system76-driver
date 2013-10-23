@@ -1,6 +1,6 @@
 system76-driver (13.10.4) saucy; urgency=low
 
-  * FILL ME IN
+  * Enable Radeon GPU power management on panp7 via radeon.dpm=1 boot param
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 22 Oct 2013 16:42:28 -0600
 

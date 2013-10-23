@@ -257,13 +257,24 @@ class lemu1(GrubAction):
 
 class backlight_vendor(GrubAction):
     """
-    Added acpi_backlight=vendor to GRUB_CMDLINE_LINUX_DEFAULT (for gazp9).
+    Add acpi_backlight=vendor to GRUB_CMDLINE_LINUX_DEFAULT (for gazp9).
     """
 
     extra = ('acpi_backlight=vendor',)
 
     def describe(self):
         return _('Enable brightness hot keys')
+
+
+class radeon_dpm(GrubAction):
+    """
+    Add radeon.dpm=1 to GRUB_CMDLINE_LINUX_DEFAULT (for panp7).
+    """
+
+    extra = ('radeon.dpm=1',)
+
+    def describe(self):
+        return _('Enable Radeon GPU power management')
 
 
 class plymouth1080(Action):

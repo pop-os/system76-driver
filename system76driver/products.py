@@ -261,7 +261,9 @@ PRODUCTS = {
     },
     'panp7': {
         'name': 'Pangolin Performance',
-        'drivers': [],
+        'drivers': [
+            actions.radeon_dpm,
+        ],
     },
     'panp8': {
         'name': 'Pangolin Performance',
