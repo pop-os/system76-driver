@@ -1,8 +1,9 @@
 system76-driver (13.10.4) saucy; urgency=low
 
   * Enable Radeon GPU power management on panp7 via radeon.dpm=1 boot param
+  * Add "kudp1" to PRODUCTS, NEEDS_AIRPLANE, DEFAULT_BRIGHTNESS
 
- -- Jason Gerard DeRose <jason@system76.com>  Tue, 22 Oct 2013 16:42:28 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 06 Nov 2013 14:06:30 -0700
 
 system76-driver (13.10.3) saucy; urgency=low
 

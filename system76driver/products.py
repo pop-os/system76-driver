@@ -181,6 +181,12 @@ PRODUCTS = {
         'drivers': [],
     },
 
+    # Kudu:  
+    'kudp1': {
+        'name': 'Kudu Professional',
+        'drivers': [],
+    },
+
     # Lemur:
     'lemu1': {
         'name': 'Lemur UltraThin',
