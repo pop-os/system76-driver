@@ -33,8 +33,7 @@ import logging
 
 from gi.repository import GLib
 
-from system76driver.model import dmidecode
-from system76driver.daemon import run_airplane, run_brightness, load_json_conf
+from system76driver import daemon
 
 
 logging.basicConfig(
@@ -44,20 +43,31 @@ logging.basicConfig(
 )
 log = logging.getLogger()
 GLib.threads_init()
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', help='force model rather than detecting it')
+parser.add_argument('--debug', action='store_true', default=False,
+    help='print loaded modules',
+)
+
 args = parser.parse_args()
 if os.getuid() != 0:
     sys.exit('Error: system76-daemon must be run as root')
 
 log.info('**** Process start at monotonic time %r', start_time)
 if not args.model:
-    _model = load_json_conf('/etc/system76-daemon.json').get('model')
-    args.model = (_model or dmidecode('system-version'))
+    model = daemon.load_json_conf('/etc/system76-daemon.json').get('model')
+    args.model = (model or daemon.get_model())
+
 
 log.info('model: %s', args.model)
-brightness = run_brightness(args.model)
-airplane = run_airplane(args.model)
+brightness = daemon.run_brightness(args.model)
+airplane = daemon.run_airplane(args.model)
 
 mainloop = GLib.MainLoop()
+if args.debug:
+    names = sorted(sys.modules)
+    for name in names:
+        print(name)
+    print(len(names))
 mainloop.run()
