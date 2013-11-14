@@ -52,9 +52,8 @@ if os.getuid() != 0:
 
 log.info('**** Process start at monotonic time %r', start_time)
 if not args.model:
-    #_model = load_json_conf('/etc/system76-daemon.json').get('model')
-    #args.model = (_model or dmidecode('system-version'))
-    args.model = dmidecode('system-version')
+    _model = load_json_conf('/etc/system76-daemon.json').get('model')
+    args.model = (_model or dmidecode('system-version'))
 
 log.info('model: %s', args.model)
 brightness = run_brightness(args.model)

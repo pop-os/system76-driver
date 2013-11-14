@@ -65,12 +65,18 @@ MASK2 = 0b10111111
 def load_json_conf(filename):
     try:
         fp = open(filename, 'r')
+    except FileNotFoundError:
+        return {}
+
+    try:
         obj = json.load(fp)
-        if isinstance(obj, dict):
-            return obj
-        log.warning('does not contain JSON dict: %r', filename) 
     except Exception:
         log.exception('Error loading JSON conf from %r', filename)
+        return {}
+
+    if isinstance(obj, dict):
+        return obj
+    log.warning('does not contain JSON dict: %r', filename) 
     return {}
 
 
