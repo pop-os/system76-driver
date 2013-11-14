@@ -23,11 +23,13 @@
 Test Airplane Mode workaround.
 """
 
+import time
+start_time = time.monotonic()
+
 import argparse
 import os
 import sys
 import logging
-import time
 
 from gi.repository import GLib
 
@@ -42,24 +44,21 @@ logging.basicConfig(
 )
 log = logging.getLogger()
 GLib.threads_init()
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', help='force model rather than detecting it')
 args = parser.parse_args()
 if os.getuid() != 0:
     sys.exit('Error: system76-daemon must be run as root')
 
-
+log.info('**** Process start at monotonic time %r', start_time)
 if not args.model:
-    _model = load_json_conf('/etc/system76-daemon.json').get('model')
-    args.model = (_model or dmidecode('system-version'))
+    #_model = load_json_conf('/etc/system76-daemon.json').get('model')
+    #args.model = (_model or dmidecode('system-version'))
+    args.model = dmidecode('system-version')
 
-
-log.info('** Process start at monotonic time %r', time.monotonic())
 log.info('model: %s', args.model)
 brightness = run_brightness(args.model)
 airplane = run_airplane(args.model)
-
 
 mainloop = GLib.MainLoop()
 mainloop.run()

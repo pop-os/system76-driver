@@ -206,7 +206,9 @@ class Airplane:
 
 def _run_airplane(model):
     if model not in NEEDS_AIRPLANE:
+        log.info('Airplane mode hack not needed for %r', model)
         return
+    log.info('Enabling airplane mode hack %r', model)
     airplane_mode = Airplane()
     airplane_mode.run()
     return airplane_mode
@@ -267,6 +269,7 @@ class Brightness:
                 if path.exists(self.brightness_file):
                     break
         self.write(self.current)
+        log.info('brightness after restore: %d', self.read())
 
     def run(self):
         self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
@@ -290,7 +293,9 @@ class Brightness:
 
 def _run_brightness(model):
     if model not in DEFAULT_BRIGHTNESS:
+        log.info('Brightness hack not needed for %r', model)
         return
+    log.info('Enabling brightness hack for %r', model)
     (name, default) = DEFAULT_BRIGHTNESS[model]
     brightness = Brightness(model, name, default)
     brightness.restore()
