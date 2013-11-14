@@ -52,7 +52,7 @@ DEFAULT_BRIGHTNESS = {
     'daru4': ('intel_backlight', 569),
     'galu1': ('acpi_video0', 70),
     'gazp9': ('intel_backlight', 690),
-    'kudp1': ('intel_backlight', 652),
+    'kudp1': ('acpi_video0', 64),
     'sabc1': ('acpi_video0', 82),
 }
 
@@ -212,7 +212,7 @@ def _run_airplane(model):
     if model not in NEEDS_AIRPLANE:
         log.info('Airplane mode hack not needed for %r', model)
         return
-    log.info('Enabling airplane mode hack %r', model)
+    log.info('Enabling airplane mode hack for %r', model)
     airplane_mode = Airplane()
     airplane_mode.run()
     return airplane_mode
