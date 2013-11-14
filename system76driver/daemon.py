@@ -26,7 +26,6 @@ In the near future this will be replaced with a kernel driver to do the same.
 import time
 import os
 from os import path
-import sys
 import logging
 import json
 
