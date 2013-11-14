@@ -4,6 +4,8 @@ system76-driver (13.10.4) saucy; urgency=low
   * Add "kudp1" to PRODUCTS, NEEDS_AIRPLANE, DEFAULT_BRIGHTNESS
   * Fix brightness restore for Haswell gen products on Saucy (system76-daemon
     now starts on "login-session-start" rather than "local-filesystems")
+  * Reduce system76-daemon memory usage via a bit of refactoring in order to
+    avoid importing needless Python modules (26 fewer modules now!)
 
  -- Jason Gerard DeRose <jason@system76.com>  Thu, 14 Nov 2013 13:05:09 -0700
 
