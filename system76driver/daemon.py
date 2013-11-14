@@ -67,13 +67,11 @@ def load_json_conf(filename):
         fp = open(filename, 'r')
     except FileNotFoundError:
         return {}
-
     try:
         obj = json.load(fp)
     except Exception:
         log.exception('Error loading JSON conf from %r', filename)
         return {}
-
     if isinstance(obj, dict):
         return obj
     log.warning('does not contain JSON dict: %r', filename) 
