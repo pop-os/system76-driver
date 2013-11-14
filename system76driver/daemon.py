@@ -34,7 +34,6 @@ import json
 from gi.repository import GLib
 
 from .mockable import SubProcess
-from .actions import tmp_filename
 
 
 # Products in this frozenset need the airplane mode hack
@@ -80,8 +79,8 @@ def load_json_conf(filename):
 
 def save_json_conf(filename, obj):
     assert isinstance(obj, dict)
-    tmp = tmp_filename(filename)
-    fp = open(tmp, 'x')
+    tmp = filename + '.tmp'
+    fp = open(tmp, 'w')
     json.dump(obj, fp, sort_keys=True, separators=(',',': '), indent=4)
     fp.flush()
     os.fsync(fp.fileno())
