@@ -61,6 +61,11 @@ MASK1 = 0b01000000
 MASK2 = 0b10111111
 
 
+def get_model(sysdir='/sys'):
+    name = path.join(sysdir, 'class', 'dmi', 'id', 'product_version')
+    return open(name, 'r').read().strip()
+
+
 def load_json_conf(filename):
     try:
         fp = open(filename, 'r')

@@ -53,6 +53,34 @@ class TestConstants(TestCase):
 
 
 class TestFunctions(TestCase):
+    def test_get_model(self):
+        tmp = TempDir()
+        parts = ('class', 'dmi', 'id', 'product_version')
+        filename = tmp.join(*parts)
+
+        # Missing dirs:
+        with self.assertRaises(FileNotFoundError) as cm:
+            daemon.get_model(sysdir=tmp.dir)
+        self.assertEqual(cm.exception.filename, filename)
+
+        # Missing file:
+        tmp.makedirs(*parts[:-1])
+        with self.assertRaises(FileNotFoundError) as cm:
+            daemon.get_model(sysdir=tmp.dir)
+        self.assertEqual(cm.exception.filename, filename)
+
+        # All good:
+        tmp.write(b'rhip1\n', *parts)
+        self.assertEqual(daemon.get_model(sysdir=tmp.dir), 'rhip1')
+
+        # Non-mocked:
+        model = daemon.get_model()
+        self.assertIsInstance(model, str)
+        self.assertEqual(model.strip(), model)
+        self.assertEqual(model,
+            open('/sys/class/dmi/id/product_version', 'r').read().strip()
+        )
+
     def test_load_json_conf(self):
         tmp = TempDir()
         f = tmp.join('system76-daemon.json')
