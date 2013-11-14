@@ -26,7 +26,6 @@ In the near future this will be replaced with a kernel driver to do the same.
 import time
 import os
 from os import path
-import fcntl
 import sys
 import logging
 import json
@@ -97,7 +96,6 @@ def open_ec(sysdir='/sys'):
     SubProcess.check_call(['modprobe', 'ec_sys', 'write_support'])
     name = path.join(sysdir, 'kernel', 'debug', 'ec', 'ec0', 'io')
     fp = open(name, 'rb+')
-    fcntl.flock(fp.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
     return fp
 
 
