@@ -4,8 +4,8 @@
 
 description	"System76 airplane-mode hotkey and LED support"
 
-start on local-filesystems
-stop on deconfiguring-networking
+start on login-session-start
+stop on desktop-shutdown
 
 respawn
 

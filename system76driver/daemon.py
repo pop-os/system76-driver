@@ -273,7 +273,6 @@ class Brightness:
                 if path.exists(self.brightness_file):
                     break
         self.write(self.current)
-        log.info('brightness after restore: %d', self.read())
 
     def run(self):
         self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
