@@ -73,14 +73,6 @@ class TestFunctions(TestCase):
         tmp.write(b'rhip1\n', *parts)
         self.assertEqual(daemon.get_model(sysdir=tmp.dir), 'rhip1')
 
-        # Non-mocked:
-        model = daemon.get_model()
-        self.assertIsInstance(model, str)
-        self.assertEqual(model.strip(), model)
-        self.assertEqual(model,
-            open('/sys/class/dmi/id/product_version', 'r').read().strip()
-        )
-
     def test_load_json_conf(self):
         tmp = TempDir()
         f = tmp.join('system76-daemon.json')
