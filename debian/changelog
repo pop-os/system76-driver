@@ -7,7 +7,7 @@ system76-driver (13.10.4) saucy; urgency=low
   * Reduce system76-daemon memory usage via a bit of refactoring in order to
     avoid importing needless Python modules (26 fewer modules now!)
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 14 Nov 2013 13:05:09 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 15 Nov 2013 15:04:06 -0700
 
 system76-driver (13.10.3) saucy; urgency=low
 
