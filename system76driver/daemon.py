@@ -61,7 +61,13 @@ MASK2 = 0b10111111
 
 def get_model(sysdir='/sys'):
     name = path.join(sysdir, 'class', 'dmi', 'id', 'product_version')
-    return open(name, 'r').read().strip()
+    try:
+        fp = open(name, 'r')
+    except FileNotFoundError:
+        return
+    model = fp.read().strip()
+    fp.close()
+    return model
 
 
 def load_json_conf(filename):
