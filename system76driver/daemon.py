@@ -51,6 +51,7 @@ DEFAULT_BRIGHTNESS = {
     'gazp9': ('intel_backlight', 690),
     'kudp1': ('acpi_video0', 64),
     'sabc1': ('acpi_video0', 82),
+    'sabt1': ('acpi_video0', 82),
 }
 
 

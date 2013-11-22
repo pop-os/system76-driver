@@ -166,6 +166,7 @@ TABLES = {
         'serp6': 'serp6',
         'serp7': 'serp7',
         'sabc1': 'sabc1',
+        'sabt1': 'sabt1',
     },
 }
 

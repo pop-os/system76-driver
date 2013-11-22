@@ -1,5 +1,6 @@
 system76-driver (13.10.5) saucy; urgency=low
 
+    * Added "sabt1" to PRODUCTS, DEFAULT_BRIGHTNESS
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 15 Nov 2013 15:09:17 -0700
