@@ -2,9 +2,8 @@ system76-driver (13.10.6) saucy; urgency=low
 
     * Added "sabt2" to PRODUCTS, DEFAULT_BRIGHTNESS
     * Added "sabc2" to PRODUCTS, DEFAULT_BRIGHTNESS
-    * FILL ME IN
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 25 Nov 2013 20:29:46 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 21 Jan 2014 15:51:48 -0700
 
 system76-driver (13.10.5) saucy; urgency=low
 
