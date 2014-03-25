@@ -2,9 +2,7 @@ system76-driver (14.04.0~pre1) trusty; urgency=low
 
     * Start 14.04.0 series, initial Trusty release
     * debian/control: system76-driver-nvidia now Depends on nvidia-331-updates
-    * Drop system76-nvidia-quirks as nvidia logo is off by default in Trusty
-    * debian/control: no need for system76-driver-nvidia to depend on
-      ubuntu-drivers-common anymore
+    * system76-nvidia-quirks: change Handler to "nvidia-331-updates"
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 25 Mar 2014 13:06:58 -0600
