@@ -83,6 +83,7 @@ PRODUCTS = {
     'daru4': {
         'name': 'Darter UltraThin',
         'drivers': [
+            actions.wifi_pm_disable,
             actions.backlight_vendor,
             actions.internal_mic_gain,
         ],
@@ -184,7 +185,9 @@ PRODUCTS = {
     # Kudu:  
     'kudp1': {
         'name': 'Kudu Professional',
-        'drivers': [],
+        'drivers': [
+            actions.wifi_pm_disable,
+        ],
     },
 
     # Lemur:
