@@ -1,11 +1,10 @@
-system76-driver (14.04.1~pre1) trusty; urgency=low
+system76-driver (14.04.1) trusty; urgency=low
 
     * As Intel 3160/7260 have performance and user-experience issues when power
       management is on, add `wifi_pm_disable` action for daru4, kudp1
     * Add "bonx8" to PRODUCTS, NEEDS_AIRPLANE
-    * FILL ME IN
 
- -- Jason Gerard DeRose <jason@system76.com>  Sat, 05 Apr 2014 09:22:04 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 15 Apr 2014 16:16:19 -0600
 
 system76-driver (14.04.0) trusty; urgency=low
 
