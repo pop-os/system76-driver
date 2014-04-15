@@ -66,6 +66,12 @@ PRODUCTS = {
             
         }
     },
+    'bonx8': {
+        'name': 'Bonobo Extreme',
+        'drivers': [
+            actions.wifi_pm_disable,
+        ],
+    },
 
     # Darter:
     'daru1': {
