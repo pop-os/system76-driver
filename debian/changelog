@@ -1,3 +1,9 @@
+system76-driver (14.04.2~pre1) trusty; urgency=low
+
+    * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 17 Apr 2014 17:35:41 -0600
+
 system76-driver (14.04.1) trusty; urgency=low
 
     * As Intel 3160/7260 have performance and user-experience issues when power
