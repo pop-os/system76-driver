@@ -23,7 +23,6 @@ Unit tests for `system76driver.model` module.
 
 from unittest import TestCase
 import os
-from os import path
 from hashlib import md5
 
 from .helpers import TempDir

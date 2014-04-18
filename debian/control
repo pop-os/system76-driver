@@ -4,6 +4,7 @@ Priority: extra
 Maintainer: System76, Inc. <dev@system76.com>
 Build-Depends: debhelper (>= 9),
     python3-all (>= 3.4),
+    pyflakes,
     xvfb,
     python3-dbus,
     python3-gi,

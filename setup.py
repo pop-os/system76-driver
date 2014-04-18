@@ -30,11 +30,31 @@ if sys.version_info < (3, 4):
 
 import os
 from os import path
+import subprocess
 from distutils.core import setup
 from distutils.cmd import Command
 
 import system76driver
 from system76driver.tests.run import run_tests
+
+
+def run_pyflakes3():
+    pyflakes3 = '/usr/bin/pyflakes3'
+    if not os.access(pyflakes3, os.R_OK | os.X_OK):
+        print('WARNING: cannot read and execute: {!r}'.format(pyflakes3))
+        return
+    tree = path.dirname(path.abspath(__file__))
+    names = [
+        'system76driver',
+        'setup.py',
+        'system76-driver',
+        'system76-driver-cli',
+        'system76-daemon',
+    ]
+    cmd = [pyflakes3] + [path.join(tree, name) for name in names]
+    print('check_call:', cmd)
+    subprocess.check_call(cmd)
+    print('[pyflakes3 checks passed]')
 
 
 class Test(Command):
@@ -51,6 +71,7 @@ class Test(Command):
     def run(self):
         if not run_tests():
             raise SystemExit(2)
+        run_pyflakes3()
 
 
 setup(

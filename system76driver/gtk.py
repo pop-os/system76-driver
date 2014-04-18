@@ -22,7 +22,6 @@ Gtk UI.
 """
 
 import platform
-import time
 import threading
 from gettext import gettext as _
 

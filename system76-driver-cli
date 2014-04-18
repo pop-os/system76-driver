@@ -25,7 +25,6 @@ import os
 import sys
 import time
 import platform
-from gettext import ngettext
 import logging
 
 import system76driver
