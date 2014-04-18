@@ -25,8 +25,8 @@ Install `system76driver`.
 """
 
 import sys
-if sys.version_info < (3, 3):
-    sys.exit('ERROR: `system76driver` requires Python 3.3 or newer')
+if sys.version_info < (3, 4):
+    sys.exit('ERROR: `system76driver` requires Python 3.4 or newer')
 
 import os
 from os import path
