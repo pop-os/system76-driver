@@ -87,7 +87,7 @@ PRODUCTS = {
         'drivers': [],
     },
     'daru4': {
-        'name': 'Darter UltraThin',
+        'name': 'Darter UltraTouch',
         'drivers': [
             actions.wifi_pm_disable,
             actions.backlight_vendor,
