@@ -47,6 +47,7 @@ NEEDS_AIRPLANE = frozenset([
 # Products in this dict need the brightness hack
 DEFAULT_BRIGHTNESS = {
     'bonx7': ('acpi_video0', 64),
+    'bonx8': ('acpi_video0', 6),
     'daru4': ('intel_backlight', 569),
     'galu1': ('acpi_video0', 70),
     'gazp9': ('intel_backlight', 690),
