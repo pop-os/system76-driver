@@ -1,4 +1,4 @@
-system76-driver (14.04.2~pre1) trusty; urgency=low
+system76-driver (14.04.2) trusty; urgency=low
 
     * daru4 is now named "Darter UltraTouch"
     * setup.py: require Python >= 3.4 as we wont be testing with 3.3 anymore
@@ -10,9 +10,8 @@ system76-driver (14.04.2~pre1) trusty; urgency=low
     * Add "bonx8" to DEFAULT_BRIGHTNESS (still needed)
     * Drop "lemu1" brightness hotkey fix on "gazp7" (not needed on Ubuntu 14.04)
     * debian/control: bump Standards-Version to 3.9.5
-    * FILL ME IN
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 17 Apr 2014 17:35:41 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 21 Apr 2014 13:09:43 -0600
 
 system76-driver (14.04.1) trusty; urgency=low
 
