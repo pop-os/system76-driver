@@ -9,6 +9,7 @@ system76-driver (14.04.2~pre1) trusty; urgency=low
     * Add "ratp3" to PRODUCTS
     * Add "bonx8" to DEFAULT_BRIGHTNESS (still needed)
     * Drop "lemu1" brightness hotkey fix on "gazp7" (not needed on Ubuntu 14.04)
+    * debian/control: bump Standards-Version to 3.9.5
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Thu, 17 Apr 2014 17:35:41 -0600
