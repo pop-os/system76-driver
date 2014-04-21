@@ -132,7 +132,6 @@ PRODUCTS = {
     'gazp7': {
         'name': 'Gazelle Professional',
         'drivers': [
-            actions.lemu1,
             actions.wifi_pm_disable,
         ],
     },
