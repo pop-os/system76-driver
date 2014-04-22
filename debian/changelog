@@ -1,3 +1,9 @@
+system76-driver (14.04.3~pre1) trusty; urgency=low
+
+    * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 22 Apr 2014 16:30:23 -0600
+
 system76-driver (14.04.2) trusty; urgency=low
 
     * daru4 is now named "Darter UltraTouch"
