@@ -1,3 +1,9 @@
+system76-driver (14.04.4~pre1) trusty; urgency=low
+
+    * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Sat, 26 Apr 2014 10:06:18 -0600
+
 system76-driver (14.04.3) trusty; urgency=low
 
     * Fix system76-driver.desktop so System76 Driver shows up in System Settings
