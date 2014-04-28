@@ -1,6 +1,7 @@
 system76-driver (14.04.4~pre1) trusty; urgency=low
 
     * Add "gazp9b" to PRODUCTS, NEEDS_AIRPLANE, DEFAULT_BRIGHTNESS
+    * Add "kudp1b" to PRODUCTS, NEEDS_AIRPLANE, DEFAULT_BRIGHTNESS
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Sat, 26 Apr 2014 10:06:18 -0600

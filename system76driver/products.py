@@ -202,6 +202,13 @@ PRODUCTS = {
             actions.wifi_pm_disable,
         ],
     },
+    'kudp1b': {
+        'name': 'Kudu Professional',
+        'drivers': [
+            actions.wifi_pm_disable,
+            actions.internal_mic_gain,
+        ],
+    },
 
     # Lemur:
     'lemu1': {
