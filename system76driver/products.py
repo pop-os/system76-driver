@@ -154,6 +154,14 @@ PRODUCTS = {
             '6c4c6b27d0a90b99322e487510455230': 'system76-gazp9-ips-matte.icc',
         },
     },
+    'gazp9b': {
+        'name': 'Gazelle Professional',
+        'drivers': [
+            actions.backlight_vendor,
+            actions.wifi_pm_disable,
+            actions.internal_mic_gain,
+        ],
+    },
     'gazu1': {
         'name': 'Gazelle Ultra',
         'drivers': [
