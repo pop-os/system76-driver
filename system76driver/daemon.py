@@ -34,6 +34,13 @@ from gi.repository import GLib
 from .mockable import SubProcess
 
 
+log = logging.getLogger(__name__)
+
+
+# Two bit masks used for the Airplane Mode userspace driver:
+MASK1 = 0b01000000
+MASK2 = 0b10111111
+
 # Products in this frozenset need the airplane mode hack
 NEEDS_AIRPLANE = frozenset([
     'bonx7',
@@ -62,10 +69,30 @@ DEFAULT_BRIGHTNESS = {
     'sabt2': ('acpi_video0', 82),
 }
 
+# Make sure caps are set correctly for systems imaged after 14.04 was released,
+# but before we fixed the caps issue in the imaging software:
+FIX_CAPS = (
+    ('cap_net_raw+p', '/bin/ping6'),
+    ('cap_net_raw+p', '/bin/ping'),
+    ('cap_net_raw+p', '/usr/bin/arping'),
+    ('cap_ipc_lock+ep', '/usr/bin/gnome-keyring-daemon'),
+)
+MARKER_CAPS_FIXED = '/var/lib/system76-driver/caps-fixed'
 
-log = logging.getLogger()
-MASK1 = 0b01000000
-MASK2 = 0b10111111
+
+def fix_caps():
+    if path.exists(MARKER_CAPS_FIXED):
+        return
+    log.info('Fixing caps...')
+    for (cap, filename) in FIX_CAPS:
+        if path.isfile(filename):
+            cmd = ['setcap', cap, filename]
+            log.info('check_call: %r', cmd)
+            SubProcess.check_call(cmd)    
+    try:
+        open(MARKER_CAPS_FIXED, 'xb').close()
+    except OSError:
+        log.exception('Could not create %r', MARKER_CAPS_FIXED)
 
 
 def get_model(sysdir='/sys'):
@@ -327,3 +354,4 @@ def run_brightness(model):
         return _run_brightness(model)
     except Exception:
         log.exception('Error calling _run_brightness(%r):', model)
+

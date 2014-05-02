@@ -6,6 +6,9 @@ system76-driver (14.04.5~pre1) trusty; urgency=low
     * Add grub_daru4 action to daru4, which combines the `backlight_vendor` and
       `disable_power_well` actions
     * Up Airplane Mode poll interval to 500ms (from 375ms)
+    * system76-daemon will now automatically fix caps on /bin/ping, /bin/ping6,
+      /usr/bin/arping, and /usr/bin/gnome-keyring-daemon to correct for imaging
+      not correctly handling caps for a short time after Trusty was released
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 12:32:55 -0600
