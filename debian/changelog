@@ -1,4 +1,4 @@
-system76-driver (14.04.5~pre1) trusty; urgency=low
+system76-driver (14.04.5) trusty; urgency=low
 
     * Add hdmi_hotplug_fix action to daru4, galu1, gazp9, gazp9b, kudp1, kudp1b
     * Drop backlight_vendor action from gazp9, gazp9b (not needed on Trusty)
@@ -9,9 +9,8 @@ system76-driver (14.04.5~pre1) trusty; urgency=low
     * system76-daemon will now automatically fix caps on /bin/ping, /bin/ping6,
       /usr/bin/arping, and /usr/bin/gnome-keyring-daemon to correct for imaging
       not correctly handling caps for a short time after Trusty was released
-    * FILL ME IN
 
- -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 12:32:55 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 17:03:19 -0600
 
 system76-driver (14.04.4) trusty; urgency=low
 
