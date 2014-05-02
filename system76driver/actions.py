@@ -48,6 +48,13 @@ WIFI_PM_DISABLE = """#!/bin/sh
 /sbin/iwconfig wlan0 power off
 """
 
+HDMI_HOTPLUG_FIX = """#!/bin/sh
+# Installed by system76-driver
+# Turn off sound card power savings
+# Fixes HDMI hotplug when on battery power
+echo N >> /sys/modules/snd_hda_intel/parameters/power_save_controller
+"""
+
 
 def random_id(numbytes=15):
     return b32encode(os.urandom(numbytes)).decode('utf-8')
@@ -246,6 +253,15 @@ class wifi_pm_disable(FileAction):
 
     def describe(self):
         return _('Improve WiFi performance on Battery')
+
+
+class hdmi_hotplug_fix(FileAction):
+    relpath = ('etc', 'pm', 'power.d', 'system76-hdmi-hotplug-fix')
+    content = HDMI_HOTPLUG_FIX
+    mode = 0o755
+
+    def describe(self):
+        return _('Fix HDMI hot-plugging when on battery')
 
 
 class lemu1(GrubAction):

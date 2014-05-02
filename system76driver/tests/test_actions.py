@@ -584,6 +584,101 @@ class Test_wifi_pm_disable(TestCase):
         self._check_file(inst)
 
 
+class Test_hdmi_hotplug_fix(TestCase):
+    def test_init(self):
+        inst = actions.hdmi_hotplug_fix()
+        self.assertEqual(inst.filename, '/etc/pm/power.d/system76-hdmi-hotplug-fix')
+
+        tmp = TempDir()
+        inst = actions.hdmi_hotplug_fix(rootdir=tmp.dir)
+        self.assertEqual(inst.filename,
+            tmp.join('etc', 'pm', 'power.d', 'system76-hdmi-hotplug-fix')
+        )
+
+    def test_read(self):
+        tmp = TempDir()
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'power.d')
+        inst = actions.hdmi_hotplug_fix(rootdir=tmp.dir)
+        self.assertIsNone(inst.read())
+        tmp.write(b'Hello, World', 'etc', 'pm', 'power.d', 'system76-hdmi-hotplug-fix')
+        self.assertEqual(inst.read(), 'Hello, World')
+
+    def test_describe(self):
+        inst = actions.hdmi_hotplug_fix()
+        self.assertEqual(inst.describe(), 'Fix HDMI hot-plugging when on battery')
+
+    def test_get_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'power.d')
+        inst = actions.hdmi_hotplug_fix(rootdir=tmp.dir)
+
+        # Missing file
+        self.assertIs(inst.get_isneeded(), True)
+
+        # Wrong file content:
+        open(inst.filename, 'w').write('blah blah')
+        os.chmod(inst.filename, 0o755)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # Correct content, wrong perms:
+        open(inst.filename, 'w').write(actions.HDMI_HOTPLUG_FIX)
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.get_isneeded(), True)
+        os.chmod(inst.filename, 0o777)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # All good:
+        os.chmod(inst.filename, 0o755)
+        self.assertIs(inst.get_isneeded(), False)
+
+    def _check_file(self, inst):
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            actions.HDMI_HOTPLUG_FIX
+        )
+        st = os.stat(inst.filename)
+        self.assertEqual(stat.S_IMODE(st.st_mode), 0o755)
+
+    def test_perform(self):
+        tmp = TempDir()
+        inst = actions.hdmi_hotplug_fix(rootdir=tmp.dir)
+
+        # Missing directories
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.tmp)
+
+        # Missing file
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'pm')
+        tmp.mkdir('etc', 'pm', 'power.d')
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Wrong file content:
+        open(inst.filename, 'w').write('blah blah')
+        os.chmod(inst.filename, 0o755)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Correct content, wrong perms:
+        open(inst.filename, 'w').write(actions.HDMI_HOTPLUG_FIX)
+        os.chmod(inst.filename, 0o644)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+        os.chmod(inst.filename, 0o000)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Action didn't need to be performed:
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+
 class Test_lemu1(TestCase):
     def test_init(self):
         inst = actions.lemu1()
