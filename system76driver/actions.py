@@ -52,7 +52,7 @@ HDMI_HOTPLUG_FIX = """#!/bin/sh
 # Installed by system76-driver
 # Turn off sound card power savings
 # Fixes HDMI hotplug when on battery power
-echo N >> /sys/modules/snd_hda_intel/parameters/power_save_controller
+echo N > /sys/modules/snd_hda_intel/parameters/power_save_controller
 """
 
 
