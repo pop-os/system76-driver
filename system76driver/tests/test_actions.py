@@ -762,6 +762,63 @@ class Test_lemu1(TestCase):
         )
 
 
+class Test_disable_power_well(TestCase):
+    def test_init(self):
+        inst = actions.disable_power_well()
+        self.assertEqual(inst.filename, '/etc/default/grub')
+        self.assertEqual(inst.cmdline,
+            'quiet splash i915.disable_power_well=0'
+        )
+        tmp = TempDir()
+        inst = actions.disable_power_well(etcdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+        self.assertEqual(inst.cmdline,
+            'quiet splash i915.disable_power_well=0'
+        )
+
+    def test_decribe(self):
+        inst = actions.disable_power_well()
+        self.assertEqual(inst.describe(),
+            'Fix HDMI audio playback speed'
+        )
+
+    def test_get_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.disable_power_well(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.get_isneeded()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIs(inst.get_isneeded(), True)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('i915.disable_power_well=0')
+        )
+        self.assertIs(inst.get_isneeded(), False)
+
+    def test_perform(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.disable_power_well(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_MOD.format('i915.disable_power_well=0')
+        )
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('i915.disable_power_well=0')
+        )
+        self.assertIsNone(inst.perform())
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_MOD.format('i915.disable_power_well=0')
+        )
+
+
 class Test_backlight_vendor(TestCase):
     def test_init(self):
         inst = actions.backlight_vendor()
