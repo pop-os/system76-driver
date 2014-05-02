@@ -147,7 +147,6 @@ PRODUCTS = {
     'gazp9': {
         'name': 'Gazelle Professional',
         'drivers': [
-            actions.backlight_vendor,
             actions.wifi_pm_disable,
             actions.gazp9_icc,
             actions.hdmi_hotplug_fix,
@@ -160,7 +159,6 @@ PRODUCTS = {
     'gazp9b': {
         'name': 'Gazelle Professional',
         'drivers': [
-            actions.backlight_vendor,
             actions.wifi_pm_disable,
             actions.internal_mic_gain,
             actions.hdmi_hotplug_fix,

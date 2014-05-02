@@ -1,6 +1,7 @@
 system76-driver (14.04.5~pre1) trusty; urgency=low
 
     * Add hdmi_hotplug_fix action to daru4, galu1, gazp9, gazp9b, kudp1, kudp1b
+    * Drop acpi_backlight=vendor fix for gazp9/gazp9b (not needed on Trusty)
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 12:32:55 -0600
