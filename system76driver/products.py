@@ -58,13 +58,7 @@ PRODUCTS = {
         'drivers': [
             #actions.plymouth1080,  # Causes problems with nvidia-313-updates
             actions.wifi_pm_disable,
-            actions.bonx7_icc,
         ],
-        'screens': {
-            'c73b258ef528c02b30beb0c8a35ef93c': 'matte',
-            'feeb71dac035e4d9184b0c39ca189eb4': 'glossy',
-            
-        }
     },
     'bonx8': {
         'name': 'Bonobo Extreme',
@@ -102,13 +96,9 @@ PRODUCTS = {
         'drivers': [
             actions.wifi_pm_disable,
             actions.internal_mic_gain,
-            actions.galu1_icc,
             actions.hdmi_hotplug_fix,
             actions.disable_power_well,
         ],
-        'screens': {
-            '1fcfbf3269ba92bdeb2f8a009f7894ef': 'IPS matte ColorPro',
-        }
     },
 
     # Gazelle:
@@ -149,14 +139,9 @@ PRODUCTS = {
         'name': 'Gazelle Professional',
         'drivers': [
             actions.wifi_pm_disable,
-            actions.gazp9_icc,
             actions.hdmi_hotplug_fix,
             actions.disable_power_well,
         ],
-        'screens': {
-            '38306ee6ae5ccf81d2951aa95ae823f4': 'system76-gazp9-glossy.icc',
-            '6c4c6b27d0a90b99322e487510455230': 'system76-gazp9-ips-matte.icc',
-        },
     },
     'gazp9b': {
         'name': 'Gazelle Professional',
