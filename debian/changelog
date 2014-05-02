@@ -1,3 +1,9 @@
+system76-driver (14.04.5~pre1) trusty; urgency=low
+
+    * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 12:32:55 -0600
+
 system76-driver (14.04.4) trusty; urgency=low
 
     * Add "gazp9b" to PRODUCTS, NEEDS_AIRPLANE, DEFAULT_BRIGHTNESS
