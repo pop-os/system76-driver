@@ -256,7 +256,7 @@ class wifi_pm_disable(FileAction):
 
 
 class hdmi_hotplug_fix(FileAction):
-    relpath = ('etc', 'pm', 'power.d', 'system76-hdmi-hotplug-fix')
+    relpath = ('etc', 'pm', 'power.d', 'audio')
     content = HDMI_HOTPLUG_FIX
     mode = 0o755
 

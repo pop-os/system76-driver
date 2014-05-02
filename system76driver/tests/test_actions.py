@@ -613,12 +613,12 @@ class Test_wifi_pm_disable(TestCase):
 class Test_hdmi_hotplug_fix(TestCase):
     def test_init(self):
         inst = actions.hdmi_hotplug_fix()
-        self.assertEqual(inst.filename, '/etc/pm/power.d/system76-hdmi-hotplug-fix')
+        self.assertEqual(inst.filename, '/etc/pm/power.d/audio')
 
         tmp = TempDir()
         inst = actions.hdmi_hotplug_fix(rootdir=tmp.dir)
         self.assertEqual(inst.filename,
-            tmp.join('etc', 'pm', 'power.d', 'system76-hdmi-hotplug-fix')
+            tmp.join('etc', 'pm', 'power.d', 'audio')
         )
 
     def test_read(self):
@@ -628,7 +628,7 @@ class Test_hdmi_hotplug_fix(TestCase):
         tmp.mkdir('etc', 'pm', 'power.d')
         inst = actions.hdmi_hotplug_fix(rootdir=tmp.dir)
         self.assertIsNone(inst.read())
-        tmp.write(b'Hello, World', 'etc', 'pm', 'power.d', 'system76-hdmi-hotplug-fix')
+        tmp.write(b'Hello, World', 'etc', 'pm', 'power.d', 'audio')
         self.assertEqual(inst.read(), 'Hello, World')
 
     def test_describe(self):
