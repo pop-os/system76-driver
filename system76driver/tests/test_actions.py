@@ -80,7 +80,7 @@ GRUB_HIDDEN_TIMEOUT=0
 GRUB_HIDDEN_TIMEOUT_QUIET=true
 GRUB_TIMEOUT=10
 GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash acpi_os_name=Linux acpi_osi="
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash {}"
 GRUB_CMDLINE_LINUX=""
 
 # Uncomment to enable BadRAM filtering, modify to suit your needs
@@ -372,7 +372,9 @@ class TestGrubAction(TestCase):
         # Good content:
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertEqual(inst.get_cmdline(), 'quiet splash')
-        open(inst.filename, 'w').write(GRUB_MOD)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertEqual(inst.get_cmdline(),
             'quiet splash acpi_os_name=Linux acpi_osi='
         )
@@ -389,7 +391,9 @@ class TestGrubAction(TestCase):
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
 
-        open(inst.filename, 'w').write(GRUB_MOD)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
@@ -404,12 +408,20 @@ class TestGrubAction(TestCase):
             list(inst.iter_lines())
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
+        self.assertEqual(
+            '\n'.join(inst.iter_lines()),
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
 
-        open(inst.filename, 'w').write(GRUB_MOD)
-        self.assertEqual('\n'.join(inst.iter_lines()), GRUB_MOD)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
+        self.assertEqual(
+            '\n'.join(inst.iter_lines()),
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
     def test_get_isneeded(self):
@@ -421,7 +433,9 @@ class TestGrubAction(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIs(inst.get_isneeded(), False)
-        open(inst.filename, 'w').write(GRUB_MOD)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertIs(inst.get_isneeded(), True)
 
         # Test subclass with different GrubAction.cmdline:
@@ -439,7 +453,9 @@ class TestGrubAction(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIs(inst.get_isneeded(), True)
-        open(inst.filename, 'w').write(GRUB_MOD)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
@@ -457,7 +473,9 @@ class TestGrubAction(TestCase):
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
 
-        open(inst.filename, 'w').write(GRUB_MOD)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
 
@@ -480,11 +498,19 @@ class TestGrubAction(TestCase):
 
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
 
-        open(inst.filename, 'w').write(GRUB_MOD)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
 
         self.assertEqual(SubProcess.calls, [])
 
@@ -708,7 +734,9 @@ class Test_lemu1(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIs(inst.get_isneeded(), True)
-        open(inst.filename, 'w').write(GRUB_MOD)
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
@@ -720,10 +748,18 @@ class Test_lemu1(TestCase):
         self.assertEqual(cm.exception.filename, inst.filename)
         open(inst.filename, 'w').write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
-        open(inst.filename, 'w').write(GRUB_MOD)
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
+        open(inst.filename, 'w').write(
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
         self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), GRUB_MOD)
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+        )
 
 
 class Test_backlight_vendor(TestCase):
