@@ -1,8 +1,10 @@
 system76-driver (14.04.5~pre1) trusty; urgency=low
 
     * Add hdmi_hotplug_fix action to daru4, galu1, gazp9, gazp9b, kudp1, kudp1b
-    * Drop backlight_vendor action from gazp9/gazp9b (not needed on Trusty)
+    * Drop backlight_vendor action from gazp9, gazp9b (not needed on Trusty)
     * Add disable_power_well action to galu1, gazp9, gazp9b, kudp1, kudp1b
+    * Add grub_daru4 action to daru4, which combines the `backlight_vendor` and
+      `disable_power_well` actions 
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 12:32:55 -0600
