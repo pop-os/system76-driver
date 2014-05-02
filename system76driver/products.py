@@ -92,6 +92,7 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.backlight_vendor,
             actions.internal_mic_gain,
+            actions.hdmi_hotplug_fix,
         ],
     },
 
@@ -102,6 +103,7 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.internal_mic_gain,
             actions.galu1_icc,
+            actions.hdmi_hotplug_fix,
         ],
         'screens': {
             '1fcfbf3269ba92bdeb2f8a009f7894ef': 'IPS matte ColorPro',
@@ -148,6 +150,7 @@ PRODUCTS = {
             actions.backlight_vendor,
             actions.wifi_pm_disable,
             actions.gazp9_icc,
+            actions.hdmi_hotplug_fix,
         ],
         'screens': {
             '38306ee6ae5ccf81d2951aa95ae823f4': 'system76-gazp9-glossy.icc',
@@ -160,6 +163,7 @@ PRODUCTS = {
             actions.backlight_vendor,
             actions.wifi_pm_disable,
             actions.internal_mic_gain,
+            actions.hdmi_hotplug_fix,
         ],
     },
     'gazu1': {
@@ -200,6 +204,7 @@ PRODUCTS = {
         'name': 'Kudu Professional',
         'drivers': [
             actions.wifi_pm_disable,
+            actions.hdmi_hotplug_fix,
         ],
     },
     'kudp1b': {
@@ -207,6 +212,7 @@ PRODUCTS = {
         'drivers': [
             actions.wifi_pm_disable,
             actions.internal_mic_gain,
+            actions.hdmi_hotplug_fix,
         ],
     },
 
