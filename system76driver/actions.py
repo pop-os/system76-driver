@@ -26,15 +26,11 @@ import os
 from os import path
 import stat
 import re
-import time
 from base64 import b32encode
 import datetime
 import logging
 
-import dbus
-
 from . import get_datafile
-from .model import get_edid_md5
 from .mockable import SubProcess
 
 
@@ -380,136 +376,3 @@ class internal_mic_gain(FileAction):
     def describe(self):
         return _('Fix Internal Mic Gain')
 
-
-# ICC Color Profiles:
-NAME = 'org.freedesktop.ColorManager'
-DEVICE = NAME + '.Device'
-ICC = '/var/lib/colord/icc'
-
-
-def get_object(obj, iface=None):
-    proxy = dbus.SystemBus().get_object(NAME, obj)
-    if iface:
-        return dbus.Interface(proxy, dbus_interface=iface)
-    return proxy
-
-
-def get_prop(proxy, iface, key):
-    return proxy.Get(iface, key,
-        dbus_interface='org.freedesktop.DBus.Properties'
-    )
-
-
-def get_device(obj):
-    return get_object(obj, DEVICE)
-
-
-def get_profile_dst(name):
-    return path.join(ICC, name)
-
-
-def get_profile_obj(colord, filename):
-    return colord.FindProfileByFilename(filename)
-
-
-class BaseColorAction(Action):
-    profiles = {}
-
-    def describe(self):
-        return _('Install ICC color profile for display')
-
-    def get_isneeded(self):
-        return True
-
-    def atomic_write(self, icc, dst):
-        self.tmp = path.join(path.dirname(dst), random_id())
-        log.info('writing to %r', self.tmp)
-        fp = open(self.tmp, 'xb')
-        fp.write(icc)
-        fp.flush()
-        os.fsync(fp.fileno())
-        fp.close()
-        log.info('renaming %r to %r', self.tmp, dst)
-        os.rename(self.tmp, dst)
-
-
-class ColorAction(BaseColorAction):
-    _edid_md5 = None
-    model = 'override this is subclasses'
-
-    @property
-    def edid_md5(self):
-        if self._edid_md5 is None:
-            self._edid_md5 = get_edid_md5()
-            log.info('edid md5: %r', self._edid_md5)
-        assert isinstance(self._edid_md5, str)
-        return self._edid_md5
-
-    def perform(self):
-        if self.edid_md5 not in self.profiles:
-            log.warning('no profile available for this screen')
-            return
-        name = self.profiles[self.edid_md5]
-        src = get_datafile(name)
-        dst = get_profile_dst(name)
-        icc = open(src, 'rb').read()
-        self.atomic_write(icc, dst)
-        time.sleep(4)  # Give colord time to see the profile
-
-        colord = get_object('/org/freedesktop/ColorManager', NAME)
-        for device_obj in colord.GetDevicesByKind('display'):
-            device = get_device(device_obj)
-            model = get_prop(device, DEVICE, 'Model')
-            if model == self.model:
-                profile_obj = get_profile_obj(colord, dst)
-                log.info('Profile: %r', profile_obj)
-                try:
-                    device.AddProfile('hard', profile_obj)
-                except dbus.DBusException:
-                    log.warning('profile likely was already added to device')
-                break
-
-
-class gazp9_icc(ColorAction):
-    model = 'Gazelle Professional'
-    profiles = {
-        '38306ee6ae5ccf81d2951aa95ae823f4': 'system76-gazp9-glossy.icc',
-        '6c4c6b27d0a90b99322e487510455230': 'system76-gazp9-ips-matte.icc',
-    }
-
-
-class galu1_icc(ColorAction):
-    model = 'Galago UltraPro'
-    profiles = {
-        '1fcfbf3269ba92bdeb2f8a009f7894ef': 'system76-galu1-ips-matte.icc',
-    }
-
-
-class NvidiaColorAction(BaseColorAction):
-    def perform(self):
-        colord = get_object('/org/freedesktop/ColorManager', NAME)
-        for device_obj in colord.GetDevicesByKind('display'):
-            device = get_device(device_obj)
-            device_id = get_prop(device, DEVICE, 'DeviceId')
-            if device_id in self.profiles:
-                log.info('found matching DeviceID %r', device_id)
-                name = self.profiles[device_id]
-                src = get_datafile(name)
-                dst = get_profile_dst(name)
-                icc = open(src, 'rb').read()
-                self.atomic_write(icc, dst)
-                time.sleep(4)  # Give colord time to see the profile
-                profile_obj = get_profile_obj(colord, dst)
-                log.info('Profile: %r', profile_obj)
-                try:
-                    device.AddProfile('hard', profile_obj)
-                except dbus.DBusException:
-                    log.warning('profile likely was already added to device')
-                break
-
-
-class bonx7_icc(NvidiaColorAction):
-    profiles = {
-        'xrandr-Chi Mei Optoelectronics corp.': 'system76-bonx7-matte.icc',
-        'xrandr-AU Optronics': 'system76-bonx7-glossy.icc',
-    }
