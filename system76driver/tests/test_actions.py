@@ -345,6 +345,27 @@ class TestGrubAction(TestCase):
             'acpi_os_name=Linux acpi_osi='
         )
 
+    def test_build_new_cmdline(self):
+        inst = actions.GrubAction()
+        self.assertEqual(
+            inst.build_new_cmdline('world hello'),
+            'hello world'
+        )
+
+        class Subclass(actions.GrubAction):
+            add = ('nurse', 'naughty', 'hello')
+            remove = ('other', 'world')
+
+        inst = Subclass()
+        self.assertEqual(
+            inst.build_new_cmdline('world hello'),
+            'hello naughty nurse'
+        )
+        self.assertEqual(
+            inst.build_new_cmdline('naughty nurse hello'),
+            'hello naughty nurse'
+        )
+
     def test_iter_lines(self):
         tmp = TempDir()
         tmp.mkdir('default')
