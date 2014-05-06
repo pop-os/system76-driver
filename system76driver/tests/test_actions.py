@@ -31,7 +31,7 @@ from system76driver.mockable import SubProcess
 from system76driver import actions
 
 
-GRUB_ORIG = """
+GRUB = """
 # If you change this file, run 'update-grub' afterwards to update
 # /boot/grub/grub.cfg.
 # For full documentation of the options in this file, see:
@@ -42,7 +42,7 @@ GRUB_HIDDEN_TIMEOUT=0
 GRUB_HIDDEN_TIMEOUT_QUIET=true
 GRUB_TIMEOUT=10
 GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX_DEFAULT="{}"
 GRUB_CMDLINE_LINUX=""
 
 # Uncomment to enable BadRAM filtering, modify to suit your needs
@@ -68,42 +68,7 @@ GRUB_CMDLINE_LINUX=""
 #GRUB_INIT_TUNE="480 440 1"
 """.strip()
 
-GRUB_MOD = """
-# If you change this file, run 'update-grub' afterwards to update
-# /boot/grub/grub.cfg.
-# For full documentation of the options in this file, see:
-#   info -f grub -n 'Simple configuration'
-
-GRUB_DEFAULT=0
-GRUB_HIDDEN_TIMEOUT=0
-GRUB_HIDDEN_TIMEOUT_QUIET=true
-GRUB_TIMEOUT=10
-GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash {}"
-GRUB_CMDLINE_LINUX=""
-
-# Uncomment to enable BadRAM filtering, modify to suit your needs
-# This works with Linux (no patch required) and with any kernel that obtains
-# the memory map information from GRUB (GNU Mach, kernel of FreeBSD ...)
-#GRUB_BADRAM="0x01234567,0xfefefefe,0x89abcdef,0xefefefef"
-
-# Uncomment to disable graphical terminal (grub-pc only)
-#GRUB_TERMINAL=console
-
-# The resolution used on graphical terminal
-# note that you can use only modes which your graphic card supports via VBE
-# you can see them in real GRUB with the command `vbeinfo'
-#GRUB_GFXMODE=640x480
-
-# Uncomment if you don't want GRUB to pass "root=UUID=xxx" parameter to Linux
-#GRUB_DISABLE_LINUX_UUID=true
-
-# Uncomment to disable generation of recovery mode menu entries
-#GRUB_DISABLE_RECOVERY="true"
-
-# Uncomment to get a beep at grub start
-#GRUB_INIT_TUNE="480 440 1"
-""".strip()
+GRUB_ORIG = GRUB.format('quiet splash')
 
 
 class TestFunctions(TestCase):
@@ -332,13 +297,15 @@ class TestGrubAction(TestCase):
         inst = actions.GrubAction()
         self.assertIs(inst.update_grub, True)
         self.assertEqual(inst.filename, '/etc/default/grub')
-        self.assertEqual(inst.cmdline, 'quiet splash')
+        self.assertEqual(inst.add, tuple())
+        self.assertEqual(inst.remove, tuple())
 
         tmp = TempDir()
         inst = actions.GrubAction(etcdir=tmp.dir)
         self.assertIs(inst.update_grub, True)
         self.assertEqual(inst.filename, tmp.join('default', 'grub'))
-        self.assertEqual(inst.cmdline, 'quiet splash')
+        self.assertEqual(inst.add, tuple())
+        self.assertEqual(inst.remove, tuple())
 
     def test_read(self):
         tmp = TempDir()
@@ -350,32 +317,32 @@ class TestGrubAction(TestCase):
         tmp.write(b'foobar\n', 'default', 'grub')
         self.assertEqual(inst.read(), 'foobar\n')
 
-    def test_get_cmdline(self):
+    def test_get_current_cmdline(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.GrubAction(etcdir=tmp.dir)
 
         # Missing file:
         with self.assertRaises(FileNotFoundError) as cm:
-            inst.get_cmdline()
+            inst.get_current_cmdline()
         self.assertEqual(cm.exception.filename, inst.filename)
 
         # Bad content:
         open(inst.filename, 'x').write('wont work\n')
         with self.assertRaises(Exception) as cm:
-            inst.get_cmdline()
+            inst.get_current_cmdline()
         self.assertEqual(str(cm.exception),
             'Could not parse GRUB_CMDLINE_LINUX_DEFAULT'
         )
 
         # Good content:
         open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertEqual(inst.get_cmdline(), 'quiet splash')
+        self.assertEqual(inst.get_current_cmdline(), 'quiet splash')
         open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+            GRUB.format('acpi_os_name=Linux acpi_osi=')
         )
-        self.assertEqual(inst.get_cmdline(),
-            'quiet splash acpi_os_name=Linux acpi_osi='
+        self.assertEqual(inst.get_current_cmdline(),
+            'acpi_os_name=Linux acpi_osi='
         )
 
     def test_iter_lines(self):
@@ -385,20 +352,24 @@ class TestGrubAction(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             list(inst.iter_lines())
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'w').write(GRUB_ORIG)
+
+        open(inst.filename, 'x').write(GRUB_ORIG)
         self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
 
         open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+            GRUB.format('foo bar aye')
         )
-        self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
+        self.assertEqual(
+            '\n'.join(inst.iter_lines()),
+            GRUB.format('aye bar foo')
+        )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
-            extra = ('acpi_os_name=Linux', 'acpi_osi=')
+            add = ('acpi_os_name=Linux', 'acpi_osi=')
 
         tmp = TempDir()
         tmp.mkdir('default')
@@ -406,20 +377,18 @@ class TestGrubAction(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             list(inst.iter_lines())
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'w').write(GRUB_ORIG)
+
+        open(inst.filename, 'x').write(GRUB_ORIG)
         self.assertEqual(
             '\n'.join(inst.iter_lines()),
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+            GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
         )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
 
-        open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
-        )
         self.assertEqual(
             '\n'.join(inst.iter_lines()),
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+            GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
         )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
@@ -430,30 +399,27 @@ class TestGrubAction(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'w').write(GRUB_ORIG)
+        open(inst.filename, 'x').write(GRUB_ORIG)
         self.assertIs(inst.get_isneeded(), False)
         open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+            GRUB.format('acpi_os_name=Linux acpi_osi=')
         )
-        self.assertIs(inst.get_isneeded(), True)
+        self.assertIs(inst.get_isneeded(), False)
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
-            extra = ('acpi_os_name=Linux', 'acpi_osi=')
+            add = ('acpi_os_name=Linux', 'acpi_osi=')
 
         tmp = TempDir()
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
-        self.assertEqual(inst.cmdline,
-            'quiet splash acpi_os_name=Linux acpi_osi='
-        )
         with self.assertRaises(FileNotFoundError) as cm:
             inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'w').write(GRUB_ORIG)
+        open(inst.filename, 'x').write(GRUB_ORIG)
         self.assertIs(inst.get_isneeded(), True)
         open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+            GRUB.format('acpi_os_name=Linux acpi_osi=')
         )
         self.assertIs(inst.get_isneeded(), False)
 
@@ -468,47 +434,42 @@ class TestGrubAction(TestCase):
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
 
-        open(inst.filename, 'w').write(GRUB_ORIG)
+        with open(inst.filename, 'x') as fp:
+            fp.write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
 
-        open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
-        )
+        with open(inst.filename, 'w') as fp:
+            fp.write(GRUB.format('c a b'))
         self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
+        self.assertEqual(open(inst.filename, 'r').read(), GRUB.format('a b c'))
 
         self.assertEqual(SubProcess.calls, [])
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
-            extra = ('acpi_os_name=Linux', 'acpi_osi=')
+            add = ('foo', 'bar')
 
         tmp = TempDir()
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
 
-        self.assertEqual(inst.cmdline,
-            'quiet splash acpi_os_name=Linux acpi_osi='
-        )
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
 
-        open(inst.filename, 'w').write(GRUB_ORIG)
+        with open(inst.filename, 'x') as fp:
+            fp.write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+            GRUB.format('bar foo quiet splash')
         )
 
-        open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
-        )
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
+            GRUB.format('bar foo quiet splash')
         )
 
         self.assertEqual(SubProcess.calls, [])
@@ -708,15 +669,9 @@ class Test_lemu1(TestCase):
     def test_init(self):
         inst = actions.lemu1()
         self.assertEqual(inst.filename, '/etc/default/grub')
-        self.assertEqual(inst.cmdline,
-            'quiet splash acpi_os_name=Linux acpi_osi='
-        )
         tmp = TempDir()
         inst = actions.lemu1(etcdir=tmp.dir)
         self.assertEqual(inst.filename, tmp.join('default', 'grub'))
-        self.assertEqual(inst.cmdline,
-            'quiet splash acpi_os_name=Linux acpi_osi='
-        )
 
     def test_decribe(self):
         inst = actions.lemu1()
@@ -728,52 +683,52 @@ class Test_lemu1(TestCase):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.lemu1(etcdir=tmp.dir)
+
+        # /etc/default/grub is missing:
         with self.assertRaises(FileNotFoundError) as cm:
             inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'w').write(GRUB_ORIG)
+
+        # When add params are *not* present:
+        with open(inst.filename, 'x') as fp:
+            fp.write(GRUB_ORIG)
         self.assertIs(inst.get_isneeded(), True)
-        open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
-        )
+
+        # When add params are already present:
+        grub = GRUB.format('quiet splash acpi_os_name=Linux acpi_osi=')
+        with open(inst.filename, 'w') as fp:
+            fp.write(grub)
         self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.lemu1(etcdir=tmp.dir)
+        expected = GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
+
+        # /etc/default/grub is missing:
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'w').write(GRUB_ORIG)
+
+        # From orig /etc/defaut/grub:
+        with open(inst.filename, 'w') as fp:
+            fp.write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
-        self.assertEqual(
-            open(inst.filename, 'r').read(),
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
-        )
-        open(inst.filename, 'w').write(
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
-        )
+        self.assertEqual(open(inst.filename, 'r').read(), expected)
+
+        # /etc/defaut/grub is already correct:
         self.assertIsNone(inst.perform())
-        self.assertEqual(
-            open(inst.filename, 'r').read(),
-            GRUB_MOD.format('acpi_os_name=Linux acpi_osi=')
-        )
+        self.assertEqual(open(inst.filename, 'r').read(), expected)
 
 
 class Test_disable_power_well(TestCase):
     def test_init(self):
         inst = actions.disable_power_well()
         self.assertEqual(inst.filename, '/etc/default/grub')
-        self.assertEqual(inst.cmdline,
-            'quiet splash i915.disable_power_well=0'
-        )
         tmp = TempDir()
         inst = actions.disable_power_well(etcdir=tmp.dir)
         self.assertEqual(inst.filename, tmp.join('default', 'grub'))
-        self.assertEqual(inst.cmdline,
-            'quiet splash i915.disable_power_well=0'
-        )
 
     def test_decribe(self):
         inst = actions.disable_power_well()
@@ -785,36 +740,47 @@ class Test_disable_power_well(TestCase):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.disable_power_well(etcdir=tmp.dir)
+
+        # /etc/default/grub is missing:
         with self.assertRaises(FileNotFoundError) as cm:
             inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'w').write(GRUB_ORIG)
+
+        # When add params are *not* present:
+        with open(inst.filename, 'x') as fp:
+            fp.write(GRUB_ORIG)
         self.assertIs(inst.get_isneeded(), True)
-        open(inst.filename, 'w').write(
-            GRUB_MOD.format('i915.disable_power_well=0')
-        )
+
+        # When add params are already present:
+        grub = GRUB.format('quiet splash i915.disable_power_well=0')
+        with open(inst.filename, 'w') as fp:
+            fp.write(grub)
         self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         tmp = TempDir()
         tmp.mkdir('default')
         inst = actions.disable_power_well(etcdir=tmp.dir)
+
+        # /etc/default/grub is missing:
         with self.assertRaises(FileNotFoundError) as cm:
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'w').write(GRUB_ORIG)
+
+        # From orig /etc/defaut/grub:
+        with open(inst.filename, 'w') as fp:
+            fp.write(GRUB_ORIG)
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
-            GRUB_MOD.format('i915.disable_power_well=0')
+            GRUB.format('i915.disable_power_well=0 quiet splash')
         )
-        open(inst.filename, 'w').write(
-            GRUB_MOD.format('i915.disable_power_well=0')
-        )
+
+        # /etc/defaut/grub is already correct:
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
-            GRUB_MOD.format('i915.disable_power_well=0')
+            GRUB.format('i915.disable_power_well=0 quiet splash')
         )
 
 
@@ -822,11 +788,9 @@ class Test_backlight_vendor(TestCase):
     def test_init(self):
         inst = actions.backlight_vendor()
         self.assertEqual(inst.filename, '/etc/default/grub')
-        self.assertEqual(inst.cmdline, 'quiet splash acpi_backlight=vendor')
         tmp = TempDir()
         inst = actions.backlight_vendor(etcdir=tmp.dir)
         self.assertEqual(inst.filename, tmp.join('default', 'grub'))
-        self.assertEqual(inst.cmdline, 'quiet splash acpi_backlight=vendor')
 
     def test_decribe(self):
         inst = actions.backlight_vendor()

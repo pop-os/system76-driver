@@ -206,36 +206,44 @@ class GrubAction(Action):
     """
     Base class for actions that modify cmdline in /etc/default/grub.
     """
+
     update_grub = True
-    base = ('quiet', 'splash')
-    extra = tuple()
+    add = tuple()
+    remove = tuple()
 
     def __init__(self, etcdir='/etc'):
-        params = self.base + self.extra
-        self.cmdline = ' '.join(params)
         self.filename = path.join(etcdir, 'default', 'grub')
 
     def read(self):
         return open(self.filename, 'r').read()
 
-    def get_cmdline(self):
+    def get_current_cmdline(self):
         for line in self.read().splitlines():
             match = CMDLINE_RE.match(line)
             if match:
                 return match.group(1)
         raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
 
+    def build_new_cmdline(self, current):
+        params = set(current.split()) - set(self.remove)
+        params.update(self.add)
+        return ' '.join(sorted(params))
+
     def iter_lines(self):
         content = self.read_and_backup()
         for line in content.splitlines():
             match = CMDLINE_RE.match(line)
             if match:
-                yield CMDLINE_TEMPLATE.format(self.cmdline)
+                yield CMDLINE_TEMPLATE.format(
+                    self.build_new_cmdline(match.group(1))
+                )
             else:
                 yield line
 
     def get_isneeded(self):
-        return self.get_cmdline() != self.cmdline
+        current = self.get_current_cmdline()
+        params = set(current.split())
+        return not params.issuperset(self.add)
 
     def perform(self):
         content = '\n'.join(self.iter_lines())
@@ -261,7 +269,7 @@ class hdmi_hotplug_fix(FileAction):
 
 
 class lemu1(GrubAction):
-    extra = ('acpi_os_name=Linux', 'acpi_osi=')
+    add = ('acpi_os_name=Linux', 'acpi_osi=')
 
     def describe(self):
         return _('Enable brightness hot keys')
@@ -297,7 +305,7 @@ class disable_power_well(GrubAction):
     speed is faster than it should be, aka the "chipmunk problem").
     """
 
-    extra = ('i915.disable_power_well=0',)
+    add = ('i915.disable_power_well=0',)
 
     def describe(self):
         return _('Fix HDMI audio playback speed')
