@@ -286,7 +286,7 @@ class backlight_vendor(GrubAction):
     Add acpi_backlight=vendor to GRUB_CMDLINE_LINUX_DEFAULT (for gazp9).
     """
 
-    extra = ('acpi_backlight=vendor',)
+    add = ('acpi_backlight=vendor',)
 
     def describe(self):
         return _('Enable brightness hot keys')
@@ -297,7 +297,7 @@ class radeon_dpm(GrubAction):
     Add radeon.dpm=1 to GRUB_CMDLINE_LINUX_DEFAULT (for panp7).
     """
 
-    extra = ('radeon.dpm=1',)
+    add = ('radeon.dpm=1',)
 
     def describe(self):
         return _('Enable Radeon GPU power management')
@@ -324,7 +324,7 @@ class grub_daru4(GrubAction):
     This has the effect of both `backlight_vendor` and `disable_power_well`.
     """
 
-    extra = ('acpi_backlight=vendor', 'i915.disable_power_well=0',)
+    add = ('acpi_backlight=vendor', 'i915.disable_power_well=0',)
 
     def describe(self):
         return _('Fix brightness hot keys & HDMI audio playback speed')
