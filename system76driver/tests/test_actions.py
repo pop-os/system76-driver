@@ -733,135 +733,93 @@ class Test_hdmi_hotplug_fix(TestCase):
 
 
 class Test_lemu1(TestCase):
-    def test_init(self):
-        inst = actions.lemu1()
-        self.assertEqual(inst.filename, '/etc/default/grub')
-        tmp = TempDir()
-        inst = actions.lemu1(etcdir=tmp.dir)
-        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
-
     def test_decribe(self):
         inst = actions.lemu1()
-        self.assertEqual(inst.describe(),
+        self.assertEqual(inst.describe(), 
             'Enable brightness hot keys'
         )
 
-    def test_get_isneeded(self):
-        tmp = TempDir()
-        tmp.mkdir('default')
-        inst = actions.lemu1(etcdir=tmp.dir)
+    def test_build_new_cmdline(self):
+        inst = actions.lemu1()
+        self.assertEqual(inst.add,
+            ('acpi_os_name=Linux', 'acpi_osi=')
+        )
+        self.assertEqual(inst.remove, tuple())
+        self.assertEqual(inst.build_new_cmdline('quiet splash'),
+            'acpi_os_name=Linux acpi_osi= quiet splash'
+        )
 
-        # /etc/default/grub is missing:
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.get_isneeded()
-        self.assertEqual(cm.exception.filename, inst.filename)
 
-        # When add params are *not* present:
-        with open(inst.filename, 'x') as fp:
-            fp.write(GRUB_ORIG)
-        self.assertIs(inst.get_isneeded(), True)
+class Test_backlight_vendor(TestCase):
+    def test_decribe(self):
+        inst = actions.backlight_vendor()
+        self.assertEqual(inst.describe(), 
+            'Enable brightness hot keys'
+        )
 
-        # When add params are already present:
-        grub = GRUB.format('quiet splash acpi_os_name=Linux acpi_osi=')
-        with open(inst.filename, 'w') as fp:
-            fp.write(grub)
-        self.assertIs(inst.get_isneeded(), False)
+    def test_build_new_cmdline(self):
+        inst = actions.backlight_vendor()
+        self.assertEqual(inst.add,
+            ('acpi_backlight=vendor',)
+        )
+        self.assertEqual(inst.remove, tuple())
+        self.assertEqual(inst.build_new_cmdline('quiet splash'),
+            'acpi_backlight=vendor quiet splash'
+        )
 
-    def test_perform(self):
-        tmp = TempDir()
-        tmp.mkdir('default')
-        inst = actions.lemu1(etcdir=tmp.dir)
-        expected = GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
 
-        # /etc/default/grub is missing:
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.perform()
-        self.assertEqual(cm.exception.filename, inst.filename)
+class Test_radeon_dpm(TestCase):
+    def test_describe(self):
+        inst = actions.radeon_dpm()
+        self.assertEqual(inst.describe(),
+            'Enable Radeon GPU power management'
+        )
 
-        # From orig /etc/defaut/grub:
-        with open(inst.filename, 'w') as fp:
-            fp.write(GRUB_ORIG)
-        self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), expected)
-
-        # /etc/defaut/grub is already correct:
-        self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), expected)
+    def test_build_new_cmdline(self):
+        inst = actions.radeon_dpm()
+        self.assertEqual(inst.add,
+            ('radeon.dpm=1',)
+        )
+        self.assertEqual(inst.remove, tuple())
+        self.assertEqual(inst.build_new_cmdline('quiet splash'),
+            'quiet radeon.dpm=1 splash'
+        )
 
 
 class Test_disable_power_well(TestCase):
-    def test_init(self):
-        inst = actions.disable_power_well()
-        self.assertEqual(inst.filename, '/etc/default/grub')
-        tmp = TempDir()
-        inst = actions.disable_power_well(etcdir=tmp.dir)
-        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
-
-    def test_decribe(self):
+    def test_describe(self):
         inst = actions.disable_power_well()
         self.assertEqual(inst.describe(),
             'Fix HDMI audio playback speed'
         )
 
-    def test_get_isneeded(self):
-        tmp = TempDir()
-        tmp.mkdir('default')
-        inst = actions.disable_power_well(etcdir=tmp.dir)
-
-        # /etc/default/grub is missing:
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.get_isneeded()
-        self.assertEqual(cm.exception.filename, inst.filename)
-
-        # When add params are *not* present:
-        with open(inst.filename, 'x') as fp:
-            fp.write(GRUB_ORIG)
-        self.assertIs(inst.get_isneeded(), True)
-
-        # When add params are already present:
-        grub = GRUB.format('quiet splash i915.disable_power_well=0')
-        with open(inst.filename, 'w') as fp:
-            fp.write(grub)
-        self.assertIs(inst.get_isneeded(), False)
-
-    def test_perform(self):
-        tmp = TempDir()
-        tmp.mkdir('default')
-        inst = actions.disable_power_well(etcdir=tmp.dir)
-
-        # /etc/default/grub is missing:
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.perform()
-        self.assertEqual(cm.exception.filename, inst.filename)
-
-        # From orig /etc/defaut/grub:
-        with open(inst.filename, 'w') as fp:
-            fp.write(GRUB_ORIG)
-        self.assertIsNone(inst.perform())
-        self.assertEqual(
-            open(inst.filename, 'r').read(),
-            GRUB.format('i915.disable_power_well=0 quiet splash')
+    def test_build_new_cmdline(self):
+        inst = actions.disable_power_well()
+        self.assertEqual(inst.add,
+            ('i915.disable_power_well=0',)
         )
-
-        # /etc/defaut/grub is already correct:
-        self.assertIsNone(inst.perform())
-        self.assertEqual(
-            open(inst.filename, 'r').read(),
-            GRUB.format('i915.disable_power_well=0 quiet splash')
+        self.assertEqual(inst.remove, tuple())
+        self.assertEqual(inst.build_new_cmdline('quiet splash'),
+            'i915.disable_power_well=0 quiet splash'
         )
 
 
-class Test_backlight_vendor(TestCase):
-    def test_init(self):
-        inst = actions.backlight_vendor()
-        self.assertEqual(inst.filename, '/etc/default/grub')
-        tmp = TempDir()
-        inst = actions.backlight_vendor(etcdir=tmp.dir)
-        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+class Test_grub_daru4(TestCase):
+    def test_describe(self):
+        inst = actions.grub_daru4()
+        self.assertEqual(inst.describe(),
+            'Fix brightness hot keys & HDMI audio playback speed'
+        )
 
-    def test_decribe(self):
-        inst = actions.backlight_vendor()
-        self.assertEqual(inst.describe(), 'Enable brightness hot keys')
+    def test_build_new_cmdline(self):
+        inst = actions.grub_daru4()
+        self.assertEqual(inst.add,
+            ('acpi_backlight=vendor', 'i915.disable_power_well=0')
+        )
+        self.assertEqual(inst.remove, tuple())
+        self.assertEqual(inst.build_new_cmdline('quiet splash'),
+            'acpi_backlight=vendor i915.disable_power_well=0 quiet splash'
+        )
 
 
 class Test_plymouth1080(TestCase):
