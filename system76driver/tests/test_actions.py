@@ -413,6 +413,52 @@ class TestGrubAction(TestCase):
         )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
+    def test_get_isneeded_by_set(self):
+        inst = actions.GrubAction()
+        self.assertIs(inst.get_isneeded_by_set(set()), False)
+        self.assertIs(inst.get_isneeded_by_set({'foo'}), False)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar'}), False)
+
+        # Test when subclass has add:
+        class Subclass(actions.GrubAction):
+            add = ('foo', 'bar')
+
+        inst = Subclass()
+        self.assertIs(inst.get_isneeded_by_set(set()), True)
+        self.assertIs(inst.get_isneeded_by_set({'foo'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar'}), False)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar', 'baz'}), False)
+        self.assertIs(inst.get_isneeded_by_set({'baz'}), True)
+
+        # Test when subclass has remove:
+        class Subclass(actions.GrubAction):
+            remove = ('foo', 'bar')
+
+        inst = Subclass()
+        self.assertIs(inst.get_isneeded_by_set(set()), False)
+        self.assertIs(inst.get_isneeded_by_set({'foo'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar', 'baz'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'baz'}), False)
+
+        # Test when subclass has add *and* remove:
+        class Subclass(actions.GrubAction):
+            add = ('foo', 'bar')
+            remove = ('haz', 'fez')
+
+        inst = Subclass()
+        self.assertIs(inst.get_isneeded_by_set(set()), True)
+        self.assertIs(inst.get_isneeded_by_set({'moo'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'foo'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar'}), False)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar', 'moo'}), False)
+
+        self.assertIs(inst.get_isneeded_by_set({'haz'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'haz', 'fez'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'haz', 'fez', 'moo'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar', 'haz'}), True)
+        self.assertIs(inst.get_isneeded_by_set({'foo', 'bar', 'haz', 'fez'}), True)
+
     def test_get_isneeded(self):
         tmp = TempDir()
         tmp.mkdir('default')

@@ -240,10 +240,16 @@ class GrubAction(Action):
             else:
                 yield line
 
+    def get_isneeded_by_set(self, params):
+        assert isinstance(params, set)
+        if params.intersection(self.remove):
+            return True
+        return not params.issuperset(self.add)
+
     def get_isneeded(self):
         current = self.get_current_cmdline()
         params = set(current.split())
-        return not params.issuperset(self.add)
+        return self.get_isneeded_by_set(params)
 
     def perform(self):
         content = '\n'.join(self.iter_lines())
