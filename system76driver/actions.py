@@ -204,38 +204,87 @@ class FileAction(Action):
 
 class GrubAction(Action):
     """
-    Base class for actions that modify cmdline in /etc/default/grub.
+    Base class for actions that modify GRUB_CMDLINE_LINUX_DEFAULT.
+
+    GrubAction subclasses can add and/or remove kernel boot parameters (args)
+    from the GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub.
+
+    This works in a way that preserves customer customizations.  For example,
+    an subclass that adds the "foo" and "bar" boot params:
+
+    >>> class add_foo_bar(GrubAction):
+    ...     add = ('foo', 'bar')
+    ... 
+    ...     def describe(self):
+    ...         return _('I add foo and bar')
+    ... 
+    >>> action = add_foo_bar()
+    >>> action.build_new_cmdline('quiet splash acpi_enforce_resources=lax')
+    'acpi_enforce_resources=lax bar foo quiet splash'
+
+    You can also use GrubAction to remove parameters that we previously used on
+    an earlier version of the driver (and likely an earlier version of Ubuntu),
+    but now are no longer needed, or in particular, now causes problems when
+    present:
+
+    >>> class remove_baz(GrubAction):
+    ...     remove = ('baz',)
+    ... 
+    ...     def describe(self):
+    ...         return _('I remove baz')
+    ... 
+    >>> action = remove_baz()
+    >>> action.build_new_cmdline('quiet baz acpi_enforce_resources=lax splash')
+    'acpi_enforce_resources=lax quiet splash'
+
+    Note that to graciously accommodate customer changes, we should *only*
+    remove parameters that we previously used on the exact product and are now
+    problematic.
     """
+
     update_grub = True
-    base = ('quiet', 'splash')
-    extra = tuple()
+    add = tuple()
+    remove = tuple()
 
     def __init__(self, etcdir='/etc'):
-        params = self.base + self.extra
-        self.cmdline = ' '.join(params)
         self.filename = path.join(etcdir, 'default', 'grub')
 
     def read(self):
         return open(self.filename, 'r').read()
 
-    def get_cmdline(self):
+    def get_current_cmdline(self):
         for line in self.read().splitlines():
             match = CMDLINE_RE.match(line)
             if match:
                 return match.group(1)
         raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
 
+    def build_new_cmdline(self, current):
+        params = set(current.split()) - set(self.remove)
+        params.update(self.add)
+        return ' '.join(sorted(params))
+
     def iter_lines(self):
         content = self.read_and_backup()
         for line in content.splitlines():
             match = CMDLINE_RE.match(line)
             if match:
-                yield CMDLINE_TEMPLATE.format(self.cmdline)
+                yield CMDLINE_TEMPLATE.format(
+                    self.build_new_cmdline(match.group(1))
+                )
             else:
                 yield line
 
+    def get_isneeded_by_set(self, params):
+        assert isinstance(params, set)
+        if params.intersection(self.remove):
+            return True
+        return not params.issuperset(self.add)
+
     def get_isneeded(self):
-        return self.get_cmdline() != self.cmdline
+        current = self.get_current_cmdline()
+        params = set(current.split())
+        return self.get_isneeded_by_set(params)
 
     def perform(self):
         content = '\n'.join(self.iter_lines())
@@ -261,7 +310,7 @@ class hdmi_hotplug_fix(FileAction):
 
 
 class lemu1(GrubAction):
-    extra = ('acpi_os_name=Linux', 'acpi_osi=')
+    add = ('acpi_os_name=Linux', 'acpi_osi=')
 
     def describe(self):
         return _('Enable brightness hot keys')
@@ -272,7 +321,7 @@ class backlight_vendor(GrubAction):
     Add acpi_backlight=vendor to GRUB_CMDLINE_LINUX_DEFAULT (for gazp9).
     """
 
-    extra = ('acpi_backlight=vendor',)
+    add = ('acpi_backlight=vendor',)
 
     def describe(self):
         return _('Enable brightness hot keys')
@@ -283,7 +332,7 @@ class radeon_dpm(GrubAction):
     Add radeon.dpm=1 to GRUB_CMDLINE_LINUX_DEFAULT (for panp7).
     """
 
-    extra = ('radeon.dpm=1',)
+    add = ('radeon.dpm=1',)
 
     def describe(self):
         return _('Enable Radeon GPU power management')
@@ -297,7 +346,7 @@ class disable_power_well(GrubAction):
     speed is faster than it should be, aka the "chipmunk problem").
     """
 
-    extra = ('i915.disable_power_well=0',)
+    add = ('i915.disable_power_well=0',)
 
     def describe(self):
         return _('Fix HDMI audio playback speed')
@@ -310,7 +359,7 @@ class grub_daru4(GrubAction):
     This has the effect of both `backlight_vendor` and `disable_power_well`.
     """
 
-    extra = ('acpi_backlight=vendor', 'i915.disable_power_well=0',)
+    add = ('acpi_backlight=vendor', 'i915.disable_power_well=0',)
 
     def describe(self):
         return _('Fix brightness hot keys & HDMI audio playback speed')
@@ -350,14 +399,6 @@ class uvcquirks(FileAction):
 
     def describe(self):
         return _('Webcam quirk fixes')
-
-
-class sata_alpm(FileAction):
-    relpath = ('etc', 'pm', 'config.d', 'sata_alpm')
-    content = 'SATA_ALPM_ENABLE=true'
-
-    def describe(self):
-        return _('Enable SATA Link Power Management (ALPM)')
 
 
 class internal_mic_gain(FileAction):
