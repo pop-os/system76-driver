@@ -8,7 +8,7 @@ system76-driver (14.04.6~pre1) trusty; urgency=low
       /etc/pm/power.d/ existing, which seems not to be installed by default on
       Xubuntu
     * Rework GrubAction and its subclasses so that it preserves customer changes
-      and can also remove kernel parameters when needed
+      and can also remove previously added kernel parameters when needed
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 17:43:34 -0600
