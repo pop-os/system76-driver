@@ -21,6 +21,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
     python3-dbus,
     python3-gi,
     gir1.2-gtk-3.0,
+    pm-utils,
     gnome-color-manager,
 Description: Universal driver for System76 computers
  System76 Driver provides drivers, restore, and regression support for System76

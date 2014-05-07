@@ -4,6 +4,9 @@ system76-driver (14.04.6~pre1) trusty; urgency=low
       supply a correct color profile out of the box, drop color profile actions
       from bonx7, galu1, gazp9 (note this wont remove profiles already
       installed, will only effect new shipments and re-installs)
+    * debian/control: add Depends `pm-utils` as some driver actions depend upon
+      /etc/pm/power.d/ existing, which seems not to be installed by default on
+      Xubuntu
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 17:43:34 -0600
