@@ -204,7 +204,42 @@ class FileAction(Action):
 
 class GrubAction(Action):
     """
-    Base class for actions that modify cmdline in /etc/default/grub.
+    Base class for actions that modify GRUB_CMDLINE_LINUX_DEFAULT.
+
+    GrubAction subclasses can add and/or remove kernel boot parameters (args)
+    from the GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub.
+
+    This works in a way that preserves customer customizations.  For example,
+    an subclass that adds the "foo" and "bar" boot params:
+
+    >>> class add_foo_bar(GrubAction):
+    ...     add = ('foo', 'bar')
+    ... 
+    ...     def describe(self):
+    ...         return _('I add foo and bar')
+    ... 
+    >>> action = add_foo_bar()
+    >>> action.build_new_cmdline('quiet splash acpi_enforce_resources=lax')
+    'acpi_enforce_resources=lax bar foo quiet splash'
+
+    You can also use GrubAction to remove parameters that we previously used on
+    an earlier version of the driver (and likely an earlier version of Ubuntu),
+    but now are no longer needed, or in particular, now causes problems when
+    present:
+
+    >>> class remove_baz(GrubAction):
+    ...     remove = ('baz',)
+    ... 
+    ...     def describe(self):
+    ...         return _('I remove baz')
+    ... 
+    >>> action = remove_baz()
+    >>> action.build_new_cmdline('quiet baz acpi_enforce_resources=lax splash')
+    'acpi_enforce_resources=lax quiet splash'
+
+    Note that to graciously accommodate customer changes, we should *only*
+    remove parameters that we previously used on the exact product and are now
+    problematic.
     """
 
     update_grub = True
