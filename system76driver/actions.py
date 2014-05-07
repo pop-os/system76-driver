@@ -401,14 +401,6 @@ class uvcquirks(FileAction):
         return _('Webcam quirk fixes')
 
 
-class sata_alpm(FileAction):
-    relpath = ('etc', 'pm', 'config.d', 'sata_alpm')
-    content = 'SATA_ALPM_ENABLE=true'
-
-    def describe(self):
-        return _('Enable SATA Link Power Management (ALPM)')
-
-
 class internal_mic_gain(FileAction):
     relpath = ('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths',
                     'analog-input-internal-mic.conf')
