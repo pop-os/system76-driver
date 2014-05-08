@@ -823,24 +823,6 @@ class Test_disable_power_well(TestCase):
         )
 
 
-class Test_grub_daru4(TestCase):
-    def test_describe(self):
-        inst = actions.grub_daru4()
-        self.assertEqual(inst.describe(),
-            'Fix brightness hot keys & HDMI audio playback speed'
-        )
-
-    def test_build_new_cmdline(self):
-        inst = actions.grub_daru4()
-        self.assertEqual(inst.add,
-            ('acpi_backlight=vendor', 'i915.disable_power_well=0')
-        )
-        self.assertEqual(inst.remove, tuple())
-        self.assertEqual(inst.build_new_cmdline('quiet splash'),
-            'acpi_backlight=vendor i915.disable_power_well=0 quiet splash'
-        )
-
-
 class Test_plymouth1080(TestCase):
     def test_init(self):
         inst = actions.plymouth1080()

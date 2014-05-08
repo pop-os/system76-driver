@@ -363,19 +363,6 @@ class disable_power_well(GrubAction):
         return _('Fix HDMI audio playback speed')
 
 
-class grub_daru4(GrubAction):
-    """
-    Special daru4 action as GrubAction currently can't be merged.
-    
-    This has the effect of both `backlight_vendor` and `disable_power_well`.
-    """
-
-    add = ('acpi_backlight=vendor', 'i915.disable_power_well=0',)
-
-    def describe(self):
-        return _('Fix brightness hot keys & HDMI audio playback speed')
-
-
 class plymouth1080(Action):
     update_grub = True
     value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'

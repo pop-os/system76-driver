@@ -84,9 +84,10 @@ PRODUCTS = {
         'name': 'Darter UltraTouch',
         'drivers': [
             actions.wifi_pm_disable,
-            actions.grub_daru4,
-            actions.internal_mic_gain,
             actions.hdmi_hotplug_fix,
+            actions.backlight_vendor,
+            actions.disable_power_well,
+            actions.internal_mic_gain,
         ],
     },
 

@@ -21,6 +21,8 @@ system76-driver (14.04.6~pre1) trusty; urgency=low
       still needed
     * Add remove_backlight_vendor action to gazp9, gazp9b to properly remove
       acpi_backlight=vendor from GRUB_CMDLINE_LINUX_DEFAULT
+    * On daru4, replace `grub_daru4` with `backlight_vendor` plus
+      `disable_power_well` actions now that GrubAction is cumulative
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 17:43:34 -0600
