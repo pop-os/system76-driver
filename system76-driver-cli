@@ -22,6 +22,7 @@
 
 import argparse
 import os
+from os import path
 import sys
 import logging
 
@@ -44,6 +45,13 @@ logging.basicConfig(
     format='%(levelname)s\t%(message)s',
 )
 log = logging.getLogger()
+
+# This is a hack so that the driver doesn't get run in the VM when mastering
+# and maintaining the golden images:
+MARKER = '/var/cache/system76-pre-master.marker'
+if path.exists(MARKER):
+    log.warning('Pre-master marker exists: %r', MARKER)
+    sys.exit(0)
 
 # We want to be very careful not to automatically do anything on non-System76
 # hardware, so we check both sys_vendor and product_version:
