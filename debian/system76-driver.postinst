@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
+
+# Note: deliberately not called with /bin/sh -e
 
 # system76-driver: Universal driver for System76 computers
 # Copyright (C) 2005-2014 System76, Inc.
