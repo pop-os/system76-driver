@@ -768,6 +768,25 @@ class Test_backlight_vendor(TestCase):
         )
 
 
+class Test_remove_backlight_vendor(TestCase):
+    def test_decribe(self):
+        inst = actions.remove_backlight_vendor()
+        self.assertEqual(inst.describe(), 
+            'Remove brightness hot-key fix'
+        )
+
+    def test_build_new_cmdline(self):
+        inst = actions.remove_backlight_vendor()
+        self.assertEqual(inst.add, tuple())
+        self.assertEqual(inst.remove,
+            ('acpi_backlight=vendor',)
+        )
+        self.assertEqual(
+            inst.build_new_cmdline('acpi_backlight=vendor quiet splash'),
+            'quiet splash'
+        )
+
+
 class Test_radeon_dpm(TestCase):
     def test_describe(self):
         inst = actions.radeon_dpm()

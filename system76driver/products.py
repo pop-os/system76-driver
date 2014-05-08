@@ -141,15 +141,17 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.disable_power_well,
+            actions.remove_backlight_vendor,
         ],
     },
     'gazp9b': {
         'name': 'Gazelle Professional',
         'drivers': [
             actions.wifi_pm_disable,
-            actions.internal_mic_gain,
             actions.hdmi_hotplug_fix,
             actions.disable_power_well,
+            actions.remove_backlight_vendor,
+            actions.internal_mic_gain,  # Only for gazp9b
         ],
     },
     'gazu1': {

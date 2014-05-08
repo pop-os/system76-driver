@@ -327,6 +327,17 @@ class backlight_vendor(GrubAction):
         return _('Enable brightness hot keys')
 
 
+class remove_backlight_vendor(GrubAction):
+    """
+    Remove acpi_backlight=vendor to GRUB_CMDLINE_LINUX_DEFAULT (for gazp9).
+    """
+
+    remove = ('acpi_backlight=vendor',)
+
+    def describe(self):
+        return _('Remove brightness hot-key fix')
+
+
 class radeon_dpm(GrubAction):
     """
     Add radeon.dpm=1 to GRUB_CMDLINE_LINUX_DEFAULT (for panp7).
