@@ -15,6 +15,10 @@ system76-driver (14.04.6~pre1) trusty; urgency=low
       being called from a postinst script
     * Add debian/system76-driver.postinst that automatically calls
       /usr/bin/system76-driver-cli
+    * system76-daemon no longer needs to fix caps on /bin/ping, /bin/ping6,
+      /usr/bin/arping as the `iputils` package as been updated and reverted to
+      use suid again; however, caps fix on /usr/bin/gnome-keyring-daemon is
+      still needed
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 17:43:34 -0600

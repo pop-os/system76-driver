@@ -72,9 +72,9 @@ DEFAULT_BRIGHTNESS = {
 # Make sure caps are set correctly for systems imaged after 14.04 was released,
 # but before we fixed the caps issue in the imaging software:
 FIX_CAPS = (
-    ('cap_net_raw+p', '/bin/ping6'),
-    ('cap_net_raw+p', '/bin/ping'),
-    ('cap_net_raw+p', '/usr/bin/arping'),
+    #('cap_net_raw+p', '/bin/ping6'),
+    #('cap_net_raw+p', '/bin/ping'),
+    #('cap_net_raw+p', '/usr/bin/arping'),
     ('cap_ipc_lock+ep', '/usr/bin/gnome-keyring-daemon'),
 )
 MARKER_CAPS_FIXED = '/var/lib/system76-driver/caps-fixed'
