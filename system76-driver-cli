@@ -22,54 +22,60 @@
 
 import argparse
 import os
+from os import path
 import sys
-import time
-import platform
 import logging
 
 import system76driver
-from system76driver.model import determine_model
-from system76driver.actions import ActionRunner
 from system76driver.products import PRODUCTS
+from system76driver.actions import ActionRunner
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', help='force model rather than detecting it')
-parser.add_argument('--dry', action='store_true', default=False,
-    help='print what would be done but without calling Action.perform()',
+parser.add_argument('--strict', action='store_true', default=False,
+    help='Exit with a non-zero status if not a valid system76 product',
 )
 args = parser.parse_args()
+exitcode = (2 if args.strict else 0)
 
-
-if os.getuid() != 0:
-    sys.exit('Error: must be run as root')
-
-
+# Because system76-driver-cli will be called automatically from the postinst
+# script, we don't log to /var/log/system76-driver.log
 logging.basicConfig(
-    filename='/var/log/system76-driver.log',
     level=logging.DEBUG,
-    style='{',
-    format='{asctime}  {levelname}  {message}',
+    format='%(levelname)s\t%(message)s',
 )
 log = logging.getLogger()
 
+# This is a hack so that the driver doesn't get run in the VM when mastering
+# and maintaining the golden images:
+MARKER = '/var/cache/system76-pre-master.marker'
+if path.exists(MARKER):
+    log.warning('Pre-master marker exists: %r', MARKER)
+    sys.exit(0)
 
-if args.model is None:
-    args.model = determine_model()
+# We want to be very careful not to automatically do anything on non-System76
+# hardware, so we check both sys_vendor and product_version:
+sys_vendor = system76driver.read_dmi_id('sys_vendor')
+if sys_vendor != 'System76, Inc.':
+    log.warning('wrong sys_vendor: %r', sys_vendor)
+    sys.exit(exitcode)
+
+product_version = system76driver.read_dmi_id('product_version')
 try:
-    product = PRODUCTS[args.model]
+    product = PRODUCTS[product_version]
+    log.info('product_version: %r', product_version)
 except KeyError:
-    sys.exit('Error: no such product: {}'.format(args.model))
+    log.warning('invalid product_version: %r', product_version)
+    sys.exit(exitcode)
 
-log.info('** Process start at monotonic time %r', time.monotonic())
-log.info('system76driver.__version__: %r', system76driver.__version__)
-log.info('OS: %r', platform.dist())
-log.info('kernel: %r', platform.uname().release)
-log.info('model: %r', args.model)
+if os.getuid() != 0:
+    log.error('must be run as root')
+    sys.exit(exitcode)
 
-print('model:', args.model)
-print('name:', product['name'])
-
-action_runner = ActionRunner(product['drivers'])
-for msg in action_runner.run_iter():
-    print('  * ' + msg)
+try:
+    action_runner = ActionRunner(product['drivers'])
+    for msg in action_runner.run_iter():
+        log.info('* %s', msg)
+except Exception:
+    log.exception('Error running actions:')
+    sys.exit(exitcode)

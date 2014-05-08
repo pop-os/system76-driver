@@ -4,13 +4,17 @@ system76-driver (14.04.6~pre1) trusty; urgency=low
       supply a correct color profile out of the box, drop color profile actions
       from bonx7, galu1, gazp9 (note this wont remove profiles already
       installed, will only effect new shipments and re-installs)
-    * debian/control: add Depends `pm-utils` as some driver actions depend upon
-      /etc/pm/power.d/ existing, which seems not to be installed by default on
-      Xubuntu
+    * debian/control: drop Build-Depends/Depends on `python3-dbus`, as it was
+      only needed for color-profile actions
+    * debian/control: add Depends on `pm-utils` as some driver actions expect
+      /etc/pm/power.d/ to exist, which seems not to be installed by default on
+      Xubuntu, Ubuntu GNOME
     * Rework GrubAction and its subclasses so that it preserves customer changes
       and can also remove previously added kernel parameters when needed
-    * debian/control: remove Build-Depends/Depends on python3-dbus, as we
-      dropped the color-profile actions
+    * Rework system76-driver-cli to make it more suitable for automatically
+      being called from a postinst script
+    * Add debian/system76-driver.postinst that automatically calls
+      /usr/bin/system76-driver-cli
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 17:43:34 -0600
