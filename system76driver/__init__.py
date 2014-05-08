@@ -31,3 +31,15 @@ datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
 
 def get_datafile(name):
     return path.join(datadir, name)
+
+
+def read_dmi_id(key, sysdir='/sys'):
+    assert key in ('sys_vendor', 'product_version')
+    filename = path.join(sysdir, 'class', 'dmi', 'id', key)
+    try:
+        fp = open(filename, 'r')
+    except FileNotFoundError:
+        return None
+    value = fp.read().strip()
+    fp.close()
+    return value

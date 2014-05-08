@@ -26,6 +26,7 @@ import os
 from os import path
 from subprocess import check_call
 
+from .helpers import TempDir
 from system76driver.products import PRODUCTS
 import system76driver
 
@@ -91,3 +92,37 @@ class TestDataFiles(TestCase):
             self.assertEqual(prefix, 'system76')
             self.assertIn(model, PRODUCTS)
 
+
+class TestFunctions(TestCase):
+    def test_read_dmi_id(self):
+        tmp = TempDir()
+
+        # class/dmi/id dir missing:
+        self.assertIsNone(
+            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
+        )
+        self.assertIsNone(
+            system76driver.read_dmi_id('product_version', sysdir=tmp.dir)
+        )
+
+        # sys_vendor, product_version files misssing:
+        tmp.makedirs('class', 'dmi', 'id')
+        # class/dmi/id dir missing:
+        self.assertIsNone(
+            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
+        )
+        self.assertIsNone(
+            system76driver.read_dmi_id('product_version', sysdir=tmp.dir)
+        )
+
+        # sys_vendor, product_version files exist:
+        tmp.write(b'\nSystem76, Inc.\n', 'class', 'dmi', 'id', 'sys_vendor')
+        self.assertEqual(
+            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir),
+            'System76, Inc.'
+        )
+        tmp.write(b'\nkudp1\n', 'class', 'dmi', 'id', 'product_version')
+        self.assertEqual(
+            system76driver.read_dmi_id('product_version', sysdir=tmp.dir),
+            'kudp1'
+        )
