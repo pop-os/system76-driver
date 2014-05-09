@@ -1,4 +1,4 @@
-system76-driver (14.04.6~pre1) trusty; urgency=low
+system76-driver (14.04.6) trusty; urgency=low
 
     * As screen revisions within a product lifetime make it too difficult to
       supply a correct color profile out of the box, drop color profile actions
@@ -23,9 +23,8 @@ system76-driver (14.04.6~pre1) trusty; urgency=low
       acpi_backlight=vendor from GRUB_CMDLINE_LINUX_DEFAULT
     * On daru4, replace `grub_daru4` with `backlight_vendor` plus
       `disable_power_well` actions now that GrubAction is cumulative
-    * FILL ME IN
 
- -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 17:43:34 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 09 May 2014 13:22:25 -0600
 
 system76-driver (14.04.5) trusty; urgency=low
 
