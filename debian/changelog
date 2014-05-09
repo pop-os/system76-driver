@@ -1,3 +1,9 @@
+system76-driver (14.04.7~pre1) trusty; urgency=low
+
+    * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 09 May 2014 13:55:08 -0600
+
 system76-driver (14.04.6) trusty; urgency=low
 
     * As screen revisions within a product lifetime make it too difficult to
