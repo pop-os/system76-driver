@@ -142,7 +142,7 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.disable_power_well,
-            actions.remove_backlight_vendor,
+            actions.backlight_vendor,  # Still needed for some early BIOS
         ],
     },
     'gazp9b': {
