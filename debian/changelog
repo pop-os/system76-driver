@@ -1,3 +1,9 @@
+system76-driver (14.04.8~pre1) trusty; urgency=low
+
+    * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 14 May 2014 13:03:29 -0600
+
 system76-driver (14.04.7) trusty; urgency=low
 
     * Oops, sys_vendor on daru4 is 'System76, Inc' rather than 'System76, Inc.'
