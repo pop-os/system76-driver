@@ -1,3 +1,9 @@
+system76-driver (14.04.9~pre1) trusty; urgency=low
+
+    * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 09 Jun 2014 16:29:10 -0600
+
 system76-driver (14.04.8) trusty; urgency=low
 
     * Re-enable backlight_vendor action on gazp9 as some early BIOS versions
