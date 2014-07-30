@@ -367,6 +367,10 @@ PRODUCTS = {
         'name': 'Sable Complete',
         'drivers': [],
     },
+    'sabc3': {
+        'name': 'Sable Complete',
+        'drivers': [],
+    },
     'sabt1': {
         'name': 'Sable Touch',
         'drivers': [],

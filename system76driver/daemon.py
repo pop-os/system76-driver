@@ -65,6 +65,7 @@ DEFAULT_BRIGHTNESS = {
     'kudp1b': ('acpi_video0', 64),
     'sabc1': ('acpi_video0', 82),
     'sabc2': ('acpi_video0', 82),
+    'sabc3': ('acpi_video0', 82),
     'sabt1': ('acpi_video0', 82),
     'sabt2': ('acpi_video0', 82),
     'sabt3': ('acpi_video0', 82),
