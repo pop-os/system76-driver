@@ -67,6 +67,7 @@ DEFAULT_BRIGHTNESS = {
     'sabc2': ('acpi_video0', 82),
     'sabt1': ('acpi_video0', 82),
     'sabt2': ('acpi_video0', 82),
+    'sabt3': ('acpi_video0', 82),
 }
 
 

@@ -173,6 +173,7 @@ TABLES = {
         'sabc2': 'sabc2',
         'sabt1': 'sabt1',
         'sabt2': 'sabt2',
+        'sabt3': 'sabt3',
     },
 }
 

@@ -1,6 +1,7 @@
 system76-driver (14.04.9~pre1) trusty; urgency=low
 
     * Drop remaining caps fix from system76-daemon
+    * Add "sabt3" to PRODUCTS, DEFAULT_BRIGHTNESS
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Mon, 09 Jun 2014 16:29:10 -0600
