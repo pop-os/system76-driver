@@ -69,31 +69,6 @@ DEFAULT_BRIGHTNESS = {
     'sabt2': ('acpi_video0', 82),
 }
 
-# Make sure caps are set correctly for systems imaged after 14.04 was released,
-# but before we fixed the caps issue in the imaging software:
-FIX_CAPS = (
-    #('cap_net_raw+p', '/bin/ping6'),
-    #('cap_net_raw+p', '/bin/ping'),
-    #('cap_net_raw+p', '/usr/bin/arping'),
-    ('cap_ipc_lock+ep', '/usr/bin/gnome-keyring-daemon'),
-)
-MARKER_CAPS_FIXED = '/var/lib/system76-driver/caps-fixed'
-
-
-def fix_caps():
-    if path.exists(MARKER_CAPS_FIXED):
-        return
-    log.info('Fixing caps...')
-    for (cap, filename) in FIX_CAPS:
-        if path.isfile(filename):
-            cmd = ['setcap', cap, filename]
-            log.info('check_call: %r', cmd)
-            SubProcess.check_call(cmd)    
-    try:
-        open(MARKER_CAPS_FIXED, 'xb').close()
-    except OSError:
-        log.exception('Could not create %r', MARKER_CAPS_FIXED)
-
 
 def get_model(sysdir='/sys'):
     name = path.join(sysdir, 'class', 'dmi', 'id', 'product_version')
