@@ -325,6 +325,10 @@ PRODUCTS = {
         'name': 'Ratel Performance',
         'drivers': [],
     },
+    'ratp4': {
+        'name': 'Ratel Performance',
+        'drivers': [],
+    },
     'ratu1': {
         'name': 'Ratel Ultra',
         'drivers': [],

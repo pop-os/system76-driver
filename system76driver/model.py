@@ -156,6 +156,7 @@ TABLES = {
         'ratp1': 'ratp1',
         'ratp2': 'ratp2',
         'ratp3': 'ratp3',
+        'ratp4': 'ratp4',
         'star3': 'star3',
         'star4': 'star4',
         'star5': 'star5',
