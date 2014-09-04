@@ -499,4 +499,8 @@ PRODUCTS = {
         'name': 'Wild Dog Performance',
         'drivers': [],
     },
+    'wilp11': {
+        'name': 'Wild Dog Performance',
+        'drivers': [],
+    },
 }
