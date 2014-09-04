@@ -1,3 +1,9 @@
+system76-driver (14.04.10~pre1) trusty; urgency=low
+
+    * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 04 Sep 2014 10:55:39 -0600
+
 system76-driver (14.04.9) trusty; urgency=low
 
     * Drop remaining caps fix from system76-daemon
