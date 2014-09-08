@@ -1,9 +1,8 @@
-system76-driver (14.04.10~pre1) trusty; urgency=low
+system76-driver (14.04.10) trusty; urgency=low
 
     * Add "ratp4" and "wilp11" to PRODUCTS
-    * FILL ME IN
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 04 Sep 2014 10:55:39 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 08 Sep 2014 10:18:35 -0600
 
 system76-driver (14.04.9) trusty; urgency=low
 
