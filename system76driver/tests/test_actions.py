@@ -805,24 +805,6 @@ class Test_radeon_dpm(TestCase):
         )
 
 
-class Test_disable_power_well(TestCase):
-    def test_describe(self):
-        inst = actions.disable_power_well()
-        self.assertEqual(inst.describe(),
-            'Fix HDMI audio playback speed'
-        )
-
-    def test_build_new_cmdline(self):
-        inst = actions.disable_power_well()
-        self.assertEqual(inst.add,
-            ('i915.disable_power_well=0',)
-        )
-        self.assertEqual(inst.remove, tuple())
-        self.assertEqual(inst.build_new_cmdline('quiet splash'),
-            'i915.disable_power_well=0 quiet splash'
-        )
-
-
 class Test_plymouth1080(TestCase):
     def test_init(self):
         inst = actions.plymouth1080()
