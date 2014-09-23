@@ -86,7 +86,6 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.backlight_vendor,
-            actions.disable_power_well,
             actions.internal_mic_gain,
         ],
     },
@@ -98,7 +97,6 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.internal_mic_gain,
             actions.hdmi_hotplug_fix,
-            actions.disable_power_well,
         ],
     },
 
@@ -141,7 +139,6 @@ PRODUCTS = {
         'drivers': [
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
-            actions.disable_power_well,
             actions.backlight_vendor,  # Still needed for some early BIOS
         ],
     },
@@ -150,7 +147,6 @@ PRODUCTS = {
         'drivers': [
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
-            actions.disable_power_well,
             actions.remove_backlight_vendor,
             actions.internal_mic_gain,  # Only for gazp9b
         ],
@@ -194,7 +190,6 @@ PRODUCTS = {
         'drivers': [
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
-            actions.disable_power_well,
         ],
     },
     'kudp1b': {
@@ -202,7 +197,6 @@ PRODUCTS = {
         'drivers': [
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
-            actions.disable_power_well,
             actions.internal_mic_gain,  # Only for kudp1b
         ],
     },
