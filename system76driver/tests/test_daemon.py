@@ -361,26 +361,65 @@ class TestBrightness(TestCase):
         tmp.makedirs('var', 'lib', 'system76-driver')
         inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
 
-        # No file
-        self.assertEqual(inst.load(), 638)
+        # No file:
+        self.assertIsNone(inst.load())
 
         # Bad value in file
         open(inst.saved_file, 'x').write('no json here')
-        self.assertEqual(inst.load(), 638)
+        self.assertIsNone(inst.load())
         open(inst.saved_file, 'w').write(
             json.dumps({'gazp9.intel_backlight': 17.69})
         )
-        self.assertEqual(inst.load(), 638)
+        self.assertIsNone(inst.load())
 
         # Less than or equal to zero
         open(inst.saved_file, 'w').write(
             json.dumps({'gazp9.intel_backlight': 0})
         )
-        self.assertEqual(inst.load(), 638)
+        self.assertIsNone(inst.load())
         open(inst.saved_file, 'w').write(
             json.dumps({'gazp9.intel_backlight': -1})
         )
-        self.assertEqual(inst.load(), 638)
+        self.assertIsNone(inst.load())
+
+        # One and other good values
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': 1})
+        )
+        self.assertEqual(inst.load(), 1)
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': 1054})
+        )
+        self.assertEqual(inst.load(), 1054)
+
+        ############################################################
+        # All the same, except this time with a max_brightness file:
+        tmp = TempDir()
+        tmp.makedirs('var', 'lib', 'system76-driver')
+        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+        tmp.makedirs('sys', 'class', 'backlight', 'intel_backlight')
+        open(inst.max_brightness_file, 'xb').write(b'5273')
+
+        # No file
+        self.assertEqual(inst.load(), 3954)
+
+        # Bad value in file
+        open(inst.saved_file, 'x').write('no json here')
+        self.assertEqual(inst.load(), 3954)
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': 17.69})
+        )
+        self.assertEqual(inst.load(), 3954)
+
+        # Less than or equal to zero
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': 0})
+        )
+        self.assertEqual(inst.load(), 3954)
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': -1})
+        )
+        self.assertEqual(inst.load(), 3954)
 
         # One and other good values
         open(inst.saved_file, 'w').write(

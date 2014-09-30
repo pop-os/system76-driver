@@ -282,8 +282,15 @@ class Brightness:
         brightness = conf.get(self.key)
         if isinstance(brightness, int) and brightness > 0:
             return brightness
-        log.info('restoring with default brightness of %r', self.default)
-        return self.default
+        try:
+            max_brightness = self.read_max_brightness()
+            log.info('max_brightness is %d', max_brightness)
+            default = int(max_brightness * 0.75)
+            if default > 0:
+                log.info('will restore brightness to default of %d', default)
+                return default
+        except Exception:
+            log.exception('Error reading %r', self.max_brightness_file)
 
     def save(self, brightness):
         assert isinstance(brightness, int)
@@ -293,15 +300,19 @@ class Brightness:
         save_json_conf(self.saved_file, conf)
 
     def restore(self):
-        self.current = self.load()
-        log.info('restoring brightness to %d', self.current)
+        current = self.load()
+        assert current is None or (isinstance(current, int) and current > 0)
+        if current is None:
+            return
+        log.info('restoring brightness to %d', current)
         if not path.exists(self.brightness_file):
             for i in range(10):
                 log.warning('Waiting for %r', self.brightness_file)
                 time.sleep(0.1)
                 if path.exists(self.brightness_file):
                     break
-        self.write_brightness(self.current)
+        self.write_brightness(current)
+        self.current = current
 
     def run(self):
         self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
