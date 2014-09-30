@@ -255,20 +255,27 @@ class Brightness:
         self.key = '.'.join([model, name])
         self.default = default
         self.current = None
-        self.brightness_file = path.join(rootdir,
-            'sys', 'class', 'backlight', name, 'brightness'
+        self.backlight_dir = path.join(rootdir, 
+            'sys', 'class', 'backlight', name
         )
+        self.max_brightness_file = path.join(self.backlight_dir, 'max_brightness')
+        self.brightness_file = path.join(self.backlight_dir, 'brightness')
         self.saved_file = path.join(rootdir,
             'var', 'lib', 'system76-driver', 'brightness.json'
         )
 
-    def read(self):
-        return int(open(self.brightness_file, 'r').read())
+    def read_max_brightness(self):
+        with open(self.max_brightness_file, 'rb', 0) as fp:
+            return int(fp.read(11))
 
-    def write(self, brightness):
-        assert isinstance(brightness, int)
-        assert brightness > 0
-        open(self.brightness_file, 'w').write(str(brightness))
+    def read_brightness(self):
+        with open(self.brightness_file, 'rb', 0) as fp:
+            return int(fp.read(11))
+
+    def write_brightness(self, brightness):
+        assert isinstance(brightness, int) and brightness > 0
+        with open(self.brightness_file, 'wb', 0) as fp:
+            fp.write(str(brightness).encode())
 
     def load(self):
         conf = load_json_conf(self.saved_file)
@@ -294,7 +301,7 @@ class Brightness:
                 time.sleep(0.1)
                 if path.exists(self.brightness_file):
                     break
-        self.write(self.current)
+        self.write_brightness(self.current)
 
     def run(self):
         self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
@@ -308,7 +315,7 @@ class Brightness:
             return False
 
     def update(self):
-        brightness = self.read()
+        brightness = self.read_brightness()
         if self.current != brightness:
             self.current = brightness
             if brightness > 0:
