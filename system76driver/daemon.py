@@ -251,6 +251,7 @@ class Brightness:
         assert default > 0
         self.model = model
         self.name = name
+        self.key = '.'.join([model, name])
         self.default = default
         self.current = None
         self.brightness_file = path.join(rootdir,
@@ -270,7 +271,7 @@ class Brightness:
 
     def load(self):
         conf = load_json_conf(self.saved_file)
-        brightness = conf.get(self.model)
+        brightness = conf.get(self.key)
         if isinstance(brightness, int) and brightness > 0:
             return brightness
         log.info('restoring with default brightness of %r', self.default)
@@ -280,7 +281,7 @@ class Brightness:
         assert isinstance(brightness, int)
         assert brightness > 0
         conf = load_json_conf(self.saved_file)
-        conf[self.model] = brightness
+        conf[self.key] = brightness
         save_json_conf(self.saved_file, conf)
 
     def restore(self):

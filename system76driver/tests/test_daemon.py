@@ -241,6 +241,7 @@ class TestBrightness(TestCase):
         inst = daemon.Brightness('gazp9', 'intel_backlight', 690)
         self.assertEqual(inst.model, 'gazp9')
         self.assertEqual(inst.name, 'intel_backlight')
+        self.assertEqual(inst.key, 'gazp9.intel_backlight')
         self.assertEqual(inst.default, 690)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.brightness_file,
@@ -254,6 +255,7 @@ class TestBrightness(TestCase):
         inst = daemon.Brightness('sabc1', 'acpi_video0', 82, rootdir=tmp.dir)
         self.assertEqual(inst.model, 'sabc1')
         self.assertEqual(inst.name, 'acpi_video0')
+        self.assertEqual(inst.key, 'sabc1.acpi_video0')
         self.assertEqual(inst.default, 82)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.brightness_file,
@@ -325,19 +327,29 @@ class TestBrightness(TestCase):
         # Bad value in file
         open(inst.saved_file, 'x').write('no json here')
         self.assertEqual(inst.load(), 638)
-        open(inst.saved_file, 'w').write(json.dumps({'gazp9': 17.69}))
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': 17.69})
+        )
         self.assertEqual(inst.load(), 638)
 
         # Less than or equal to zero
-        open(inst.saved_file, 'w').write(json.dumps({'gazp9': -1}))
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': 0})
+        )
         self.assertEqual(inst.load(), 638)
-        open(inst.saved_file, 'w').write(json.dumps({'gazp9': -1}))
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': -1})
+        )
         self.assertEqual(inst.load(), 638)
 
         # One and other good values
-        open(inst.saved_file, 'w').write(json.dumps({'gazp9': 1}))
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': 1})
+        )
         self.assertEqual(inst.load(), 1)
-        open(inst.saved_file, 'w').write(json.dumps({'gazp9': 1054}))
+        open(inst.saved_file, 'w').write(
+            json.dumps({'gazp9.intel_backlight': 1054})
+        )
         self.assertEqual(inst.load(), 1054)
 
     def test_save(self):
@@ -352,15 +364,17 @@ class TestBrightness(TestCase):
         # No file:
         tmp.makedirs('var', 'lib', 'system76-driver')
         self.assertIsNone(inst.save(303))
-        self.assertEqual(json.load(open(inst.saved_file, 'r')), {'gazp9': 303})
+        self.assertEqual(json.load(open(inst.saved_file, 'r')),
+            {'gazp9.intel_backlight': 303}
+        )
         self.assertEqual(inst.load(), 303)
 
         # Existing file:
-        json.dump({'galu1': 70}, open(inst.saved_file, 'w'))
+        json.dump({'gazp9': 70}, open(inst.saved_file, 'w'))
         self.assertIsNone(inst.save(76))
         self.assertEqual(
             json.load(open(inst.saved_file, 'r')),
-            {'gazp9': 76, 'galu1': 70}
+            {'gazp9.intel_backlight': 76, 'gazp9': 70}
         )
         self.assertEqual(inst.load(), 76)
 
@@ -368,7 +382,7 @@ class TestBrightness(TestCase):
         self.assertIsNone(inst.save(69))
         self.assertEqual(
             json.load(open(inst.saved_file, 'r')),
-            {'gazp9': 69, 'galu1': 70}
+            {'gazp9.intel_backlight': 69, 'gazp9': 70}
         )
         self.assertEqual(inst.load(), 69)
 
@@ -394,7 +408,7 @@ class TestBrightness(TestCase):
 
         # With a saved brightness value:
         tmp.makedirs('var', 'lib', 'system76-driver')
-        json.dump({'gazp9': 1776}, open(inst.saved_file, 'w'))
+        json.dump({'gazp9.intel_backlight': 1776}, open(inst.saved_file, 'w'))
         self.assertIsNone(inst.restore())
         self.assertEqual(inst.current, 1776)
         self.assertEqual(open(inst.brightness_file, 'r').read(), '1776')
