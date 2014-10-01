@@ -263,13 +263,11 @@ def run_airplane(model):
 
 
 class Brightness:
-    def __init__(self, model, name, default, rootdir='/'):
-        assert isinstance(default, int)
-        assert default > 0
+    def __init__(self, model, name, rootdir='/'):
+        assert name in ('intel_backlight', 'acpi_video0')
         self.model = model
         self.name = name
         self.key = '.'.join([model, name])
-        self.default = default
         self.current = None
         self.backlight_dir = path.join(rootdir, 
             'sys', 'class', 'backlight', name

@@ -244,11 +244,10 @@ class TestFunctions(TestCase):
 
 class TestBrightness(TestCase):
     def test_init(self):
-        inst = daemon.Brightness('gazp9', 'intel_backlight', 690)
+        inst = daemon.Brightness('gazp9', 'intel_backlight')
         self.assertEqual(inst.model, 'gazp9')
         self.assertEqual(inst.name, 'intel_backlight')
         self.assertEqual(inst.key, 'gazp9.intel_backlight')
-        self.assertEqual(inst.default, 690)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.backlight_dir,
             '/sys/class/backlight/intel_backlight'
@@ -261,11 +260,10 @@ class TestBrightness(TestCase):
         )
 
         tmp = TempDir()
-        inst = daemon.Brightness('sabc1', 'acpi_video0', 82, rootdir=tmp.dir)
+        inst = daemon.Brightness('sabc1', 'acpi_video0', rootdir=tmp.dir)
         self.assertEqual(inst.model, 'sabc1')
         self.assertEqual(inst.name, 'acpi_video0')
         self.assertEqual(inst.key, 'sabc1.acpi_video0')
-        self.assertEqual(inst.default, 82)
         self.assertIsNone(inst.current)
         self.assertEqual(inst.backlight_dir,
             tmp.join('sys', 'class', 'backlight', 'acpi_video0')
@@ -282,7 +280,7 @@ class TestBrightness(TestCase):
 
     def test_read_max_brightness(self):
         tmp = TempDir()
-        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -313,7 +311,7 @@ class TestBrightness(TestCase):
 
     def test_read_brightness(self):
         tmp = TempDir()
-        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -344,7 +342,7 @@ class TestBrightness(TestCase):
 
     def test_write_brightness(self):
         tmp = TempDir()
-        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -365,7 +363,7 @@ class TestBrightness(TestCase):
     def test_load(self):
         tmp = TempDir()
         tmp.makedirs('var', 'lib', 'system76-driver')
-        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', rootdir=tmp.dir)
 
         # No file:
         self.assertIsNone(inst.load())
@@ -402,7 +400,7 @@ class TestBrightness(TestCase):
         # All the same, except this time with a max_brightness file:
         tmp = TempDir()
         tmp.makedirs('var', 'lib', 'system76-driver')
-        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', rootdir=tmp.dir)
         tmp.makedirs('sys', 'class', 'backlight', 'intel_backlight')
         open(inst.max_brightness_file, 'xb').write(b'5273')
 
@@ -439,7 +437,7 @@ class TestBrightness(TestCase):
 
     def test_save(self):
         tmp = TempDir()
-        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', rootdir=tmp.dir)
 
         # Missing dir
         with self.assertRaises(FileNotFoundError) as cm:
@@ -475,7 +473,7 @@ class TestBrightness(TestCase):
         self.skipTest('FIXME')
         tmp = TempDir()
         backlight_dir = tmp.makedirs('sys', 'class', 'backlight')
-        inst = daemon.Brightness('gazp9', 'intel_backlight', 638, rootdir=tmp.dir)
+        inst = daemon.Brightness('gazp9', 'intel_backlight', rootdir=tmp.dir)
 
         # Missing 'intel_backlight' directory:
         with self.assertRaises(FileNotFoundError) as cm:
@@ -498,3 +496,4 @@ class TestBrightness(TestCase):
         self.assertIsNone(inst.restore())
         self.assertEqual(inst.current, 1776)
         self.assertEqual(open(inst.brightness_file, 'r').read(), '1776')
+
