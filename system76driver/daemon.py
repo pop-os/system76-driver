@@ -349,12 +349,11 @@ class Brightness:
 
 
 def _run_brightness(model):
-    if model not in DEFAULT_BRIGHTNESS:
+    if model not in NEEDS_BRIGHTNESS:
         log.info('Brightness hack not needed for %r', model)
         return
     log.info('Enabling brightness hack for %r', model)
-    (name, default) = DEFAULT_BRIGHTNESS[model]
-    brightness = Brightness(model, name, default)
+    brightness = Brightness(model, 'intel_backlight')
     brightness.restore()
     brightness.run()
     return brightness
