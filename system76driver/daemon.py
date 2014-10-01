@@ -55,6 +55,10 @@ NEEDS_AIRPLANE = frozenset([
 
 # Products in this frozenset need software-base brightness restore:
 NEEDS_BRIGHTNESS = frozenset([
+    # FIXME: Confirm that nvidia driver is doing its own software-based
+    # brightness restore:
+    # 'bonx7',
+    # 'bonx8',
     'daru4',
     'galu1',
     'gazp9',
