@@ -53,6 +53,22 @@ NEEDS_AIRPLANE = frozenset([
     'kudp1b',
 ])
 
+# Products in this frozenset need software-base brightness restore:
+NEEDS_BRIGHTNESS = frozenset([
+    'daru4',
+    'galu1',
+    'gazp9',
+    'gazp9b',
+    'kudp1',
+    'kudp1b',
+    'sabc1',
+    'sabc2',
+    'sabc3',
+    'sabt1',
+    'sabt2',
+    'sabt3',
+])
+
 # Products in this dict need the brightness hack
 # min=52, max=1054
 DEFAULT_BRIGHTNESS = {
