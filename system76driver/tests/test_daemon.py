@@ -46,17 +46,6 @@ class TestConstants(TestCase):
             self.assertIsInstance(key, str)
             self.assertIn(key, products.PRODUCTS)
 
-    def test_DEFAULT_BRIGHTNESS(self):
-        self.assertIsInstance(daemon.DEFAULT_BRIGHTNESS, dict)
-        for (key, value) in daemon.DEFAULT_BRIGHTNESS.items():
-            self.assertIsInstance(key, str)
-            self.assertIn(key, products.PRODUCTS)
-            self.assertIsInstance(value, tuple)
-            (name, default) = value
-            self.assertIn(name, ['intel_backlight', 'acpi_video0'])
-            self.assertIsInstance(default, int)
-            self.assertGreater(default, 0)
-
 
 class TestFunctions(TestCase):
     def test_get_model(self):

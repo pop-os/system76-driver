@@ -73,25 +73,6 @@ NEEDS_BRIGHTNESS = frozenset([
     'sabt3',
 ])
 
-# Products in this dict need the brightness hack
-# min=52, max=1054
-DEFAULT_BRIGHTNESS = {
-    'bonx7': ('acpi_video0', 64),
-    'bonx8': ('acpi_video0', 6),
-    'daru4': ('intel_backlight', 569),
-    'galu1': ('acpi_video0', 70),
-    'gazp9':  ('intel_backlight', 794),
-    'gazp9b': ('intel_backlight', 794),
-    'kudp1':  ('intel_backlight', 794),
-    'kudp1b': ('intel_backlight', 794),
-    'sabc1': ('acpi_video0', 82),
-    'sabc2': ('acpi_video0', 82),
-    'sabc3': ('acpi_video0', 82),
-    'sabt1': ('acpi_video0', 82),
-    'sabt2': ('acpi_video0', 82),
-    'sabt3': ('acpi_video0', 82),
-}
-
 
 def get_model(sysdir='/sys'):
     name = path.join(sysdir, 'class', 'dmi', 'id', 'product_version')
