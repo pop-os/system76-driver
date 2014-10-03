@@ -53,23 +53,25 @@ NEEDS_AIRPLANE = frozenset([
     'kudp1b',
 ])
 
-# Products in this dict need the brightness hack
-DEFAULT_BRIGHTNESS = {
-    'bonx7': ('acpi_video0', 64),
-    'bonx8': ('acpi_video0', 6),
-    'daru4': ('intel_backlight', 569),
-    'galu1': ('acpi_video0', 70),
-    'gazp9': ('intel_backlight', 690),
-    'gazp9b': ('acpi_video0', 64),
-    'kudp1': ('acpi_video0', 64),
-    'kudp1b': ('acpi_video0', 64),
-    'sabc1': ('acpi_video0', 82),
-    'sabc2': ('acpi_video0', 82),
-    'sabc3': ('acpi_video0', 82),
-    'sabt1': ('acpi_video0', 82),
-    'sabt2': ('acpi_video0', 82),
-    'sabt3': ('acpi_video0', 82),
-}
+# Products in this frozenset need software-base brightness restore:
+NEEDS_BRIGHTNESS = frozenset([
+    # FIXME: Confirm that nvidia driver is doing its own software-based
+    # brightness restore:
+    # 'bonx7',
+    # 'bonx8',
+    'daru4',
+    'galu1',
+    'gazp9',
+    'gazp9b',
+    'kudp1',
+    'kudp1b',
+    'sabc1',
+    'sabc2',
+    'sabc3',
+    'sabt1',
+    'sabt2',
+    'sabt3',
+])
 
 
 def get_model(sysdir='/sys'):
@@ -246,53 +248,70 @@ def run_airplane(model):
 
 
 class Brightness:
-    def __init__(self, model, name, default, rootdir='/'):
-        assert isinstance(default, int)
-        assert default > 0
+    def __init__(self, model, name, rootdir='/'):
+        assert name in ('intel_backlight', 'acpi_video0')
         self.model = model
         self.name = name
-        self.default = default
+        self.key = '.'.join([model, name])
         self.current = None
-        self.brightness_file = path.join(rootdir,
-            'sys', 'class', 'backlight', name, 'brightness'
+        self.backlight_dir = path.join(rootdir, 
+            'sys', 'class', 'backlight', name
         )
+        self.max_brightness_file = path.join(self.backlight_dir, 'max_brightness')
+        self.brightness_file = path.join(self.backlight_dir, 'brightness')
         self.saved_file = path.join(rootdir,
             'var', 'lib', 'system76-driver', 'brightness.json'
         )
 
-    def read(self):
-        return int(open(self.brightness_file, 'r').read())
+    def read_max_brightness(self):
+        with open(self.max_brightness_file, 'rb', 0) as fp:
+            return int(fp.read(11))
 
-    def write(self, brightness):
-        assert isinstance(brightness, int)
-        assert brightness > 0
-        open(self.brightness_file, 'w').write(str(brightness))
+    def read_brightness(self):
+        with open(self.brightness_file, 'rb', 0) as fp:
+            return int(fp.read(11))
+
+    def write_brightness(self, brightness):
+        assert isinstance(brightness, int) and brightness > 0
+        with open(self.brightness_file, 'wb', 0) as fp:
+            fp.write(str(brightness).encode())
 
     def load(self):
         conf = load_json_conf(self.saved_file)
-        brightness = conf.get(self.model)
+        brightness = conf.get(self.key)
         if isinstance(brightness, int) and brightness > 0:
             return brightness
-        log.info('restoring with default brightness of %r', self.default)
-        return self.default
+        try:
+            max_brightness = self.read_max_brightness()
+            log.info('max_brightness is %d', max_brightness)
+            default = int(max_brightness * 0.75)
+            if default > 0:
+                log.info('will restore brightness to default of %d', default)
+                return default
+        except Exception:
+            log.exception('Error reading %r', self.max_brightness_file)
 
     def save(self, brightness):
         assert isinstance(brightness, int)
         assert brightness > 0
         conf = load_json_conf(self.saved_file)
-        conf[self.model] = brightness
+        conf[self.key] = brightness
         save_json_conf(self.saved_file, conf)
 
     def restore(self):
-        self.current = self.load()
-        log.info('restoring brightness to %d', self.current)
+        current = self.load()
+        assert current is None or (isinstance(current, int) and current > 0)
+        if current is None:
+            return
+        log.info('restoring brightness to %d', current)
         if not path.exists(self.brightness_file):
             for i in range(10):
                 log.warning('Waiting for %r', self.brightness_file)
                 time.sleep(0.1)
                 if path.exists(self.brightness_file):
                     break
-        self.write(self.current)
+        self.write_brightness(current)
+        self.current = current
 
     def run(self):
         self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
@@ -306,7 +325,7 @@ class Brightness:
             return False
 
     def update(self):
-        brightness = self.read()
+        brightness = self.read_brightness()
         if self.current != brightness:
             self.current = brightness
             if brightness > 0:
@@ -315,12 +334,11 @@ class Brightness:
 
 
 def _run_brightness(model):
-    if model not in DEFAULT_BRIGHTNESS:
+    if model not in NEEDS_BRIGHTNESS:
         log.info('Brightness hack not needed for %r', model)
         return
     log.info('Enabling brightness hack for %r', model)
-    (name, default) = DEFAULT_BRIGHTNESS[model]
-    brightness = Brightness(model, name, default)
+    brightness = Brightness(model, 'intel_backlight')
     brightness.restore()
     brightness.run()
     return brightness

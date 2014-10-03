@@ -3,6 +3,8 @@ system76-driver (14.10.0~pre1) utopic; urgency=low
     * Start 14.10.x series, initial Utopic release
     * Drop `disable_power_well` action as it's no longer needed for Haswell
       laptop products with the Linux 3.16 kernel (LP: #1356507)
+    * Switch from `acpi_video0` to `intel_backlight` on all Haswell products,
+      use 75% of max_brightness for default brightness (LP: #1375477)
     * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Mon, 22 Sep 2014 13:34:50 -0600
