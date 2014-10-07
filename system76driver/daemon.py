@@ -55,10 +55,8 @@ NEEDS_AIRPLANE = frozenset([
 
 # Products in this frozenset need software-base brightness restore:
 NEEDS_BRIGHTNESS = frozenset([
-    # FIXME: Confirm that nvidia driver is doing its own software-based
-    # brightness restore:
-    # 'bonx7',
-    # 'bonx8',
+    'bonx7',
+    'bonx8',
     'daru4',
     'galu1',
     'gazp9',
@@ -71,6 +69,12 @@ NEEDS_BRIGHTNESS = frozenset([
     'sabt1',
     'sabt2',
     'sabt3',
+])
+
+# These products use 'acpi_video0' instead of 'intel_backlight':
+NEEDS_BRIGHTNESS_ACPI = frozenset([
+    'bonx7',
+    'bonx8',
 ])
 
 

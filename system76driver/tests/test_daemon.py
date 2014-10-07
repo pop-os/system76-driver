@@ -45,6 +45,13 @@ class TestConstants(TestCase):
             self.assertIsInstance(key, str)
             self.assertIn(key, products.PRODUCTS)
 
+    def test_NEEDS_BRIGHTNESS_ACPI(self):
+        self.assertIsInstance(daemon.NEEDS_BRIGHTNESS_ACPI, frozenset)
+        for key in daemon.NEEDS_BRIGHTNESS_ACPI:
+            self.assertIsInstance(key, str)
+            self.assertIn(key, products.PRODUCTS)
+            self.assertIn(key, daemon.NEEDS_BRIGHTNESS)
+
 
 class TestFunctions(TestCase):
     def test_get_model(self):
