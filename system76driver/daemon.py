@@ -342,7 +342,8 @@ def _run_brightness(model):
         log.info('Brightness hack not needed for %r', model)
         return
     log.info('Enabling brightness hack for %r', model)
-    brightness = Brightness(model, 'intel_backlight')
+    name = ('acpi_video0' if model in NEEDS_BRIGHTNESS_ACPI else 'intel_backlight')
+    brightness = Brightness(model, name)
     brightness.restore()
     brightness.run()
     return brightness
