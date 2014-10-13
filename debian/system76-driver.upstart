@@ -4,7 +4,7 @@
 
 description	"System76 airplane-mode hotkey and LED support"
 
-start on login-session-start
+start on (login-session-start or desktop-session-start)
 stop on desktop-shutdown
 
 respawn
