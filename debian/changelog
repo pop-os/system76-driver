@@ -5,6 +5,9 @@ system76-driver (14.10.0~pre1) utopic; urgency=low
       laptop products with the Linux 3.16 kernel (LP: #1356507)
     * Switch from `acpi_video0` to `intel_backlight` on all Haswell products,
       use 75% of max_brightness for default brightness (LP: #1375477)
+    * debian/system76-driver.upstart: in order to fix backlight brightness
+      restore, "start on (login-session-start or desktop-session-start)"
+      (LP: #1378974)
     * debian/control: `system76-driver-nvidia` now Depends on `nvidia-343`,
       Conflicts with `nvidia-331-updates`
     * system76-nvidia-quirks: change Handler to "nvidia-343"
