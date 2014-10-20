@@ -30,7 +30,18 @@ Description: Universal driver for System76 computers
 Package: system76-driver-nvidia
 Architecture: all
 Depends: ubuntu-drivers-common, nvidia-343
-Conflicts: nvidia-current-updates, nvidia-updates-331
+Conflicts: nvidia-331-updates, nvidia-331,
+    nvidia-331-updates-dev, nvidia-331-dev,
+    libcuda1-331-updates, libcuda1-331,
+    nvidia-libopencl1-331-updates, nvidia-libopencl1-331,
+    nvidia-opencl-icd-331-updates, nvidia-opencl-icd-331,
+    nvidia-331-updates-uvm, nvidia-331-uvm,
+Replaces: nvidia-331-updates, nvidia-331,
+    nvidia-331-updates-dev, nvidia-331-dev,
+    libcuda1-331-updates, libcuda1-331,
+    nvidia-libopencl1-331-updates, nvidia-libopencl1-331,
+    nvidia-opencl-icd-331-updates, nvidia-opencl-icd-331,
+    nvidia-331-updates-uvm, nvidia-331-uvm,
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
  System76 products with an nvidia GPU.
