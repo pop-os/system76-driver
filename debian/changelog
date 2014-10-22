@@ -1,5 +1,9 @@
 system76-driver (14.10.1~pre1) utopic; urgency=low
 
+  * debian/control: `system76-driver-nvidia` now Depends on
+    (nvidia-343 | nvidia-331 | nvidia-331-updates)
+  * system76-nvidia-quirks: change Handler to
+    "nvidia-343|nvidia-331|nvidia-331-updates"
   * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Wed, 22 Oct 2014 10:23:39 -0600
@@ -17,7 +21,7 @@ system76-driver (14.10.0) utopic; urgency=low
   * Drop `internal_mic_gain` action from daru4, galu1, gazp9b, and kudp1b, as
     its no longer needed on Utopic
   * debian/control: `system76-driver-nvidia` now Depends on
-    (nvidia-343 | nvidia-331-updates) 
+    (nvidia-343 | nvidia-331-updates)
   * system76-nvidia-quirks: change Handler to "nvidia-343|nvidia-331-updates"
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 21 Oct 2014 11:17:41 -0600
