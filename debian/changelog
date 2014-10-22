@@ -8,16 +8,16 @@ system76-driver (14.10.0) utopic; urgency=low
 
   * Start 14.10.x series, initial Utopic release
   * Drop `disable_power_well` action as it's no longer needed for Haswell
-      laptop products with the Linux 3.16 kernel (LP: #1356507)
+    laptop products with the Linux 3.16 kernel (LP: #1356507)
   * Switch from `acpi_video0` to `intel_backlight` on all Haswell products,
-      use 75% of max_brightness for default brightness (LP: #1375477)
+    use 75% of max_brightness for default brightness (LP: #1375477)
   * debian/system76-driver.upstart: in order to fix backlight brightness
-      restore, "start on (login-session-start or desktop-session-start)"
-      (LP: #1378974)
+    restore, "start on (login-session-start or desktop-session-start)"
+    (LP: #1378974)
   * Drop `internal_mic_gain` action from daru4, galu1, gazp9b, and kudp1b, as
-      its no longer needed on Utopic
+    its no longer needed on Utopic
   * debian/control: `system76-driver-nvidia` now Depends on
-      (nvidia-343 | nvidia-331-updates) 
+    (nvidia-343 | nvidia-331-updates) 
   * system76-nvidia-quirks: change Handler to "nvidia-343|nvidia-331-updates"
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 21 Oct 2014 11:17:41 -0600
@@ -38,7 +38,7 @@ system76-driver (14.04.9) trusty; urgency=low
 system76-driver (14.04.8) trusty; urgency=low
 
   * Re-enable backlight_vendor action on gazp9 as some early BIOS versions
-      still need this, even on Trusty
+    still need this, even on Trusty
 
  -- Jason Gerard DeRose <jason@system76.com>  Sun, 18 May 2014 11:56:00 -0600
 
@@ -51,28 +51,28 @@ system76-driver (14.04.7) trusty; urgency=low
 system76-driver (14.04.6) trusty; urgency=low
 
   * As screen revisions within a product lifetime make it too difficult to
-      supply a correct color profile out of the box, drop color profile actions
-      from bonx7, galu1, gazp9 (note this wont remove profiles already
-      installed, will only effect new shipments and re-installs)
+    supply a correct color profile out of the box, drop color profile actions
+    from bonx7, galu1, gazp9 (note this wont remove profiles already
+    installed, will only effect new shipments and re-installs)
   * debian/control: drop Build-Depends/Depends on `python3-dbus`, as it was
-      only needed for color-profile actions
+    only needed for color-profile actions
   * debian/control: add Depends on `pm-utils` as some driver actions expect
-      /etc/pm/power.d/ to exist, which seems not to be installed by default on
-      Xubuntu, Ubuntu GNOME
+    /etc/pm/power.d/ to exist, which seems not to be installed by default on
+    Xubuntu, Ubuntu GNOME
   * Rework GrubAction and its subclasses so that it preserves customer changes
-      and can also remove previously added kernel parameters when needed
+    and can also remove previously added kernel parameters when needed
   * Rework system76-driver-cli to make it more suitable for automatically
-      being called from a postinst script
+    being called from a postinst script
   * Add debian/system76-driver.postinst that automatically calls
-      /usr/bin/system76-driver-cli
+    /usr/bin/system76-driver-cli
   * system76-daemon no longer needs to fix caps on /bin/ping, /bin/ping6,
-      /usr/bin/arping as the `iputils` package as been updated and reverted to
-      use suid again; however, caps fix on /usr/bin/gnome-keyring-daemon is
-      still needed
+    /usr/bin/arping as the `iputils` package as been updated and reverted to
+    use suid again; however, caps fix on /usr/bin/gnome-keyring-daemon is
+    still needed
   * Add remove_backlight_vendor action to gazp9, gazp9b to properly remove
-      acpi_backlight=vendor from GRUB_CMDLINE_LINUX_DEFAULT
+    acpi_backlight=vendor from GRUB_CMDLINE_LINUX_DEFAULT
   * On daru4, replace `grub_daru4` with `backlight_vendor` plus
-      `disable_power_well` actions now that GrubAction is cumulative
+    `disable_power_well` actions now that GrubAction is cumulative
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 09 May 2014 13:22:25 -0600
 
@@ -82,11 +82,11 @@ system76-driver (14.04.5) trusty; urgency=low
   * Drop backlight_vendor action from gazp9, gazp9b (not needed on Trusty)
   * Add disable_power_well action to galu1, gazp9, gazp9b, kudp1, kudp1b
   * Add grub_daru4 action to daru4, which combines the `backlight_vendor` and
-      `disable_power_well` actions
+    `disable_power_well` actions
   * Up Airplane Mode poll interval to 500ms (from 375ms)
   * system76-daemon will now automatically fix caps on /bin/ping, /bin/ping6,
-      /usr/bin/arping, and /usr/bin/gnome-keyring-daemon to correct for imaging
-      not correctly handling caps for a short time after Trusty was released
+    /usr/bin/arping, and /usr/bin/gnome-keyring-daemon to correct for imaging
+    not correctly handling caps for a short time after Trusty was released
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 02 May 2014 17:03:19 -0600
 
@@ -100,7 +100,7 @@ system76-driver (14.04.4) trusty; urgency=low
 system76-driver (14.04.3) trusty; urgency=low
 
   * Fix system76-driver.desktop so System76 Driver shows up in System Settings
-      on Ubuntu 14.04
+    on Ubuntu 14.04
 
  -- Jason Gerard DeRose <jason@system76.com>  Sat, 26 Apr 2014 09:24:25 -0600
 
@@ -109,7 +109,7 @@ system76-driver (14.04.2) trusty; urgency=low
   * daru4 is now named "Darter UltraTouch"
   * setup.py: require Python >= 3.4 as we wont be testing with 3.3 anymore
   * setup.py: "test" command now runs static analysis with `pyflakes3`, fails
-      if any pyflakes checks fail
+    if any pyflakes checks fail
   * debian/control: add `pyflakes` to Build-Depends
   * Fix several needless imports caught by pyflakes
   * Add "ratp3" to PRODUCTS
@@ -122,7 +122,7 @@ system76-driver (14.04.2) trusty; urgency=low
 system76-driver (14.04.1) trusty; urgency=low
 
   * As Intel 3160/7260 have performance and user-experience issues when power
-      management is on, add `wifi_pm_disable` action for daru4, kudp1
+    management is on, add `wifi_pm_disable` action for daru4, kudp1
   * Add "bonx8" to PRODUCTS, NEEDS_AIRPLANE
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 15 Apr 2014 16:16:19 -0600
