@@ -1,12 +1,11 @@
-system76-driver (14.10.1~pre1) utopic; urgency=low
+system76-driver (14.10.1) utopic; urgency=low
 
   * debian/control: `system76-driver-nvidia` now Depends on
     (nvidia-343 | nvidia-331 | nvidia-331-updates)
   * system76-nvidia-quirks: change Handler to
     "nvidia-343|nvidia-331|nvidia-331-updates"
-  * FILL ME IN
 
- -- Jason Gerard DeRose <jason@system76.com>  Wed, 22 Oct 2014 10:23:39 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 22 Oct 2014 10:55:18 -0600
 
 system76-driver (14.10.0) utopic; urgency=low
 
