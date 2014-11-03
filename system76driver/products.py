@@ -220,19 +220,19 @@ PRODUCTS = {
 
     # Leopard:
     'leo1': {
-        'name': 'The Leopard Extreme',
+        'name': 'Leopard Extreme',
         'drivers': [],
     },
     'leox2': {
-        'name': 'The Leopard Extreme',
+        'name': 'Leopard Extreme',
         'drivers': [],
     },
     'leox3': {
-        'name': 'The Leopard Extreme',
+        'name': 'Leopard Extreme',
         'drivers': [],
     },
     'leox4': {
-        'name': 'The Leopard Extreme',
+        'name': 'Leopard Extreme',
         'drivers': [],
     },
 
