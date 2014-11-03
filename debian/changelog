@@ -1,5 +1,8 @@
 system76-driver (14.10.2~pre1) utopic; urgency=low
 
+  * Change 'The Leopard Extreme' to 'Leopard Extreme' to be consistent with
+    website
+  * Add 'leox5' to PRODUCTS
   * FILL ME IN
 
  -- Jason Gerard DeRose <jason@system76.com>  Mon, 03 Nov 2014 09:36:04 -0700
