@@ -1,3 +1,9 @@
+system76-driver (14.10.2~pre1) utopic; urgency=low
+
+  * FILL ME IN
+
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 03 Nov 2014 09:36:04 -0700
+
 system76-driver (14.10.1) utopic; urgency=low
 
   * debian/control: `system76-driver-nvidia` now Depends on
