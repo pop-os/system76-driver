@@ -1,3 +1,9 @@
+system76-driver (14.10.3~daily) utopic; urgency=low
+
+  * Daily WIP for 14.10.3
+
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 07 Nov 2014 11:42:23 -0700
+
 system76-driver (14.10.2) utopic; urgency=low
 
   * Change 'The Leopard Extreme' to 'Leopard Extreme' to be consistent with
