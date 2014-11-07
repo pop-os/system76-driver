@@ -1,6 +1,10 @@
 system76-driver (14.10.3~daily) utopic; urgency=low
 
   * Daily WIP for 14.10.3
+  * debian/system76-driver.install: don't install "Old Man Smoked His Pipe"
+    wallpaper, nor system76-wallpapers.xml, as these files have moved into the
+    new `system76-wallpapers` package (separate source package/tree)
+  * debian/control: `system76-driver` now depends on "system76-wallpapers"
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 07 Nov 2014 11:42:23 -0700
 
