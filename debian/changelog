@@ -5,6 +5,8 @@ system76-driver (14.10.3~daily) utopic; urgency=low
     wallpaper, nor system76-wallpapers.xml, as these files have moved into the
     new `system76-wallpapers` package (separate source package/tree)
   * debian/control: `system76-driver` now depends on "system76-wallpapers"
+  * debian/system76-driver.gsettings-override: switch default background to
+    "Geometric" for new System76 brand launch
   * debian/system76-driver.gsettings-override: add [com.canonical.Unity.Lenses]
     section, set 'remote-content-search' to 'none'
 
