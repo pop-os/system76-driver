@@ -60,7 +60,7 @@ class TestUI(TestCase):
         )
         self.assertEqual(
             ui.builder.get_object('ubuntuVersion').get_text(),
-            platform.dist()[1]
+            '{} {} ({})'.format(*platform.dist())
         )
         self.assertEqual(
             ui.builder.get_object('driverVersion').get_text(),
@@ -82,7 +82,7 @@ class TestUI(TestCase):
         self.assertEqual(ui.builder.get_object('sysModel').get_text(), model)
         self.assertEqual(
             ui.builder.get_object('ubuntuVersion').get_text(),
-            platform.dist()[1]
+            '{} {} ({})'.format(*platform.dist())
         )
         self.assertEqual(
             ui.builder.get_object('driverVersion').get_text(),

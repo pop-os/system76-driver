@@ -50,9 +50,10 @@ class UI:
         self.notify_icon = self.builder.get_object('notifyImage')
         self.notify_text = self.builder.get_object('notifyLabel')
         self.details = self.builder.get_object('detailsText')
-
         self.builder.get_object('sysModel').set_text(model)
-        self.builder.get_object('ubuntuVersion').set_text(platform.dist()[1])
+        self.builder.get_object('ubuntuVersion').set_text(
+            '{} {} ({})'.format(*platform.dist())
+        )
         self.builder.get_object('driverVersion').set_text(__version__)
 
         self.builder.connect_signals({
