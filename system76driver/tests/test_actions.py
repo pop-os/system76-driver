@@ -960,3 +960,91 @@ class Test_uvcquirks(TestCase):
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
+
+class Test_internal_mic_gain(TestCase):
+    def test_init(self):
+        inst = actions.internal_mic_gain()
+        self.assertEqual(inst.filename,
+            '/usr/share/pulseaudio/alsa-mixer/paths/analog-input-internal-mic.conf'
+        )
+
+        tmp = TempDir()
+        inst = actions.internal_mic_gain(rootdir=tmp.dir)
+        self.assertEqual(inst.filename,
+            tmp.join('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths', 'analog-input-internal-mic.conf')
+        )
+
+    def test_read(self):
+        tmp = TempDir()
+        tmp.makedirs('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths')
+        inst = actions.internal_mic_gain(rootdir=tmp.dir)
+        self.assertIsNone(inst.read())
+        tmp.write(b'Hello, World', 'usr', 'share', 'pulseaudio', 'alsa-mixer',
+                'paths', 'analog-input-internal-mic.conf')
+        self.assertEqual(inst.read(), 'Hello, World')
+
+    def test_describe(self):
+        inst = actions.internal_mic_gain()
+        self.assertEqual(inst.describe(), 'Fix Internal Mic Gain')
+
+    def test_get_isneeded(self):
+        tmp = TempDir()
+        tmp.makedirs('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths')
+        inst = actions.internal_mic_gain(rootdir=tmp.dir)
+
+        # Missing file
+        self.assertIs(inst.get_isneeded(), True)
+
+        # Wrong file content:
+        open(inst.filename, 'w').write('blah blah')
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # Correct content, wrong perms:
+        open(inst.filename, 'w').write(inst.content)
+        os.chmod(inst.filename, 0o666)
+        self.assertIs(inst.get_isneeded(), True)
+        os.chmod(inst.filename, 0o600)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # All good:
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.get_isneeded(), False)
+
+    def _check_file(self, inst):
+        self.assertEqual(open(inst.filename, 'r').read(), inst.content)
+        st = os.stat(inst.filename)
+        self.assertEqual(stat.S_IMODE(st.st_mode), 0o644)
+
+    def test_perform(self):
+        tmp = TempDir()
+        inst = actions.internal_mic_gain(rootdir=tmp.dir)
+
+        # Missing directories
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.tmp)
+
+        # Missing file
+        tmp.makedirs('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths')
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Wrong file content:
+        open(inst.filename, 'w').write('blah blah')
+        os.chmod(inst.filename, 0o644)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Correct content, wrong perms:
+        open(inst.filename, 'w').write(inst.content)
+        os.chmod(inst.filename, 0o666)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+        os.chmod(inst.filename, 0o600)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Action didn't need to be performed:
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)

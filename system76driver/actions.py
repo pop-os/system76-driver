@@ -30,6 +30,7 @@ from base64 import b32encode
 import datetime
 import logging
 
+from . import get_datafile
 from .mockable import SubProcess
 
 
@@ -382,4 +383,21 @@ class uvcquirks(FileAction):
 
     def describe(self):
         return _('Webcam quirk fixes')
+
+
+class internal_mic_gain(FileAction):
+    relpath = ('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths',
+                    'analog-input-internal-mic.conf')
+
+    _content = None
+
+    @property
+    def content(self):
+        if self._content is None:
+            fp = open(get_datafile('analog-input-internal-mic.conf'), 'r')
+            self._content = fp.read()
+        return self._content
+
+    def describe(self):
+        return _('Fix Internal Mic Gain')
 
