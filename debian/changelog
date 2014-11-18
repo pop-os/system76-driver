@@ -1,9 +1,8 @@
-system76-driver (14.10.4~alpha) utopic; urgency=low
+system76-driver (14.10.4) utopic; urgency=low
 
-  * Daily WIP for 14.10.4
   * Bring back `internal_mic_gain` fix, still needed for galu1 on Utopic.
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 17 Nov 2014 09:14:36 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 18 Nov 2014 10:23:20 -0700
 
 system76-driver (14.10.3) utopic; urgency=low
 
