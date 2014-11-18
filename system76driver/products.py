@@ -95,6 +95,7 @@ PRODUCTS = {
         'drivers': [
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
+            actions.internal_mic_gain,
         ],
     },
 
