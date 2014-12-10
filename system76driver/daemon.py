@@ -196,41 +196,41 @@ class Airplane:
     def __init__(self):
         self.fp = open_ec()
         self.fd = self.fp.fileno()
+        self.sync_led_state = False
         self.old = None
         self.restore = {}
 
     def run(self):
-        self.timeout_id = GLib.timeout_add(500, self.on_timeout)
-
-    def on_timeout(self):
-        try:
-            self.update()
-            return True
-        except Exception:
-            log.exception('Error calling AirplaneMode.update():')
-            return False
+        self.timeout_id = GLib.timeout_add(500, self.update)
 
     def update(self):
-        fd = self.fd
-        keypress = read_int(fd, 0xDB)
-        new = dict(iter_state())
-        if bit6_is_set(keypress):
-            log.info('Fn+F11 keypress')
-            airplane_mode = any(new.values())
-            sync_led(fd, airplane_mode)
-            if airplane_mode:
-                self.restore = new
-                self.old = dict(iter_write_airplane_on())
-            else:
-                self.old = dict(iter_write_airplane_off(self.restore))
-            write_int(fd, 0xDB, clear_bit6(keypress))
-            log.info('airplane_mode: %r', airplane_mode)
-        elif new != self.old:
-            log.info('%r != %r', new, self.old)
-            self.old = new
-            airplane_mode = not any(new.values())
-            sync_led(fd, airplane_mode)
-            log.info('airplane_mode: %r', airplane_mode)
+        try:
+            self.sync_led_state ^= True
+            keypress = os.pread(self.fd, 1, 0xDB)[0]
+            if (keypress & 0b01000000):
+                log.info('Fn+F11 keypress')
+                new = dict(iter_state())
+                airplane_mode = any(new.values())
+                sync_led(self.fd, airplane_mode)
+                if airplane_mode:
+                    self.restore = new
+                    self.old = dict(iter_write_airplane_on())
+                else:
+                    self.old = dict(iter_write_airplane_off(self.restore))
+                write_int(self.fd, 0xDB, clear_bit6(keypress))
+                log.info('airplane_mode: %r', airplane_mode)
+            elif self.sync_led_state:
+                new = dict(iter_state())
+                if new != self.old:
+                    log.info('%r != %r', new, self.old)
+                    self.old = new
+                    airplane_mode = not any(new.values())
+                    sync_led(self.fd, airplane_mode)
+                    log.info('airplane_mode: %r', airplane_mode)
+            return True
+        except Exception:
+            log.exception('Error in AirplaneMode.update():')
+            return False
 
 
 def _run_airplane(model):
