@@ -140,7 +140,7 @@ class TestFunctions(TestCase):
         data = os.urandom(256)
         name = tmp.write(data, 'kernel', 'debug', 'ec', 'ec0', 'io')
         fp = daemon.open_ec(sysdir=tmp.dir)
-        self.assertIsInstance(fp, io.BufferedRandom)
+        self.assertIsInstance(fp, io.FileIO)
         self.assertEqual(fp.name, name)
         self.assertIs(fp.closed, False)
         self.assertEqual(fp.mode, 'rb+')

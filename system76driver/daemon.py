@@ -119,7 +119,7 @@ def save_json_conf(filename, obj):
 def open_ec(sysdir='/sys'):
     SubProcess.check_call(['modprobe', 'ec_sys', 'write_support'])
     name = path.join(sysdir, 'kernel', 'debug', 'ec', 'ec0', 'io')
-    fp = open(name, 'rb+')
+    fp = open(name, 'rb+', 0)
     return fp
 
 
