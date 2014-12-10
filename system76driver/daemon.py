@@ -201,7 +201,7 @@ class Airplane:
         self.restore = {}
 
     def run(self):
-        self.timeout_id = GLib.timeout_add(500, self.update)
+        self.timeout_id = GLib.timeout_add(750, self.update)
 
     def update(self):
         try:
