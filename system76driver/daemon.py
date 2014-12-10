@@ -148,8 +148,7 @@ def clear_bit6(value):
 
 
 def read_state(state_file):
-    key = open(state_file, 'r').read()
-    return {'0\n': False, '1\n': True}[key] 
+    return bool(int(open(state_file, 'rb', 0).read(11)))
 
 
 def write_state(state_file, value):
@@ -157,17 +156,17 @@ def write_state(state_file, value):
     open(state_file, 'w').write('{:d}\n'.format(value))
 
 
-def iter_radios():
-    rfkill = '/sys/class/rfkill'
+def iter_radios(rfkill='/sys/class/rfkill'):
     for radio in os.listdir(rfkill):
-        key = open(path.join(rfkill, radio, 'name'), 'r').read().strip()
+        fp = open(path.join(rfkill, radio, 'name'), 'rb', 0)
+        key = fp.read().strip().decode()
         state_file = path.join(rfkill, radio, 'state')
         yield (key, state_file)
 
 
 def iter_state():
     for (key, state_file) in iter_radios():
-        yield (key, read_state(state_file))
+        yield (key, bool(int(open(state_file, 'rb', 0).read(11))))
 
 
 def iter_write_airplane_on():
@@ -197,6 +196,7 @@ def sync_led(fd, airplane_mode):
 class Airplane:
     def __init__(self):
         self.fp = open_ec()
+        self.fd = self.fp.fileno()
         self.old = None
         self.restore = {}
 
@@ -212,7 +212,7 @@ class Airplane:
             return False
 
     def update(self):
-        fd = self.fp.fileno()
+        fd = self.fd
         keypress = read_int(fd, 0xDB)
         new = dict(iter_state())
         if bit6_is_set(keypress):

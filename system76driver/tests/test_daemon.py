@@ -197,9 +197,11 @@ class TestFunctions(TestCase):
     def test_read_state(self):
         tmp = TempDir()
         state_file = tmp.write(b'junk\n', 'state')
-        with self.assertRaises(KeyError) as cm:
+        with self.assertRaises(ValueError) as cm:
             daemon.read_state(state_file)
-        self.assertEqual(str(cm.exception), repr('junk\n'))
+        self.assertEqual(str(cm.exception),
+             "invalid literal for int() with base 10: b'junk\\n'"
+        )
         open(state_file, 'w').write('0\n')
         self.assertIs(daemon.read_state(state_file), False)
         open(state_file, 'w').write('1\n')
