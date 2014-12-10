@@ -3,6 +3,10 @@ system76-driver (14.10.5~alpha) utopic; urgency=low
   * Daily WIP for 14.10.5.
   * Also add `internal_mic_gain` action back for daru4, gazp9b, and kudp1b,
     likewise still needed on Utopic
+  * system76driver/daemon.py: add a number of small optimizations that in total
+    mean that support for the airplane mode hotkey (Haswell gen laptops) incurs
+    around half the events per second and less than a quarter of the CPU usage
+    (as measured by `powertop`)
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 25 Nov 2014 16:19:42 -0700
 
