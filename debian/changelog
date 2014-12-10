@@ -7,6 +7,10 @@ system76-driver (14.10.5~alpha) utopic; urgency=low
     mean that support for the airplane mode hotkey (Haswell gen laptops) incurs
     around half the events per second and less than a quarter of the CPU usage
     (as measured by `powertop`)
+  * Drop `wifi_pm_disable` action from all Haswell gen laptops as the latest
+    3.16 kernel plus the latest linux-firmware package seem to have completely
+    fixed the latency, reliability, and performance issues previously
+    encountered when power management was turned on for Intel 3160/7260 cards
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 25 Nov 2014 16:19:42 -0700
 
