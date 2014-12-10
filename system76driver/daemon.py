@@ -158,10 +158,9 @@ def write_state(state_file, value):
 
 def iter_radios(rfkill='/sys/class/rfkill'):
     for radio in os.listdir(rfkill):
-        fp = open(path.join(rfkill, radio, 'name'), 'rb', 0)
-        key = fp.read().strip().decode()
-        state_file = path.join(rfkill, radio, 'state')
-        yield (key, state_file)
+        radio_dir = rfkill + '/' + radio
+        key = open(radio_dir + '/name', 'rb', 0).read(20).strip().decode()
+        yield (key, radio_dir + '/state')
 
 
 def iter_state():
