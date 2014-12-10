@@ -1,6 +1,5 @@
-system76-driver (14.10.5~alpha) utopic; urgency=low
+system76-driver (14.10.5) utopic; urgency=low
 
-  * Daily WIP for 14.10.5.
   * Also add `internal_mic_gain` action back for daru4, gazp9b, and kudp1b,
     likewise still needed on Utopic
   * system76driver/daemon.py: add a number of small optimizations that in total
@@ -12,7 +11,7 @@ system76-driver (14.10.5~alpha) utopic; urgency=low
     fixed the latency, reliability, and performance issues previously
     encountered when power management was turned on for Intel 3160/7260 cards
 
- -- Jason Gerard DeRose <jason@system76.com>  Tue, 25 Nov 2014 16:19:42 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 10 Dec 2014 16:49:57 -0700
 
 system76-driver (14.10.4) utopic; urgency=low
 
