@@ -349,6 +349,20 @@ class radeon_dpm(GrubAction):
         return _('Enable Radeon GPU power management')
 
 
+class disable_power_well(GrubAction):
+    """
+    Add i915.disable_power_well=0 to GRUB_CMDLINE_LINUX_DEFAULT.
+
+    This fixes the HDMI playback speed issue on Intel Haswell GPUs (playback
+    speed is faster than it should be, aka the "chipmunk problem").
+    """
+
+    add = ('i915.disable_power_well=0',)
+
+    def describe(self):
+        return _('Fix HDMI audio playback speed')
+
+
 class plymouth1080(Action):
     update_grub = True
     value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'
