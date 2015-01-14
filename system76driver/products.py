@@ -62,7 +62,9 @@ PRODUCTS = {
     },
     'bonx8': {
         'name': 'Bonobo Extreme',
-        'drivers': [],
+        'drivers': [
+            actions.wifi_pm_disable,
+        ],
     },
 
     # Darter:
@@ -81,6 +83,7 @@ PRODUCTS = {
     'daru4': {
         'name': 'Darter UltraTouch',
         'drivers': [
+            actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.backlight_vendor,
             actions.internal_mic_gain,
@@ -91,6 +94,7 @@ PRODUCTS = {
     'galu1': {
         'name': 'Galago UltraPro',
         'drivers': [
+            actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.internal_mic_gain,
         ],
@@ -133,6 +137,7 @@ PRODUCTS = {
     'gazp9': {
         'name': 'Gazelle Professional',
         'drivers': [
+            actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.backlight_vendor,  # Still needed for some early BIOS
         ],
@@ -140,6 +145,7 @@ PRODUCTS = {
     'gazp9b': {
         'name': 'Gazelle Professional',
         'drivers': [
+            actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.remove_backlight_vendor,
             actions.internal_mic_gain,
@@ -182,12 +188,14 @@ PRODUCTS = {
     'kudp1': {
         'name': 'Kudu Professional',
         'drivers': [
+            actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
         ],
     },
     'kudp1b': {
         'name': 'Kudu Professional',
         'drivers': [
+            actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.internal_mic_gain,
         ],
