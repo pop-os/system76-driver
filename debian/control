@@ -3,6 +3,7 @@ Section: utils
 Priority: extra
 Maintainer: System76, Inc. <dev@system76.com>
 Build-Depends: debhelper (>= 9),
+    dh-systemd,
     python3-all (>= 3.4),
     pyflakes,
     xvfb,
