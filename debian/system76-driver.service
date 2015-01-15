@@ -4,3 +4,6 @@ Description=System76 airplane-mode hotkey and LED support
 [Service]
 ExecStart=/usr/lib/system76-driver/system76-daemon
 
+[Install]
+WantedBy=multi-user.target
+
