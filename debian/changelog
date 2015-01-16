@@ -1,6 +1,11 @@
 system76-driver (14.10.6~alpha) utopic; urgency=low
 
   * Daily WIP for 14.10.6
+  * Re-enable wifi_pm_disable for all haswell gen products, seemingly still
+    needed with some access points, even with 3.16 kernel
+  * Add system76-driver.service for initial systemd support (LP: #1390152)
+  * Small cosmetic changes so that the difference between Utopic and Trusty
+    driver branches is small and manageable
 
  -- Jason Gerard DeRose <jason@system76.com>  Mon, 12 Jan 2015 18:11:37 -0700
 
