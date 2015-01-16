@@ -1,13 +1,13 @@
-system76-driver (14.10.6~alpha) utopic; urgency=low
+system76-driver (14.10.6) utopic; urgency=low
 
-  * Daily WIP for 14.10.6
   * Re-enable wifi_pm_disable for all haswell gen products, seemingly still
-    needed with some access points, even with 3.16 kernel
-  * Add system76-driver.service for initial systemd support (LP: #1390152)
-  * Small cosmetic changes so that the difference between Utopic and Trusty
+    needed with some access points, even with the 3.16 kernel
+  * Small cosmetic changes so that the difference between the LTS and trunk
     driver branches is small and manageable
+  * Add debian/system76-driver.service file for initial systemd support
+    (LP: #1390152)
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 12 Jan 2015 18:11:37 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 16 Jan 2015 13:13:55 -0700
 
 system76-driver (14.10.5) utopic; urgency=low
 
