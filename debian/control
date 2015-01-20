@@ -33,7 +33,7 @@ Package: system76-driver-nvidia
 Architecture: all
 Depends: system76-driver (>= ${binary:Version}),
     ubuntu-drivers-common,
-    nvidia-343 | nvidia-331 | nvidia-331-updates
+    nvidia-346 | nvidia-343 | nvidia-331 | nvidia-331-updates
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
  System76 products with an nvidia GPU.
