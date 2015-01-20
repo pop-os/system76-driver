@@ -1,3 +1,9 @@
+system76-driver (14.10.7~alpha) utopic; urgency=low
+
+  * Daily WIP for 14.10.7
+
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 20 Jan 2015 15:22:03 -0700
+
 system76-driver (14.10.6) utopic; urgency=low
 
   * Re-enable wifi_pm_disable for all haswell gen products, seemingly still
