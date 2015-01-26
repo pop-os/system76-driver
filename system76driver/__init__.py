@@ -40,6 +40,10 @@ def read_dmi_id(key, sysdir='/sys'):
         fp = open(filename, 'r')
     except FileNotFoundError:
         return None
-    value = fp.read().strip()
+    try:
+        value = fp.read(256).strip()
+    except UnicodeDecodeError:
+        value = None
     fp.close()
     return value
+

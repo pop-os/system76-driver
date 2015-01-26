@@ -126,3 +126,16 @@ class TestFunctions(TestCase):
             system76driver.read_dmi_id('product_version', sysdir=tmp.dir),
             'kudp1'
         )
+
+        # sys_vendor, product_version do not contain valid UTF-8:
+        tmp = TempDir()
+        tmp.makedirs('class', 'dmi', 'id')
+        tmp.write(b'\xffSystem76, Inc.\n', 'class', 'dmi', 'id', 'sys_vendor')
+        self.assertIsNone(
+            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
+        )
+        tmp.write(b'\xffkudp1\n', 'class', 'dmi', 'id', 'product_version')
+        self.assertIsNone(
+            system76driver.read_dmi_id('product_version', sysdir=tmp.dir),
+        )
+
