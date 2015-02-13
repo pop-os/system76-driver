@@ -21,6 +21,10 @@
 User-space work-around for Airplane Mode hotkey (Fn+F11).
 
 In the near future this will be replaced with a kernel driver to do the same.
+
+ACPI virtual device for Fn+F11::
+
+    Name (_HID, EisaId ("PNPC000"))
 """
 
 import time
