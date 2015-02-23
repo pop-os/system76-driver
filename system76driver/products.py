@@ -221,6 +221,10 @@ PRODUCTS = {
             actions.lemu1,
         ],
     },
+    'lemu5': {
+        'name': 'Lemur',
+        'drivers': [],
+    },
 
     # Leopard:
     'leo1': {
@@ -263,6 +267,10 @@ PRODUCTS = {
     },
     'ment5': {
         'name': 'Meerkat Ion NetTop',
+        'drivers': [],
+    },
+    'meer1': {
+        'name': 'Meerkat',
         'drivers': [],
     },
 

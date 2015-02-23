@@ -68,6 +68,7 @@ NEEDS_BRIGHTNESS = frozenset([
     'gazp9b',
     'kudp1',
     'kudp1b',
+    'lemu5',
     'sabc1',
     'sabc2',
     'sabc3',
