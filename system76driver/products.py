@@ -223,7 +223,12 @@ PRODUCTS = {
     },
     'lemu5': {
         'name': 'Lemur',
-        'drivers': [],
+        'drivers': [
+            actions.backlight_vendor,
+            actions.internal_mic_gain,
+            actions.wifi_pm_disable,
+            actions.hdmi_hotplug_fix, 
+        ],
     },
 
     # Leopard:
