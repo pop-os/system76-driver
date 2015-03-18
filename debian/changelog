@@ -1,3 +1,10 @@
+system76-driver (15.04.0~alpha) vivid; urgency=low
+
+  * Daily WIP for 15.04.0
+  * Start 15.04.x series, initial Vivid release
+
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 18 Mar 2015 13:39:44 -0600
+
 system76-driver (14.10.8) utopic; urgency=low
 
   * system76driver.read_dmi_id() is now failsafe when "sys_vendor" or
