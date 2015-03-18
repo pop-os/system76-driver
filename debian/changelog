@@ -2,6 +2,10 @@ system76-driver (15.04.0~alpha) vivid; urgency=low
 
   * Daily WIP for 15.04.0
   * Start 15.04.x series, initial Vivid release
+  * debian/control: `system76-driver-nvidia` now Depends on
+    (nvidia-346 | nvidia-346-updates | nvidia-340 | nvidia-340-updates)
+  * system76-nvidia-quirks: change Handler to
+    "nvidia-346|nvidia-346-updates|nvidia-340|nvidia-340-updates"
 
  -- Jason Gerard DeRose <jason@system76.com>  Wed, 18 Mar 2015 13:39:44 -0600
 
