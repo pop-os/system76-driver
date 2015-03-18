@@ -1,6 +1,5 @@
-system76-driver (14.10.8~alpha) utopic; urgency=low
+system76-driver (14.10.8) utopic; urgency=low
 
-  * Daily WIP for 14.10.8
   * system76driver.read_dmi_id() is now failsafe when "sys_vendor" or
     "product_version" contain invalid UTF-8 data; this would never be the case
     on an actual System76 product, but the driver should politely do nothing
@@ -8,7 +7,7 @@ system76-driver (14.10.8~alpha) utopic; urgency=low
   * Add "meer1" (Meerkat) to PRODUCTS
   * Add "lemu5" (Lemur) to PRODUCTS, NEEDS_BRIGHTNESS
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 26 Jan 2015 11:05:15 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 18 Mar 2015 10:44:44 -0600
 
 system76-driver (14.10.7) utopic; urgency=low
 
