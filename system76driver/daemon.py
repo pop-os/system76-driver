@@ -72,6 +72,7 @@ NEEDS_BRIGHTNESS = frozenset([
     'sabc1',
     'sabc2',
     'sabc3',
+    'sabl4',
     'sabt1',
     'sabt2',
     'sabt3',
