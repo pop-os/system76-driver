@@ -62,6 +62,7 @@ NEEDS_AIRPLANE = frozenset([
 NEEDS_BRIGHTNESS = frozenset([
     'bonx7',
     'bonx8',
+    'bonw9',
     'daru4',
     'galu1',
     'gazp9',

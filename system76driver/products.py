@@ -66,6 +66,10 @@ PRODUCTS = {
             actions.wifi_pm_disable,
         ],
     },
+    'bonw9': {
+        'name': 'Bonobo WS',
+        'drivers': [],
+    },
 
     # Darter:
     'daru1': {
