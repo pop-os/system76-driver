@@ -1,3 +1,9 @@
+system76-driver (15.04.2~alpha) vivid; urgency=low
+
+  * Daily WIP for 15.04.2
+  
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 10 Apr 2015 13:38:38 -0600
+
 system76-driver (15.04.1) vivid; urgency=low
 
   * Add 'sabl4', 'bonw9' to PRODUCTS, NEEDS_BRIGHTNESS
