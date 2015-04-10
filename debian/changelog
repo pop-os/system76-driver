@@ -1,8 +1,8 @@
-system76-driver (15.04.2~alpha) vivid; urgency=low
+system76-driver (15.04.2) vivid; urgency=low
 
-  * Daily WIP for 15.04.2
+  * Change default wallpaper to Honeycomb
   
- -- Jason Gerard DeRose <jason@system76.com>  Fri, 10 Apr 2015 13:38:38 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 10 Apr 2015 14:52:36 -0600
 
 system76-driver (15.04.1) vivid; urgency=low
 

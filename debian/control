@@ -18,7 +18,7 @@ Architecture: all
 Conflicts: system76-airplane-mode
 Replaces: system76-airplane-mode
 Depends: ${python3:Depends}, ${misc:Depends},
-    system76-wallpapers,
+    system76-wallpapers (>= 15.04.1~alpha),
     python3-gi,
     gir1.2-gtk-3.0,
     pm-utils,
