@@ -448,6 +448,14 @@ PRODUCTS = {
         'name': 'Serval Professional',
         'drivers': [],
     },
+    'serw8-15': {
+        'name': 'Serval WS',
+        'drivers': [],
+    },
+    'serw8-17': {
+        'name': 'Serval WS',
+        'drivers': [],
+    },
 
     # Starling:
     'star1': {

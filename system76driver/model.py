@@ -175,6 +175,8 @@ TABLES = {
         'serp5': 'serp5',
         'serp6': 'serp6',
         'serp7': 'serp7',
+        'serw8-15': 'serw8-15',
+        'serw8-17': 'serw8-17',
         'sabc1': 'sabc1',
         'sabc2': 'sabc2',
         'sabc3': 'sabc3',

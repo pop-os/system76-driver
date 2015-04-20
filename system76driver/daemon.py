@@ -77,6 +77,8 @@ NEEDS_BRIGHTNESS = frozenset([
     'sabt1',
     'sabt2',
     'sabt3',
+    'serw8-15',
+    'serw8-17',
 ])
 
 # These products use 'acpi_video0' instead of 'intel_backlight':
