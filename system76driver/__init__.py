@@ -24,7 +24,7 @@ Universal driver for System76 computers
 from os import path
 
 
-__version__ = '15.04.2'
+__version__ = '15.04.3'
 
 datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
 
