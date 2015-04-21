@@ -1,8 +1,8 @@
-system76-driver (15.04.3~alpha) vivid; urgency=low
+system76-driver (15.04.3) vivid; urgency=low
 
-  * Daily WIP for 15.04.3
+  * Add 'serw8-15', 'serw8-17' to PRODUCTS, NEEDS_BRIGHTNESS
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 20 Apr 2015 12:05:01 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 20 Apr 2015 19:03:08 -0600
 
 system76-driver (15.04.2) vivid; urgency=low
 
