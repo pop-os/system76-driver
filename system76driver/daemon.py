@@ -50,6 +50,7 @@ MASK2 = 0b10111111
 NEEDS_AIRPLANE = frozenset([
     'bonx7',
     'bonx8',
+    'bonw9',
     'daru4',
     'galu1',
     'gazp9',
