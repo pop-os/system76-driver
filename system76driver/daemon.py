@@ -87,6 +87,8 @@ NEEDS_BRIGHTNESS_ACPI = frozenset([
     'bonx7',
     'bonx8',
     'bonw9',
+    'serw8-15',
+    'serw8-17',
 ])
 
 
