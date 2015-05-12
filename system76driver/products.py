@@ -457,7 +457,7 @@ PRODUCTS = {
         'drivers': [],
     },
 
-    # Silverback
+    # Silverback:
     'silw1': {
         'name': 'Silverback WS',
         'drivers': [],
