@@ -457,6 +457,12 @@ PRODUCTS = {
         'drivers': [],
     },
 
+    # Silverback
+    'silw1': {
+        'name': 'Silverback WS',
+        'drivers': [],
+    },
+
     # Starling:
     'star1': {
         'name': 'Starling NetBook',
