@@ -1,8 +1,10 @@
-system76-driver (15.04.4~alpha) vivid; urgency=low
+system76-driver (15.04.4) vivid; urgency=low
 
-  * Daily WIP for 15.04.4
+  * Add 'bonw9' to NEEDS_AIRPLANE
+  * Add 'bown9', 'serw8-15', 'serw8-17' to NEEDS_BRIGHTNESS_ACPI
+  * Add 'silw1' to PRODUCTS
 
- -- Jason Gerard DeRose <jason@system76.com>  Fri, 08 May 2015 15:17:22 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 13 May 2015 11:48:01 -0600
 
 system76-driver (15.04.3) vivid; urgency=low
 
