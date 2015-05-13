@@ -40,13 +40,19 @@ class TestConstants(TestCase):
             self.assertIn(key, products.PRODUCTS)
 
     def test_NEEDS_BRIGHTNESS(self):
-        self.assertIsInstance(daemon.NEEDS_BRIGHTNESS, frozenset)
+        self.assertIsInstance(daemon.NEEDS_BRIGHTNESS, tuple)
+        self.assertEqual(len(daemon.NEEDS_BRIGHTNESS),
+            len(set(daemon.NEEDS_BRIGHTNESS))
+        )
         for key in daemon.NEEDS_BRIGHTNESS:
             self.assertIsInstance(key, str)
             self.assertIn(key, products.PRODUCTS)
 
     def test_NEEDS_BRIGHTNESS_ACPI(self):
-        self.assertIsInstance(daemon.NEEDS_BRIGHTNESS_ACPI, frozenset)
+        self.assertIsInstance(daemon.NEEDS_BRIGHTNESS_ACPI, tuple)
+        self.assertEqual(len(daemon.NEEDS_BRIGHTNESS_ACPI),
+            len(set(daemon.NEEDS_BRIGHTNESS_ACPI))
+        )
         for key in daemon.NEEDS_BRIGHTNESS_ACPI:
             self.assertIsInstance(key, str)
             self.assertIn(key, products.PRODUCTS)

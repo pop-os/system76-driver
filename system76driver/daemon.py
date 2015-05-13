@@ -59,11 +59,17 @@ NEEDS_AIRPLANE = frozenset([
     'kudp1b',
 ])
 
-# Products in this frozenset need software-base brightness restore:
-NEEDS_BRIGHTNESS = frozenset([
+# These products use 'acpi_video0' instead of 'intel_backlight':
+NEEDS_BRIGHTNESS_ACPI = (
     'bonx7',
     'bonx8',
     'bonw9',
+    'serw8-15',
+    'serw8-17',
+)
+
+# These products need software-base brightness restore:
+NEEDS_BRIGHTNESS = NEEDS_BRIGHTNESS_ACPI + (
     'daru4',
     'galu1',
     'gazp9',
@@ -78,18 +84,7 @@ NEEDS_BRIGHTNESS = frozenset([
     'sabt1',
     'sabt2',
     'sabt3',
-    'serw8-15',
-    'serw8-17',
-])
-
-# These products use 'acpi_video0' instead of 'intel_backlight':
-NEEDS_BRIGHTNESS_ACPI = frozenset([
-    'bonx7',
-    'bonx8',
-    'bonw9',
-    'serw8-15',
-    'serw8-17',
-])
+)
 
 
 def get_model(sysdir='/sys'):
