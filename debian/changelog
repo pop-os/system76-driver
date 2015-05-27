@@ -1,8 +1,9 @@
-system76-driver (15.04.5~alpha) vivid; urgency=low
+system76-driver (15.04.5) vivid; urgency=low
 
-  * Daily WIP for 15.04.4
+  * Sync patched analog-input-internal-mic.conf with pulseaudio default file in
+    Vivid
 
- -- Jason Gerard DeRose <jason@system76.com>  Wed, 27 May 2015 11:05:48 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 27 May 2015 12:28:43 -0600
 
 system76-driver (15.04.4) vivid; urgency=low
 
