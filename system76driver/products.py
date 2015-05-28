@@ -209,7 +209,7 @@ PRODUCTS = {
         'drivers': [
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
-            actions.internal_mic_gain,  # Only for kudp1b/kudp1c
+            actions.internal_mic_gain,  # Only for kudp1b
         ],
     },
     'kudp1c': {
