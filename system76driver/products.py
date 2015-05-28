@@ -152,7 +152,7 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.hdmi_hotplug_fix,
             actions.remove_backlight_vendor,
-            actions.internal_mic_gain,  # Only for gazp9b/gazp9c
+            actions.internal_mic_gain,  # Only for gazp9b
         ],
     },
     'gazp9c': {
