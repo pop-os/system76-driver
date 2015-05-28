@@ -1,8 +1,8 @@
-system76-driver (15.04.6~alpha) vivid; urgency=low
+system76-driver (15.04.6) vivid; urgency=low
 
-  * Daily WIP for 15.04.6
+  * Add 'gazp9c', 'kudp1c' to PRODUCTS, NEEDS_AIRPLANE, NEEDS_BRIGHTNESS
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 28 May 2015 10:45:36 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 28 May 2015 13:10:13 -0600
 
 system76-driver (15.04.5) vivid; urgency=low
 
