@@ -129,6 +129,7 @@ TABLES = {
         'gazp8': 'gazp8',
         'gazp9': 'gazp9',
         'gazp9b': 'gazp9b',
+        'gazp9c': 'gazp9c',
         'daru3': 'daru3',
         'daru4': 'daru4',
         'kudp1': 'kudp1',
