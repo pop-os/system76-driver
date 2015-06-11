@@ -68,6 +68,7 @@ NEEDS_BRIGHTNESS_ACPI = (
     'bonw9',
     'serw8-15',
     'serw8-17',
+    'serw8-17g',
 )
 
 # These products need software-base brightness restore:

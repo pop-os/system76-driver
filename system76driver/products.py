@@ -472,6 +472,10 @@ PRODUCTS = {
         'name': 'Serval WS',
         'drivers': [],
     },
+    'serw8-17g': {
+        'name': 'Serval WS',
+        'drivers': [],
+    },
 
     # Silverback:
     'silw1': {

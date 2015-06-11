@@ -179,6 +179,7 @@ TABLES = {
         'serp7': 'serp7',
         'serw8-15': 'serw8-15',
         'serw8-17': 'serw8-17',
+        'serw8-17g': 'serw8-17g',
         'silw1': 'silw1',
         'sabc1': 'sabc1',
         'sabc2': 'sabc2',
