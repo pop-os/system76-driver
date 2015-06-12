@@ -60,16 +60,18 @@ def run_pyflakes3():
 class Test(Command):
     description = 'run unit tests and doc tests'
 
-    user_options = []
+    user_options = [
+        ('skip-gtk', None, 'Skip GTK related tests'),
+    ]
 
     def initialize_options(self):
-        pass
+        self.skip_gtk = 0
 
     def finalize_options(self):
         pass
 
     def run(self):
-        if not run_tests():
+        if not run_tests(self.skip_gtk):
             raise SystemExit(2)
         run_pyflakes3()
 

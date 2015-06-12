@@ -63,8 +63,10 @@ def pynames_iter(pkdir=packagedir, pkname=None):
             yield n
 
 
-def run_tests():
+def run_tests(skip_gtk=False):
     pynames = tuple(pynames_iter())
+    if skip_gtk:
+        pynames = tuple(filter(lambda name: 'gtk' not in name, pynames))
 
     # Add unit-tests:
     loader = TestLoader()
@@ -86,6 +88,12 @@ def run_tests():
 
 
 if __name__ == '__main__':
-    if not run_tests():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--skip-gtk', action='store_true', default=False,
+        help='Skip GTK related tests',
+    )
+    args = parser.parse_args()
+    if not run_tests(args.skip_gtk):
         raise SystemExit('2')
 
