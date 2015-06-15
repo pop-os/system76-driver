@@ -1,11 +1,7 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@ --with=python3,systemd
-
-
-override_dh_auto_clean:
-	rm -rf build/
+	dh $@ --with=python3,systemd --buildsystem=pybuild
 
 override_dh_auto_build:
 	set -ex; for python in $(shell py3versions -r); do \
