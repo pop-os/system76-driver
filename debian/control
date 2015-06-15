@@ -30,7 +30,8 @@ Description: Universal driver for System76 computers
 
 Package: system76-driver-nvidia
 Architecture: all
-Depends: system76-driver (>= ${binary:Version}),
+Depends: ${misc:Depends},
+    system76-driver (>= ${binary:Version}),
     ubuntu-drivers-common,
     nvidia-346 | nvidia-346-updates | nvidia-340 | nvidia-340-updates,
 Description: Latest nvidia driver for System76 computers
