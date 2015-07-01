@@ -1,8 +1,17 @@
-system76-driver (15.04.7~alpha) vivid; urgency=low
+system76-driver (15.04.7) vivid; urgency=low
 
-  * Daily WIP for 15.04.7
+  * Add 'serw8-17g' to PRODUCTS, NEEDS_BRIGHTNESS_ACPI
+  * Work around Wily build failure by adding new 'setup.py test --skip-gtk'
+    option, not bothering with xvfb during build
+  * Drop unused edid functions from system76driver.model
+  * Small debian/ modernizations and fixes
+  * Drop system76-driver 'Depends: gnome-color-manager' as it isn't actually
+    needed anymore, feels a bit too invasive; however, we'll still pre-install
+    gnome-color-manager in our standard image
+  * Add system76-driver 'Suggests: gnome-color-manager' to make above transition
+    a bit more friendly
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 11 Jun 2015 11:02:28 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 01 Jul 2015 13:28:42 -0600
 
 system76-driver (15.04.6) vivid; urgency=low
 
