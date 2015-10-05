@@ -1,6 +1,9 @@
 [org.gnome.settings-daemon.peripherals.touchpad]
 tap-to-click = false
 
+[org.gnome.desktop.peripherals.touchpad]
+tap-to-click = false
+
 [org.gnome.gedit.preferences.editor]
 tabs-size = 4
 insert-spaces = true
