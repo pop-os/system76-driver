@@ -1,8 +1,9 @@
-system76-driver (15.04.8~alpha) vivid; urgency=low
+system76-driver (15.10.0~alpha) wily; urgency=low
 
-  * Daily WIP for 15.04.8
+  * Daily WIP for 15.10.0
+  * Start 15.10.x series, initial Wily release
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 13 Jul 2015 15:03:05 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 09 Oct 2015 11:57:44 -0600
 
 system76-driver (15.04.7) vivid; urgency=low
 
