@@ -59,6 +59,7 @@ NEEDS_AIRPLANE = frozenset([
     'kudp1',
     'kudp1b',
     'kudp1c',
+    'serw9',
 ])
 
 # These products use 'acpi_video0' instead of 'intel_backlight':
@@ -69,6 +70,7 @@ NEEDS_BRIGHTNESS_ACPI = (
     'serw8-15',
     'serw8-17',
     'serw8-17g',
+    'serw9',
 )
 
 # These products need software-base brightness restore:

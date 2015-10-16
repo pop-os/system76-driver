@@ -480,6 +480,10 @@ PRODUCTS = {
         'name': 'Serval WS',
         'drivers': [],
     },
+    'serw9': {
+        'name': 'Serval WS',
+        'drivers': [],
+    },
 
     # Silverback:
     'silw1': {
