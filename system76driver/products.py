@@ -303,6 +303,12 @@ PRODUCTS = {
         'drivers': [],
     },
 
+    # Oryx:
+    'orxp1': {
+        'name': 'Oryx Pro',
+        'drivers': [],
+    },
+
     # Pangolin:
     'panp4i': {
         'name': 'Pangolin Performance',
