@@ -60,6 +60,7 @@ NEEDS_AIRPLANE = frozenset([
     'kudp1b',
     'kudp1c',
     'serw9',
+    'lemu6',
 ])
 
 # These products use 'acpi_video0' instead of 'intel_backlight':
@@ -91,6 +92,7 @@ NEEDS_BRIGHTNESS = NEEDS_BRIGHTNESS_ACPI + (
     'sabt1',
     'sabt2',
     'sabt3',
+    'lemu6',
 )
 
 

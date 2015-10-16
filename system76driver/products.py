@@ -250,6 +250,10 @@ PRODUCTS = {
             actions.hdmi_hotplug_fix, 
         ],
     },
+    'lemu6': {
+        'name': 'Lemur',
+        'drivers': [],
+    },
 
     # Leopard:
     'leo1': {
