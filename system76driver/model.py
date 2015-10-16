@@ -171,6 +171,7 @@ TABLES = {
         'wilp9': 'wilp9',
         'wilp10': 'wilp10',
         'wilp11': 'wilp11',
+        'wilp12': 'wilp12',
         'serp5': 'serp5',
         'serp6': 'serp6',
         'serp7': 'serp7',

@@ -556,4 +556,8 @@ PRODUCTS = {
         'name': 'Wild Dog Performance',
         'drivers': [],
     },
+    'wilp12': {
+        'name': 'Wild Dog Pro',
+        'drivers': [],
+    },
 }
