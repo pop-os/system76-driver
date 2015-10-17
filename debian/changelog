@@ -1,6 +1,5 @@
-system76-driver (15.10.0~alpha) wily; urgency=low
+system76-driver (15.10.0) wily; urgency=low
 
-  * Daily WIP for 15.10.0
   * Start 15.10.x series, initial Wily release
   * debian/system76-driver.service: add Restart=on-failure
   * debian/control: `system76-driver-nvidia` now Depends on
@@ -17,7 +16,7 @@ system76-driver (15.10.0~alpha) wily; urgency=low
     - lemu6 (Lemur)
     - orxp1 (Oryx Pro)
 
- -- Jason Gerard DeRose <jason@system76.com>  Fri, 09 Oct 2015 11:57:44 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Sat, 17 Oct 2015 12:45:25 -0600
 
 system76-driver (15.04.7) vivid; urgency=low
 
