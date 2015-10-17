@@ -23,6 +23,7 @@ Unit tests for `system76driver.model` module.
 
 from unittest import TestCase
 
+from .helpers import TempDir
 from system76driver.mockable import SubProcess
 from system76driver import products, model
 
@@ -228,5 +229,24 @@ class TestFunctions(TestCase):
 
         # No calls should have resulted:
         self.assertEqual(SubProcess.calls, [])
+        self.assertEqual(SubProcess.outputs, [])
+
+    def test_determine_model_new(self):
+        for val in model.TABLES['system-version']:
+            tmp = TempDir()
+            tmp.makedirs('class', 'dmi', 'id')
+            tmp.write(val.encode(), 'class', 'dmi', 'id', 'product_version')
+            self.assertEqual(model.determine_model_new(sysdir=tmp.dir), val)
+        tmp = TempDir()
+        tmp.makedirs('class', 'dmi', 'id')
+        tmp.write(b'nope', 'class', 'dmi', 'id', 'product_version')
+        SubProcess.reset(True, OUTPUTS)
+        self.assertEqual(model.determine_model_new(sysdir=tmp.dir), 'gazp7')
+        self.assertEqual(SubProcess.calls, [
+            ('check_output', ['dmidecode', '-s', 'system-uuid'], {}),
+            ('check_output', ['dmidecode', '-s', 'baseboard-product-name'], {}),
+            ('check_output', ['dmidecode', '-s', 'system-product-name'], {}),
+            ('check_output', ['dmidecode', '-s', 'system-version'], {}),
+        ])
         self.assertEqual(SubProcess.outputs, [])
 
