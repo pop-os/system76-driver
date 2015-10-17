@@ -27,7 +27,7 @@ import logging
 import platform
 
 import system76driver
-from system76driver.model import determine_model
+from system76driver.model import determine_model_new
 from system76driver.products import PRODUCTS
 from system76driver.gtk import UI
 
@@ -54,7 +54,7 @@ log = logging.getLogger()
 if args.home is None:
     args.home = os.environ['HOME']
 if args.model is None:
-    args.model = determine_model()
+    args.model = determine_model_new()
 product = PRODUCTS.get(args.model)
 
 log.info('** Process start at monotonic time %r', time.monotonic())
