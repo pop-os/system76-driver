@@ -1,6 +1,3 @@
-[org.gnome.settings-daemon.peripherals.touchpad]
-tap-to-click = false
-
 [org.gnome.desktop.peripherals.touchpad]
 tap-to-click = false
 
