@@ -21,6 +21,7 @@
 Determin model of System76 product.
 """
 
+from . import read_dmi_id
 from .mockable import SubProcess
 
 
@@ -223,4 +224,11 @@ def determine_model(info=None):
         if value in table:
             return table[value]
     return 'nonsystem76'
+
+
+def determine_model_new(sysdir='/sys', info=None):
+    model = read_dmi_id('product_version', sysdir)
+    if model in TABLES['system-version']:
+        return model
+    return determine_model(info)
 
