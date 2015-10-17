@@ -2,6 +2,20 @@ system76-driver (15.10.0~alpha) wily; urgency=low
 
   * Daily WIP for 15.10.0
   * Start 15.10.x series, initial Wily release
+  * debian/system76-driver.service: add Restart=on-failure
+  * debian/control: `system76-driver-nvidia` now Depends on
+    (nvidia-346-system76 | nvidia-352 | nvidia-340)
+  * system76-nvidia-quirks: change Handler to
+    "nvidia-346-system76|nvidia-352|nvidia-340"
+  * gsettings-override: "org.gnome.settings-daemon.peripherals.touchpad"
+    renamed to "org.gnome.desktop.peripherals.touchpad" in Wily
+  * Work around SMBIOS 2.8 issue on orxp1
+  * Add new Skylake products:
+    - wilp12 (Wild Dog Pro)
+    - ratp5 (Ratel Pro)
+    - serw9 (Serval WS)
+    - lemu6 (Lemur)
+    - orxp1 (Oryx Pro)
 
  -- Jason Gerard DeRose <jason@system76.com>  Fri, 09 Oct 2015 11:57:44 -0600
 
