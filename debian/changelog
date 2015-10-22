@@ -1,3 +1,9 @@
+system76-driver (15.10.1~alpha) wily; urgency=low
+
+  * Daily WIP for 15.10.1
+
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 22 Oct 2015 16:02:31 -0600
+
 system76-driver (15.10.0) wily; urgency=low
 
   * Start 15.10.x series, initial Wily release
