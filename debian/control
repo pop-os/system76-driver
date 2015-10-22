@@ -33,7 +33,7 @@ Package: system76-driver-nvidia
 Architecture: all
 Depends: ${misc:Depends},
     system76-driver (>= ${binary:Version}),
-    nvidia-346-system76 | nvidia-352 | nvidia-340,
+    nvidia-346-system76,
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
  System76 products with an nvidia GPU.
