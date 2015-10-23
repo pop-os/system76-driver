@@ -34,7 +34,8 @@ Architecture: all
 Depends: ${misc:Depends},
     system76-driver (>= ${binary:Version}),
     nvidia-346-system76,
-Conflicts: nvidia-352, libcuda1-352, nvidia-opencl-icd-352
+Breaks: nvidia-352, libcuda1-352, nvidia-opencl-icd-352
+Replaces: nvidia-352, libcuda1-352, nvidia-opencl-icd-352
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
  System76 products with an nvidia GPU.
