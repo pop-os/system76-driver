@@ -1,8 +1,10 @@
-system76-driver (15.10.1~alpha) wily; urgency=low
+system76-driver (15.10.1) wily; urgency=low
 
-  * Daily WIP for 15.10.1
+  * To facilitate upgrade between 15.04 to 15.10, change system76-driver-nivida
+    to only depend on `nvidia-346-system76`, and also to conflict/replace
+    `nvidia-352`, `libcuda1-352`, `nvidia-opencl-icd-352`
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 22 Oct 2015 16:02:31 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 23 Oct 2015 14:25:44 -0600
 
 system76-driver (15.10.0) wily; urgency=low
 
