@@ -17,12 +17,9 @@ Architecture: all
 Suggests: gnome-color-manager
 Depends: ${python3:Depends}, ${misc:Depends},
     system76-wallpapers (>= 15.04.1~alpha),
-    ubuntu-drivers-common,
     python3-gi,
     gir1.2-gtk-3.0,
     pm-utils,
-Breaks: system76-driver-nvidia (<< 15.10.1~alpha~bzr381~ubuntu15.10.1)
-Replaces: system76-driver-nvidia (<< 15.10.1~alpha~bzr381~ubuntu15.10.1)
 Description: Universal driver for System76 computers
  System76 Driver provides drivers, restore, and regression support for System76
  computers running Ubuntu.  Click the Device Menu (power icon at the top right
@@ -33,9 +30,8 @@ Package: system76-driver-nvidia
 Architecture: all
 Depends: ${misc:Depends},
     system76-driver (>= ${binary:Version}),
-    nvidia-346-system76,
-Conflicts: nvidia-352, libcuda1-352, nvidia-opencl-icd-352
-Replaces: nvidia-352, libcuda1-352, nvidia-opencl-icd-352
+    ubuntu-drivers-common,
+    nvidia-346-system76 | nvidia-352 | nvidia-340,
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
  System76 products with an nvidia GPU.
