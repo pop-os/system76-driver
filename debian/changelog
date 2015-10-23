@@ -1,3 +1,10 @@
+system76-driver (15.10.2) wily; urgency=low
+
+  * Also need to handle transitional 346 packages, so `nvidia-346-system76`
+    must conflict/replace `nvidia-346`, `libcuda1-346`, `nvidia-opencl-icd-346`
+
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 23 Oct 2015 15:17:52 -0600
+
 system76-driver (15.10.1) wily; urgency=low
 
   * To facilitate upgrade between 15.04 to 15.10, change system76-driver-nivida
