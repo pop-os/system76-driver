@@ -1,3 +1,9 @@
+system76-driver (15.10.3~alpha) wily; urgency=low
+
+  * Daily WIP for 15.10.3
+
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 26 Oct 2015 12:36:29 -0600
+
 system76-driver (15.10.2) wily; urgency=low
 
   * Also need to handle transitional 346 packages, so `nvidia-346-system76`
