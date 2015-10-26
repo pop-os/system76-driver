@@ -1,8 +1,8 @@
-system76-driver (15.10.3~alpha) wily; urgency=low
+system76-driver (15.10.3) wily; urgency=low
 
-  * Daily WIP for 15.10.3
+  * Add `actions.gfxpayload_text`, now used by "serw9".
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 26 Oct 2015 12:36:29 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 26 Oct 2015 15:26:48 -0600
 
 system76-driver (15.10.2) wily; urgency=low
 
