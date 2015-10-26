@@ -492,7 +492,9 @@ PRODUCTS = {
     },
     'serw9': {
         'name': 'Serval WS',
-        'drivers': [],
+        'drivers': [
+            actions.gfxpayload_text,
+        ],
     },
 
     # Silverback:
