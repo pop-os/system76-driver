@@ -391,6 +391,34 @@ class plymouth1080(Action):
         self.atomic_write(content)
 
 
+class gfxpayload_text(Action):
+    update_grub = True
+    value = 'GRUB_GFXPAYLOAD_LINUX=text'
+
+    def __init__(self, etcdir='/etc'):
+        self.filename = path.join(etcdir, 'default', 'grub')
+
+    def read(self):
+        return open(self.filename, 'r').read()
+
+    def describe(self):
+        return _('Fix resume in UEFI mode')
+
+    def get_isneeded(self):
+        return self.read().splitlines()[-1] != self.value
+
+    def iter_lines(self):
+        content = self.read_and_backup()
+        for line in content.splitlines():
+            if not line.startswith('GRUB_GFXPAYLOAD_LINUX='):
+                yield line
+        yield self.value
+
+    def perform(self):
+        content = '\n'.join(self.iter_lines())
+        self.atomic_write(content)
+
+
 class uvcquirks(FileAction):
     relpath = ('etc', 'modprobe.d', 'uvc.conf')
     content = 'options uvcvideo quirks=2'

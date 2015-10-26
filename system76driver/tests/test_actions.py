@@ -890,6 +890,71 @@ class Test_plymouth1080(TestCase):
         self.assertEqual(SubProcess.calls, [])
 
 
+class Test_gfxpayload_text(TestCase):
+    def test_init(self):
+        inst = actions.gfxpayload_text()
+        self.assertIs(inst.update_grub, True)
+        self.assertEqual(inst.filename, '/etc/default/grub')
+        self.assertEqual(inst.value, 'GRUB_GFXPAYLOAD_LINUX=text')
+
+        tmp = TempDir()
+        self.assertIs(inst.update_grub, True)
+        inst = actions.gfxpayload_text(etcdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+        self.assertEqual(inst.value, 'GRUB_GFXPAYLOAD_LINUX=text')
+
+    def test_describe(self):
+        inst = actions.gfxpayload_text()
+        self.assertEqual(inst.describe(), 'Fix resume in UEFI mode')
+
+    def test_get_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.gfxpayload_text(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.get_isneeded()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIs(inst.get_isneeded(), True)
+        open(inst.filename, 'a').write('\nGRUB_GFXPAYLOAD_LINUX=text')
+        self.assertIs(inst.get_isneeded(), False)
+
+    def test_perform(self):
+        SubProcess.reset(mocking=True)
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.gfxpayload_text(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+
+        open(inst.filename, 'w').write(GRUB_ORIG)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text'
+        )
+        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+
+        open(inst.filename, 'w').write(
+            'GRUB_GFXPAYLOAD_LINUX=foobar\n' + GRUB_ORIG
+        )
+        self.assertIsNone(inst.perform())
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text'
+        )
+
+        self.assertIsNone(inst.perform())
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text'
+        )
+
+        self.assertEqual(SubProcess.calls, [])
+
+
 class Test_uvcquirks(TestCase):
     def test_init(self):
         inst = actions.uvcquirks()
