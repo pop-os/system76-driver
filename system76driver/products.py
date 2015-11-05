@@ -306,7 +306,9 @@ PRODUCTS = {
     # Oryx:
     'orxp1': {
         'name': 'Oryx Pro',
-        'drivers': [],
+        'drivers': [
+            actions.gfxpayload_text,
+        ],
     },
 
     # Pangolin:
