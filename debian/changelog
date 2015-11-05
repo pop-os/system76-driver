@@ -1,9 +1,8 @@
-system76-driver (15.10.4~alpha) wily; urgency=low
+system76-driver (15.10.4) wily; urgency=low
 
-  * Daily WIP for 15.10.4
   * Add `actions.gfxpayload_text` to "orxp1"
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 05 Nov 2015 11:03:51 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 05 Nov 2015 11:21:48 -0700
 
 system76-driver (15.10.3) wily; urgency=low
 
