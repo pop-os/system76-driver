@@ -504,6 +504,10 @@ PRODUCTS = {
         'name': 'Silverback WS',
         'drivers': [],
     },
+    'silw1b': {  # USB 3.1 version
+        'name': 'Silverback WS',
+        'drivers': [],
+    },
 
     # Starling:
     'star1': {
