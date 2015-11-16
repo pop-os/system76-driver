@@ -1,9 +1,8 @@
-system76-driver (15.10.5~alpha) wily; urgency=low
+system76-driver (15.10.5) wily; urgency=low
 
-  * Daily WIP for 15.10.5
   * Add 'silw1b' to PRODUCTS
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 16 Nov 2015 08:46:09 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 16 Nov 2015 09:00:34 -0700
 
 system76-driver (15.10.4) wily; urgency=low
 
