@@ -1,6 +1,6 @@
 Section "Quirk"
     Identifier "System76 PC"
-    Handler "nvidia-346-system76|nvidia-352|nvidia-340"
+    Handler "nvidia-352|nvidia-340"
     Match "sys_vendor" "System76, Inc."
     XorgSnippet
         Section "Device"

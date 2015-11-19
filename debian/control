@@ -31,13 +31,15 @@ Architecture: all
 Depends: ${misc:Depends},
     system76-driver (>= ${binary:Version}),
     ubuntu-drivers-common,
-    nvidia-346-system76,
+    nvidia-352,
+    libcuda1-352,
+    nvidia-opencl-icd-352,
+Conflicts: nvidia-346-system76,
     libcuda1-346-system76,
     nvidia-opencl-icd-346-system76,
-Conflicts: nvidia-352, libcuda1-352, nvidia-opencl-icd-352,
-    nvidia-346, libcuda1-346, nvidia-opencl-icd-346,
-Replaces: nvidia-352, libcuda1-352, nvidia-opencl-icd-352,
-    nvidia-346, libcuda1-346, nvidia-opencl-icd-346,
+Replaces: nvidia-346-system76,
+    libcuda1-346-system76,
+    nvidia-opencl-icd-346-system76,
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
  System76 products with an nvidia GPU.
