@@ -1,8 +1,13 @@
-system76-driver (15.10.6~alpha) wily; urgency=low
+system76-driver (15.10.6) wily; urgency=low
 
-  * Daily WIP for 15.10.6
+  * Laptop screen backlight brightness works with nvidia-352.63, so
+    change system76-driver-nvidia to depend on `nvidia-352` instead of
+    `nvidia-346-system76`
+  * Following how USN-2814-1/CVE-2015-7869 was handled in Ubuntu 14.04,
+    force the transition from `nvidia-346-system76` to `nvidia-352` as
+    it's still unclear whether 346 is effected by this security issue
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 19 Nov 2015 14:12:07 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 19 Nov 2015 15:06:38 -0700
 
 system76-driver (15.10.5) wily; urgency=low
 
