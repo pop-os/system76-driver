@@ -1,3 +1,9 @@
+system76-driver (15.10.7~alpha) wily; urgency=low
+
+  * Daily WIP for 15.10.7
+
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 20 Nov 2015 15:51:11 -0700
+
 system76-driver (15.10.6) wily; urgency=low
 
   * Laptop screen backlight brightness works with nvidia-352.63, so
