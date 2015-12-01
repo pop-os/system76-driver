@@ -120,6 +120,7 @@ TABLES = {
         'bonx7': 'bonx7',
         'bonx8': 'bonx8',
         'bonw9': 'bonw9',
+        'bonw10': 'bonw10',
         'galu1': 'galu1',
         'gazu1': 'gazu1',
         'gazp6': 'gazp6',
