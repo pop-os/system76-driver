@@ -135,6 +135,7 @@ TABLES = {
         'kudp1': 'kudp1',
         'kudp1b': 'kudp1b',
         'kudp1c': 'kudp1c',
+        'kudu2': 'kudu2',
         'panp4n': 'panp4n',
         'panp5': 'panp5',
         'panp6': 'panp6',

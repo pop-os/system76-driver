@@ -228,6 +228,10 @@ PRODUCTS = {
             actions.internal_mic_gain,  # Only for kudp1b/kudp1c
         ],
     },
+    'kudu2': {
+        'name': 'Kudu',
+        'drivers': [],
+    },
 
     # Lemur:
     'lemu1': {
