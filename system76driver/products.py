@@ -167,6 +167,10 @@ PRODUCTS = {
             actions.internal_mic_gain,  # Only for gazp9b/gazp9c
         ],
     },
+    'gaze10': {
+        'name': 'Gazelle',
+        'drivers': [],
+    },
     'gazu1': {
         'name': 'Gazelle Ultra',
         'drivers': [
