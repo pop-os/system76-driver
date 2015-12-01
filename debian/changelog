@@ -1,6 +1,11 @@
 system76-driver (15.10.8~alpha) wily; urgency=low
 
   * Daily WIP for 15.10.8
+  * Add more new Skylake products:
+    - bonw10 (Bonobo WS)
+    - gaze10 (Gazelle)
+    - kudu2 (Kudu)
+  * Update Copyright to "2005-2015 System76, Inc."
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 01 Dec 2015 13:32:04 -0700
 
