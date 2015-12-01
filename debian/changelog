@@ -1,3 +1,9 @@
+system76-driver (15.10.8~alpha) wily; urgency=low
+
+  * Daily WIP for 15.10.8
+
+ -- Jason Gerard DeRose <jason@system76.com>  Tue, 01 Dec 2015 13:32:04 -0700
+
 system76-driver (15.10.7) wily; urgency=low
 
   * Add actions.internal_mic_gain to lemu6
