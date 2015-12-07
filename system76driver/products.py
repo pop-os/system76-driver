@@ -169,7 +169,9 @@ PRODUCTS = {
     },
     'gaze10': {
         'name': 'Gazelle',
-        'drivers': [],
+        'drivers': [
+            actions.internal_mic_gain,
+        ],
     },
     'gazu1': {
         'name': 'Gazelle Ultra',
