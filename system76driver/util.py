@@ -49,10 +49,13 @@ def dump_logs(base):
     fp = open(path.join(base, 'dmesg'), 'xb')
     SubProcess.check_call(['dmesg'], stdout=fp)
 
-    for name in ['Xorg.0.log', 'syslog']:
-        src = path.join('/var/log', name)
+    for parts in [('Xorg.0.log',), ('syslog',), ('apt', 'history.log')]:
+        src = path.join('/var/log', *parts)
         if path.isfile(src):
-            dst = path.join(base, name)
+            dst = path.join(base, *parts)
+            dst_dir = path.dirname(dst)
+            if not path.isdir(dst_dir):
+                os.makedirs(dst_dir)
             assert not path.exists(dst)
             shutil.copy(src, dst)
 
@@ -81,3 +84,4 @@ def create_logs(homedir, func=dump_logs):
     shutil.copy(src, dst)
     shutil.rmtree(tmp)
     return dst
+
