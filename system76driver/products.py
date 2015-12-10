@@ -171,6 +171,7 @@ PRODUCTS = {
         'name': 'Gazelle',
         'drivers': [
             actions.internal_mic_gain,
+            actions.backlight_vendor,
         ],
     },
     'gazu1': {
@@ -234,6 +235,7 @@ PRODUCTS = {
         'name': 'Kudu',
         'drivers': [
             actions.internal_mic_gain,
+            actions.backlight_vendor,
         ],
     },
 
