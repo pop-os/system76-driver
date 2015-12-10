@@ -524,7 +524,7 @@ PRODUCTS = {
         'name': 'Silverback WS',
         'drivers': [],
     },
-    'silw1b': {  # USB 3.1 version
+    'silw2': {
         'name': 'Silverback WS',
         'drivers': [],
     },
