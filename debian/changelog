@@ -1,8 +1,9 @@
-system76-driver (15.10.10~alpha) wily; urgency=low
+system76-driver (15.10.10) wily; urgency=low
 
-  * Daily WIP for 15.10.10
+  * Add actions.backlight_vendor to gaze10, kudu2
+  * Add "silw2" (Silverback WS) to PRODUCTS
 
- -- Jason Gerard DeRose <jason@system76.com>  Tue, 08 Dec 2015 10:38:01 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 10 Dec 2015 11:20:56 -0700
 
 system76-driver (15.10.9) wily; urgency=low
 
