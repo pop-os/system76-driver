@@ -49,7 +49,7 @@ def dump_logs(base):
     fp = open(path.join(base, 'dmesg'), 'xb')
     SubProcess.check_call(['dmesg'], stdout=fp)
 
-    for parts in [('Xorg.0.log',), ('syslog',), ('apt', 'history.log')]:
+    for parts in [('Xorg.0.log',), ('syslog',)]:  #, ('apt', 'history.log')]:
         src = path.join('/var/log', *parts)
         if path.isfile(src):
             dst = path.join(base, *parts)
