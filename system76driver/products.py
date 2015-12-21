@@ -72,7 +72,9 @@ PRODUCTS = {
     },
     'bonw10': {
         'name': 'Bonobo WS',
-        'drivers': [],
+        'drivers': [
+            actions.gfxpayload_text,
+        ],
     },
 
     # Darter:
