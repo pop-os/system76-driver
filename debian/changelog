@@ -1,8 +1,8 @@
-system76-driver (15.10.11~alpha) wily; urgency=low
+system76-driver (15.10.11) wily; urgency=low
 
-  * Daily WIP for 15.10.11
+  * Add actions.gfxpayload_text to bonw10
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 21 Dec 2015 10:51:54 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 21 Dec 2015 10:55:53 -0700
 
 system76-driver (15.10.10) wily; urgency=low
 
