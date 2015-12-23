@@ -1,5 +1,6 @@
 com.system76.pkexec.system76-driver.policy usr/share/polkit-1/actions/
 system76-driver-pkexec usr/bin/
 system76-daemon usr/lib/system76-driver/
+system76-disable-pm_async.conf etc/tmpfiles.d/
 debian/source_system76-driver.py usr/share/apport/package-hooks/
 
