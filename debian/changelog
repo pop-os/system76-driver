@@ -1,8 +1,9 @@
-system76-driver (15.10.12~alpha) wily; urgency=low
+system76-driver (15.10.12) wily; urgency=low
 
-  * Daily WIP for 15.10.12
+  * Add actions.disable_pm_async to meer1, needed to work-around intermintent
+    failures when resuming from suspend using the power button
 
- -- Jason Gerard DeRose <jason@system76.com>  Wed, 23 Dec 2015 11:12:35 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 23 Dec 2015 14:17:50 -0700
 
 system76-driver (15.10.11) wily; urgency=low
 
