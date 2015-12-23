@@ -51,6 +51,10 @@ HDMI_HOTPLUG_FIX = """#!/bin/sh
 echo N > /sys/module/snd_hda_intel/parameters/power_save_controller
 """
 
+DISABLE_PM_ASYNC = """# /etc/tmpfiles.d/system76-disable-pm_async.conf
+w /sys/power/pm_async - - - - 0
+"""
+
 
 def random_id(numbytes=15):
     return b32encode(os.urandom(numbytes)).decode('utf-8')
@@ -307,6 +311,14 @@ class hdmi_hotplug_fix(FileAction):
 
     def describe(self):
         return _('Fix HDMI hot-plugging when on battery')
+
+
+class disable_pm_async(FileAction):
+    relpath = ('etc', 'tmpfiles.d', 'system76-disable-pm_async.conf')
+    content = DISABLE_PM_ASYNC
+
+    def describe(self):
+        return _('Fix suspend issues with pm_async')
 
 
 class lemu1(GrubAction):

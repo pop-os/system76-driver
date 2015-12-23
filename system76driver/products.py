@@ -322,7 +322,9 @@ PRODUCTS = {
     },
     'meer1': {
         'name': 'Meerkat',
-        'drivers': [],
+        'drivers': [
+            actions.disable_pm_async,
+        ],
     },
 
     # Oryx:

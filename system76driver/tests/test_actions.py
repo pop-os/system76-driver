@@ -732,6 +732,91 @@ class Test_hdmi_hotplug_fix(TestCase):
         self._check_file(inst)
 
 
+class Test_disable_pm_async(TestCase):
+    def test_init(self):
+        inst = actions.disable_pm_async()
+        self.assertEqual(inst.filename, '/etc/tmpfiles.d/system76-disable-pm_async.conf')
+
+        tmp = TempDir()
+        inst = actions.disable_pm_async(rootdir=tmp.dir)
+        self.assertEqual(inst.filename,
+            tmp.join('etc', 'tmpfiles.d', 'system76-disable-pm_async.conf')
+        )
+
+    def test_read(self):
+        tmp = TempDir()
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'tmpfiles.d')
+        inst = actions.disable_pm_async(rootdir=tmp.dir)
+        self.assertIsNone(inst.read())
+        tmp.write(b'Hello, World', 'etc', 'tmpfiles.d', 'system76-disable-pm_async.conf')
+        self.assertEqual(inst.read(), 'Hello, World')
+
+    def test_describe(self):
+        inst = actions.disable_pm_async()
+        self.assertEqual(inst.describe(), 'Fix suspend issues with pm_async')
+
+    def test_get_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'tmpfiles.d')
+        inst = actions.disable_pm_async(rootdir=tmp.dir)
+
+        # Missing file
+        self.assertIs(inst.get_isneeded(), True)
+
+        # Wrong file content:
+        open(inst.filename, 'w').write('blah blah')
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # All good:
+        open(inst.filename, 'w').write(actions.DISABLE_PM_ASYNC)
+        os.chmod(inst.filename, 0o644)
+        self.assertIs(inst.get_isneeded(), False)
+
+    def _check_file(self, inst):
+        self.assertEqual(
+            open(inst.filename, 'r').read(),
+            actions.DISABLE_PM_ASYNC
+        )
+        st = os.stat(inst.filename)
+        self.assertEqual(stat.S_IMODE(st.st_mode), 0o644)
+
+    def test_perform(self):
+        tmp = TempDir()
+        inst = actions.disable_pm_async(rootdir=tmp.dir)
+
+        # Missing directories
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.tmp)
+
+        # Missing file
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'tmpfiles.d')
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Wrong file content:
+        open(inst.filename, 'w').write('blah blah')
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Correct content, wrong perms:
+        open(inst.filename, 'w').write(actions.DISABLE_PM_ASYNC)
+        os.chmod(inst.filename, 0o755)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+        os.chmod(inst.filename, 0o000)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+        # Action didn't need to be performed:
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
+
+
 class Test_lemu1(TestCase):
     def test_decribe(self):
         inst = actions.lemu1()
