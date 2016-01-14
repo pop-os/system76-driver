@@ -153,6 +153,7 @@ TABLES = {
         'leox3': 'leox3',
         'leox4': 'leox4',
         'leox5': 'leox5',
+        'leow6': 'leow6',
         'meer1': 'meer1',
         'ment1': 'ment1',
         'ment2': 'ment2',
