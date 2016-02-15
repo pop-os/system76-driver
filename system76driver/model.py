@@ -194,6 +194,7 @@ TABLES = {
         'sabc2': 'sabc2',
         'sabc3': 'sabc3',
         'sabl4': 'sabl4',
+        'sabl5': 'sabl5',
         'sabt1': 'sabt1',
         'sabt2': 'sabt2',
         'sabt3': 'sabt3',
