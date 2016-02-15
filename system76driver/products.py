@@ -330,6 +330,10 @@ PRODUCTS = {
             actions.disable_pm_async,
         ],
     },
+    'meer2': {
+        'name': 'Meerkat',
+        'drivers': [],
+    },
 
     # Oryx:
     'orxp1': {
