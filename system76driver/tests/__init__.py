@@ -158,3 +158,10 @@ class TestFunctions(TestCase):
         self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
         self.assertEqual(tmp.listdir('class', 'dmi', 'id'), sorted(KEYS))
 
+        # Non-mocked test, as this can still pass in the build environment:
+        for key in KEYS:
+            val = system76driver.read_dmi_id(key)
+            self.assertIsInstance(val, (type(None), str))
+            if isinstance(val, str):
+                self.assertEqual(val.strip(), val)
+
