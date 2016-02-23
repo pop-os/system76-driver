@@ -36,7 +36,6 @@ import json
 from gi.repository import GLib
 
 from .mockable import SubProcess
-from . import read_dmi_id
 
 
 log = logging.getLogger(__name__)
@@ -102,10 +101,6 @@ NEEDS_BRIGHTNESS = NEEDS_BRIGHTNESS_ACPI + (
     'sabt3',
     'lemu6',
 )
-
-
-def get_model(sysdir='/sys'):
-    return read_dmi_id('product_version', sysdir)
 
 
 def load_json_conf(filename):
