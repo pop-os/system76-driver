@@ -32,6 +32,7 @@ import logging
 
 from gi.repository import GLib
 
+import system76driver
 from system76driver import daemon
 
 
@@ -52,10 +53,11 @@ args = parser.parse_args()
 if os.getuid() != 0:
     sys.exit('Error: system76-daemon must be run as root')
 log.info('**** Process start at monotonic time %r', start_time)
+
 if not args.model:
     model = daemon.load_json_conf('/etc/system76-daemon.json').get('model')
-    args.model = (model or daemon.get_model())
-log.info('model: %s', args.model)
+    args.model = (model or system76driver.get_product_version())
+log.info('model: %r', args.model)
 brightness = daemon.run_brightness(args.model)
 airplane = daemon.run_airplane(args.model)
 
@@ -66,3 +68,4 @@ if args.debug:
         print(name)
     print(len(names))
 mainloop.run()
+

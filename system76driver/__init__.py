@@ -22,11 +22,22 @@ Universal driver for System76 computers
 """
 
 from os import path
+import logging
 
 
 __version__ = '15.10.14'
 
 datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
+log = logging.getLogger(__name__)
+
+
+# Unfortunately, we need to accomidate some typos and goofs in sys_vendor:
+VALID_SYS_VENDOR = (
+    'System76, Inc.',
+    'System76, Inc',
+    'System76, Inc .',
+    'Notebook',
+)
 
 
 def get_datafile(name):
@@ -34,16 +45,24 @@ def get_datafile(name):
 
 
 def read_dmi_id(key, sysdir='/sys'):
-    assert key in ('sys_vendor', 'product_version')
+    if key not in ('sys_vendor', 'product_version'):
+        raise ValueError('bad dmi/id key: {!r}'.format(key))
     filename = path.join(sysdir, 'class', 'dmi', 'id', key)
     try:
-        fp = open(filename, 'r')
-    except FileNotFoundError:
-        return None
-    try:
-        value = fp.read(256).strip()
-    except UnicodeDecodeError:
-        value = None
-    fp.close()
-    return value
+        with open(filename, 'r') as fp:
+            return fp.read(256).strip()
+    except (FileNotFoundError, UnicodeDecodeError):
+        pass
+
+
+def get_sys_vendor(sysdir='/sys'):
+    sys_vendor = read_dmi_id('sys_vendor', sysdir)
+    if sys_vendor in VALID_SYS_VENDOR:
+        return sys_vendor
+    log.warning('invalid sys_vendor: %r', sys_vendor)
+
+
+def get_product_version(sysdir='/sys'):
+    if get_sys_vendor(sysdir) is not None:
+        return read_dmi_id('product_version', sysdir)
 

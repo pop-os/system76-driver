@@ -45,6 +45,12 @@ class TestConstants(TestCase):
         self.assertEqual(rev, str(int(rev)))
         self.assertGreaterEqual(int(rev), 0) 
 
+    def test_VALID_SYS_VENDOR(self):
+        self.assertIsInstance(system76driver.VALID_SYS_VENDOR, tuple)
+        self.assertIn('System76, Inc.', system76driver.VALID_SYS_VENDOR)
+        for value in system76driver.VALID_SYS_VENDOR:
+            self.assertIsInstance(value, str)
+
 
 class TestScripts(TestCase):
     def setUp(self):
@@ -96,46 +102,152 @@ class TestDataFiles(TestCase):
 class TestFunctions(TestCase):
     def test_read_dmi_id(self):
         tmp = TempDir()
+        KEYS = ('sys_vendor', 'product_version')
+        VALS = ('System76, Inc.', 'kudp1')
+
+        # Bad dmi/id key:
+        bad_keys = tuple(k.upper() for k in KEYS) + ('product_serial', 'product_name')
+        for bad in bad_keys:
+            with self.assertRaises(ValueError) as cm:
+                system76driver.read_dmi_id(bad, sysdir=tmp.dir)
+            self.assertEqual(str(cm.exception),
+                'bad dmi/id key: {!r}'.format(bad)
+            )
 
         # class/dmi/id dir missing:
-        self.assertIsNone(
-            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
-        )
-        self.assertIsNone(
-            system76driver.read_dmi_id('product_version', sysdir=tmp.dir)
-        )
+        for key in KEYS:
+            self.assertIsNone(
+                system76driver.read_dmi_id(key, sysdir=tmp.dir)
+            )
+            self.assertEqual(tmp.listdir(), [])
 
         # sys_vendor, product_version files misssing:
         tmp.makedirs('class', 'dmi', 'id')
-        # class/dmi/id dir missing:
-        self.assertIsNone(
-            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
-        )
-        self.assertIsNone(
-            system76driver.read_dmi_id('product_version', sysdir=tmp.dir)
-        )
+        for key in KEYS:
+            self.assertIsNone(
+                system76driver.read_dmi_id(key, sysdir=tmp.dir)
+            )
+            self.assertEqual(tmp.listdir(), ['class'])
+            self.assertEqual(tmp.listdir('class'), ['dmi'])
+            self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+            self.assertEqual(tmp.listdir('class', 'dmi', 'id'), [])
 
         # sys_vendor, product_version files exist:
-        tmp.write(b'\nSystem76, Inc.\n', 'class', 'dmi', 'id', 'sys_vendor')
-        self.assertEqual(
-            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir),
-            'System76, Inc.'
-        )
-        tmp.write(b'\nkudp1\n', 'class', 'dmi', 'id', 'product_version')
-        self.assertEqual(
-            system76driver.read_dmi_id('product_version', sysdir=tmp.dir),
-            'kudp1'
-        )
+        for (key, val) in zip(KEYS, VALS):
+            tmp.write(val.encode() + b'\n', 'class', 'dmi', 'id', key)
+            self.assertEqual(
+                system76driver.read_dmi_id(key, sysdir=tmp.dir),
+                val
+            )
+        self.assertEqual(tmp.listdir(), ['class'])
+        self.assertEqual(tmp.listdir('class'), ['dmi'])
+        self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+        self.assertEqual(tmp.listdir('class', 'dmi', 'id'), sorted(KEYS))
 
         # sys_vendor, product_version do not contain valid UTF-8:
         tmp = TempDir()
         tmp.makedirs('class', 'dmi', 'id')
-        tmp.write(b'\xffSystem76, Inc.\n', 'class', 'dmi', 'id', 'sys_vendor')
-        self.assertIsNone(
-            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
-        )
-        tmp.write(b'\xffkudp1\n', 'class', 'dmi', 'id', 'product_version')
-        self.assertIsNone(
-            system76driver.read_dmi_id('product_version', sysdir=tmp.dir),
-        )
+        for (key, val) in zip(KEYS, VALS):
+            badval = b'\xff' + val.encode() + b'\n'
+            with self.assertRaises(UnicodeDecodeError):
+                badval.decode()
+            tmp.write(badval, 'class', 'dmi', 'id', key)
+            self.assertIsNone(system76driver.read_dmi_id(key, sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), ['class'])
+        self.assertEqual(tmp.listdir('class'), ['dmi'])
+        self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+        self.assertEqual(tmp.listdir('class', 'dmi', 'id'), sorted(KEYS))
+
+        # Non-mocked test, as this can still pass in the build environment:
+        for key in KEYS:
+            val = system76driver.read_dmi_id(key)
+            self.assertIsInstance(val, (type(None), str))
+            if isinstance(val, str):
+                self.assertEqual(val.strip(), val)
+
+    def test_get_sys_vendor(self):
+        get_sys_vendor = system76driver.get_sys_vendor
+        tmp = TempDir()
+
+        # class/dmi/id/ dir missing:
+        self.assertIsNone(get_sys_vendor(sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), [])
+
+        # sys_vendor file misssing:
+        tmp.makedirs('class', 'dmi', 'id')
+        self.assertIsNone(get_sys_vendor(sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), ['class'])
+        self.assertEqual(tmp.listdir('class'), ['dmi'])
+        self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+        self.assertEqual(tmp.listdir('class', 'dmi', 'id'), [])
+
+        # sys_vendor file exists, contains good value:
+        for value in system76driver.VALID_SYS_VENDOR:
+            tmp = TempDir()
+            tmp.makedirs('class', 'dmi', 'id')
+            value_b = value.encode() + b'\n'
+            tmp.write(value_b, 'class', 'dmi', 'id', 'sys_vendor')
+            self.assertEqual(get_sys_vendor(sysdir=tmp.dir), value)
+            self.assertEqual(tmp.listdir(), ['class'])
+            self.assertEqual(tmp.listdir('class'), ['dmi'])
+            self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+            self.assertEqual(tmp.listdir('class', 'dmi', 'id'), ['sys_vendor'])
+
+        # sys_vendor file exists, contains bad value:
+        for value in system76driver.VALID_SYS_VENDOR:
+            tmp = TempDir()
+            tmp.makedirs('class', 'dmi', 'id')
+            bad_value_b = value.upper().encode() + b'\n'
+            tmp.write(bad_value_b, 'class', 'dmi', 'id', 'sys_vendor')
+            self.assertIsNone(get_sys_vendor(sysdir=tmp.dir))
+            self.assertEqual(tmp.listdir(), ['class'])
+            self.assertEqual(tmp.listdir('class'), ['dmi'])
+            self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+            self.assertEqual(tmp.listdir('class', 'dmi', 'id'), ['sys_vendor'])
+
+        # Non-mocked test, as this can still pass in the build environment:
+        value = get_sys_vendor()
+        self.assertIsInstance(value, (type(None), str))
+        if isinstance(value, str):
+            self.assertEqual(value.strip(), value)
+
+    def test_get_product_version(self):
+        get_product_version = system76driver.get_product_version
+        tmp = TempDir()
+        DPARTS = ('class', 'dmi', 'id')
+        SYS_PARTS = DPARTS + ('sys_vendor',)
+        VER_PARTS = DPARTS + ('product_version',)
+
+        # class/dmi/id/ dir missing:
+        self.assertIsNone(get_product_version(sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), [])
+
+        # sys_vendor and product_version files misssing:
+        tmp.makedirs(*DPARTS)
+        self.assertIsNone(get_product_version(sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), ['class'])
+        self.assertEqual(tmp.listdir('class'), ['dmi'])
+        self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+        self.assertEqual(tmp.listdir('class', 'dmi', 'id'), [])
+
+        # product_version file exists, but sys_vendor is missing:
+        tmp.write(b'kudu2\n', *VER_PARTS)
+        self.assertIsNone(get_product_version(sysdir=tmp.dir))
+
+        # sys_vendor exists but contains a bad value:
+        tmp.write(b'Nope\n', *SYS_PARTS)
+        self.assertIsNone(get_product_version(sysdir=tmp.dir))
+
+        # sys_vendor file exists and contains a good value:
+        for value in system76driver.VALID_SYS_VENDOR:
+            tmp.remove(*SYS_PARTS)
+            value_b = value.encode() + b'\n'
+            tmp.write(value_b, *SYS_PARTS)
+            self.assertEqual(get_product_version(sysdir=tmp.dir), 'kudu2')
+
+        # Non-mocked test, as this can still pass in the build environment:
+        value = get_product_version()
+        self.assertIsInstance(value, (type(None), str))
+        if isinstance(value, str):
+            self.assertEqual(value.strip(), value)
 

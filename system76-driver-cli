@@ -53,14 +53,8 @@ if path.exists(MARKER):
     log.warning('Pre-master marker exists: %r', MARKER)
     sys.exit(0)
 
-# We want to be very careful not to automatically do anything on non-System76
-# hardware, so we check both sys_vendor and product_version:
-sys_vendor = system76driver.read_dmi_id('sys_vendor')
-if sys_vendor not in ('System76, Inc.', 'System76, Inc', 'System76, Inc .'):
-    log.warning('wrong sys_vendor: %r', sys_vendor)
-    sys.exit(exitcode)
 
-product_version = system76driver.read_dmi_id('product_version')
+product_version = system76driver.get_product_version()
 try:
     product = PRODUCTS[product_version]
     log.info('product_version: %r', product_version)
@@ -79,3 +73,4 @@ try:
 except Exception:
     log.exception('Error running actions:')
     sys.exit(exitcode)
+

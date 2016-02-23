@@ -37,6 +37,9 @@ class TempDir:
     def join(self, *parts):
         return path.join(self.dir, *parts)
 
+    def listdir(self, *parts):
+        return sorted(os.listdir(self.join(*parts)))
+
     def mkdir(self, *parts):
         dirname = self.join(*parts)
         os.mkdir(dirname)
@@ -56,4 +59,7 @@ class TempDir:
         filename = self.join(*parts)
         open(filename, 'xb').write(content)
         return filename
+
+    def remove(self, *parts):
+        os.remove(self.join(*parts))
 
