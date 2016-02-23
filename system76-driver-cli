@@ -56,8 +56,8 @@ if path.exists(MARKER):
 # We want to be very careful not to automatically do anything on non-System76
 # hardware, so we check both sys_vendor and product_version:
 sys_vendor = system76driver.read_dmi_id('sys_vendor')
-if sys_vendor not in ('System76, Inc.', 'System76, Inc', 'System76, Inc .'):
-    log.warning('wrong sys_vendor: %r', sys_vendor)
+if sys_vendor not in system76driver.VALID_SYS_VENDOR:
+    log.warning('invalid sys_vendor: %r', sys_vendor)
     sys.exit(exitcode)
 
 product_version = system76driver.read_dmi_id('product_version')
