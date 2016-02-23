@@ -211,3 +211,43 @@ class TestFunctions(TestCase):
         if isinstance(value, str):
             self.assertEqual(value.strip(), value)
 
+    def test_get_product_version(self):
+        get_product_version = system76driver.get_product_version
+        tmp = TempDir()
+        DPARTS = ('class', 'dmi', 'id')
+        SYS_PARTS = DPARTS + ('sys_vendor',)
+        VER_PARTS = DPARTS + ('product_version',)
+
+        # class/dmi/id/ dir missing:
+        self.assertIsNone(get_product_version(sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), [])
+
+        # sys_vendor and product_version files misssing:
+        tmp.makedirs(*DPARTS)
+        self.assertIsNone(get_product_version(sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), ['class'])
+        self.assertEqual(tmp.listdir('class'), ['dmi'])
+        self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+        self.assertEqual(tmp.listdir('class', 'dmi', 'id'), [])
+
+        # product_version file exists, but sys_vendor is missing:
+        tmp.write(b'kudu2\n', *VER_PARTS)
+        self.assertIsNone(get_product_version(sysdir=tmp.dir))
+
+        # sys_vendor exists but contains a bad value:
+        tmp.write(b'Nope\n', *SYS_PARTS)
+        self.assertIsNone(get_product_version(sysdir=tmp.dir))
+
+        # sys_vendor file exists and contains a good value:
+        for value in system76driver.VALID_SYS_VENDOR:
+            tmp.remove(*SYS_PARTS)
+            value_b = value.encode() + b'\n'
+            tmp.write(value_b, *SYS_PARTS)
+            self.assertEqual(get_product_version(sysdir=tmp.dir), 'kudu2')
+
+        # Non-mocked test, as this can still pass in the build environment:
+        value = get_product_version()
+        self.assertIsInstance(value, (type(None), str))
+        if isinstance(value, str):
+            self.assertEqual(value.strip(), value)
+

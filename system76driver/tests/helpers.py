@@ -60,3 +60,6 @@ class TempDir:
         open(filename, 'xb').write(content)
         return filename
 
+    def remove(self, *parts):
+        os.remove(self.join(*parts))
+
