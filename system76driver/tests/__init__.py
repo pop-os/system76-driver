@@ -165,3 +165,49 @@ class TestFunctions(TestCase):
             if isinstance(val, str):
                 self.assertEqual(val.strip(), val)
 
+    def test_get_sys_vendor(self):
+        get_sys_vendor = system76driver.get_sys_vendor
+        tmp = TempDir()
+
+        # class/dmi/id/ dir missing:
+        self.assertIsNone(get_sys_vendor(sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), [])
+
+        # sys_vendor file misssing:
+        tmp.makedirs('class', 'dmi', 'id')
+        self.assertIsNone(get_sys_vendor(sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), ['class'])
+        self.assertEqual(tmp.listdir('class'), ['dmi'])
+        self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+        self.assertEqual(tmp.listdir('class', 'dmi', 'id'), [])
+
+        # sys_vendor file exists, contains good value:
+        for value in system76driver.VALID_SYS_VENDOR:
+            tmp = TempDir()
+            tmp.makedirs('class', 'dmi', 'id')
+            value_b = value.encode() + b'\n'
+            tmp.write(value_b, 'class', 'dmi', 'id', 'sys_vendor')
+            self.assertEqual(get_sys_vendor(sysdir=tmp.dir), value)
+            self.assertEqual(tmp.listdir(), ['class'])
+            self.assertEqual(tmp.listdir('class'), ['dmi'])
+            self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+            self.assertEqual(tmp.listdir('class', 'dmi', 'id'), ['sys_vendor'])
+
+        # sys_vendor file exists, contains bad value:
+        for value in system76driver.VALID_SYS_VENDOR:
+            tmp = TempDir()
+            tmp.makedirs('class', 'dmi', 'id')
+            bad_value_b = value.upper().encode() + b'\n'
+            tmp.write(bad_value_b, 'class', 'dmi', 'id', 'sys_vendor')
+            self.assertIsNone(get_sys_vendor(sysdir=tmp.dir))
+            self.assertEqual(tmp.listdir(), ['class'])
+            self.assertEqual(tmp.listdir('class'), ['dmi'])
+            self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+            self.assertEqual(tmp.listdir('class', 'dmi', 'id'), ['sys_vendor'])
+
+        # Non-mocked test, as this can still pass in the build environment:
+        value = get_sys_vendor()
+        self.assertIsInstance(value, (type(None), str))
+        if isinstance(value, str):
+            self.assertEqual(value.strip(), value)
+
