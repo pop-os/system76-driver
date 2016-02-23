@@ -45,13 +45,8 @@ def read_dmi_id(key, sysdir='/sys'):
     assert key in ('sys_vendor', 'product_version')
     filename = path.join(sysdir, 'class', 'dmi', 'id', key)
     try:
-        fp = open(filename, 'r')
-    except FileNotFoundError:
-        return None
-    try:
-        value = fp.read(256).strip()
-    except UnicodeDecodeError:
-        value = None
-    fp.close()
-    return value
+        with open(filename, 'r') as fp:
+            return fp.read(256).strip()
+    except (FileNotFoundError, UnicodeDecodeError):
+        pass
 
