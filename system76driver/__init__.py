@@ -22,11 +22,13 @@ Universal driver for System76 computers
 """
 
 from os import path
+import logging
 
 
 __version__ = '15.10.14'
 
 datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
+log = logging.getLogger(__name__)
 
 
 # Unfortunately, we need to accomidate some typos and goofs in sys_vendor:
@@ -51,4 +53,16 @@ def read_dmi_id(key, sysdir='/sys'):
             return fp.read(256).strip()
     except (FileNotFoundError, UnicodeDecodeError):
         pass
+
+
+def get_sys_vendor(sysdir='/sys'):
+    sys_vendor = read_dmi_id('sys_vendor', sysdir)
+    if sys_vendor in VALID_SYS_VENDOR:
+        return sys_vendor
+    log.warning('invalid sys_vendor: %r', sys_vendor)
+
+
+def get_product_version(sysdir='/sys'):
+    if get_sys_vendor(sysdir) is not None:
+        return read_dmi_id('product_version', sysdir)
 
