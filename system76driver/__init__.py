@@ -29,6 +29,14 @@ __version__ = '15.10.14'
 datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
 
 
+VALID_SYS_VENDOR = (
+    'System76, Inc.',
+    'System76, Inc',
+    'System76, Inc .',
+    'Notebook',
+)
+
+
 def get_datafile(name):
     return path.join(datadir, name)
 

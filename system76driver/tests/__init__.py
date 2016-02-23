@@ -45,6 +45,12 @@ class TestConstants(TestCase):
         self.assertEqual(rev, str(int(rev)))
         self.assertGreaterEqual(int(rev), 0) 
 
+    def test_VALID_SYS_VENDOR(self):
+        self.assertIsInstance(system76driver.VALID_SYS_VENDOR, tuple)
+        self.assertIn('System76, Inc.', system76driver.VALID_SYS_VENDOR)
+        for value in system76driver.VALID_SYS_VENDOR:
+            self.assertIsInstance(value, str)
+
 
 class TestScripts(TestCase):
     def setUp(self):
