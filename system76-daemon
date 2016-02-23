@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # system76-driver: Universal driver for System76 computers
-# Copyright (C) 2005-2015 System76, Inc.
+# Copyright (C) 2005-2016 System76, Inc.
 #
 # This file is part of `system76-driver`.
 #
