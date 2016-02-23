@@ -102,46 +102,59 @@ class TestDataFiles(TestCase):
 class TestFunctions(TestCase):
     def test_read_dmi_id(self):
         tmp = TempDir()
+        KEYS = ('sys_vendor', 'product_version')
+        VALS = ('System76, Inc.', 'kudp1')
+
+        # Bad dmi/id key:
+        bad_keys = tuple(k.upper() for k in KEYS) + ('product_serial', 'product_name')
+        for bad in bad_keys:
+            with self.assertRaises(ValueError) as cm:
+                system76driver.read_dmi_id(bad, sysdir=tmp.dir)
+            self.assertEqual(str(cm.exception),
+                'bad dmi/id key: {!r}'.format(bad)
+            )
 
         # class/dmi/id dir missing:
-        self.assertIsNone(
-            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
-        )
-        self.assertIsNone(
-            system76driver.read_dmi_id('product_version', sysdir=tmp.dir)
-        )
+        for key in KEYS:
+            self.assertIsNone(
+                system76driver.read_dmi_id(key, sysdir=tmp.dir)
+            )
+            self.assertEqual(tmp.listdir(), [])
 
         # sys_vendor, product_version files misssing:
         tmp.makedirs('class', 'dmi', 'id')
-        # class/dmi/id dir missing:
-        self.assertIsNone(
-            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
-        )
-        self.assertIsNone(
-            system76driver.read_dmi_id('product_version', sysdir=tmp.dir)
-        )
+        for key in KEYS:
+            self.assertIsNone(
+                system76driver.read_dmi_id(key, sysdir=tmp.dir)
+            )
+            self.assertEqual(tmp.listdir(), ['class'])
+            self.assertEqual(tmp.listdir('class'), ['dmi'])
+            self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+            self.assertEqual(tmp.listdir('class', 'dmi', 'id'), [])
 
         # sys_vendor, product_version files exist:
-        tmp.write(b'\nSystem76, Inc.\n', 'class', 'dmi', 'id', 'sys_vendor')
-        self.assertEqual(
-            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir),
-            'System76, Inc.'
-        )
-        tmp.write(b'\nkudp1\n', 'class', 'dmi', 'id', 'product_version')
-        self.assertEqual(
-            system76driver.read_dmi_id('product_version', sysdir=tmp.dir),
-            'kudp1'
-        )
+        for (key, val) in zip(KEYS, VALS):
+            tmp.write(val.encode() + b'\n', 'class', 'dmi', 'id', key)
+            self.assertEqual(
+                system76driver.read_dmi_id(key, sysdir=tmp.dir),
+                val
+            )
+        self.assertEqual(tmp.listdir(), ['class'])
+        self.assertEqual(tmp.listdir('class'), ['dmi'])
+        self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+        self.assertEqual(tmp.listdir('class', 'dmi', 'id'), sorted(KEYS))
 
         # sys_vendor, product_version do not contain valid UTF-8:
         tmp = TempDir()
         tmp.makedirs('class', 'dmi', 'id')
-        tmp.write(b'\xffSystem76, Inc.\n', 'class', 'dmi', 'id', 'sys_vendor')
-        self.assertIsNone(
-            system76driver.read_dmi_id('sys_vendor', sysdir=tmp.dir)
-        )
-        tmp.write(b'\xffkudp1\n', 'class', 'dmi', 'id', 'product_version')
-        self.assertIsNone(
-            system76driver.read_dmi_id('product_version', sysdir=tmp.dir),
-        )
+        for (key, val) in zip(KEYS, VALS):
+            badval = b'\xff' + val.encode() + b'\n'
+            with self.assertRaises(UnicodeDecodeError):
+                badval.decode()
+            tmp.write(badval, 'class', 'dmi', 'id', key)
+            self.assertIsNone(system76driver.read_dmi_id(key, sysdir=tmp.dir))
+        self.assertEqual(tmp.listdir(), ['class'])
+        self.assertEqual(tmp.listdir('class'), ['dmi'])
+        self.assertEqual(tmp.listdir('class', 'dmi'), ['id'])
+        self.assertEqual(tmp.listdir('class', 'dmi', 'id'), sorted(KEYS))
 

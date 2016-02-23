@@ -43,7 +43,8 @@ def get_datafile(name):
 
 
 def read_dmi_id(key, sysdir='/sys'):
-    assert key in ('sys_vendor', 'product_version')
+    if key not in ('sys_vendor', 'product_version'):
+        raise ValueError('bad dmi/id key: {!r}'.format(key))
     filename = path.join(sysdir, 'class', 'dmi', 'id', key)
     try:
         with open(filename, 'r') as fp:
