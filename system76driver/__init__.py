@@ -29,6 +29,7 @@ __version__ = '15.10.14'
 datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
 
 
+# Unfortunately, we need to accomidate some typos and goofs in sys_vendor:
 VALID_SYS_VENDOR = (
     'System76, Inc.',
     'System76, Inc',
