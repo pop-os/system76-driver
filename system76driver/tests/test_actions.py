@@ -1003,6 +1003,8 @@ class Test_gfxpayload_text(TestCase):
         self.assertIs(inst.get_isneeded(), True)
         open(inst.filename, 'a').write('\nGRUB_GFXPAYLOAD_LINUX=text')
         self.assertIs(inst.get_isneeded(), False)
+        open(inst.filename, 'w').write('GRUB_GFXPAYLOAD_LINUX=text\n' + GRUB_ORIG)
+        self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         SubProcess.reset(mocking=True)
@@ -1017,7 +1019,7 @@ class Test_gfxpayload_text(TestCase):
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
-            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text'
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text\n'
         )
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
@@ -1028,13 +1030,13 @@ class Test_gfxpayload_text(TestCase):
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
-            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text'
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text\n'
         )
 
         self.assertIsNone(inst.perform())
         self.assertEqual(
             open(inst.filename, 'r').read(),
-            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text'
+            GRUB_ORIG + '\nGRUB_GFXPAYLOAD_LINUX=text\n'
         )
 
         self.assertEqual(SubProcess.calls, [])

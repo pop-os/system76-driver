@@ -417,17 +417,17 @@ class gfxpayload_text(Action):
         return _('Fix resume in UEFI mode')
 
     def get_isneeded(self):
-        return self.read().splitlines()[-1] != self.value
+        return self.value not in self.read().splitlines()
 
     def iter_lines(self):
         content = self.read_and_backup()
         for line in content.splitlines():
-            if not line.startswith('GRUB_GFXPAYLOAD_LINUX='):
+            if not line.strip().startswith('GRUB_GFXPAYLOAD_LINUX='):
                 yield line
         yield self.value
 
     def perform(self):
-        content = '\n'.join(self.iter_lines())
+        content = '\n'.join(self.iter_lines()) + '\n'
         self.atomic_write(content)
 
 
