@@ -1205,6 +1205,34 @@ class Test_gfxpayload_text(TestCase):
             )
             self.assertEqual(SubProcess.calls, [])
 
+        # /etc/default/grub is empty or contains only white-space:
+        expected = join('', COMMENT, VALUE)
+        empty_content = (
+            '',
+            '\n',
+            ' ',
+            ' \n',
+            '\t',
+            '\t\n',
+            '\n'.join([' ', '\t', '  \t ']),
+            '\n'.join([' ', '\t', '  \t ', '']),
+        )
+        for content in empty_content:
+            tmp = TempDir()
+            tmp.mkdir('default')
+            inst = actions.gfxpayload_text(etcdir=tmp.dir)
+            open(inst.filename, 'x').write(content)
+            self.assertIsNone(inst.perform())
+            self.assertEqual(open(inst.filename, 'r').read(), expected)
+            self.assertEqual(inst.bak,
+                actions.backup_filename(inst.filename)
+            )
+            self.assertEqual(open(inst.bak, 'r').read(), content)
+            self.assertEqual(tmp.listdir('default'),
+                ['grub', path.basename(inst.bak)]
+            )
+            self.assertEqual(SubProcess.calls, [])
+
 
 class Test_uvcquirks(TestCase):
     def test_init(self):
