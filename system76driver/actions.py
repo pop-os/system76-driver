@@ -405,7 +405,9 @@ class plymouth1080(Action):
 
 class gfxpayload_text(Action):
     update_grub = True
-    value = 'GRUB_GFXPAYLOAD_LINUX=text'
+    comment = '# Added by system76-driver:'
+    prefix = 'GRUB_GFXPAYLOAD_LINUX='
+    value = prefix + 'text'
 
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'default', 'grub')
@@ -419,15 +421,19 @@ class gfxpayload_text(Action):
     def get_isneeded(self):
         return self.value not in self.read().splitlines()
 
-    def iter_lines(self):
-        content = self.read_and_backup()
-        for line in content.splitlines():
-            if not line.strip().startswith('GRUB_GFXPAYLOAD_LINUX='):
-                yield line
-        yield self.value
+    def get_output_lines(self):
+        output_lines = []
+        for rawline in self.read_and_backup().splitlines():
+            line = rawline.strip()
+            if line != self.comment and not line.startswith(self.prefix):
+                output_lines.append(rawline)
+        while output_lines and output_lines[-1].strip() == '':
+            output_lines.pop()
+        output_lines.extend(['', self.comment, self.value])
+        return output_lines
 
     def perform(self):
-        content = '\n'.join(self.iter_lines()) + '\n'
+        content = '\n'.join(self.get_output_lines()) + '\n'
         self.atomic_write(content)
 
 
