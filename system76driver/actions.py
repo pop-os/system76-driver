@@ -416,7 +416,7 @@ class gfxpayload_text(Action):
         return open(self.filename, 'r').read()
 
     def describe(self):
-        return _('Fix resume in UEFI mode')
+        return _('Improve graphics UX for UEFI resume')
 
     def get_isneeded(self):
         return self.value not in self.read().splitlines()
