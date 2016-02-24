@@ -1,6 +1,16 @@
 system76-driver (15.10.14~alpha) wily; urgency=low
 
-  * Daily WIP for 15.10.14
+  * Add 'meer2', 'sabl5' to PRODUCTS
+  * Accomidate some 'sys_vendor' goofs in our DMI info
+  * Unify how the 'sys_vendor' and 'product_version' DMI values are used by
+    `system76-drive-cli` and `system76-daemon` to determine whether actions
+    should be taken at package-install-time and run-time, respectively
+  * Improve actions.gfxpayload_text (orxp1, serw9, bonw10) to make it more
+    robust, so it plays nicely with user modifications in /etc/default/grub
+  * When a driver action is skipped because it has already been applied, log
+    this event at level INFO instead of WARNING (as the later made it seems like
+    something might have gone wrong, but in fact this is normal behavior)
+  * Update the Copyright to "2005-2016 System76, Inc."
 
  -- Jason Gerard DeRose <jason@system76.com>  Mon, 15 Feb 2016 16:06:42 -0700
 
