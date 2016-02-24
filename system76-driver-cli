@@ -35,6 +35,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--strict', action='store_true', default=False,
     help='Exit with a non-zero status if not a valid system76 product',
 )
+parser.add_argument('--model', help='force model rather than detecting it')
 args = parser.parse_args()
 exitcode = (2 if args.strict else 0)
 
@@ -54,7 +55,7 @@ if path.exists(MARKER):
     sys.exit(0)
 
 
-product_version = system76driver.get_product_version()
+product_version = args.model or system76driver.get_product_version()
 try:
     product = PRODUCTS[product_version]
     log.info('product_version: %r', product_version)
