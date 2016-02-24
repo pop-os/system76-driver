@@ -1,4 +1,4 @@
-system76-driver (15.10.14~alpha) wily; urgency=low
+system76-driver (15.10.14) wily; urgency=low
 
   * Add 'meer2', 'sabl5' to PRODUCTS
   * Accomidate some 'sys_vendor' goofs in our DMI info
@@ -12,7 +12,7 @@ system76-driver (15.10.14~alpha) wily; urgency=low
     something might have gone wrong, but in fact this is normal behavior)
   * Update the Copyright to "2005-2016 System76, Inc."
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 15 Feb 2016 16:06:42 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 24 Feb 2016 04:37:44 -0700
 
 system76-driver (15.10.13) wily; urgency=low
 
