@@ -1033,8 +1033,6 @@ class Test_gfxpayload_text(TestCase):
                 self.assertEqual(SubProcess.calls, [])
 
     def test_perform(self):
-        self.maxDiff = None
-
         def join(*parts):
             return '\n'.join(parts) + '\n'
 

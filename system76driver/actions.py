@@ -429,11 +429,11 @@ class gfxpayload_text(Action):
                 output_lines.append(rawline)
         while output_lines and output_lines[-1].strip() == '':
             output_lines.pop()
-        output_lines.extend(['', self.comment, self.value])
+        output_lines.extend(['', self.comment, self.value, ''])
         return output_lines
 
     def perform(self):
-        content = '\n'.join(self.get_output_lines()) + '\n'
+        content = '\n'.join(self.get_output_lines())
         self.atomic_write(content)
 
 
