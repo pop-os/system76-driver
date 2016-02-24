@@ -173,7 +173,7 @@ class ActionRunner:
                 action.perform()
             else:
                 assert action not in self.needed
-                log.warning('Skipping %r as it was already applied', name)
+                log.info('Skipping %r as it was already applied', name)
 
         if any(action.update_grub for action in self.needed):
             yield _('Running `update-grub`')

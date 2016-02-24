@@ -1001,7 +1001,7 @@ class Test_gfxpayload_text(TestCase):
 
     def test_describe(self):
         inst = actions.gfxpayload_text()
-        self.assertEqual(inst.describe(), 'Fix resume in UEFI mode')
+        self.assertEqual(inst.describe(), 'Improve graphics UX for UEFI resume')
 
     def test_get_isneeded(self):
         SubProcess.reset(mocking=True)
