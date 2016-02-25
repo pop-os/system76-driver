@@ -1,8 +1,9 @@
-system76-driver (15.10.15~alpha) wily; urgency=low
+system76-driver (16.04.0~alpha) xenial; urgency=low
 
-  * Daily WIP for 15.10.15
+  * Daily WIP for 16.04.0
+  * Start 16.04.x series, initial Xenial release
 
- -- Jason Gerard DeRose <jason@system76.com>  Wed, 24 Feb 2016 07:07:34 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 25 Feb 2016 13:10:51 -0700
 
 system76-driver (15.10.14) wily; urgency=low
 
