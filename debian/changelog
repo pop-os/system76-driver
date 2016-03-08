@@ -1,9 +1,9 @@
-system76-driver (16.04.1~alpha) xenial; urgency=low
+system76-driver (16.04.1) xenial; urgency=low
 
   * debian/control: system76-driver-nvidia now depends on nvidia-361
   * system76-nvidia-quirks: change Handler to "nvidia-361|nvidia-340"
 
- -- Jason Gerard DeRose <jason@system76.com>  Sat, 27 Feb 2016 16:34:31 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Mon, 07 Mar 2016 19:54:36 -0700
 
 system76-driver (16.04.0) xenial; urgency=low
 
