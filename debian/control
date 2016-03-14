@@ -5,7 +5,7 @@ Maintainer: System76, Inc. <dev@system76.com>
 Build-Depends: debhelper (>= 9),
     dh-systemd,
     python3-all (>= 3.4),
-    pyflakes,
+    pyflakes3 | pyflakes,
     python3-gi,
     gir1.2-gtk-3.0,
 Standards-Version: 3.9.6
