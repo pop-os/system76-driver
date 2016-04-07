@@ -18,7 +18,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 """
-Determin model of System76 product.
+Determine model of System76 product.
 """
 
 from . import read_dmi_id
