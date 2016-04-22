@@ -16,7 +16,7 @@ Package: system76-driver
 Architecture: all
 Suggests: gnome-color-manager
 Depends: ${python3:Depends}, ${misc:Depends},
-    system76-wallpapers (>= 15.04.1~alpha),
+    system76-wallpapers (>= 16.04.1~bzr26~ubuntu16.04.1),
     python3-gi,
     gir1.2-gtk-3.0,
     pm-utils,
