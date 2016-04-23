@@ -1,4 +1,4 @@
-system76-driver (16.04.2~alpha) xenial; urgency=low
+system76-driver (16.04.2) xenial; urgency=low
 
   * debian/system76-driver.gsettings-override: switch default wallpaper to
     "Fractal Mountains"
@@ -7,7 +7,7 @@ system76-driver (16.04.2~alpha) xenial; urgency=low
   * debian/control: now Build-Depends on pyflakes3 (instead of pyflakes)
   * Fix typo in system76driver/model.py (thanks, Ian Santopietro)
 
- -- Jason Gerard DeRose <jason@system76.com>  Mon, 07 Mar 2016 20:00:18 -0700
+ -- Jason Gerard DeRose <jason@system76.com>  Fri, 22 Apr 2016 18:04:53 -0600
 
 system76-driver (16.04.1) xenial; urgency=low
 
