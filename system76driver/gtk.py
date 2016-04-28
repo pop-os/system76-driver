@@ -25,6 +25,8 @@ import platform
 import threading
 from gettext import gettext as _
 
+import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk
 
 from . import __version__, get_datafile
