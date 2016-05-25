@@ -55,6 +55,16 @@ assert path.isfile(SETUP)
 assert path.isfile(path.join(TREE, 'system76driver', '__init__.py'))
 
 
+def confirm():
+    while True:
+        response = input('  Okay? yes/NO: ')
+        if response == 'yes':
+            return True
+        if response == 'no':
+            return False
+        print("Please enter 'yes' or 'no'")
+
+
 def check_for_uncommitted_changes():
     if check_output(['bzr', 'diff']).decode() != '':
         sys.exit('ERROR: uncommited changes!')
@@ -178,7 +188,7 @@ call(['bzr', 'diff'])
 print('-' * 80)
 print('Source tree is {!r}'.format(TREE))
 print('Will release {!r} for {!r}'.format(version, distro))
-if input('  Okay? yes/NO: ') != 'yes':
+if not confirm():
     abort()
 
 # Make sure DSC and CHANGES file for this version don't arleady exist:
@@ -197,7 +207,7 @@ check_call(['bzr', 'bd', '-S'])
 print('-' * 80)
 print('Changes file is {!r}'.format(CHANGES))
 print('Will upload to {!r}'.format(PPA))
-if input('  Okay? yes/NO: ') == 'yes':
+if confirm():
     check_call(['dput', PPA, CHANGES])
 
 # We're done:
