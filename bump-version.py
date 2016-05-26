@@ -173,7 +173,7 @@ print('Source tree is {!r}'.format(TREE))
 print(
     'Will bump {!r} version from {!r} to {!r}'.format(distro, current, newdeb)
 )
-if confirm():
+if not confirm():
     print('')
     print('Version bump not committed, reverting changes...')
     check_call(['bzr', 'revert'])
