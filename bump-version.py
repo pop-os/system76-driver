@@ -52,7 +52,7 @@ assert path.isfile(SETUP)
 
 def confirm():
     while True:
-        response = input('  Okay? yes/NO: ')
+        response = input('  Okay? yes/NO: ').lower()
         if response == 'yes':
             return True
         if response == 'no':
