@@ -57,7 +57,7 @@ assert path.isfile(path.join(TREE, 'system76driver', '__init__.py'))
 
 def confirm():
     while True:
-        response = input('  Okay? yes/NO: ')
+        response = input('  Okay? yes/NO: ').lower()
         if response == 'yes':
             return True
         if response == 'no':
@@ -79,11 +79,15 @@ def iter_input_lines(fp):
     yield line
 
     line = fp.readline()
-    if line[:4] != '  * ':
+    if not line.startswith('  * Daily WIP for '):
         raise ValueError('bad first item line[2]:\n{!r}'.format(line))
+
+    line = fp.readline()
+    if line[:4] != '  * ':
+        raise ValueError('bad second item line[3]:\n{!r}'.format(line))
     yield line
 
-    i = 3
+    i = 4
     while True:
         line = fp.readline()
         if line[:4] not in ('  * ', '    ', '\n'):
