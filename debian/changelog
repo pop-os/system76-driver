@@ -1,10 +1,9 @@
-system76-driver (16.04.3~alpha) xenial; urgency=low
+system76-driver (16.04.3) xenial; urgency=low
 
-  * Daily WIP for 16.04.3
   * Fix warning about not using gi.require_version('Gtk', '3.0') 
     (thanks, James Gross)
 
- -- Jason Gerard DeRose <jason@system76.com>  Fri, 22 Apr 2016 18:08:44 -0600
+ -- David Jordan <david2@system76.com>  Thu, 26 May 2016 11:47:17 -0600
 
 system76-driver (16.04.2) xenial; urgency=low
 
