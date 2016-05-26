@@ -50,6 +50,16 @@ assert path.isfile(INIT)
 assert path.isfile(SETUP)
 
 
+def confirm():
+    while True:
+        response = input('  Okay? yes/NO: ')
+        if response == 'yes':
+            return True
+        if response == 'no':
+            return False
+        print("Please enter 'yes' or 'no'")
+
+
 def check_for_uncommitted_changes():
     if check_output(['bzr', 'diff']).decode() != '':
         sys.exit('ERROR: uncommited changes!')
@@ -163,7 +173,7 @@ print('Source tree is {!r}'.format(TREE))
 print(
     'Will bump {!r} version from {!r} to {!r}'.format(distro, current, newdeb)
 )
-if input('  Okay? yes/NO: ') != 'yes':
+if confirm():
     print('')
     print('Version bump not committed, reverting changes...')
     check_call(['bzr', 'revert'])
