@@ -437,6 +437,26 @@ class gfxpayload_text(Action):
         self.atomic_write(content)
 
 
+class remove_gfxpayload_text(gfxpayload_text):
+    def describe(self):
+        return _('Remove GRUB_GFXPAYLOAD_LINUX=text line')
+
+    def get_isneeded(self):
+        lines = self.read().splitlines()
+        return self.value in lines or self.comment in lines
+
+    def get_output_lines(self):
+        output_lines = []
+        for rawline in self.read_and_backup().splitlines():
+            line = rawline.strip()
+            if line not in (self.value, self.comment):
+                output_lines.append(rawline)
+        while output_lines and output_lines[-1].strip() == '':
+            output_lines.pop()
+        output_lines.extend([''])
+        return output_lines
+
+
 class uvcquirks(FileAction):
     relpath = ('etc', 'modprobe.d', 'uvc.conf')
     content = 'options uvcvideo quirks=2'

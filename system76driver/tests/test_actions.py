@@ -1234,6 +1234,278 @@ class Test_gfxpayload_text(TestCase):
             self.assertEqual(SubProcess.calls, [])
 
 
+class Test_remove_gfxpayload_text(TestCase):
+    def test_init(self):
+        inst = actions.remove_gfxpayload_text()
+        self.assertIs(inst.update_grub, True)
+        self.assertEqual(inst.filename, '/etc/default/grub')
+        self.assertEqual(inst.comment, '# Added by system76-driver:')
+        self.assertEqual(inst.prefix, 'GRUB_GFXPAYLOAD_LINUX=')
+        self.assertEqual(inst.value, 'GRUB_GFXPAYLOAD_LINUX=text')
+        self.assertTrue(inst.value.startswith(inst.prefix))
+
+        tmp = TempDir()
+        self.assertIs(inst.update_grub, True)
+        inst = actions.remove_gfxpayload_text(etcdir=tmp.dir)
+        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+        self.assertEqual(inst.comment, '# Added by system76-driver:')
+        self.assertEqual(inst.value, 'GRUB_GFXPAYLOAD_LINUX=text')
+        self.assertEqual(inst.prefix, 'GRUB_GFXPAYLOAD_LINUX=')
+        self.assertTrue(inst.value.startswith(inst.prefix))
+
+    def test_describe(self):
+        inst = actions.remove_gfxpayload_text()
+        self.assertEqual(inst.describe(), 'Remove GRUB_GFXPAYLOAD_LINUX=text line')
+
+    def test_get_isneeded(self):
+        SubProcess.reset(mocking=True)
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.remove_gfxpayload_text(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.get_isneeded()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        open(inst.filename, 'x').write(GRUB_ORIG)
+        self.assertIs(inst.get_isneeded(), False)
+
+        comment = '# Added by system76-driver:'
+        value = 'GRUB_GFXPAYLOAD_LINUX=text'       
+        end = '\n'.join(['', comment, value, ''])
+
+        for text in [comment, value, end]:
+            open(inst.filename, 'w').write(text)
+            self.assertIs(inst.get_isneeded(), True)
+            open(inst.filename, 'w').write('\n'.join([GRUB_ORIG, text]))
+            self.assertIs(inst.get_isneeded(), True)
+            open(inst.filename, 'w').write('\n'.join([text, GRUB_ORIG]))
+            self.assertIs(inst.get_isneeded(), True)
+            self.assertEqual(tmp.listdir(), ['default'])
+            self.assertEqual(tmp.listdir('default'), ['grub'])
+            self.assertEqual(SubProcess.calls, [])
+
+        # Lines in random order, no action needed:
+        lines = GRUB_ORIG.splitlines()
+        for i in range(50):
+            random.shuffle(lines)
+            content1 = '\n'.join(lines)  # Without final '\n'
+            content2 = content1 + '\n'   # With final '\n'
+            for content in (content1, content2):
+                open(inst.filename, 'w').write(content)
+                self.assertIs(inst.get_isneeded(), False)
+                self.assertEqual(tmp.listdir(), ['default'])
+                self.assertEqual(tmp.listdir('default'), ['grub'])
+                self.assertEqual(SubProcess.calls, [])
+
+        # Lines in random order, contains comment line:
+        lines = '\n'.join([GRUB_ORIG, comment]).splitlines()
+        for i in range(50):
+            random.shuffle(lines)
+            content1 = '\n'.join(lines)  # Without final '\n'
+            content2 = content1 + '\n'   # With final '\n'
+            for content in (content1, content2):
+                open(inst.filename, 'w').write(content)
+                self.assertIs(inst.get_isneeded(), True)
+                self.assertEqual(tmp.listdir(), ['default'])
+                self.assertEqual(tmp.listdir('default'), ['grub'])
+                self.assertEqual(SubProcess.calls, [])
+
+        # Lines in random order, contains value line:
+        lines = '\n'.join([GRUB_ORIG, value]).splitlines()
+        for i in range(50):
+            random.shuffle(lines)
+            content1 = '\n'.join(lines)  # Without final '\n'
+            content2 = content1 + '\n'   # With final '\n'
+            for content in (content1, content2):
+                open(inst.filename, 'w').write(content)
+                self.assertIs(inst.get_isneeded(), True)
+                self.assertEqual(tmp.listdir(), ['default'])
+                self.assertEqual(tmp.listdir('default'), ['grub'])
+                self.assertEqual(SubProcess.calls, [])
+
+        # Lines in random order, contains comment line and value line:
+        lines = (GRUB_ORIG + end).splitlines()
+        for i in range(50):
+            random.shuffle(lines)
+            content1 = '\n'.join(lines)  # Without final '\n'
+            content2 = content1 + '\n'   # With final '\n'
+            for content in (content1, content2):
+                open(inst.filename, 'w').write(content)
+                self.assertIs(inst.get_isneeded(), True)
+                self.assertEqual(tmp.listdir(), ['default'])
+                self.assertEqual(tmp.listdir('default'), ['grub'])
+                self.assertEqual(SubProcess.calls, [])
+
+    def test_perform(self):
+        def join(*parts):
+            return '\n'.join(parts) + '\n'
+
+        SubProcess.reset(mocking=True)
+        COMMENT = '# Added by system76-driver:'
+        VALUE = 'GRUB_GFXPAYLOAD_LINUX=text'
+        ORIG = join(GRUB_ORIG)
+        MODIFIED = join(GRUB_ORIG, '', COMMENT, VALUE)
+
+        # /etc/default/grub file is missing:
+        tmp = TempDir()
+        tmp.mkdir('default')
+        inst = actions.remove_gfxpayload_text(etcdir=tmp.dir)
+        with self.assertRaises(FileNotFoundError) as cm:
+            inst.perform()
+        self.assertEqual(cm.exception.filename, inst.filename)
+        self.assertEqual(tmp.listdir('default'), [])
+        self.assertEqual(SubProcess.calls, [])
+
+        # Original /etc/default/grub file:
+        open(inst.filename, 'x').write(ORIG)
+        self.assertIsNone(inst.perform())
+        self.assertEqual(open(inst.filename, 'r').read(), ORIG)
+        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+        self.assertEqual(open(inst.bak, 'r').read(), ORIG)
+        self.assertEqual(tmp.listdir('default'),
+            ['grub', path.basename(inst.bak)]
+        )
+        self.assertEqual(SubProcess.calls, [])
+
+        # Some sanity check permutations:
+        old = ORIG + VALUE  # What system76-driver used to do
+        extra_space = ORIG + '\n' + VALUE
+        permutations = (
+            old,
+            old + '\n',
+            old + '\n\n',
+            extra_space,
+            extra_space + '\n',
+            extra_space + '\n\n',
+            MODIFIED,  # Test round-trip
+            MODIFIED + '\n',
+            MODIFIED[:-1],
+        )
+        for content in permutations:
+            tmp = TempDir()
+            tmp.mkdir('default')
+            inst = actions.remove_gfxpayload_text(etcdir=tmp.dir)
+            open(inst.filename, 'x').write(content)
+            self.assertIsNone(inst.perform())
+            self.assertEqual(open(inst.filename, 'r').read(), ORIG)
+            self.assertEqual(inst.bak,
+                actions.backup_filename(inst.filename)
+            )
+            self.assertEqual(open(inst.bak, 'r').read(), content)
+            self.assertEqual(tmp.listdir('default'),
+                ['grub', path.basename(inst.bak)]
+            )
+            self.assertEqual(SubProcess.calls, [])
+
+        # Existing GRUB_GFXPAYLOAD_LINUX or COMMENT line at a random position:
+        orig_lines = tuple(ORIG.splitlines())
+        extra_lines = (
+            COMMENT,
+            VALUE,
+            ' ' + COMMENT,
+            ' ' + VALUE,
+            COMMENT + ' ',
+            VALUE + ' ',
+            ' ' + COMMENT + ' ',
+            ' ' + VALUE + ' ',
+        )
+        for extra in extra_lines:
+            lines = list(orig_lines)
+            index = random.randint(0, len(lines))
+            lines.insert(index, extra)
+            self.assertEqual(len(lines), len(orig_lines) + 1)
+            content1 = '\n'.join(lines)  # Without final '\n'
+            content2 = content1 + '\n'   # With final '\n'
+            for content in (content1, content2):
+                self.assertNotEqual(content, ORIG)
+                tmp = TempDir()
+                tmp.mkdir('default')
+                inst = actions.remove_gfxpayload_text(etcdir=tmp.dir)
+                open(inst.filename, 'x').write(content)
+                self.assertIsNone(inst.perform())
+                self.assertEqual(open(inst.filename, 'r').read(), ORIG)
+                self.assertEqual(inst.bak,
+                    actions.backup_filename(inst.filename)
+                )
+                self.assertEqual(open(inst.bak, 'r').read(), content)
+                self.assertEqual(tmp.listdir('default'),
+                    ['grub', path.basename(inst.bak)]
+                )
+                self.assertEqual(SubProcess.calls, [])
+
+        # Multiple existing GRUB_GFXPAYLOAD_LINUX and COMMENT lines at random
+        # positions:
+        for i in range(100):
+            lines = list(orig_lines)
+            for extra in extra_lines:
+                index = random.randint(0, len(lines))
+                lines.insert(index, extra)
+            self.assertEqual(len(lines), len(orig_lines) + 8)
+            content1 = '\n'.join(lines)  # Without final '\n'
+            content2 = content1 + '\n'   # With final '\n'
+            for content in (content1, content2):
+                self.assertNotEqual(content, ORIG)
+                tmp = TempDir()
+                tmp.mkdir('default')
+                inst = actions.remove_gfxpayload_text(etcdir=tmp.dir)
+                open(inst.filename, 'x').write(content)
+                self.assertIsNone(inst.perform())
+                self.assertEqual(open(inst.filename, 'r').read(), ORIG)
+                self.assertEqual(inst.bak,
+                    actions.backup_filename(inst.filename)
+                )
+                self.assertEqual(open(inst.bak, 'r').read(), content)
+                self.assertEqual(tmp.listdir('default'),
+                    ['grub', path.basename(inst.bak)]
+                )
+                self.assertEqual(SubProcess.calls, [])
+
+        # ORIG lines in random order:
+        for i in range(100):
+            lines = list(orig_lines)
+            random.shuffle(lines)
+            content1 = '\n'.join(lines)  # Without final '\n'
+            content2 = content1 + '\n'   # With final '\n'
+            expected = content1.rstrip() + '\n'
+            self.assertNotEqual(expected, ORIG)
+            for content in (content1, content2):
+                tmp = TempDir()
+                tmp.mkdir('default')
+                inst = actions.remove_gfxpayload_text(etcdir=tmp.dir)
+                open(inst.filename, 'x').write(content)
+                self.assertIsNone(inst.perform())
+                self.assertEqual(open(inst.filename, 'r').read(), expected)
+                self.assertEqual(inst.bak,
+                    actions.backup_filename(inst.filename)
+                )
+                self.assertEqual(open(inst.bak, 'r').read(), content)
+                self.assertEqual(tmp.listdir('default'),
+                    ['grub', path.basename(inst.bak)]
+                )
+                self.assertEqual(SubProcess.calls, [])
+            # Use same random order of orig lines, but add lines that should be
+            # removed at random indexes:
+            for extra in extra_lines:
+                index = random.randint(0, len(lines))
+                lines.insert(index, extra)
+                content1 = '\n'.join(lines)  # Without final '\n'
+                content2 = content1 + '\n'   # With final '\n'
+                for content in (content1, content2):
+                    tmp = TempDir()
+                    tmp.mkdir('default')
+                    inst = actions.remove_gfxpayload_text(etcdir=tmp.dir)
+                    open(inst.filename, 'x').write(content)
+                    self.assertIsNone(inst.perform())
+                    self.assertEqual(open(inst.filename, 'r').read(), expected)
+                    self.assertEqual(inst.bak,
+                        actions.backup_filename(inst.filename)
+                    )
+                    self.assertEqual(open(inst.bak, 'r').read(), content)
+                    self.assertEqual(tmp.listdir('default'),
+                        ['grub', path.basename(inst.bak)]
+                    )
+                    self.assertEqual(SubProcess.calls, [])
+
+
 class Test_uvcquirks(TestCase):
     def test_init(self):
         inst = actions.uvcquirks()
