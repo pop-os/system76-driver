@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# system76-driver: Universal driver for System76 computers
+# Copyright (C) 2005-2016 System76, Inc.
+#
+# Starting with 16.04, there are WiFi reliability issues when resuming from
+# suspend, at least with certain WiFi cards.  In particular, this problem seems
+# to effect Haswell generation cards like the 7260.  It does not seem to effect
+# Skylake generation cards like the 3165, 8260.
+#
+# This seems fundamentally a user-space issue, not a kernel issue.
+#
+# This script is installed at /lib/systemd/system-sleep/system76-nm-restart.
+
+set -e
+
+if [ "$2" = "suspend" ] || [ "$2" = "hybrid-sleep" ]; then
+    case "$1" in
+        pre) true ;;
+        post) time sleep 1 && service network-manager restart ;;
+    esac
+fi
+
