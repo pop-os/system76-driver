@@ -1,6 +1,13 @@
 system76-driver (16.04.4~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.4
+  * Add actions.remove_gfxpayload_text to remove GRUB_GFXPAYLOAD_LINUX=text line
+  * On bonw10, orxp1, serw9, replace gfxpayload_text action with
+    remove_gfxpayload_text
+  * Add /lib/systemd/system-sleep/system76-nm-restart script to restart
+    network-manager 1 second after resuming from suspend; this works around WiFi
+    reliability problems when resuming from suspend with Intel 7260 WiFi cards
+    on Xenial
 
  -- David Jordan <david2@system76.com>  Thu, 26 May 2016 12:02:41 -0600
 
