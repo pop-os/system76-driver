@@ -10,7 +10,7 @@ system76-driver (16.04.4~alpha) xenial; urgency=low
     on Xenial
   * debian/control: system76-driver-nvidia now depends on nvidia-367 (in prep
     for GTX 1080, GTX 1070)
-  * system76-nvidia-quirks: update Handler to "nvidia-367|nvidia-361|nvidia-340"
+  * system76-nvidia-quirks: update Handler to "nvidia-367|nvidia-340"
 
  -- David Jordan <david2@system76.com>  Thu, 26 May 2016 12:02:41 -0600
 
