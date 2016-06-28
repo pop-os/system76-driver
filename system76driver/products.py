@@ -73,7 +73,7 @@ PRODUCTS = {
     'bonw10': {
         'name': 'Bonobo WS',
         'drivers': [
-            actions.remove_gfxpayload_text,
+            actions.gfxpayload_text,
         ],
     },
 
@@ -339,7 +339,7 @@ PRODUCTS = {
     'orxp1': {
         'name': 'Oryx Pro',
         'drivers': [
-            actions.remove_gfxpayload_text,
+            actions.gfxpayload_text,
         ],
     },
 
@@ -531,7 +531,7 @@ PRODUCTS = {
     'serw9': {
         'name': 'Serval WS',
         'drivers': [
-            actions.remove_gfxpayload_text,
+            actions.gfxpayload_text,
         ],
     },
 
