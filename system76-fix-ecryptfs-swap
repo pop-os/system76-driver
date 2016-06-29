@@ -19,6 +19,28 @@
 # The cryptswap setup used here follows a guide published at:
 #  * http://ubuntumagnet.com/2007/11/creating-encrypted-swap-file-ubuntu-using-cryptsetup
 
+
+################################################################################
+#   Modified by System76, Inc.
+#
+#   This is a modified version of the `ecryptfs-setup-swap` script from the
+#   upstream `ecryptfs-utils` project:
+#
+#       https://launchpad.net/ecryptfs
+#
+#   This script has been modified to automatically mark any encrypted GPT swap
+#   partitions as non-auto-mounting (if they weren't already so marked).  This
+#   is to work around the fact that the current upstream `ecryptfs-setup-swap`
+#   script fails to do so when the swap partition is on an NVMe or MMC drive.
+#
+#   See lp:1597154 for details:
+#
+#       https://bugs.launchpad.net/ecryptfs/+bug/1597154
+#
+#   Modification authors: Jason Gerard DeRose <jason@system76.com>
+################################################################################
+
+
 TEXTDOMAIN="ecryptfs-utils"
 
 error() {
