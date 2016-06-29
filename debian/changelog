@@ -1,6 +1,5 @@
-system76-driver (16.04.6~alpha) xenial; urgency=low
+system76-driver (16.04.6) xenial; urgency=low
 
-  * Daily WIP for 16.04.6
   * Revert changes from unpublished 16.04.5
   * Add `system76-fix-ecryptfs-swap` script to work-around ecryptfs-setup-swap
     failing to mark GPT swap partitions as non-auto-mounting on NVMe drives
@@ -10,7 +9,7 @@ system76-driver (16.04.6~alpha) xenial; urgency=low
     with NVME + nvidia-367 + encrypted home directory from being left with an
     un-bootable system after upgrading to nvidia-367
 
- -- Jason Gerard DeRose <jason@system76.com>  Wed, 29 Jun 2016 10:10:15 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 29 Jun 2016 16:42:45 -0600
 
 system76-driver (16.04.5) xenial; urgency=low
 
