@@ -38,6 +38,13 @@ import system76driver
 from system76driver.tests.run import run_tests
 
 
+SCRIPTS = [
+    'system76-driver',
+    'system76-driver-cli',
+    'system76-fix-ecryptfs-swap',
+]
+
+
 def run_pyflakes3():
     pyflakes3 = '/usr/bin/pyflakes3'
     if not os.access(pyflakes3, os.R_OK | os.X_OK):
@@ -47,10 +54,8 @@ def run_pyflakes3():
     names = [
         'system76driver',
         'setup.py',
-        'system76-driver',
-        'system76-driver-cli',
         'system76-daemon',
-    ]
+    ] + SCRIPTS
     cmd = [pyflakes3] + [path.join(tree, name) for name in names]
     print('check_call:', cmd)
     subprocess.check_call(cmd)
@@ -89,10 +94,7 @@ setup(
         'system76driver',
         'system76driver.tests'
     ],
-    scripts=[
-        'system76-driver',
-        'system76-driver-cli',
-    ],
+    scripts=SCRIPTS,
     package_data={
         'system76driver': ['data/*'],
     },

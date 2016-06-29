@@ -1,224 +1,142 @@
-#!/bin/sh -e
-#    ecryptfs-setup-swap
-#    Copyright (C) 2008 Canonical Ltd.
+#!/usr/bin/python3
+
+# system76-driver: Universal driver for System76 computers
+# Copyright (C) 2005-2016 System76, Inc.
 #
-#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+# This file is part of `system76-driver`.
 #
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; version 2 of the License.
+# `system76-driver` is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# `system76-driver` is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-# The cryptswap setup used here follows a guide published at:
-#  * http://ubuntumagnet.com/2007/11/creating-encrypted-swap-file-ubuntu-using-cryptsetup
-
-
-################################################################################
-#   Modified by System76, Inc.
-#
-#   This is a modified version of the `ecryptfs-setup-swap` script from the
-#   upstream `ecryptfs-utils` project:
-#
-#       https://launchpad.net/ecryptfs
-#
-#   This script has been modified to automatically mark any encrypted GPT swap
-#   partitions as non-auto-mounting (if they weren't already so marked).  This
-#   is to work around the fact that the current upstream `ecryptfs-setup-swap`
-#   script fails to do so when the swap partition is on an NVMe or MMC drive.
-#
-#   See lp:1597154 for details:
-#
-#       https://bugs.launchpad.net/ecryptfs/+bug/1597154
-#
-#   Modification authors: Jason Gerard DeRose <jason@system76.com>
-################################################################################
+import os
+from os import path
+import sys
+from subprocess import PIPE, Popen, check_output
+import logging
 
 
-TEXTDOMAIN="ecryptfs-utils"
+NO_AUTO = '63'
 
-error() {
-	echo `gettext "ERROR:"` "$@" 1>&2
-	exit 1
-}
-
-info() {
-	echo `gettext "INFO:"` "$@"
-}
-
-warn() {
-	echo `gettext "WARNING:"` "$@" 1>&2
-}
-
-usage() {
-	echo
-	echo `gettext "Usage:"`
-	echo "  $0 [-f|--force] [-n|--no-reload]"
-	echo
-	exit 1
-}
-
-# Handle command line options
-FORCE=0
-while [ ! -z "$1" ]; do
-	case "$1" in
-		-f|--force)
-			FORCE=1
-			shift 1
-		;;
-		-n|--no-reload)
-			NO_RELOAD=1
-			shift 1
-		;;
-		*)
-			usage
-		;;
-	esac
-done
-
-# Ensure that cryptsetup is available
-[ -x /sbin/cryptsetup ] || error `gettext "Please install"` "'cryptsetup'"
-
-# Ensure that we're running with root privileges
-[ -w /etc/passwd ] || error `gettext "This program must be run with 'sudo', or as root"`
-
-# Count swap spaces available
-if [ $(grep -c "^/" /proc/swaps) -eq 0 ]; then
-	mem=$(grep "^MemTotal:" /proc/meminfo | awk '{print $2}')
-	swapsize=$((4*$mem))
-	info "You do not currently have any swap space defined."
-	echo
-	echo `gettext "You can create a swap file by doing:"`
-	echo " $ sudo dd if=/dev/zero of=/swapfile count=$swapsize"
-	echo " $ sudo mkswap /swapfile"
-	echo " $ sudo swapon /swapfile"
-	echo
-	echo `gettext "And then re-run"` "$0"
-	echo
-	exit 0
-fi
-
-swaps=$(grep "^/" /proc/swaps | awk '{print $1}')
-
-filtered_swaps=$(
-for swap in $swaps; do
-	# Make sure this is swap space
-	if [ "$(blkid -o value -s TYPE $swap)" != "swap" ]; then
-		warn "[$swap]" `gettext "does not appear to be swap space, skipping."`
-		continue
-	fi
-
-	if [ "${swap#/dev/ram}" != "$swap" ] || [ "${swap#/dev/zram}" != "$swap" ]; then
-		warn "[$swap]" `gettext "is a RAM device, skipping."`
-		continue
-	fi
-
-	# Modified by System76: in our case, we need to flip the logic here.  We
-	# only want to consider swap partitions that appear to have been setup for
-	# encryption, and then mark them as non-auto-mounting (if they haven't
-	# already been).
-	needs_fix=1
-
-	# Check if this swap space is already setup for encryption
-	if /sbin/dmsetup table "$swap" 2>/dev/null | grep -qs " crypt "; then
-		needs_fix=0
-	fi
-
-	base=$(basename "$swap")
-	if grep -qs "^$base.*swap.*cipher" /etc/crypttab 2>/dev/null; then
-		needs_fix=0
-	fi
-	if grep -qs "$swap" /etc/initramfs-tools/conf.d/cryptroot 2>/dev/null; then
-		needs_fix=0
-	fi
-
-	# Only echo $swap if $needs_fix is true:
-	if [ $needs_fix ]; then
-		echo $swap
-	fi
-done
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='system76-fix-swap: %(levelname)s: %(message)s',
 )
-swaps="$filtered_swaps"
-if [ -z "$swaps" ]; then
-	warn "There were no usable swap devices to be encrypted.  Exiting."
-	exit 0
-fi
+log = logging.getLogger()
 
-################################################################################
-# Modified by System76: we don't need to warn user about breaking hibernate mode
-# because we're *not* going to enable encrypted swap; instead, we're only going
-# to mark GPT swap partitions as non-auto-mounting when two conditions are met:
-#
-#	1.	It appears that encryption has been enabled for said swap partition
-#	2.	Said swap partition has not already been mark as non-auto-mounting
-#
-################################################################################
+if os.getuid() != 0:
+    log.error('must be run as root')
+    sys.exit(1)
 
 
-i=0
-for swap in $swaps; do
-	info `gettext "Setting up swap:"` "[$swap]"
-	uuid=$(blkid -o value -s UUID $swap)
-	# /etc/fstab might use a symlink like /dev/mapper/ubuntu--vg-swap_1
-	links=$(for d in $(udevadm info --query=symlink -n $swap); do echo /dev/$d; done)
-	for target in "UUID=$uuid" $swap $links; do
-		if [ -n "$target" ] && grep -qs "^$target\s\+" /etc/fstab; then
-			sed -i "s:^$target\s\+:\#$target :" /etc/fstab
-			warn "Commented out your unencrypted swap from /etc/fstab"
-		fi
-	done
+def iter_swap_uuids(filename='/etc/crypttab'):
+    try:
+        fp = open(filename, 'r')
+    except FileNotFoundError:
+        log.info('does not exist: %r', filename)
+        return
+    for line in fp.readlines():
+        # Skip commented out lines:
+        if line.startswith('#'):
+            continue
 
-	while :; do
-		i=$((i+1))
-		[ -e "/dev/mapper/cryptswap$i" ] || break
-	done
+        # Split line into (mdev, dev, key, options):
+        parts = line.split()
 
-	# If this is a GPT partition, mark it as no-auto mounting, to avoid
-	# auto-activating it on boot
-	if [ "$(blkid -p -s PART_ENTRY_SCHEME -o value "$swap")" = "gpt" ]; then
-		drive="${swap%[0-9]*}"
-		partno="${swap#$drive}"
-		# For NVMe and MMC drives, the above $partno will be correct, but we
-		# need to adjust $drive (LP: #1597154):
-		if echo $swap | grep -qE "^/dev/nvme*|^/dev/mmcblk*"; then
-			drive="${swap%p[0-9]*}"
-		fi
-		if [ -b "$drive" ]; then
-			if printf "x\np\n" | fdisk "$drive" | grep -q "^$swap .* GUID:.*\b63\b"; then
-				echo "$swap is already marked as no-auto"
-			else
-				# toggle flag 63 ("no auto")
-				echo "marking GPT swap partition $swap as no-auto..."
-				# unfortunately fdisk fails on "cannot re-read part table" and is very verbose
-				printf "x\nS\n$partno\n63\nr\nw\n" | fdisk "$drive" >/dev/null 2>&1 || true
-			fi
-		fi
-	fi
+        # Skip mallformed lines:
+        if len(parts) != 4:
+            continue
 
-	# Add crypttab entry
-	# Use /dev/urandom, since this is not a long lived key (generated each boot),
-	# and so that we don't block booting while waiting for entropy
-	echo "cryptswap$i UUID=$uuid /dev/urandom swap,offset=1024,cipher=aes-xts-plain64" >> /etc/crypttab
+        (mdev, dev, key, options) = parts
 
-	# Add fstab entry
-	echo "/dev/mapper/cryptswap$i none swap sw 0 0" >> /etc/fstab
-done
+        # Skip lines that don't have key source of /dev/urandom:
+        if key != '/dev/urandom':
+            continue
 
-if [ "$NO_RELOAD" != 1 ]; then
-	# Turn swap off
-	swapoff -a
+        # Skip lines that don't have 'swap' in options:
+        if 'swap' not in options.split(','):
+            continue
 
-	# Restart cryptdisks
-	/etc/init.d/cryptdisks restart
+        # Skip lines that doen't have dev specified by UUID=:
+        if not dev.startswith('UUID='):
+            continue
 
-	# Turn the swap on
-	swapon -a
-fi
+        yield dev[5:]
 
-info `gettext "Successfully encrypted swap!"`
+
+def get_partition_from_uuid(uuid):
+    d = '/dev/disk/by-uuid'
+    f = path.join(d, uuid)
+    link = os.readlink(f)
+    return path.abspath(path.join(d, link))
+
+
+def get_scheme(partition):
+    cmd = ['blkid', '-p', '-s', 'PART_ENTRY_SCHEME', '-o', 'value', partition]
+    return check_output(cmd, timeout=5).decode().rstrip()
+
+
+def call_fdisk(drive, *args):
+    indata = ('\n'.join(args) + '\n').encode()
+    p = Popen(['fdisk', drive], stdin=PIPE, stdout=PIPE)
+    try:
+        (outdata, outerr) = p.communicate(indata, timeout=5)
+        return outdata.decode()
+    finally:
+        p.kill()
+
+
+def has_no_auto(drive, partion):
+    for line in call_fdisk(drive, 'x', 'p').splitlines():
+        parts = line.split()
+        if not parts:
+            continue
+        if parts[0] == partition:
+            log.info('fdisk line: %r', parts)
+            if parts[-1].startswith('GUID:'):
+                return NO_AUTO in parts[-1][5:].split(',')
+            return False
+    raise ValueError(
+        '{!r} not found in fdisk output for {!r}'.format(partition, drive)
+    )
+
+
+def toggle_no_auto(drive, pnum):
+    log.info('toggling no-auto bit on partition %r of %r', pnum, drive)
+    call_fdisk(drive, 'x', 'S', pnum, NO_AUTO, 'r', 'w')
+
+
+for uuid in iter_swap_uuids():
+    partition = get_partition_from_uuid(uuid)
+
+    # Skip non-NVMe drives:
+    if not partition.startswith('/dev/nvme'):
+        log.info('%r is not NVMe, nothing to do', partition)
+        continue
+
+    # Skip if partition scheme isn't  GPT:
+    if get_scheme(partition) != 'gpt':
+        log.info('%r is not GPT, nothing to do', partition)
+        continue
+
+    # Get drive dev and partition number:
+    (drive, pnum) = partition.split('p')
+
+    # Only set no-auto flag if not aready set:
+    if has_no_auto(drive, partition):
+        log.info('%r already has no-auto flag set, nothing to do', partition)
+        continue
+
+    # Okay, if we got here after all the filtering, set the no-auto flag:
+    toggle_no_auto(drive, pnum)
+
