@@ -1,3 +1,9 @@
+system76-driver (16.04.6~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.6
+
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 29 Jun 2016 10:10:15 -0600
+
 system76-driver (16.04.5) xenial; urgency=low
 
   * To temporarily work-around the consequences of lp:1597154, re-enable
