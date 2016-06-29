@@ -1,0 +1,208 @@
+#!/bin/sh -e
+#    ecryptfs-setup-swap
+#    Copyright (C) 2008 Canonical Ltd.
+#
+#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; version 2 of the License.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# The cryptswap setup used here follows a guide published at:
+#  * http://ubuntumagnet.com/2007/11/creating-encrypted-swap-file-ubuntu-using-cryptsetup
+
+TEXTDOMAIN="ecryptfs-utils"
+
+error() {
+	echo `gettext "ERROR:"` "$@" 1>&2
+	exit 1
+}
+
+info() {
+	echo `gettext "INFO:"` "$@"
+}
+
+warn() {
+	echo `gettext "WARNING:"` "$@" 1>&2
+}
+
+usage() {
+	echo
+	echo `gettext "Usage:"`
+	echo "  $0 [-f|--force] [-n|--no-reload]"
+	echo
+	exit 1
+}
+
+# Handle command line options
+FORCE=0
+while [ ! -z "$1" ]; do
+	case "$1" in
+		-f|--force)
+			FORCE=1
+			shift 1
+		;;
+		-n|--no-reload)
+			NO_RELOAD=1
+			shift 1
+		;;
+		*)
+			usage
+		;;
+	esac
+done
+
+# Ensure that cryptsetup is available
+[ -x /sbin/cryptsetup ] || error `gettext "Please install"` "'cryptsetup'"
+
+# Ensure that we're running with root privileges
+[ -w /etc/passwd ] || error `gettext "This program must be run with 'sudo', or as root"`
+
+# Count swap spaces available
+if [ $(grep -c "^/" /proc/swaps) -eq 0 ]; then
+	mem=$(grep "^MemTotal:" /proc/meminfo | awk '{print $2}')
+	swapsize=$((4*$mem))
+	info "You do not currently have any swap space defined."
+	echo
+	echo `gettext "You can create a swap file by doing:"`
+	echo " $ sudo dd if=/dev/zero of=/swapfile count=$swapsize"
+	echo " $ sudo mkswap /swapfile"
+	echo " $ sudo swapon /swapfile"
+	echo
+	echo `gettext "And then re-run"` "$0"
+	echo
+	exit 0
+fi
+
+swaps=$(grep "^/" /proc/swaps | awk '{print $1}')
+
+filtered_swaps=$(
+for swap in $swaps; do
+	# Make sure this is swap space
+	if [ "$(blkid -o value -s TYPE $swap)" != "swap" ]; then
+		warn "[$swap]" `gettext "does not appear to be swap space, skipping."`
+		continue
+	fi
+
+	if [ "${swap#/dev/ram}" != "$swap" ] || [ "${swap#/dev/zram}" != "$swap" ]; then
+		warn "[$swap]" `gettext "is a RAM device, skipping."`
+		continue
+	fi
+
+	# Check if this swap space is already setup for encryption
+	if /sbin/dmsetup table "$swap" 2>/dev/null | grep -qs " crypt "; then
+		warn "[$swap]" `gettext "already appears to be encrypted, skipping."`
+		continue
+	fi
+
+	base=$(basename "$swap")
+	if grep -qs "^$base.*swap.*cipher" /etc/crypttab 2>/dev/null; then
+		warn "[$swap]" `gettext "already has an entry in /etc/crypttab, skipping."`
+		continue
+	fi
+	if grep -qs "$swap" /etc/initramfs-tools/conf.d/cryptroot 2>/dev/null; then
+		warn "[$swap]" `gettext "already has an entry in /etc/crypttab, skipping."`
+		continue
+	fi
+
+	echo $swap
+done
+)
+swaps="$filtered_swaps"
+if [ -z "$swaps" ]; then
+	warn "There were no usable swap devices to be encrypted.  Exiting."
+	exit 0
+fi
+##########################################################################
+# Warn the user about breaking hibernate mode
+if [ "$FORCE" != 1 ]; then
+	echo
+	echo `gettext "WARNING:"`
+	echo `gettext "An encrypted swap is required to help ensure that encrypted files are not leaked to disk in an unencrypted format."`
+	echo
+	echo `gettext "HOWEVER, THE SWAP ENCRYPTION CONFIGURATION PRODUCED BY THIS PROGRAM WILL BREAK HIBERNATE/RESUME ON THIS SYSTEM!"`
+	echo
+	echo `gettext "NOTE: Your suspend/resume capabilities will not be affected."`
+	echo
+	echo -n `gettext "Do you want to proceed with encrypting your swap?"` "[y/N]: "
+	CONFIRM=`head -n1`
+	echo
+	if [ "$CONFIRM" != "y" -a "$CONFIRM" != "Y" ]; then
+		echo
+		info `gettext "Aborting."`
+		echo
+		exit 0
+	fi
+fi
+##########################################################################
+
+
+i=0
+for swap in $swaps; do
+	info `gettext "Setting up swap:"` "[$swap]"
+	uuid=$(blkid -o value -s UUID $swap)
+	# /etc/fstab might use a symlink like /dev/mapper/ubuntu--vg-swap_1
+	links=$(for d in $(udevadm info --query=symlink -n $swap); do echo /dev/$d; done)
+	for target in "UUID=$uuid" $swap $links; do
+		if [ -n "$target" ] && grep -qs "^$target\s\+" /etc/fstab; then
+			sed -i "s:^$target\s\+:\#$target :" /etc/fstab
+			warn "Commented out your unencrypted swap from /etc/fstab"
+		fi
+	done
+
+	while :; do
+		i=$((i+1))
+		[ -e "/dev/mapper/cryptswap$i" ] || break
+	done
+
+	# If this is a GPT partition, mark it as no-auto mounting, to avoid
+	# auto-activating it on boot
+	if [ "$(blkid -p -s PART_ENTRY_SCHEME -o value "$swap")" = "gpt" ]; then
+		drive="${swap%[0-9]*}"
+		partno="${swap#$drive}"
+		# For NVMe and MMC drives, the above $partno will be correct, but we
+		# need to adjust $drive (LP: #1597154):
+		if echo $swap | grep -qE "^/dev/nvme*|^/dev/mmcblk*"; then
+			drive="${swap%p[0-9]*}"
+		fi
+		if [ -b "$drive" ]; then
+			if printf "x\np\n" | fdisk "$drive" | grep -q "^$swap .* GUID:.*\b63\b"; then
+				echo "$swap is already marked as no-auto"
+			else
+				# toggle flag 63 ("no auto")
+				echo "marking GPT swap partition $swap as no-auto..."
+				# unfortunately fdisk fails on "cannot re-read part table" and is very verbose
+				printf "x\nS\n$partno\n63\nr\nw\n" | fdisk "$drive" >/dev/null 2>&1 || true
+			fi
+		fi
+	fi
+
+	# Add crypttab entry
+	# Use /dev/urandom, since this is not a long lived key (generated each boot),
+	# and so that we don't block booting while waiting for entropy
+	echo "cryptswap$i UUID=$uuid /dev/urandom swap,offset=1024,cipher=aes-xts-plain64" >> /etc/crypttab
+
+	# Add fstab entry
+	echo "/dev/mapper/cryptswap$i none swap sw 0 0" >> /etc/fstab
+done
+
+if [ "$NO_RELOAD" != 1 ]; then
+	# Turn swap off
+	swapoff -a
+
+	# Restart cryptdisks
+	/etc/init.d/cryptdisks restart
+
+	# Turn the swap on
+	swapon -a
+fi
+
+info `gettext "Successfully encrypted swap!"`
