@@ -21,24 +21,29 @@
 
 import os
 from os import path
+import sys
 from subprocess import PIPE, Popen, check_output
 import logging
 
 
+NO_AUTO = '63'
+
 logging.basicConfig(
     level=logging.DEBUG,
-    format='system76-fix-swap %(levelname)s %(message)s',
+    format='system76-fix-swap: %(levelname)s: %(message)s',
 )
 log = logging.getLogger()
 
-
-NO_AUTO = '63'
+if os.getuid() != 0:
+    log.error('must be run as root')
+    sys.exit(1)
 
 
 def iter_swap_uuids(filename='/etc/crypttab'):
     try:
         fp = open(filename, 'r')
     except FileNotFoundError:
+        log.info('does not exist: %r', filename)
         return
     for line in fp.readlines():
         # Skip commented out lines:
@@ -116,18 +121,22 @@ for uuid in iter_swap_uuids():
 
     # Skip non-NVMe drives:
     if not partition.startswith('/dev/nvme'):
+        log.info('%r is not NVMe, nothing to do', partition)
         continue
 
     # Skip if partition scheme isn't  GPT:
     if get_scheme(partition) != 'gpt':
+        log.info('%r is not GPT, nothing to do', partition)
         continue
 
     # Get drive dev and partition number:
     (drive, pnum) = partition.split('p')
 
-    #call_fdisk(drive, 'x', 'S', pnum, NO_AUTO, 'r', 'w')
-
     # Only set no-auto flag if not aready set:
-    if not has_no_auto(drive, partition):
-        toggle_no_auto(drive, pnum)
+    if has_no_auto(drive, partition):
+        log.info('%r already has no-auto flag set, nothing to do', partition)
+        continue
+
+    # Okay, if we got here after all the filtering, set the no-auto flag:
+    toggle_no_auto(drive, pnum)
 
