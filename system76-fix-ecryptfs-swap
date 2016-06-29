@@ -149,28 +149,16 @@ if [ -z "$swaps" ]; then
 	warn "There were no usable swap devices to be encrypted.  Exiting."
 	exit 0
 fi
-##########################################################################
-# Warn the user about breaking hibernate mode
-if [ "$FORCE" != 1 ]; then
-	echo
-	echo `gettext "WARNING:"`
-	echo `gettext "An encrypted swap is required to help ensure that encrypted files are not leaked to disk in an unencrypted format."`
-	echo
-	echo `gettext "HOWEVER, THE SWAP ENCRYPTION CONFIGURATION PRODUCED BY THIS PROGRAM WILL BREAK HIBERNATE/RESUME ON THIS SYSTEM!"`
-	echo
-	echo `gettext "NOTE: Your suspend/resume capabilities will not be affected."`
-	echo
-	echo -n `gettext "Do you want to proceed with encrypting your swap?"` "[y/N]: "
-	CONFIRM=`head -n1`
-	echo
-	if [ "$CONFIRM" != "y" -a "$CONFIRM" != "Y" ]; then
-		echo
-		info `gettext "Aborting."`
-		echo
-		exit 0
-	fi
-fi
-##########################################################################
+
+################################################################################
+# Modified by System76: we don't need to warn user about breaking hibernate mode
+# because we're *not* going to enable encrypted swap; instead, we're only going
+# to mark GPT swap partitions as non-auto-mounting when two conditions are met:
+#
+#	1.	It appears that encryption has been enabled for said swap partition
+#	2.	Said swap partition has not already been mark as non-auto-mounting
+#
+################################################################################
 
 
 i=0
