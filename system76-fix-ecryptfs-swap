@@ -19,12 +19,6 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import os
-from os import path
-import sys
-from subprocess import PIPE, Popen, check_output
-import logging
-
 """
 Script to mark GPT swap partitions as non-auto-mounting on NVMe/MMC drives.
 
@@ -54,6 +48,12 @@ to the partition table when we know we absolutely need to.
 
 The long term solution is to fix ecryptfs-setup-swap (merge already proposed).
 """
+
+import os
+from os import path
+import sys
+from subprocess import PIPE, Popen, check_output
+import logging
 
 
 NO_AUTO = '63'
