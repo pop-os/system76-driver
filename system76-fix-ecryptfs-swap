@@ -119,23 +119,29 @@ for swap in $swaps; do
 		continue
 	fi
 
+	# Modified by System76: in our case, we need to flip the logic here.  We
+	# only want to consider swap partitions that appear to have been setup for
+	# encryption, and then mark them as non-auto-mounting (if they haven't
+	# already been).
+	needs_fix=1
+
 	# Check if this swap space is already setup for encryption
 	if /sbin/dmsetup table "$swap" 2>/dev/null | grep -qs " crypt "; then
-		warn "[$swap]" `gettext "already appears to be encrypted, skipping."`
-		continue
+		needs_fix=0
 	fi
 
 	base=$(basename "$swap")
 	if grep -qs "^$base.*swap.*cipher" /etc/crypttab 2>/dev/null; then
-		warn "[$swap]" `gettext "already has an entry in /etc/crypttab, skipping."`
-		continue
+		needs_fix=0
 	fi
 	if grep -qs "$swap" /etc/initramfs-tools/conf.d/cryptroot 2>/dev/null; then
-		warn "[$swap]" `gettext "already has an entry in /etc/crypttab, skipping."`
-		continue
+		needs_fix=0
 	fi
 
-	echo $swap
+	# Only echo $swap if $needs_fix is true:
+	if [ $needs_fix ]; then
+		echo $swap
+	fi
 done
 )
 swaps="$filtered_swaps"
