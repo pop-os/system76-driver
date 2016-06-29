@@ -132,7 +132,6 @@ def has_no_auto(drive, partion):
         if not parts:
             continue
         if parts[0] == partition:
-            log.info('fdisk line: %r', parts)
             if parts[-1].startswith('GUID:'):
                 return NO_AUTO in parts[-1][5:].split(',')
             return False
