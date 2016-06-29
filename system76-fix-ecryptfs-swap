@@ -73,7 +73,7 @@ def iter_swap_uuids(filename='/etc/crypttab'):
     try:
         fp = open(filename, 'r')
     except FileNotFoundError:
-        log.info('does not exist: %r', filename)
+        log.info('%r does not exist, nothing to do', filename)
         return
     for line in fp.readlines():
         # Skip commented out lines:
