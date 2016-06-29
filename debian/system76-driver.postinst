@@ -26,6 +26,9 @@ case $1 in
         if [ -e /usr/bin/system76-driver-cli ]; then
             /usr/bin/system76-driver-cli
         fi
+        if [ -e /usr/bin/system76-fix-ecryptfs-swap ]; then
+            /usr/bin/system76-fix-ecryptfs-swap
+        fi
 esac
 
 #DEBHELPER#
