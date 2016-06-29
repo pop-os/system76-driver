@@ -25,6 +25,36 @@ import sys
 from subprocess import PIPE, Popen, check_output
 import logging
 
+"""
+Script to mark GPT swap partitions as non-auto-mounting on NVMe/MMC drives.
+
+ecryptfs-setup-swap current fails to mark GPT swap partitions on NVMe/MMC drives
+as non-auto-mounting:
+
+    https://bugs.launchpad.net/ecryptfs/+bug/1597154
+
+The bug has been around for a while, but sometime since 16.04 was released (we
+think), there was a change else where that re-exposed this problem (meaning
+users with an encrypted home directory were erroneously be prompted to enter a
+passphase to unlock their swap partition during boot).
+
+User can just hit enter at this point (with unknown consequences for the key
+use to encrypt the swap partition).  The viability of this work-around is
+probably why System76 support hadn't heard much about it.
+
+However, this bug plus the nvidia-367 driver recently pushed to the System76
+stable PPA can leave users with NVMe plus encrypted home directory plus
+NVIDIA with an unbootable system.
+
+This script is a quick work-around to fix things for users in this scenario who
+haven't yet got the the nvidia-367 update (or at least haven't yet rebooted).
+
+This script tries to be very conservative, to only cause permanent modification
+to the partition table when we know we absolutely need to.
+
+The long term solution is to fix ecryptfs-setup-swap (merge already proposed).
+"""
+
 
 NO_AUTO = '63'
 
