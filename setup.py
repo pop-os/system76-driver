@@ -41,7 +41,6 @@ from system76driver.tests.run import run_tests
 SCRIPTS = [
     'system76-driver',
     'system76-driver-cli',
-    'system76-fix-ecryptfs-swap',
 ]
 
 
