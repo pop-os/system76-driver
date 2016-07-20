@@ -154,6 +154,7 @@ TABLES = {
         'leox4': 'leox4',
         'leox5': 'leox5',
         'leow6': 'leow6',
+        'leow7': 'leow7',
         'meer1': 'meer1',
         'meer2': 'meer2',
         'ment1': 'ment1',
