@@ -1,3 +1,9 @@
+system76-driver (16.04.8~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.8
+
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 20 Jul 2016 15:34:05 -0600
+
 system76-driver (16.04.7) xenial; urgency=low
 
   * Drop `system76-fix-ecryptfs-swap` script as the equivalent has now been
