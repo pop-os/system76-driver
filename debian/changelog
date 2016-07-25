@@ -1,6 +1,7 @@
 system76-driver (16.04.8~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.8
+  * Add 'leow7' to PRODUCTS
 
  -- Jason Gerard DeRose <jason@system76.com>  Wed, 20 Jul 2016 15:34:05 -0600
 
