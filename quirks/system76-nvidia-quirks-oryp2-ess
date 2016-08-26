@@ -1,0 +1,14 @@
+Section "Quirk"
+    Identifier "system76-oryp2-ess"
+    Handler "nvidia-367"
+    Match "sys_vendor" "System76, Inc."
+    Match "product_version" "oryp2-ess"
+    XorgSnippet
+        Section "Device"
+            Identifier "System76 nVidia Card"
+            Driver "nvidia"
+            Option "NoLogo" "True"
+            Option "FlatPanelProperties" "DFP-1: Dithering = Enabled"
+        EndSection
+    EndXorgSnippet
+EndSection
