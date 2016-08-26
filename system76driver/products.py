@@ -346,6 +346,21 @@ PRODUCTS = {
             actions.remove_gfxpayload_text,
         ],
     },
+    'oryp2': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.backlight_vendor,
+            #add i8042.reset?
+        ],
+    },
+    'oryp2-ess': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.backlight_vendor,
+            #add i8042.reset?
+            #add daemon hack for ess
+        ],
+    },
 
     # Pangolin:
     'panp4i': {

@@ -162,6 +162,8 @@ TABLES = {
         'ment3': 'ment3',
         'ment5': 'ment5',
         'orxp1': 'orxp1',
+        'oryp2': 'oryp2',
+        'oryp2-ess': 'oryp2-ess',
         'ratv6': 'ratv6',
         'ratu1': 'ratu1',
         'ratu2': 'ratu2',
