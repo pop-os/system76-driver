@@ -1,5 +1,5 @@
 Section "Quirk"
-    Identifier "system76-serw10"
+    Identifier "system76-0-serw10"
     Handler "nvidia-367"
     Match "sys_vendor" "System76, Inc."
     Match "product_version" "serw10"

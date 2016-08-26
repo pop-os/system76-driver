@@ -1,5 +1,5 @@
 Section "Quirk"
-    Identifier "system76-bonw11"
+    Identifier "system76-0-bonw11"
     Handler "nvidia-367"
     Match "sys_vendor" "System76, Inc."
     Match "product_version" "bonw11"
