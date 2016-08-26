@@ -1,1 +1,1 @@
-system76-nvidia-quirks usr/share/ubuntu-drivers-common/quirks/
+quirks/* usr/share/ubuntu-drivers-common/quirks/
