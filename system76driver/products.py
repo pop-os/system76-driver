@@ -76,6 +76,13 @@ PRODUCTS = {
             actions.remove_gfxpayload_text,
         ],
     },
+    'bonw11': {
+        'name': 'Bonobo WS',
+        'drivers': [
+            actions.backlight_vendor,
+            #add daemon hack for ess
+        ],
+    },
 
     # Darter:
     'daru1': {
@@ -555,6 +562,13 @@ PRODUCTS = {
         'name': 'Serval WS',
         'drivers': [
             actions.remove_gfxpayload_text,
+        ],
+    },
+    'serw10': {
+        'name': 'Serval WS',
+        'drivers': [
+            actions.backlight_vendor,
+            #add daemon hack for ess
         ],
     },
 
