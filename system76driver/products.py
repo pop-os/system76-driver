@@ -80,7 +80,7 @@ PRODUCTS = {
         'name': 'Bonobo WS',
         'drivers': [
             actions.backlight_vendor,
-            #add daemon hack for ess
+            #add daemon hack for ess?
         ],
     },
 
@@ -365,7 +365,7 @@ PRODUCTS = {
         'drivers': [
             actions.backlight_vendor,
             #add i8042.reset?
-            #add daemon hack for ess
+            #add daemon hack for ess?
         ],
     },
 
@@ -568,7 +568,7 @@ PRODUCTS = {
         'name': 'Serval WS',
         'drivers': [
             actions.backlight_vendor,
-            #add daemon hack for ess
+            #add daemon hack for ess?
         ],
     },
 
