@@ -1,6 +1,9 @@
 system76-driver (16.04.9~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.9
+  * Add 'sable6' to PRODUCTS
+  * Add 'bonw11', 'serw10', 'oryp2', and 'oryp2-ess' to PRODUCTS
+  * Add nvidia dithering quirks for new pascal laptops.
 
  -- David Jordan <david2@system76.com>  Fri, 26 Aug 2016 14:25:41 -0600
 
