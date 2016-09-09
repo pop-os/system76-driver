@@ -183,6 +183,12 @@ PRODUCTS = {
             actions.backlight_vendor,
         ],
     },
+    'gaze11': {
+        'name': 'Gazelle',
+        'drivers': [
+            actions.internal_mic_gain,
+        ],
+    },
     'gazu1': {
         'name': 'Gazelle Ultra',
         'drivers': [
