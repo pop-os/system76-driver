@@ -247,6 +247,12 @@ PRODUCTS = {
             actions.backlight_vendor,
         ],
     },
+    'kudu3': {
+        'name': 'Kudu',
+        'drivers': [
+            actions.internal_mic_gain,
+        ],
+    },
 
     # Lemur:
     'lemu1': {
