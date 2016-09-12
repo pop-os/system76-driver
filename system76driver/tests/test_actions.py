@@ -1682,3 +1682,122 @@ class Test_internal_mic_gain(TestCase):
         # Action didn't need to be performed:
         self.assertIsNone(inst.perform())
         self._check_file(inst)
+
+
+PATCH_CONTENT = """[codec]
+0x00000000 0x00000000 0
+
+[verb]
+0x1b 0x707 0x0004
+"""
+
+class TestDACAction(TestCase):
+    def test_init(self):
+        inst = actions.DACAction()
+        self.assertEqual(inst.filename1,
+            '/lib/firmware/system76-audio-patch'
+        )
+        self.assertEqual(inst.filename2,
+            '/etc/modprobe.d/system76-alsa-base.conf'
+        )
+        self.assertEqual(inst.content1, PATCH_CONTENT)
+        self.assertEqual(inst.content2, actions.DAC_MODPROBE)
+
+        tmp = TempDir()
+        inst = actions.DACAction(rootdir=tmp.dir)
+        self.assertEqual(inst.filename1,
+            tmp.join('lib', 'firmware', 'system76-audio-patch')
+        )
+        self.assertEqual(inst.filename2,
+            tmp.join('etc', 'modprobe.d', 'system76-alsa-base.conf')
+        )
+        self.assertEqual(inst.content1, PATCH_CONTENT)
+        self.assertEqual(inst.content2, actions.DAC_MODPROBE)
+
+    def test_read1(self):
+        tmp = TempDir()
+        inst = actions.DACAction(rootdir=tmp.dir)
+
+        # No directory, no file:
+        self.assertIsNone(inst.read1())
+
+        # No file:
+        tmp.mkdir('lib')
+        tmp.mkdir('lib', 'firmware')
+        self.assertIsNone(inst.read1())
+
+        # File exists:
+        marker = actions.random_id()
+        with open(inst.filename1, 'x') as fp:
+            fp.write(marker)
+        self.assertEqual(inst.read1(), marker)
+
+    def test_read2(self):
+        tmp = TempDir()
+        inst = actions.DACAction(rootdir=tmp.dir)
+
+        # No directory, no file:
+        self.assertIsNone(inst.read2())
+
+        # No file:
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'modprobe.d')
+        self.assertIsNone(inst.read2())
+
+        # File exists:
+        marker = actions.random_id()
+        with open(inst.filename2, 'x') as fp:
+            fp.write(marker)
+        self.assertEqual(inst.read2(), marker)
+
+    def test_get_isneeded(self):
+        tmp = TempDir()
+        tmp.mkdir('lib')
+        tmp.mkdir('lib', 'firmware')
+        tmp.mkdir('etc')
+        tmp.mkdir('etc', 'modprobe.d')
+        inst = actions.DACAction(rootdir=tmp.dir)
+
+        # filename1, filename2 both missing:
+        self.assertIs(inst.get_isneeded(), True)
+
+        # filename1, filename2 both exist and have correct content:
+        with open(inst.filename1, 'x') as fp:
+            fp.write(inst.content1)
+        with open(inst.filename2, 'x') as fp:
+            fp.write(inst.content2)
+        self.assertIs(inst.get_isneeded(), False)
+
+        # filename1 has wrong content:
+        with open(inst.filename1, 'w') as fp:
+            fp.write(inst.content2)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # filename1 is missing:
+        os.remove(inst.filename1)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # Put filename1 back in correct post-action state:
+        with open(inst.filename1, 'x') as fp:
+            fp.write(inst.content1)
+        self.assertIs(inst.get_isneeded(), False)
+
+        # filename2 has wrong content:
+        with open(inst.filename2, 'w') as fp:
+            fp.write(inst.content1)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # filename2 is missing:
+        os.remove(inst.filename2)
+        self.assertIs(inst.get_isneeded(), True)
+
+        # Put filename2 back in correct post-action state:
+        with open(inst.filename2, 'x') as fp:
+            fp.write(inst.content2)
+        self.assertIs(inst.get_isneeded(), False)
+
+    def test_describe(self):
+        inst = actions.DACAction()
+        self.assertEqual(inst.describe(), 'Enable high-quality audio DAC')
+
+

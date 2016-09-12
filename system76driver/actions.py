@@ -481,3 +481,46 @@ class internal_mic_gain(FileAction):
     def describe(self):
         return _('Fix Internal Mic Gain')
 
+
+DAC_PATCH = """[codec]
+0x{vendor_id:08x} 0x{subsystem_id:08x} 0
+
+[verb]
+0x1b 0x707 0x0004
+"""
+
+DAC_MODPROBE = 'options snd-hda-intel patch=system76-audio-patch\n'
+
+class DACAction(Action):
+    relpath1 = ('lib', 'firmware', 'system76-audio-patch')
+    relpath2 = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
+    vendor_id = 0x00000000
+    subsystem_id = 0x00000000
+
+    def __init__(self, rootdir='/'):
+        self.filename1 = path.join(rootdir, *self.relpath1)
+        self.filename2 = path.join(rootdir, *self.relpath2)
+        self.content1 = DAC_PATCH.format(
+            vendor_id=self.vendor_id,
+            subsystem_id=self.subsystem_id,
+        )
+        self.content2 = DAC_MODPROBE
+
+    def read1(self):
+        try:
+            return open(self.filename1, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def read2(self):
+        try:
+            return open(self.filename2, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def get_isneeded(self):
+        return self.read1() != self.content1 or self.read2() != self.content2
+
+    def describe(self):
+        return _('Enable high-quality audio DAC')
+
