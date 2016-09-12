@@ -1739,6 +1739,8 @@ class Test_dac_fixup(TestCase):
     def setUp(self):
         self.tmp = TempDir()
         self.tmp.makedirs('sys', 'class', 'sound', 'hwC0D0')
+        self.tmp.makedirs('lib', 'firmware')
+        self.tmp.makedirs('etc', 'modprobe.d')
         self.vendor_id = random.randint(0, 0xffffffff)
         self.subsystem_id = random.randint(0, 0xffffffff)
         for name in ('vendor_id', 'subsystem_id'):
@@ -1768,12 +1770,7 @@ class Test_dac_fixup(TestCase):
     def test_read1(self):
         inst = actions.dac_fixup(rootdir=self.tmp.dir)
 
-        # No directory, no file:
-        self.assertIsNone(inst.read1())
-
         # No file:
-        self.tmp.mkdir('lib')
-        self.tmp.mkdir('lib', 'firmware')
         self.assertIsNone(inst.read1())
 
         # File exists:
@@ -1785,12 +1782,7 @@ class Test_dac_fixup(TestCase):
     def test_read2(self):
         inst = actions.dac_fixup(rootdir=self.tmp.dir)
 
-        # No directory, no file:
-        self.assertIsNone(inst.read2())
-
         # No file:
-        self.tmp.mkdir('etc')
-        self.tmp.mkdir('etc', 'modprobe.d')
         self.assertIsNone(inst.read2())
 
         # File exists:
@@ -1800,10 +1792,6 @@ class Test_dac_fixup(TestCase):
         self.assertEqual(inst.read2(), marker)
 
     def test_get_isneeded(self):
-        self.tmp.mkdir('lib')
-        self.tmp.mkdir('lib', 'firmware')
-        self.tmp.mkdir('etc')
-        self.tmp.mkdir('etc', 'modprobe.d')
         inst = actions.dac_fixup(rootdir=self.tmp.dir)
 
         # filename1, filename2 both missing:
@@ -1842,6 +1830,12 @@ class Test_dac_fixup(TestCase):
         # Put filename2 back in correct post-action state:
         with open(inst.filename2, 'x') as fp:
             fp.write(inst.content2)
+        self.assertIs(inst.get_isneeded(), False)
+
+    def test_perform(self):
+        inst = actions.dac_fixup(rootdir=self.tmp.dir)
+        self.assertIs(inst.get_isneeded(), True)
+        self.assertIsNone(inst.perform())
         self.assertIs(inst.get_isneeded(), False)
 
     def test_describe(self):

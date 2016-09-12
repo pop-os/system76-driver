@@ -66,6 +66,18 @@ def tmp_filename(filename):
     return '.'.join([filename, random_id()])
 
 
+def atomic_write(filename, content, mode=None):
+    tmp = tmp_filename(filename)
+    fp = open(tmp, 'x')
+    fp.write(content)
+    fp.flush()
+    os.fsync(fp.fileno())
+    if mode is not None:
+        os.chmod(fp.fileno(), mode)
+    os.rename(tmp, filename)
+    return tmp
+
+
 def backup_filename(filename, date=None):
     if date is None:
         date = datetime.date.today()
@@ -529,6 +541,10 @@ class dac_fixup(Action):
 
     def get_isneeded(self):
         return self.read1() != self.content1 or self.read2() != self.content2
+
+    def perform(self):
+        atomic_write(self.filename1, self.content1)
+        atomic_write(self.filename2, self.content2)
 
     def describe(self):
         return _('Enable high-quality audio DAC')
