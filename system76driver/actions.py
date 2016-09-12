@@ -500,7 +500,7 @@ def read_hda_id(name, device='hwC0D0', rootdir='/'):
         return int(fp.read(), 16)
 
 
-class DACAction(Action):
+class dac_fixup(Action):
     relpath1 = ('lib', 'firmware', 'system76-audio-patch')
     relpath2 = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
 

@@ -1735,7 +1735,7 @@ PATCH_CONTENT = """[codec]
 0x1b 0x707 0x0004
 """
 
-class TestDACAction(TestCase):
+class Test_dac_fixup(TestCase):
     def setUp(self):
         self.tmp = TempDir()
         self.tmp.makedirs('sys', 'class', 'sound', 'hwC0D0')
@@ -1755,7 +1755,7 @@ class TestDACAction(TestCase):
         self.subsystem_id = None
 
     def test_init(self):
-        inst = actions.DACAction(rootdir=self.tmp.dir)
+        inst = actions.dac_fixup(rootdir=self.tmp.dir)
         self.assertEqual(inst.filename1,
             self.tmp.join('lib', 'firmware', 'system76-audio-patch')
         )
@@ -1766,7 +1766,7 @@ class TestDACAction(TestCase):
         self.assertEqual(inst.content2, actions.DAC_MODPROBE)
 
     def test_read1(self):
-        inst = actions.DACAction(rootdir=self.tmp.dir)
+        inst = actions.dac_fixup(rootdir=self.tmp.dir)
 
         # No directory, no file:
         self.assertIsNone(inst.read1())
@@ -1783,7 +1783,7 @@ class TestDACAction(TestCase):
         self.assertEqual(inst.read1(), marker)
 
     def test_read2(self):
-        inst = actions.DACAction(rootdir=self.tmp.dir)
+        inst = actions.dac_fixup(rootdir=self.tmp.dir)
 
         # No directory, no file:
         self.assertIsNone(inst.read2())
@@ -1804,7 +1804,7 @@ class TestDACAction(TestCase):
         self.tmp.mkdir('lib', 'firmware')
         self.tmp.mkdir('etc')
         self.tmp.mkdir('etc', 'modprobe.d')
-        inst = actions.DACAction(rootdir=self.tmp.dir)
+        inst = actions.dac_fixup(rootdir=self.tmp.dir)
 
         # filename1, filename2 both missing:
         self.assertIs(inst.get_isneeded(), True)
@@ -1845,6 +1845,6 @@ class TestDACAction(TestCase):
         self.assertIs(inst.get_isneeded(), False)
 
     def test_describe(self):
-        inst = actions.DACAction()
+        inst = actions.dac_fixup()
         self.assertEqual(inst.describe(), 'Enable high-quality audio DAC')
 
