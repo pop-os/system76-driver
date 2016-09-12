@@ -503,14 +503,12 @@ def read_hda_id(name, device='hwC0D0', rootdir='/'):
 class DACAction(Action):
     relpath1 = ('lib', 'firmware', 'system76-audio-patch')
     relpath2 = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
-    vendor_id = 0x00000000
-    subsystem_id = 0x00000000
 
     def __init__(self, rootdir='/'):
         self.filename1 = path.join(rootdir, *self.relpath1)
         self.filename2 = path.join(rootdir, *self.relpath2)
-        #self.vendor_id = read_hda_id('vendor_id', rootdir=rootdir)
-        #self.subsystem_id = read_hda_id('subsystem_id', rootdir=rootdir)
+        self.vendor_id = read_hda_id('vendor_id', rootdir=rootdir)
+        self.subsystem_id = read_hda_id('subsystem_id', rootdir=rootdir)
         self.content1 = DAC_PATCH.format(
             vendor_id=self.vendor_id,
             subsystem_id=self.subsystem_id,

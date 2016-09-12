@@ -1736,38 +1736,44 @@ PATCH_CONTENT = """[codec]
 """
 
 class TestDACAction(TestCase):
-    def test_init(self):
-        inst = actions.DACAction()
-        self.assertEqual(inst.filename1,
-            '/lib/firmware/system76-audio-patch'
+    def setUp(self):
+        self.tmp = TempDir()
+        self.tmp.makedirs('sys', 'class', 'sound', 'hwC0D0')
+        self.vendor_id = random.randint(0, 0xffffffff)
+        self.subsystem_id = random.randint(0, 0xffffffff)
+        for name in ('vendor_id', 'subsystem_id'):
+            value = getattr(self, name)
+            content = '0x{:08x}\n'.format(value).encode()
+            self.tmp.write(content, 'sys', 'class', 'sound', 'hwC0D0', name)
+        self.patch_content = actions.DAC_PATCH.format(
+            vendor_id=self.vendor_id, subsystem_id=self.subsystem_id
         )
-        self.assertEqual(inst.filename2,
-            '/etc/modprobe.d/system76-alsa-base.conf'
-        )
-        self.assertEqual(inst.content1, PATCH_CONTENT)
-        self.assertEqual(inst.content2, actions.DAC_MODPROBE)
 
-        tmp = TempDir()
-        inst = actions.DACAction(rootdir=tmp.dir)
+    def tearDown(self):
+        self.tmp = None
+        self.vendor_id = None
+        self.subsystem_id = None
+
+    def test_init(self):
+        inst = actions.DACAction(rootdir=self.tmp.dir)
         self.assertEqual(inst.filename1,
-            tmp.join('lib', 'firmware', 'system76-audio-patch')
+            self.tmp.join('lib', 'firmware', 'system76-audio-patch')
         )
         self.assertEqual(inst.filename2,
-            tmp.join('etc', 'modprobe.d', 'system76-alsa-base.conf')
+            self.tmp.join('etc', 'modprobe.d', 'system76-alsa-base.conf')
         )
-        self.assertEqual(inst.content1, PATCH_CONTENT)
+        self.assertEqual(inst.content1, self.patch_content)
         self.assertEqual(inst.content2, actions.DAC_MODPROBE)
 
     def test_read1(self):
-        tmp = TempDir()
-        inst = actions.DACAction(rootdir=tmp.dir)
+        inst = actions.DACAction(rootdir=self.tmp.dir)
 
         # No directory, no file:
         self.assertIsNone(inst.read1())
 
         # No file:
-        tmp.mkdir('lib')
-        tmp.mkdir('lib', 'firmware')
+        self.tmp.mkdir('lib')
+        self.tmp.mkdir('lib', 'firmware')
         self.assertIsNone(inst.read1())
 
         # File exists:
@@ -1777,15 +1783,14 @@ class TestDACAction(TestCase):
         self.assertEqual(inst.read1(), marker)
 
     def test_read2(self):
-        tmp = TempDir()
-        inst = actions.DACAction(rootdir=tmp.dir)
+        inst = actions.DACAction(rootdir=self.tmp.dir)
 
         # No directory, no file:
         self.assertIsNone(inst.read2())
 
         # No file:
-        tmp.mkdir('etc')
-        tmp.mkdir('etc', 'modprobe.d')
+        self.tmp.mkdir('etc')
+        self.tmp.mkdir('etc', 'modprobe.d')
         self.assertIsNone(inst.read2())
 
         # File exists:
@@ -1795,12 +1800,11 @@ class TestDACAction(TestCase):
         self.assertEqual(inst.read2(), marker)
 
     def test_get_isneeded(self):
-        tmp = TempDir()
-        tmp.mkdir('lib')
-        tmp.mkdir('lib', 'firmware')
-        tmp.mkdir('etc')
-        tmp.mkdir('etc', 'modprobe.d')
-        inst = actions.DACAction(rootdir=tmp.dir)
+        self.tmp.mkdir('lib')
+        self.tmp.mkdir('lib', 'firmware')
+        self.tmp.mkdir('etc')
+        self.tmp.mkdir('etc', 'modprobe.d')
+        inst = actions.DACAction(rootdir=self.tmp.dir)
 
         # filename1, filename2 both missing:
         self.assertIs(inst.get_isneeded(), True)
