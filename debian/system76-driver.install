@@ -4,4 +4,4 @@ system76-driver-pkexec usr/bin/
 system76-daemon usr/lib/system76-driver/
 debian/source_system76-driver.py usr/share/apport/package-hooks/
 system76-audio-patch /lib/firmware/
-
+system76-alsa-base.conf /etc/modprobe.d/
