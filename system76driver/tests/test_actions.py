@@ -103,6 +103,50 @@ class TestFunctions(TestCase):
             ('check_call', ['update-grub'], {}),
         ])
 
+    def test_read_hda_id(self):
+        NAMES = ('vendor_id', 'subsystem_id')
+        VALUES = (
+            random.randint(0, 0xffffffff),
+            random.randint(0, 0xffffffff),
+        )
+        PAIRS = tuple(zip(NAMES, VALUES))
+        tmp = TempDir()
+
+        # Directories and files missing:
+        for name in NAMES:
+            with self.assertRaises(FileNotFoundError) as cm:
+                actions.read_hda_id(name, rootdir=tmp.dir)   
+            self.assertEqual(str(cm.exception),
+                '[Errno 2] No such file or directory: {!r}'.format(
+                    tmp.join('sys', 'class', 'sound', 'hwC0D0', name)
+                )
+            )
+
+        # Files missing:
+        tmp.makedirs('sys', 'class', 'sound', 'hwC0D0')
+        for name in NAMES:
+            with self.assertRaises(FileNotFoundError) as cm:
+                actions.read_hda_id(name, rootdir=tmp.dir)   
+            self.assertEqual(str(cm.exception),
+                '[Errno 2] No such file or directory: {!r}'.format(
+                    tmp.join('sys', 'class', 'sound', 'hwC0D0', name)
+                )
+            )
+
+        # Files are present:
+        for (name, value) in PAIRS:
+            content = '0x{:08x}\n'.format(value).encode()
+            self.assertEqual(len(content), 11)
+            tmp.write(content, 'sys', 'class', 'sound', 'hwC0D0', name)
+            self.assertEqual(actions.read_hda_id(name, rootdir=tmp.dir), value)
+
+        # Bad name:
+        with self.assertRaises(ValueError) as cm:
+            actions.read_hda_id('foo_id', rootdir=tmp.dir)
+        self.assertEqual(str(cm.exception),
+            "bad name: 'foo_id'"
+        )
+
 
 class TestAction(TestCase):
     def test_isneeded(self):
@@ -1799,5 +1843,4 @@ class TestDACAction(TestCase):
     def test_describe(self):
         inst = actions.DACAction()
         self.assertEqual(inst.describe(), 'Enable high-quality audio DAC')
-
 

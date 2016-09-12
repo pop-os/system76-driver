@@ -491,6 +491,15 @@ DAC_PATCH = """[codec]
 
 DAC_MODPROBE = 'options snd-hda-intel patch=system76-audio-patch\n'
 
+
+def read_hda_id(name, device='hwC0D0', rootdir='/'):
+    if name not in ('vendor_id', 'subsystem_id'):
+        raise ValueError('bad name: {!r}'.format(name))
+    filename = path.join(rootdir, 'sys', 'class', 'sound', device, name)
+    with open(filename, 'r') as fp:
+        return int(fp.read(), 16)
+
+
 class DACAction(Action):
     relpath1 = ('lib', 'firmware', 'system76-audio-patch')
     relpath2 = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
@@ -500,6 +509,8 @@ class DACAction(Action):
     def __init__(self, rootdir='/'):
         self.filename1 = path.join(rootdir, *self.relpath1)
         self.filename2 = path.join(rootdir, *self.relpath2)
+        #self.vendor_id = read_hda_id('vendor_id', rootdir=rootdir)
+        #self.subsystem_id = read_hda_id('subsystem_id', rootdir=rootdir)
         self.content1 = DAC_PATCH.format(
             vendor_id=self.vendor_id,
             subsystem_id=self.subsystem_id,
