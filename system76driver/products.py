@@ -580,7 +580,7 @@ PRODUCTS = {
         'name': 'Serval WS',
         'drivers': [
             actions.backlight_vendor,
-            #add daemon hack for ess?
+            actions.dac_fixup,
         ],
     },
 
