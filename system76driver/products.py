@@ -80,7 +80,7 @@ PRODUCTS = {
         'name': 'Bonobo WS',
         'drivers': [
             actions.backlight_vendor,
-            #add daemon hack for ess?
+            actions.dac_fixup,
         ],
     },
 
@@ -369,15 +369,13 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.backlight_vendor,
-            #add i8042.reset?
         ],
     },
     'oryp2-ess': {
         'name': 'Oryx Pro',
         'drivers': [
             actions.backlight_vendor,
-            #add i8042.reset?
-            #add daemon hack for ess?
+            actions.dac_fixup,
         ],
     },
 
