@@ -508,8 +508,11 @@ def read_hda_id(name, device='hwC0D0', rootdir='/'):
     if name not in ('vendor_id', 'subsystem_id'):
         raise ValueError('bad name: {!r}'.format(name))
     filename = path.join(rootdir, 'sys', 'class', 'sound', device, name)
-    with open(filename, 'r') as fp:
-        return int(fp.read(), 16)
+    try:
+        with open(filename, 'r') as fp:
+            return int(fp.read(), 16)
+    except FileNotFoundError:
+        return 0
 
 
 class dac_fixup(Action):
