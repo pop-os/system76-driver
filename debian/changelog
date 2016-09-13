@@ -1,6 +1,8 @@
 system76-driver (16.04.10~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.10
+  * Add 'kudu3', 'gaze11' to PRODUCTS, NEEDS_AIRPLANE
+  * Add `actions.dac_fixup`, used by 'bonw11', 'oryp2-ess', 'serw10'
 
  -- David Jordan <david2@system76.com>  Wed, 31 Aug 2016 17:40:13 -0600
 
