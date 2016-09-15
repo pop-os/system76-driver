@@ -1,10 +1,9 @@
-system76-driver (16.04.11~alpha) xenial; urgency=low
+system76-driver (16.04.11) xenial; urgency=low
 
-  * Daily WIP for 16.04.11
   * Change 'oryp2-ess' to 'oryp2-dac'
   * Add 'actions.pulseaudio_hp_spdif_desc' for 'bonw11', 'oryp2-dac', 'serw10'
 
- -- David Jordan <david2@system76.com>  Thu, 15 Sep 2016 12:15:55 -0600
+ -- David Jordan <david2@system76.com>  Thu, 15 Sep 2016 14:59:07 -0600
 
 system76-driver (16.04.10) xenial; urgency=low
 
