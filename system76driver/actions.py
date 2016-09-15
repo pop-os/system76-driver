@@ -494,6 +494,23 @@ class internal_mic_gain(FileAction):
         return _('Fix Internal Mic Gain')
 
 
+class pulseaudio_hp_spdif_desc(FileAction):
+    relpath = ('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths',
+                    'iec958-stereo-output.conf')
+    
+    _content = None
+    
+    @property
+    def content(self):
+        if self._content is None:
+            fp = open(get_datafile('iec958-stereo-output.conf'), 'r')
+            self._content = fp.read()
+        return self._content
+
+    def describe(self):
+        return _('Fix Headphone/SPDIF description in Pulseaudio')
+
+
 DAC_PATCH = """[codec]
 0x{vendor_id:08x} 0x{subsystem_id:08x} 0
 

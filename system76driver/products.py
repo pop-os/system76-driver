@@ -81,6 +81,7 @@ PRODUCTS = {
         'drivers': [
             actions.backlight_vendor,
             actions.dac_fixup,
+            actions.pulseaudio_hp_spdif_desc,
         ],
     },
 
@@ -371,11 +372,12 @@ PRODUCTS = {
             actions.backlight_vendor,
         ],
     },
-    'oryp2-ess': {
+    'oryp2-dac': {
         'name': 'Oryx Pro',
         'drivers': [
             actions.backlight_vendor,
             actions.dac_fixup,
+            actions.pulseaudio_hp_spdif_desc,
         ],
     },
 
@@ -579,6 +581,7 @@ PRODUCTS = {
         'drivers': [
             actions.backlight_vendor,
             actions.dac_fixup,
+            actions.pulseaudio_hp_spdif_desc,
         ],
     },
 

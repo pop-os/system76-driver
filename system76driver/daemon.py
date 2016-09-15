@@ -69,7 +69,7 @@ NEEDS_AIRPLANE = frozenset([
     'lemu6',
     'orxp1',
     'oryp2',
-    'oryp2-ess',
+    'oryp2-dac',
 ])
 
 # These products use 'acpi_video0' instead of 'intel_backlight':
