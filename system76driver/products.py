@@ -80,6 +80,7 @@ PRODUCTS = {
         'name': 'Bonobo WS',
         'drivers': [
             actions.backlight_vendor,
+            actions.gfxpayload_text,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
         ],
