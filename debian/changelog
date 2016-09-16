@@ -1,9 +1,8 @@
-system76-driver (16.04.12~alpha) xenial; urgency=low
+system76-driver (16.04.12) xenial; urgency=low
 
-  * Daily WIP for 16.04.12
   * Add gfxpayload_text action to 'bonw11'
 
- -- David Jordan <david2@system76.com>  Fri, 16 Sep 2016 11:01:53 -0600
+ -- David Jordan <david2@system76.com>  Fri, 16 Sep 2016 13:40:40 -0600
 
 system76-driver (16.04.11) xenial; urgency=low
 
