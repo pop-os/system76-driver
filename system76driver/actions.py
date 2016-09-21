@@ -422,7 +422,7 @@ class i8042_reset_nomux(GrubAction):
     This fixes the touchpad on the oryp2 and oryp2-dac.
     """
 
-    add = ('i8042.reset i8042.nomux',)
+    add = ('i8042.reset', 'i8042.nomux',)
 
     def describe(self):
         return _('Enable Touchpad')
