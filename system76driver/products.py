@@ -371,12 +371,14 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.backlight_vendor,
+            actions.i8042_reset_nomux,
         ],
     },
     'oryp2-dac': {
         'name': 'Oryx Pro',
         'drivers': [
             actions.backlight_vendor,
+            actions.i8042_reset_nomux,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
         ],
