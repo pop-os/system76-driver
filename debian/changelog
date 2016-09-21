@@ -1,9 +1,8 @@
-system76-driver (16.04.13~alpha) xenial; urgency=low
+system76-driver (16.04.13) xenial; urgency=low
 
-  * Daily WIP for 16.04.13
   * Add 'actions.i8042_reset_nomux' for 'oryp2' and 'oryp2-dac'
 
- -- David Jordan <david2@system76.com>  Wed, 21 Sep 2016 15:14:13 -0600
+ -- David Jordan <david2@system76.com>  Wed, 21 Sep 2016 17:29:55 -0600
 
 system76-driver (16.04.12) xenial; urgency=low
 
