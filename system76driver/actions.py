@@ -415,6 +415,19 @@ class plymouth1080(Action):
         self.atomic_write(content)
 
 
+class i8042_reset_nomux(GrubAction):
+    """
+    Add i8042.reset and i8042.nomux to GRUB_CMDLINE_LINUX_DEFAULT 
+    
+    This fixes the touchpad on the oryp2 and oryp2-dac.
+    """
+
+    add = ('i8042.reset i8042.nomux',)
+
+    def describe(self):
+        return _('Enable Touchpad')
+
+
 class gfxpayload_text(Action):
     update_grub = True
     comment = '# Added by system76-driver:'
