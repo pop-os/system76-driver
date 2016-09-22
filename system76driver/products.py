@@ -374,7 +374,7 @@ PRODUCTS = {
             actions.i8042_reset_nomux,
         ],
     },
-    'oryp2-dac': {
+    'oryp2-ess': {
         'name': 'Oryx Pro',
         'drivers': [
             actions.backlight_vendor,

@@ -1,8 +1,8 @@
 Section "Quirk"
-    Identifier "system76-0-oryp2-dac"
+    Identifier "system76-0-oryp2-ess"
     Handler "nvidia-367"
     Match "sys_vendor" "System76, Inc."
-    Match "product_version" "oryp2-dac"
+    Match "product_version" "oryp2-ess"
     XorgSnippet
         Section "Device"
             Identifier "System76 nVidia Card"
