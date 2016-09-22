@@ -1,6 +1,9 @@
 system76-driver (16.10.0~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.0
+  * Start 16.10.x series, initial Yakkety release
+  * It's going to be "oryp2-ess" after all, not "oryp2-dac"; update all the
+    things as needed
 
  -- Jason Gerard DeRose <jason@system76.com>  Thu, 22 Sep 2016 10:51:31 -0600
 
