@@ -1,8 +1,8 @@
-system76-driver (16.04.14~alpha) xenial; urgency=low
+system76-driver (16.10.0~alpha) yakkety; urgency=low
 
-  * Daily WIP for 16.04.14
+  * Daily WIP for 16.10.0
 
- -- Jason Gerard DeRose <jason@system76.com>  Thu, 22 Sep 2016 10:20:23 -0600
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 22 Sep 2016 10:51:31 -0600
 
 system76-driver (16.04.13) xenial; urgency=low
 
