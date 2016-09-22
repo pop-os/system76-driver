@@ -1,6 +1,8 @@
 system76-driver (16.04.14~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.14
+  * It's going to be "oryp2-ess" after all, not "oryp2-dac"; update all the
+    things as needed
 
  -- Jason Gerard DeRose <jason@system76.com>  Thu, 22 Sep 2016 10:20:23 -0600
 
