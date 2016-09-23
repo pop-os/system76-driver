@@ -1,3 +1,9 @@
+system76-driver (16.10.2~alpha) yakkety; urgency=low
+
+  * Daily WIP for 16.10.2
+
+ -- Jason Gerard DeRose <jason@system76.com>  Thu, 22 Sep 2016 21:49:22 -0600
+
 system76-driver (16.10.1) yakkety; urgency=low
 
   * Add 'actions.backlight_vendor' to 'gaze11' and 'kudu3'
