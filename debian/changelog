@@ -1,9 +1,8 @@
-system76-driver (16.04.15~alpha) xenial; urgency=low
+system76-driver (16.04.15) xenial; urgency=low
 
-  * Daily WIP for 16.04.15
   * Add 'actions.backlight_vendor' to 'gaze11' and 'kudu3'
 
- -- David Jordan <david2@system76.com>  Thu, 22 Sep 2016 18:22:38 -0600
+ -- David Jordan <david2@system76.com>  Thu, 22 Sep 2016 18:50:37 -0600
 
 system76-driver (16.04.14) xenial; urgency=low
 
