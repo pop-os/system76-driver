@@ -34,7 +34,7 @@ from system76driver import __version__
 from system76driver.tests.helpers import TempDir
 
 
-DISTROS = ('trusty', 'wily', 'xenial')
+DISTROS = ('trusty', 'xenial', 'yakkety')
 PPA = 'ppa:system76-dev/pre-stable'
 ALPHA = '~alpha'
 

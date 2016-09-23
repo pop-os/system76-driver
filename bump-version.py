@@ -34,7 +34,7 @@ from system76driver import __version__
 from system76driver.tests.helpers import TempDir
 
 
-DISTROS = ('trusty', 'wily', 'xenial')
+DISTROS = ('trusty', 'xenial', 'yakkety')
 ALPHA = '~alpha'
 
 TREE = path.dirname(path.abspath(__file__))
