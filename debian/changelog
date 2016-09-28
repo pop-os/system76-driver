@@ -1,11 +1,10 @@
-system76-driver (16.04.16~alpha) xenial; urgency=low
+system76-driver (16.04.16) xenial; urgency=low
 
-  * Daily WIP for 16.04.16
   * Add 'lemu7' to PRODUCTS
   * Add 'actions.internal_mic_gain' to 'lemu7'
   * Add 'lemu7' to NEEDS_AIRPLANE
 
- -- David Jordan <david2@system76.com>  Wed, 28 Sep 2016 14:49:55 -0600
+ -- David Jordan <david2@system76.com>  Wed, 28 Sep 2016 16:07:20 -0600
 
 system76-driver (16.04.15) xenial; urgency=low
 
