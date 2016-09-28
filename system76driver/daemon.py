@@ -67,6 +67,7 @@ NEEDS_AIRPLANE = frozenset([
     'serw9',
     'serw10',
     'lemu6',
+    'lemu7',
     'orxp1',
     'oryp2',
     'oryp2-ess',
