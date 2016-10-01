@@ -1,3 +1,9 @@
+system76-driver (16.10.3~alpha) yakkety; urgency=low
+
+  * Daily WIP for 16.10.3
+
+ -- Jason Gerard DeRose <jason@system76.com>  Sat, 01 Oct 2016 17:39:11 -0600
+
 system76-driver (16.10.2) yakkety; urgency=low
 
   * Add 'lemu7' to PRODUCTS
