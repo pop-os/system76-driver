@@ -1,6 +1,9 @@
 system76-driver (16.10.2~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.2
+  * Add 'lemu7' to PRODUCTS
+  * Add 'actions.internal_mic_gain' to 'lemu7'
+  * Add 'lemu7' to NEEDS_AIRPLANE
 
  -- Jason Gerard DeRose <jason@system76.com>  Thu, 22 Sep 2016 21:49:22 -0600
 
