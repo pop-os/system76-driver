@@ -299,6 +299,12 @@ PRODUCTS = {
             actions.internal_mic_gain,
         ],
     },
+    'lemu7': {
+        'name': 'Lemur',
+        'drivers': [
+            actions.internal_mic_gain,
+        ],
+    },
 
     # Leopard:
     'leo1': {
