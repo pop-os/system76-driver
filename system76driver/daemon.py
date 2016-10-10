@@ -404,7 +404,7 @@ def _run_firmware_acpi_interrupt(model, interrupt):
     log.info('Disabling acpi interrupt %r for %r', interrupt, model)
     gpe = FirmwareACPIInterrupt(model, interrupt)
     gpe.run()
-    return gpe6F
+    return gpe
 
 
 def run_firmware_acpi_interrupt(model):
