@@ -408,16 +408,11 @@ def _run_firmware_acpi_interrupt(model, interrupt):
 
 
 def run_firmware_acpi_interrupt(model):
-    interrupt = 'gpe6F'
-    try:
-        ret1 = _run_firmware_acpi_interrupt(model, interrupt)
-    except Exception:
-        log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
-    
-    interrupt = 'gpe03'
-    try:
-        ret2 = _run_firmware_acpi_interrupt(model, interrupt)
-    except Exception:
-        log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
-    return ret1, ret2
+    ret = []
+    for interrupt in ['gpe6F', 'gpe03']:
+        try:
+            ret.append(_run_firmware_acpi_interrupt(model, interrupt))
+        except Exception:
+            log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
+    return ret
 
