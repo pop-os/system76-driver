@@ -401,16 +401,18 @@ def _run_firmware_acpi_interrupt(model, interrupt):
     if model not in NEEDS_FIRMWARE_ACPI_INTERRUPTS_GPE6F:
         log.info('ACPI Interrupt fix not needed for %r', model)
         return
-    log.info('Disabling acpi interrupt gpe6F for %r', model)
-    gpe6F = FirmwareACPIInterrupt(model, interrupt)
-    gpe6F.run()
-    return gpe6F
+    log.info('Disabling acpi interrupt %r for %r', interrupt, model)
+    gpe = FirmwareACPIInterrupt(model, interrupt)
+    gpe.run()
+    return gpe
 
 
 def run_firmware_acpi_interrupt(model):
-    interrupt = 'gpe6F'
-    try:
-        return _run_firmware_acpi_interrupt(model, interrupt)
-    except Exception:
-        log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
+    ret = []
+    for interrupt in ['gpe6F', 'gpe03']:
+        try:
+            ret.append(_run_firmware_acpi_interrupt(model, interrupt))
+        except Exception:
+            log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
+    return ret
 
