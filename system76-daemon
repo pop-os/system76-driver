@@ -60,6 +60,7 @@ if not args.model:
 log.info('model: %r', args.model)
 brightness = daemon.run_brightness(args.model)
 airplane = daemon.run_airplane(args.model)
+acpi = daemon.run_firmware_acpi_interrupt(args.model)
 
 mainloop = GLib.MainLoop()
 if args.debug:

@@ -109,6 +109,12 @@ NEEDS_BRIGHTNESS = NEEDS_BRIGHTNESS_ACPI + (
     'lemu6',
 )
 
+# These Products need an acpi interrupt override:
+NEEDS_FIRMWARE_ACPI_INTERRUPTS_GPE6F = (
+    'oryp2',
+    'oryp2-ess',
+)
+
 
 def load_json_conf(filename):
     try:
@@ -374,4 +380,37 @@ def run_brightness(model):
         return _run_brightness(model)
     except Exception:
         log.exception('Error calling _run_brightness(%r):', model)
+
+
+class FirmwareACPIInterrupt:
+    def __init__(self, model, interrupt, rootdir='/'):
+        self.model = model
+        self.interrupt = interrupt
+        self.acpi_interrupt_dir = path.join(rootdir, 
+            'sys', 'firmware', 'acpi', 'interrupts'
+        )
+        self.acpi_interrupt_file = path.join(self.acpi_interrupt_dir, interrupt)
+    
+    
+    def run(self):
+        with open(self.acpi_interrupt_file, 'w') as f:
+            print('disable', file = f)
+        
+
+def _run_firmware_acpi_interrupt(model, interrupt):
+    if model not in NEEDS_FIRMWARE_ACPI_INTERRUPTS_GPE6F:
+        log.info('ACPI Interrupt fix not needed for %r', model)
+        return
+    log.info('Disabling acpi interrupt gpe6F for %r', model)
+    gpe6F = FirmwareACPIInterrupt(model, interrupt)
+    gpe6F.run()
+    return gpe6F
+
+
+def run_firmware_acpi_interrupt(model):
+    interrupt = 'gpe6F'
+    try:
+        return _run_firmware_acpi_interrupt(model, interrupt)
+    except Exception:
+        log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
 
