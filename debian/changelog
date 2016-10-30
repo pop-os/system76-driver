@@ -1,3 +1,9 @@
+system76-driver (16.04.18~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.18
+
+ -- Jason Gerard DeRose <jason@system76.com>  Sun, 30 Oct 2016 13:15:29 -0600
+
 system76-driver (16.04.17) xenial; urgency=low
 
   * Add daemon fix for gpe6F acpi interrupt flood for 'oryp2' and 'oryp2-ess'
