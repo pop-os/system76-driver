@@ -1,3 +1,9 @@
+system76-driver (16.10.4~alpha) yakkety; urgency=low
+
+  * Daily WIP for 16.10.4
+
+ -- Jason Gerard DeRose <jason@system76.com>  Sun, 30 Oct 2016 13:11:44 -0600
+
 system76-driver (16.10.3) yakkety; urgency=low
 
   * Add daemon fix for gpe6F acpi interrupt flood for 'oryp2' and 'oryp2-ess'
