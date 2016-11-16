@@ -431,8 +431,7 @@ def run_hidpi_scaling(model):
     cmd = ['xrandr']
     rootdir = '/'
     
-    p = SubProcess.Popen(cmd, stdout=SubProcess.PIPE)
-    xrandr_string, junk = p.communicate()
+    xrandr_string = SubProcess.check_output(cmd)
     reg = re.compile(r'DP-0.*?[0-9]*? x [0-9]*?mm.*?\*')
     dimension_resolution_string = reg.findall(str(xrandr_string))
     
@@ -466,8 +465,8 @@ def run_hidpi_scaling(model):
         with open(gsettings_file, 'w') as fp:
             fp.write(HIDPI_GSETTINGS_OVERRIDE)
             return True
-        cmd_compile_schemas = ['glib-compile-schemas ' + gsettings_dir + '/']
-        SubProcess.Popen(cmd_compile_schemas, stdout=SubProcess.PIPE)
+        cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
+        SubProcess.check_call(cmd_compile_schemas)
     else:
         
         log.info('Did not detect HiDPI display: %f dpi, %f dpi', dpi_x, dpi_y)
