@@ -419,6 +419,8 @@ def run_firmware_acpi_interrupt(model):
     return ret
 
 
+DPI_DEFAULT = 96
+
 DPI_LIMIT = 170
 
 HIDPI_GSETTINGS_OVERRIDE = """[com.ubuntu.user-interface]
@@ -465,7 +467,7 @@ def run_hidpi_scaling(model):
             fp.write(HIDPI_GSETTINGS_OVERRIDE)
             return True
         cmd_compile_schemas = ['glib-compile-schemas ' + gsettings_dir + '/']
-        p2 = SubProcess.Popen(cmd_compile_schemas, stdout=SubProcess.PIPE)
+        SubProcess.Popen(cmd_compile_schemas, stdout=SubProcess.PIPE)
     else:
         
         log.info('Did not detect HiDPI display: %f dpi, %f dpi', dpi_x, dpi_y)
