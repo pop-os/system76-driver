@@ -61,6 +61,7 @@ log.info('model: %r', args.model)
 brightness = daemon.run_brightness(args.model)
 airplane = daemon.run_airplane(args.model)
 acpi = daemon.run_firmware_acpi_interrupt(args.model)
+hidpi = daemon.run_hidpi_scaling(args.model)
 
 mainloop = GLib.MainLoop()
 if args.debug:
