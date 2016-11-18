@@ -592,9 +592,8 @@ scale-factor={'DP-0': 16}
 """
 
 class hidpi_scaling(FileAction):
-    relpath = path.join('usr', 'share', 'glib-2.0', 'schemas',
-        '90_system76-driver-hidpi.gschema.override'
-    )
+    relpath = ('usr', 'share', 'glib-2.0', 'schemas',
+        '90_system76-driver-hidpi.gschema.override')
     content = HIDPI_GSETTINGS_OVERRIDE
     
     def __init__(self, rootdir='/'):
