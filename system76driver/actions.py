@@ -597,6 +597,9 @@ class hidpi_scaling(FileAction):
     )
     content = HIDPI_GSETTINGS_OVERRIDE
     
+    def __init__(self, rootdir='/'):
+        self.filename = path.join(rootdir, *self.relpath)
+    
     def needs_hidpi_scaling(self):
         cmd = ['xrandr']
         
@@ -630,7 +633,6 @@ class hidpi_scaling(FileAction):
         
         if (dpi_x > DPI_LIMIT or dpi_y > DPI_LIMIT):
             return True
-        
     
     def get_isneeded(self):
         needed = False
