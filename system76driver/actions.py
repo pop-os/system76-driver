@@ -637,9 +637,10 @@ class hidpi_scaling(FileAction):
         needed = False
         if self.read() != self.content:
             needed = True
-        st = os.stat(self.filename)
-        if stat.S_IMODE(st.st_mode) != self.mode:
-            needed = True
+        else:
+            st = os.stat(self.filename)
+            if stat.S_IMODE(st.st_mode) != self.mode:
+                needed = True
         if needed:
             return self.needs_hidpi_scaling()
         return False
