@@ -37,8 +37,6 @@ from gi.repository import GLib
 
 from .mockable import SubProcess
 
-import re
-
 
 log = logging.getLogger(__name__)
 
@@ -418,56 +416,3 @@ def run_firmware_acpi_interrupt(model):
             log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
     return ret
 
-
-DPI_DEFAULT = 96
-
-DPI_LIMIT = 170
-
-HIDPI_GSETTINGS_OVERRIDE = """[com.ubuntu.user-interface]
-scale-factor={'DP-0': 16}
-"""
-
-def run_hidpi_scaling(model):
-    cmd = ['xrandr']
-    rootdir = '/'
-    
-    xrandr_string = SubProcess.check_output(cmd)
-    reg = re.compile(r'DP-0.*?[0-9]*? x [0-9]*?mm.*?\*')
-    dimension_resolution_string = reg.findall(str(xrandr_string))
-    
-    reg = re.compile(r'[0-9]*?mm x [0-9]*?mm')
-    dimension_string = reg.findall(str(dimension_resolution_string))
-    width_mm, height_mm = re.findall('\d+', str(dimension_string))
-    
-    reg = re.compile(r'[0-9]+?x[0-9]+? .*?\*')
-    resolution_string = reg.findall(str(dimension_resolution_string))
-    
-    reg = re.compile(r'[0-9]+?x[0-9]+')
-    resolution_string = reg.findall(str(resolution_string))
-    width_pix, height_pix = re.findall('\d+', str(resolution_string))
-    
-    dpi_x = 0.0
-    dpi_y = 0.0
-    if (width_mm == 0 or height_mm == 0):
-        dpi_x = DPI_DEFAULT
-        dpi_y = DPI_DEFAULT
-    else: 
-        dpi_x = 25.4 * int(width_pix) / int(width_mm)
-        dpi_y = 25.4 * int(height_pix) / int(height_mm)
-    
-    if (dpi_x > DPI_LIMIT or dpi_y > DPI_LIMIT):
-        # We have a HiDPI display.  Set scaling to 2x
-        log.info('Detected HiDPI display: %f dpi, %f dpi', dpi_x, dpi_y)
-        gsettings_dir = path.join(rootdir, 'usr', 'share', 'glib-2.0', 'schemas')
-        gsettings_file = path.join(gsettings_dir, 
-            '90_system76-driver-hidpi.gschema.override'
-        )
-        with open(gsettings_file, 'w') as fp:
-            fp.write(HIDPI_GSETTINGS_OVERRIDE)
-            return True
-        cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
-        SubProcess.check_call(cmd_compile_schemas)
-    else:
-        
-        log.info('Did not detect HiDPI display: %f dpi, %f dpi', dpi_x, dpi_y)
-        return False

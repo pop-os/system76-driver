@@ -83,6 +83,7 @@ PRODUCTS = {
             actions.gfxpayload_text,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
         ],
     },
 
@@ -389,6 +390,7 @@ PRODUCTS = {
             actions.i8042_reset_nomux,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
         ],
     },
 
