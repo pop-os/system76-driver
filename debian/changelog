@@ -1,6 +1,7 @@
 system76-driver (16.04.19~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.19
+  * Fix HiDPI action failure when HiDPI display not present.
 
  -- David Jordan <david2@system76.com>  Tue, 22 Nov 2016 01:34:41 -0700
 
