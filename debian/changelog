@@ -1,3 +1,9 @@
+system76-driver (16.10.6~alpha) yakkety; urgency=low
+
+  * Daily WIP for 16.10.6
+
+ -- David Jordan <david2@system76.com>  Tue, 22 Nov 2016 10:54:40 -0700
+
 system76-driver (16.10.5) yakkety; urgency=low
 
   * Fix HiDPI action failure when HiDPI display not present.
