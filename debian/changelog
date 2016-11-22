@@ -1,6 +1,7 @@
 system76-driver (16.10.6~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.6
+  * Set console font for HiDPI displays
 
  -- David Jordan <david2@system76.com>  Tue, 22 Nov 2016 10:54:40 -0700
 
