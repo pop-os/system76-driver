@@ -632,6 +632,7 @@ class hidpi_scaling(FileAction):
         
         if (dpi_x > DPI_LIMIT or dpi_y > DPI_LIMIT):
             return True
+        return False
     
     def get_isneeded(self):
         needed = False
