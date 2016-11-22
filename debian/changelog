@@ -1,6 +1,7 @@
 system76-driver (16.04.20~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.20
+  * Set console font for HiDPI displays
 
  -- David Jordan <david2@system76.com>  Tue, 22 Nov 2016 09:36:46 -0700
 

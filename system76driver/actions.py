@@ -591,10 +591,30 @@ HIDPI_GSETTINGS_OVERRIDE = """[com.ubuntu.user-interface]
 scale-factor={'DP-0': 16}
 """
 
+CONSOLE_SETUP_CONTENT = """# CONFIGURATION FILE FOR SETUPCON
+
+# Consult the console-setup(5) manual page.
+
+ACTIVE_CONSOLES="/dev/tty[1-6]"
+
+CHARMAP="UTF-8"
+
+CODESET="guess"
+FONTFACE="Terminus"
+FONTSIZE="16x32"
+
+VIDEOMODE=
+
+# The following is an example how to use a braille font
+# FONT='lat9w-08.psf.gz brl-8x8.psf'"""
+
 class hidpi_scaling(FileAction):
     relpath = ('usr', 'share', 'glib-2.0', 'schemas',
         '90_system76-driver-hidpi.gschema.override')
     content = HIDPI_GSETTINGS_OVERRIDE
+    
+    console_setup_content = CONSOLE_SETUP_CONTENT
+    console_setup_mode = 0o644
     
     def __init__(self, rootdir='/'):
         self.filename = path.join(rootdir, *self.relpath)
@@ -651,6 +671,16 @@ class hidpi_scaling(FileAction):
         gsettings_dir = path.join('/', 'usr', 'share', 'glib-2.0', 'schemas')
         cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
         SubProcess.check_call(cmd_compile_schemas)
+        
+        # Configure default console font 
+        # (only if we know we haven't set it before)
+        self.console_setup_filename = path.join('/', 
+            'etc', 'default', 'console-setup')
+        self.atomic_write(self.console_setup_filename, 
+            self.console_setup_content, 
+            self.console_setup_mode
+        )
+        
         
     def describe(self):
         return _('Set default HiDPI scaling factor.')
