@@ -676,7 +676,7 @@ class hidpi_scaling(FileAction):
         # (only if we know we haven't set it before)
         self.console_setup_filename = path.join('/', 
             'etc', 'default', 'console-setup')
-        self.atomic_write(self.console_setup_filename, 
+        atomic_write(self.console_setup_filename, 
             self.console_setup_content, 
             self.console_setup_mode
         )
