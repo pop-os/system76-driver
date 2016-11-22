@@ -1,9 +1,9 @@
 system76-driver (16.10.4~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.4
-  * Add gsettings override for internal HiDPI displays. 
+  * Add gsettings override for internal HiDPI displays.
 
- -- Jason Gerard DeRose <jason@system76.com>  Sun, 30 Oct 2016 13:11:44 -0600
+ -- David Jordan <david2@system76.com>  Tue, 22 Nov 2016 00:17:49 -0700
 
 system76-driver (16.10.3) yakkety; urgency=low
 
