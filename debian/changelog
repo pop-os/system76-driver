@@ -1,3 +1,9 @@
+system76-driver (16.04.19~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.19
+
+ -- David Jordan <david2@system76.com>  Tue, 22 Nov 2016 01:34:41 -0700
+
 system76-driver (16.04.18) xenial; urgency=low
 
   * Add gsettings override for internal HiDPI displays.
