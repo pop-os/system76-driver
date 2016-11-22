@@ -83,6 +83,7 @@ PRODUCTS = {
             actions.gfxpayload_text,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
         ],
     },
 
@@ -380,6 +381,7 @@ PRODUCTS = {
         'drivers': [
             actions.backlight_vendor,
             actions.i8042_reset_nomux,
+            actions.hidpi_scaling,
         ],
     },
     'oryp2-ess': {
@@ -389,6 +391,7 @@ PRODUCTS = {
             actions.i8042_reset_nomux,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
         ],
     },
 
@@ -593,6 +596,7 @@ PRODUCTS = {
             actions.backlight_vendor,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
         ],
     },
 

@@ -582,3 +582,75 @@ class dac_fixup(Action):
     def describe(self):
         return _('Enable high-quality audio DAC')
 
+
+DPI_DEFAULT = 96
+
+DPI_LIMIT = 170
+
+HIDPI_GSETTINGS_OVERRIDE = """[com.ubuntu.user-interface]
+scale-factor={'DP-0': 16}
+"""
+
+class hidpi_scaling(FileAction):
+    relpath = ('usr', 'share', 'glib-2.0', 'schemas',
+        '90_system76-driver-hidpi.gschema.override')
+    content = HIDPI_GSETTINGS_OVERRIDE
+    
+    def __init__(self, rootdir='/'):
+        self.filename = path.join(rootdir, *self.relpath)
+    
+    def needs_hidpi_scaling(self):
+        cmd = ['xrandr']
+        
+        try:
+            xrandr_string = SubProcess.check_output(cmd)
+            reg = re.compile(r'DP-0.*?[0-9]*? x [0-9]*?mm.*?\*')
+            dimension_resolution_string = reg.findall(str(xrandr_string))
+        except:
+            log.info('failed to call xrandr: Please run system76-driver-cli while X is running')
+            return False
+        
+        reg = re.compile(r'[0-9]*?mm x [0-9]*?mm')
+        dimension_string = reg.findall(str(dimension_resolution_string))
+        width_mm, height_mm = re.findall('\d+', str(dimension_string))
+        
+        reg = re.compile(r'[0-9]+?x[0-9]+? .*?\*')
+        resolution_string = reg.findall(str(dimension_resolution_string))
+        
+        reg = re.compile(r'[0-9]+?x[0-9]+')
+        resolution_string = reg.findall(str(resolution_string))
+        width_pix, height_pix = re.findall('\d+', str(resolution_string))
+        
+        dpi_x = 0.0
+        dpi_y = 0.0
+        if (width_mm == 0 or height_mm == 0):
+            dpi_x = DPI_DEFAULT
+            dpi_y = DPI_DEFAULT
+        else: 
+            dpi_x = 25.4 * int(width_pix) / int(width_mm)
+            dpi_y = 25.4 * int(height_pix) / int(height_mm)
+        
+        if (dpi_x > DPI_LIMIT or dpi_y > DPI_LIMIT):
+            return True
+    
+    def get_isneeded(self):
+        needed = False
+        if self.read() != self.content:
+            needed = True
+        else:
+            st = os.stat(self.filename)
+            if stat.S_IMODE(st.st_mode) != self.mode:
+                needed = True
+        if needed:
+            return self.needs_hidpi_scaling()
+        return False
+        
+    def perform(self):
+        self.atomic_write(self.content, self.mode)
+        gsettings_dir = path.join('/', 'usr', 'share', 'glib-2.0', 'schemas')
+        cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
+        SubProcess.check_call(cmd_compile_schemas)
+        
+    def describe(self):
+        return _('Set default HiDPI scaling factor.')
+        
