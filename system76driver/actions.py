@@ -624,8 +624,19 @@ class hidpi_scaling(FileAction):
         
         try:
             xrandr_string = SubProcess.check_output(cmd)
-            reg = re.compile(r'DP-0.*?[0-9]*? x [0-9]*?mm.*?\*')
+            
+            # Check if DP-0 exists
+            reg = re.compile(r'DP-0.*?')
+            if not reg.findall(str(xrandr_string)):
+                log.info('Could not find internal display in xrandr.')
+                return False
+            
+            reg = re.compile(r'DP-0.*?[0-9]*?mm x [0-9]*?mm.*\\n.*[*+]')
             dimension_resolution_string = reg.findall(str(xrandr_string))
+            
+            if not dimension_resolution_string:
+                log.info('Internal display did not report physical dimensions')
+                return False
         except:
             log.info('failed to call xrandr: Please run system76-driver-cli while X is running')
             return False
@@ -634,12 +645,16 @@ class hidpi_scaling(FileAction):
         dimension_string = reg.findall(str(dimension_resolution_string))
         width_mm, height_mm = re.findall('\d+', str(dimension_string))
         
-        reg = re.compile(r'[0-9]+?x[0-9]+? .*?\*')
+        reg = re.compile(r'[0-9]+?x[0-9]+? .*?[*+]?')
         resolution_string = reg.findall(str(dimension_resolution_string))
         
-        reg = re.compile(r'[0-9]+?x[0-9]+')
-        resolution_string = reg.findall(str(resolution_string))
-        width_pix, height_pix = re.findall('\d+', str(resolution_string))
+        try:
+            reg = re.compile(r'[0-9]+?x[0-9]+')
+            resolution_string = reg.findall(str(resolution_string))
+            width_pix, height_pix = re.findall('\d+', str(resolution_string))
+        except:
+            log.info('failed to find resolution')
+            return False
         
         dpi_x = 0.0
         dpi_y = 0.0
