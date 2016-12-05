@@ -1,6 +1,7 @@
 system76-driver (16.04.21~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.21
+  * Correct xrandr output handling for hidpi action.
 
  -- David Jordan <david2@system76.com>  Mon, 05 Dec 2016 13:51:40 -0700
 
