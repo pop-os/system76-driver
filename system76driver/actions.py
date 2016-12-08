@@ -623,37 +623,32 @@ class hidpi_scaling(FileAction):
         cmd = ['xrandr']
         
         try:
-            xrandr_string = SubProcess.check_output(cmd)
-            
-            # Check if DP-0 exists
-            reg = re.compile(r'DP-0.*?')
-            if not reg.findall(str(xrandr_string)):
-                log.info('Could not find internal display in xrandr.')
-                return False
-            
-            reg = re.compile(r'DP-0.*?[0-9]*?mm x [0-9]*?mm.*\\n.*[*+]')
-            dimension_resolution_string = reg.findall(str(xrandr_string))
-            
-            if not dimension_resolution_string:
-                log.info('Internal display did not report physical dimensions')
-                return False
+            xrandr_output = SubProcess.check_output(cmd)
+            xrandr_string = xrandr_output.decode("utf-8")
         except:
             log.info('failed to call xrandr: Please run system76-driver-cli while X is running')
             return False
         
-        reg = re.compile(r'[0-9]*?mm x [0-9]*?mm')
-        dimension_string = reg.findall(str(dimension_resolution_string))
-        width_mm, height_mm = re.findall('\d+', str(dimension_string))
-        
-        reg = re.compile(r'[0-9]+?x[0-9]+? .*?[*+]?')
-        resolution_string = reg.findall(str(dimension_resolution_string))
-        
         try:
-            reg = re.compile(r'[0-9]+?x[0-9]+')
-            resolution_string = reg.findall(str(resolution_string))
-            width_pix, height_pix = re.findall('\d+', str(resolution_string))
+            # Check if DP-0 exists
+            reg = re.compile(r'^DP-0\b', re.MULTILINE)
+            if not reg.findall(str(xrandr_string)):
+                log.info('Could not find internal display in xrandr.')
+                return False
+            
+            # Retrieve physical display dimensions and screen resolution
+            # Picks first resolution entry, may not be the native or current one
+            reg = re.compile(r'''^DP-0\b            # Find the entry for DP-0
+                            .*?
+                            (\d+)mm\ x\ (\d+)mm # Get the physical dimensions
+                            \s*\n\s*
+                            (\d+)x(\d+)         # Get screen resolution
+                            ''',
+                            flags=re.VERBOSE | re.MULTILINE)
+            xrandr_tokens = reg.findall(xrandr_string)
+            width_mm, height_mm, width_pix, height_pix = xrandr_tokens[0]
         except:
-            log.info('failed to find resolution')
+            log.info('Failed to retrieve display size and resolution.')
             return False
         
         dpi_x = 0.0
