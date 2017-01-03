@@ -1,12 +1,11 @@
-system76-driver (16.10.8~alpha) yakkety; urgency=low
+system76-driver (16.10.8) yakkety; urgency=low
 
-  * Daily WIP for 16.10.8
   * debian/control: system76-driver-nvidia now depends on nvidia-367 (in prep
     for GTX 1080, GTX 1070)
   * system76-nvidia-quirks: update Handler to "nvidia-367|nvidia-340"
   * Change model specific nvidia quirks handler to nvidia-375 from nvidia-367
 
- -- David Jordan <david2@system76.com>  Tue, 03 Jan 2017 11:53:08 -0700
+ -- David Jordan <david2@system76.com>  Tue, 03 Jan 2017 16:20:13 -0700
 
 system76-driver (16.10.7) yakkety; urgency=low
 
