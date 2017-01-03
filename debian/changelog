@@ -1,3 +1,9 @@
+system76-driver (16.10.8~alpha) yakkety; urgency=low
+
+  * Daily WIP for 16.10.8
+
+ -- David Jordan <david2@system76.com>  Tue, 03 Jan 2017 11:53:08 -0700
+
 system76-driver (16.10.7) yakkety; urgency=low
 
   * Correct xrandr output handling for hidpi action.
