@@ -1,6 +1,6 @@
 Section "Quirk"
     Identifier "system76-0-oryp2"
-    Handler "nvidia-367"
+    Handler "nvidia-375"
     Match "sys_vendor" "System76, Inc."
     Match "product_version" "oryp2"
     XorgSnippet

@@ -1,6 +1,6 @@
 Section "Quirk"
     Identifier "system76-0-serw10"
-    Handler "nvidia-367"
+    Handler "nvidia-375"
     Match "sys_vendor" "System76, Inc."
     Match "product_version" "serw10"
     XorgSnippet
