@@ -1,3 +1,9 @@
+system76-driver (16.04.23~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.23
+
+ -- David Jordan <david2@system76.com>  Fri, 20 Jan 2017 13:46:20 -0700
+
 system76-driver (16.04.22) xenial; urgency=low
 
   * debian/control: system76-driver-nvidia now depends on nvidia-367 (in prep
