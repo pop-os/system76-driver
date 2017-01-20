@@ -1,3 +1,9 @@
+system76-driver (16.10.9~alpha) yakkety; urgency=low
+
+  * Daily WIP for 16.10.9
+
+ -- David Jordan <david2@system76.com>  Fri, 20 Jan 2017 13:29:58 -0700
+
 system76-driver (16.10.8) yakkety; urgency=low
 
   * debian/control: system76-driver-nvidia now depends on nvidia-367 (in prep
