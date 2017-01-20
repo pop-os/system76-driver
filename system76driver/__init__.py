@@ -33,7 +33,8 @@ log = logging.getLogger(__name__)
 
 # Unfortunately, we need to accomidate some typos and goofs in sys_vendor:
 VALID_SYS_VENDOR = (
-    'System76, Inc.',
+    'System76',             # Current standard
+    'System76, Inc.',       # Previous standard
     'System76, Inc',
     'System76, Inc .',
     'Notebook',
