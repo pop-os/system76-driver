@@ -1,10 +1,9 @@
-system76-driver (16.04.23~alpha) xenial; urgency=low
+system76-driver (16.04.23) xenial; urgency=low
 
-  * Daily WIP for 16.04.23
   * Add oryp3 and oryp3-ess
   * system76driver/__init__.py: Add new sys_vendor to list
 
- -- David Jordan <david2@system76.com>  Fri, 20 Jan 2017 13:46:20 -0700
+ -- David Jordan <david2@system76.com>  Tue, 24 Jan 2017 16:41:22 -0700
 
 system76-driver (16.04.22) xenial; urgency=low
 
