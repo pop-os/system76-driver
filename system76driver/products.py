@@ -394,6 +394,22 @@ PRODUCTS = {
             actions.hidpi_scaling,
         ],
     },
+    'oryp3': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.backlight_vendor,
+            actions.hidpi_scaling,
+        ],
+    },
+    'oryp3-ess': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.backlight_vendor,
+            actions.dac_fixup,
+            actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
+        ],
+    },
 
     # Pangolin:
     'panp4i': {
