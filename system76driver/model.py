@@ -168,6 +168,8 @@ TABLES = {
         'orxp1': 'orxp1',
         'oryp2': 'oryp2',
         'oryp2-ess': 'oryp2-ess',
+        'oryp3': 'oryp3',
+        'oryp3-ess': 'oryp3-ess',
         'ratv6': 'ratv6',
         'ratu1': 'ratu1',
         'ratu2': 'ratu2',
