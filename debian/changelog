@@ -1,10 +1,9 @@
-system76-driver (16.10.9~alpha) yakkety; urgency=low
+system76-driver (16.10.9) yakkety; urgency=low
 
-  * Daily WIP for 16.10.9
   * Add oryp3 and oryp3-ess
   * system76driver/__init__.py: Add new sys_vendor to list
 
- -- David Jordan <david2@system76.com>  Tue, 24 Jan 2017 16:12:18 -0700
+ -- David Jordan <david2@system76.com>  Tue, 24 Jan 2017 16:24:25 -0700
 
 system76-driver (16.10.8) yakkety; urgency=low
 
