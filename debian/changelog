@@ -1,3 +1,9 @@
+system76-driver (16.10.11~alpha) yakkety; urgency=low
+
+  * Daily WIP for 16.10.11
+
+ -- David Jordan <david2@system76.com>  Fri, 27 Jan 2017 11:23:32 -0700
+
 system76-driver (16.10.10) yakkety; urgency=low
 
   * Add nvidia quirks for oryp3 and oryp3-ess
