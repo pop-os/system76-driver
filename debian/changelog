@@ -1,11 +1,10 @@
-system76-driver (16.10.10~alpha) yakkety; urgency=low
+system76-driver (16.10.10) yakkety; urgency=low
 
-  * Daily WIP for 16.10.10
   * Add nvidia quirks for oryp3 and oryp3-ess
   * system76-nvidia-quirks: match sys_vendor 'System76, Inc.|System76'
   * Change bonw11 and serw10 nvidia quirks to also match sys_vendor 'System76'
 
- -- David Jordan <david2@system76.com>  Wed, 25 Jan 2017 09:54:58 -0700
+ -- David Jordan <david2@system76.com>  Thu, 26 Jan 2017 17:40:50 -0700
 
 system76-driver (16.10.9) yakkety; urgency=low
 
