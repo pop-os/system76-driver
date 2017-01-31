@@ -1,6 +1,7 @@
 system76-driver (16.10.11~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.11
+  * debian/system76-driver-nvidia.postinst: run quirks-handler on post install
 
  -- David Jordan <david2@system76.com>  Fri, 27 Jan 2017 11:23:32 -0700
 
