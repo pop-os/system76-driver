@@ -1,6 +1,7 @@
 system76-driver (16.04.25~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.25
+  * debian/system76-driver-nvidia.postinst: run quirks-handler on post install
 
  -- David Jordan <david2@system76.com>  Fri, 27 Jan 2017 11:14:23 -0700
 
