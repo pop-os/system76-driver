@@ -33,7 +33,6 @@ import logging
 import os
 from os import path
 import subprocess
-import sys
 import _thread
 import time
 
