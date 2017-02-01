@@ -527,6 +527,9 @@ class pulseaudio_hp_spdif_desc(FileAction):
 DAC_PATCH = """[codec]
 0x{vendor_id:08x} 0x{subsystem_id:08x} 0
 
+[pincfg]
+0x1b 0x01211060
+
 [verb]
 0x1b 0x707 0x0004
 """
