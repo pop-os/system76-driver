@@ -28,10 +28,12 @@ ACPI virtual device for Fn+F11::
 """
 
 import evdev
+import fcntl
 import json
 import logging
 import os
 from os import path
+import struct
 import subprocess
 import _thread
 import time
@@ -447,6 +449,21 @@ class EssDacAutoswitch:
         ]
 
         return subprocess.call(cmd) == 0
+    
+    def hda_verb(self, device, nid, verb, param):
+        ret = False
+        try:
+            fd = os.open(device, os.O_RDWR)
+            try:
+                data = (nid << 24) | (verb << 8) | param
+                fcntl.ioctl(fd, 0xc0084811, struct.pack('II', data, 0))
+                ret = True
+            except Exception as err:
+                print("Error calling ioctl in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
+            os.close(fd)
+        except Exception as err:
+            print("%r calling ioctl in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
+        return ret
 
     def find_device(self, name):
         for ev_path in evdev.list_devices():
@@ -473,6 +490,8 @@ class EssDacAutoswitch:
                             log.info("Failed to set card profile to analog")
                     else:
                         log.info("Headphones plugged in")
+                        if not self.hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
+                            log.info("Failed to set headphone vref")
                         if not self.set_card_profile("1", "output:iec958-stereo"):
                             log.info("Failed to set card profile to digital")
 
