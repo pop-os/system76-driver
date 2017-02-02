@@ -473,7 +473,7 @@ class EssDacAutoswitch:
         return None
 
     def run(self):
-        name = "HDA Intel PCH Headphone"
+        name = "HDA Intel PCH Speaker Surround"
         device = False
         while not device:
             device = self.find_device(name)
@@ -485,8 +485,8 @@ class EssDacAutoswitch:
         for event in device.read_loop():
             if event.type == 5:
                 # Switch event
-                if event.code == 2:
-                    # Headphone switch
+                if event.code == 6:
+                    # Line out switch
                     if event.value == 0:
                         log.info("Headphones unplugged")
                         if not self.set_card_profile("1", "output:analog-stereo"):
