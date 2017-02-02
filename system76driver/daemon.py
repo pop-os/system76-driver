@@ -474,11 +474,14 @@ class EssDacAutoswitch:
 
     def run(self):
         name = "HDA Intel PCH Headphone"
-        device = self.find_device(name)
-        if not device:
-            log.info("ERROR: " + name + " not found")
-            return
-
+        device = False
+        while not device:
+            device = self.find_device(name)
+            if not device:
+                log.info("ERROR: " + name + " not found")
+                time.sleep(1)
+                
+        log.info("Listening for events on %r: %r", device.name, device.fn)
         for event in device.read_loop():
             if event.type == 5:
                 # Switch event
@@ -490,10 +493,10 @@ class EssDacAutoswitch:
                             log.info("Failed to set card profile to analog")
                     else:
                         log.info("Headphones plugged in")
-                        if not self.hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
-                            log.info("Failed to set headphone vref")
                         if not self.set_card_profile("1", "output:iec958-stereo"):
                             log.info("Failed to set card profile to digital")
+                        if not self.hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
+                            log.info("Failed to set headphone vref")
 
 def _thread_ess_dac_autoswitch(model):
     if model not in NEEDS_ESS_DAC_AUTOSWITCH:
