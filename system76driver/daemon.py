@@ -449,8 +449,8 @@ class EssDacAutoswitch:
         return subprocess.call(cmd) == 0
 
     def find_device(self, name):
-        for path in evdev.list_devices():
-            device = evdev.InputDevice(path)
+        for ev_path in evdev.list_devices():
+            device = evdev.InputDevice(ev_path)
             if device.name == name:
                 return device
         return None
