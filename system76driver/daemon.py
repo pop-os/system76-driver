@@ -459,10 +459,10 @@ class EssDacAutoswitch:
                 fcntl.ioctl(fd, 0xc0084811, struct.pack('II', data, 0))
                 ret = True
             except Exception as err:
-                print("Error calling ioctl in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
+                print("%r calling ioctl in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
             os.close(fd)
         except Exception as err:
-            print("%r calling ioctl in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
+            print("%r calling open in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
         return ret
 
     def find_device(self, name):
