@@ -1,8 +1,10 @@
 system76-driver (16.10.12~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.12
+  * NoFlip fix for Serw10 with GTX 1060
+  * Add support for ESS DAC autoswitching
 
- -- David Jordan <david2@system76.com>  Wed, 01 Feb 2017 15:31:22 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 03 Feb 2017 13:52:22 -0700
 
 system76-driver (16.10.11) yakkety; urgency=low
 
