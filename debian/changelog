@@ -1,9 +1,8 @@
-system76-driver (16.10.13~alpha) yakkety; urgency=low
+system76-driver (16.10.13) yakkety; urgency=low
 
-  * Daily WIP for 16.10.13
   * Update ESS DAC autoswitching to use hardcoded PCI address
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 06 Feb 2017 09:53:39 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 06 Feb 2017 11:18:01 -0700
 
 system76-driver (16.10.12) yakkety; urgency=low
 
