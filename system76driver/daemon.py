@@ -27,11 +27,16 @@ ACPI virtual device for Fn+F11::
     Name (_HID, EisaId ("PNPC000"))
 """
 
-import time
+import evdev
+import fcntl
+import json
+import logging
 import os
 from os import path
-import logging
-import json
+import struct
+import subprocess
+import _thread
+import time
 
 from gi.repository import GLib
 
@@ -117,6 +122,13 @@ NEEDS_FIRMWARE_ACPI_INTERRUPTS_GPE6F = (
     'oryp2-ess',
 )
 
+# These Products need ess dac switch
+NEEDS_ESS_DAC_AUTOSWITCH = (
+    'bonw11',
+    'oryp2-ess',
+    'oryp3-ess',
+    'serw10',
+)
 
 def load_json_conf(filename):
     try:
@@ -418,3 +430,87 @@ def run_firmware_acpi_interrupt(model):
             log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
     return ret
 
+
+class EssDacAutoswitch:
+    def set_card_profile(self, card, profile):
+        #TODO: Cleanup and read through /run/user to find pulse servers
+        user_name = subprocess.check_output(
+                "w -hs | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
+                shell=True
+        ).decode('utf-8').rstrip('\n')
+
+        user_id = int(subprocess.check_output(["id", "-u",  user_name]))
+
+        pulse_server = "unix:/run/user/" + str(user_id) + "/pulse/native"
+
+        cmd = [
+            "sudo", "-u", user_name,
+            "pactl", "--server", pulse_server, "set-card-profile", card, profile
+        ]
+
+        return subprocess.call(cmd) == 0
+    
+    def hda_verb(self, device, nid, verb, param):
+        ret = False
+        try:
+            fd = os.open(device, os.O_RDWR)
+            try:
+                data = (nid << 24) | (verb << 8) | param
+                fcntl.ioctl(fd, 0xc0084811, struct.pack('II', data, 0))
+                ret = True
+            except Exception as err:
+                print("%r calling ioctl in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
+            os.close(fd)
+        except Exception as err:
+            print("%r calling open in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
+        return ret
+
+    def find_device(self, name):
+        for ev_path in evdev.list_devices():
+            device = evdev.InputDevice(ev_path)
+            if device.name == name:
+                return device
+        return None
+
+    def run(self):
+        name = "HDA Intel PCH Speaker Surround"
+        device = False
+        while not device:
+            device = self.find_device(name)
+            if not device:
+                log.info("ERROR: " + name + " not found")
+                time.sleep(1)
+                
+        log.info("Listening for events on %r: %r", device.name, device.fn)
+        for event in device.read_loop():
+            if event.type == 5:
+                # Switch event
+                if event.code == 6:
+                    # Line out switch
+                    if event.value == 0:
+                        log.info("Headphones unplugged")
+                        if not self.set_card_profile("alsa_card.pci-0000_00_1f.3", "output:analog-stereo"):
+                            log.info("Failed to set card profile to analog")
+                    else:
+                        log.info("Headphones plugged in")
+                        if not self.set_card_profile("alsa_card.pci-0000_00_1f.3", "output:iec958-stereo"):
+                            log.info("Failed to set card profile to digital")
+                        if not self.hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
+                            log.info("Failed to set headphone vref")
+
+def _thread_ess_dac_autoswitch(model):
+    if model not in NEEDS_ESS_DAC_AUTOSWITCH:
+        log.info('ESS DAC autoswitch not needed for %r', model)
+        return
+    log.info('ESS DAC autoswitch for %r', model)
+    eda = EssDacAutoswitch()
+    eda.run()
+
+def thread_ess_dac_autoswitch(model):
+    try:
+        return _thread_ess_dac_autoswitch(model)
+    except Exception:
+        log.exception('Error calling _thread_ess_dac_autoswitch(%r):', model)
+
+def run_ess_dac_autoswitch(model):
+    return _thread.start_new_thread(thread_ess_dac_autoswitch, (model,))
