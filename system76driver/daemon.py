@@ -489,11 +489,11 @@ class EssDacAutoswitch:
                     # Line out switch
                     if event.value == 0:
                         log.info("Headphones unplugged")
-                        if not self.set_card_profile("1", "output:analog-stereo"):
+                        if not self.set_card_profile("alsa_card.pci-0000_00_1f.3", "output:analog-stereo"):
                             log.info("Failed to set card profile to analog")
                     else:
                         log.info("Headphones plugged in")
-                        if not self.set_card_profile("1", "output:iec958-stereo"):
+                        if not self.set_card_profile("alsa_card.pci-0000_00_1f.3", "output:iec958-stereo"):
                             log.info("Failed to set card profile to digital")
                         if not self.hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
                             log.info("Failed to set headphone vref")
