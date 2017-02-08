@@ -1,6 +1,7 @@
 system76-driver (16.10.14~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.14
+  * ESS DAC autoswitch: Fix input profile
 
  -- David Jordan <david2@system76.com>  Wed, 08 Feb 2017 11:40:46 -0700
 
