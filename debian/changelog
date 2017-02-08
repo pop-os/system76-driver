@@ -1,3 +1,9 @@
+system76-driver (16.04.27~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.27
+
+ -- David Jordan <david2@system76.com>  Wed, 08 Feb 2017 11:49:04 -0700
+
 system76-driver (16.04.26) xenial; urgency=low
 
   * NoFlip fix for Serw10 with GTX 1060
