@@ -57,6 +57,7 @@ NEEDS_AIRPLANE = frozenset([
     'bonw9',
     'bonw10',
     'bonw11',
+    'bonw12',
     'daru4',
     'galu1',
     'gazp9',
@@ -125,6 +126,7 @@ NEEDS_FIRMWARE_ACPI_INTERRUPTS_GPE6F = (
 # These Products need ess dac switch
 NEEDS_ESS_DAC_AUTOSWITCH = (
     'bonw11',
+    'bonw12',
     'oryp2-ess',
     'oryp3-ess',
     'serw10',
