@@ -1,9 +1,8 @@
-system76-driver (16.10.15~alpha) yakkety; urgency=low
+system76-driver (16.10.15) yakkety; urgency=low
 
-  * Daily WIP for 16.10.15
   * Add bonw12 and wilp13
 
- -- David Jordan <david2@system76.com>  Wed, 15 Feb 2017 13:29:35 -0700
+ -- David Jordan <david2@system76.com>  Mon, 20 Feb 2017 10:31:51 -0700
 
 system76-driver (16.10.14) yakkety; urgency=low
 
