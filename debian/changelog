@@ -1,6 +1,7 @@
 system76-driver (16.04.28~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.28
+  * Add bonw12 and wilp 13
 
  -- David Jordan <david2@system76.com>  Mon, 20 Feb 2017 10:50:12 -0700
 
