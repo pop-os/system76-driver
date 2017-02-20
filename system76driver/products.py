@@ -86,6 +86,15 @@ PRODUCTS = {
             actions.hidpi_scaling,
         ],
     },
+    'bonw12': {
+        'name': 'Bonobo WS',
+        'drivers': [
+            actions.backlight_vendor,
+            actions.dac_fixup,
+            actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
+        ],
+    },
 
     # Darter:
     'daru1': {
@@ -700,6 +709,10 @@ PRODUCTS = {
         'drivers': [],
     },
     'wilp12': {
+        'name': 'Wild Dog Pro',
+        'drivers': [],
+    },
+    'wilp13': {
         'name': 'Wild Dog Pro',
         'drivers': [],
     },
