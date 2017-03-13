@@ -1,10 +1,9 @@
-system76-driver (16.10.16~alpha) yakkety; urgency=low
+system76-driver (16.10.16) yakkety; urgency=low
 
-  * Daily WIP for 16.10.16
   * Add meer3 product
   * Fix meer3 headset jack
 
- -- Jeremy Soller <jeremy@system76.com>  Tue, 21 Feb 2017 15:36:05 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 13 Mar 2017 13:43:28 -0600
 
 system76-driver (16.10.15) yakkety; urgency=low
 
