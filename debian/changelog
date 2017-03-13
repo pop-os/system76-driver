@@ -1,10 +1,9 @@
-system76-driver (16.04.29~alpha) xenial; urgency=low
+system76-driver (16.04.29) xenial; urgency=low
 
-  * Daily WIP for 16.04.29
   * Add meer3 product
   * Fix meer3 headset jack
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 13 Mar 2017 13:41:01 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 13 Mar 2017 13:44:51 -0600
 
 system76-driver (16.04.28) xenial; urgency=low
 
