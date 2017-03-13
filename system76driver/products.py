@@ -229,13 +229,13 @@ PRODUCTS = {
         'drivers': [],
     },
 
-    # Koala:  
+    # Koala:
     'koap1': {
         'name': 'Koala Performance',
         'drivers': [],
     },
 
-    # Kudu:  
+    # Kudu:
     'kudp1': {
         'name': 'Kudu Professional',
         'drivers': [
@@ -300,7 +300,7 @@ PRODUCTS = {
             actions.backlight_vendor,
             actions.internal_mic_gain,
             actions.wifi_pm_disable,
-            actions.hdmi_hotplug_fix, 
+            actions.hdmi_hotplug_fix,
         ],
     },
     'lemu6': {
@@ -376,6 +376,12 @@ PRODUCTS = {
     'meer2': {
         'name': 'Meerkat',
         'drivers': [],
+    },
+    'meer3': {
+        'name': 'Meerkat',
+        'drivers': [
+            actions.headset_fixup
+        ],
     },
 
     # Oryx:
