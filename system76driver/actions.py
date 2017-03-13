@@ -230,10 +230,10 @@ class GrubAction(Action):
 
     >>> class add_foo_bar(GrubAction):
     ...     add = ('foo', 'bar')
-    ... 
+    ...
     ...     def describe(self):
     ...         return _('I add foo and bar')
-    ... 
+    ...
     >>> action = add_foo_bar()
     >>> action.build_new_cmdline('quiet splash acpi_enforce_resources=lax')
     'acpi_enforce_resources=lax bar foo quiet splash'
@@ -245,10 +245,10 @@ class GrubAction(Action):
 
     >>> class remove_baz(GrubAction):
     ...     remove = ('baz',)
-    ... 
+    ...
     ...     def describe(self):
     ...         return _('I remove baz')
-    ... 
+    ...
     >>> action = remove_baz()
     >>> action.build_new_cmdline('quiet baz acpi_enforce_resources=lax splash')
     'acpi_enforce_resources=lax quiet splash'
@@ -417,8 +417,8 @@ class plymouth1080(Action):
 
 class i8042_reset_nomux(GrubAction):
     """
-    Add i8042.reset and i8042.nomux to GRUB_CMDLINE_LINUX_DEFAULT 
-    
+    Add i8042.reset and i8042.nomux to GRUB_CMDLINE_LINUX_DEFAULT
+
     This fixes the touchpad on the oryp2 and oryp2-ess.
     """
 
@@ -510,9 +510,9 @@ class internal_mic_gain(FileAction):
 class pulseaudio_hp_spdif_desc(FileAction):
     relpath = ('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths',
                     'iec958-stereo-output.conf')
-    
+
     _content = None
-    
+
     @property
     def content(self):
         if self._content is None:
@@ -586,6 +586,54 @@ class dac_fixup(Action):
         return _('Enable high-quality audio DAC')
 
 
+HEADSET_PATCH = """[codec]
+0x{vendor_id:08x} 0x{subsystem_id:08x} 0
+
+[pincfg]
+0x19 0x23A11040
+"""
+
+HEADSET_MODPROBE = 'options snd-hda-intel patch=system76-audio-patch\n'
+
+
+class headset_fixup(Action):
+    relpath1 = ('lib', 'firmware', 'system76-audio-patch')
+    relpath2 = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
+
+    def __init__(self, rootdir='/'):
+        self.filename1 = path.join(rootdir, *self.relpath1)
+        self.filename2 = path.join(rootdir, *self.relpath2)
+        self.vendor_id = read_hda_id('vendor_id', rootdir=rootdir)
+        self.subsystem_id = read_hda_id('subsystem_id', rootdir=rootdir)
+        self.content1 = HEADSET_PATCH.format(
+            vendor_id=self.vendor_id,
+            subsystem_id=self.subsystem_id,
+        )
+        self.content2 = HEADSET_MODPROBE
+
+    def read1(self):
+        try:
+            return open(self.filename1, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def read2(self):
+        try:
+            return open(self.filename2, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def get_isneeded(self):
+        return self.read1() != self.content1 or self.read2() != self.content2
+
+    def perform(self):
+        atomic_write(self.filename1, self.content1)
+        atomic_write(self.filename2, self.content2)
+
+    def describe(self):
+        return _('Enable headset microphone')
+
+
 DPI_DEFAULT = 96
 
 DPI_LIMIT = 170
@@ -615,30 +663,30 @@ class hidpi_scaling(FileAction):
     relpath = ('usr', 'share', 'glib-2.0', 'schemas',
         '90_system76-driver-hidpi.gschema.override')
     content = HIDPI_GSETTINGS_OVERRIDE
-    
+
     console_setup_content = CONSOLE_SETUP_CONTENT
     console_setup_mode = 0o644
-    
+
     def __init__(self, rootdir='/'):
         self.filename = path.join(rootdir, *self.relpath)
-    
+
     def needs_hidpi_scaling(self):
         cmd = ['xrandr']
-        
+
         try:
             xrandr_output = SubProcess.check_output(cmd)
             xrandr_string = xrandr_output.decode("utf-8")
         except:
             log.info('failed to call xrandr: Please run system76-driver-cli while X is running')
             return False
-        
+
         try:
             # Check if DP-0 exists
             reg = re.compile(r'^DP-0\b', re.MULTILINE)
             if not reg.findall(str(xrandr_string)):
                 log.info('Could not find internal display in xrandr.')
                 return False
-            
+
             # Retrieve physical display dimensions and screen resolution
             # Picks first resolution entry, may not be the native or current one
             reg = re.compile(r'''^DP-0\b            # Find the entry for DP-0
@@ -653,20 +701,20 @@ class hidpi_scaling(FileAction):
         except:
             log.info('Failed to retrieve display size and resolution.')
             return False
-        
+
         dpi_x = 0.0
         dpi_y = 0.0
         if (width_mm == 0 or height_mm == 0):
             dpi_x = DPI_DEFAULT
             dpi_y = DPI_DEFAULT
-        else: 
+        else:
             dpi_x = 25.4 * int(width_pix) / int(width_mm)
             dpi_y = 25.4 * int(height_pix) / int(height_mm)
-        
+
         if (dpi_x > DPI_LIMIT or dpi_y > DPI_LIMIT):
             return True
         return False
-    
+
     def get_isneeded(self):
         needed = False
         if self.read() != self.content:
@@ -678,23 +726,23 @@ class hidpi_scaling(FileAction):
         if needed:
             return self.needs_hidpi_scaling()
         return False
-        
+
     def perform(self):
         self.atomic_write(self.content, self.mode)
         gsettings_dir = path.join('/', 'usr', 'share', 'glib-2.0', 'schemas')
         cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
         SubProcess.check_call(cmd_compile_schemas)
-        
-        # Configure default console font 
+
+        # Configure default console font
         # (only if we know we haven't set it before)
-        self.console_setup_filename = path.join('/', 
+        self.console_setup_filename = path.join('/',
             'etc', 'default', 'console-setup')
-        atomic_write(self.console_setup_filename, 
-            self.console_setup_content, 
+        atomic_write(self.console_setup_filename,
+            self.console_setup_content,
             self.console_setup_mode
         )
-        
-        
+
+
     def describe(self):
         return _('Set default HiDPI scaling factor.')
-        
+
