@@ -1,6 +1,7 @@
 system76-driver (16.10.18~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.18
+  * Use who instead of w to support longer usernames in ESS DAC autoswitch
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 23 Mar 2017 14:13:51 -0600
 
