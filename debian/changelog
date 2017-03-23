@@ -1,6 +1,8 @@
 system76-driver (16.10.17~alpha) yakkety; urgency=low
 
   * Daily WIP for 16.10.17
+  * Apply ESS DAC pinctl on resume
+  * Fix ESS DAC autoswitch with long usernames
 
  -- Jeremy Soller <jeremy@system76.com>  Mon, 13 Mar 2017 13:48:57 -0600
 
