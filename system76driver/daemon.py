@@ -27,6 +27,8 @@ ACPI virtual device for Fn+F11::
     Name (_HID, EisaId ("PNPC000"))
 """
 
+import dbus
+from dbus.mainloop.glib import DBusGMainLoop
 import evdev
 import fcntl
 import json
@@ -144,7 +146,7 @@ def load_json_conf(filename):
         return {}
     if isinstance(obj, dict):
         return obj
-    log.warning('does not contain JSON dict: %r', filename) 
+    log.warning('does not contain JSON dict: %r', filename)
     return {}
 
 
@@ -300,7 +302,7 @@ class Brightness:
         self.name = name
         self.key = '.'.join([model, name])
         self.current = None
-        self.backlight_dir = path.join(rootdir, 
+        self.backlight_dir = path.join(rootdir,
             'sys', 'class', 'backlight', name
         )
         self.max_brightness_file = path.join(self.backlight_dir, 'max_brightness')
@@ -402,16 +404,16 @@ class FirmwareACPIInterrupt:
     def __init__(self, model, interrupt, rootdir='/'):
         self.model = model
         self.interrupt = interrupt
-        self.acpi_interrupt_dir = path.join(rootdir, 
+        self.acpi_interrupt_dir = path.join(rootdir,
             'sys', 'firmware', 'acpi', 'interrupts'
         )
         self.acpi_interrupt_file = path.join(self.acpi_interrupt_dir, interrupt)
-    
-    
+
+
     def run(self):
         with open(self.acpi_interrupt_file, 'w') as f:
             print('disable', file = f)
-        
+
 
 def _run_firmware_acpi_interrupt(model, interrupt):
     if model not in NEEDS_FIRMWARE_ACPI_INTERRUPTS_GPE6F:
@@ -432,12 +434,26 @@ def run_firmware_acpi_interrupt(model):
             log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
     return ret
 
+def hda_verb(device, nid, verb, param):
+    ret = False
+    try:
+        fd = os.open(device, os.O_RDWR)
+        try:
+            data = (nid << 24) | (verb << 8) | param
+            fcntl.ioctl(fd, 0xc0084811, struct.pack('II', data, 0))
+            ret = True
+        except Exception as err:
+            print("%r calling ioctl in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
+        os.close(fd)
+    except Exception as err:
+        print("%r calling open in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
+    return ret
 
 class EssDacAutoswitch:
     def set_card_profile(self, card, profile):
         #TODO: Cleanup and read through /run/user to find pulse servers
         user_name = subprocess.check_output(
-                "w -hs | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
+                "w -h | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
                 shell=True
         ).decode('utf-8').rstrip('\n')
 
@@ -451,21 +467,6 @@ class EssDacAutoswitch:
         ]
 
         return subprocess.call(cmd) == 0
-    
-    def hda_verb(self, device, nid, verb, param):
-        ret = False
-        try:
-            fd = os.open(device, os.O_RDWR)
-            try:
-                data = (nid << 24) | (verb << 8) | param
-                fcntl.ioctl(fd, 0xc0084811, struct.pack('II', data, 0))
-                ret = True
-            except Exception as err:
-                print("%r calling ioctl in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
-            os.close(fd)
-        except Exception as err:
-            print("%r calling open in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
-        return ret
 
     def find_device(self, name):
         for ev_path in evdev.list_devices():
@@ -482,7 +483,7 @@ class EssDacAutoswitch:
             if not device:
                 log.info("ERROR: " + name + " not found")
                 time.sleep(1)
-                
+
         log.info("Listening for events on %r: %r", device.name, device.fn)
         for event in device.read_loop():
             if event.type == 5:
@@ -497,22 +498,43 @@ class EssDacAutoswitch:
                         log.info("Headphones plugged in")
                         if not self.set_card_profile("alsa_card.pci-0000_00_1f.3", "output:iec958-stereo+input:analog-stereo"):
                             log.info("Failed to set card profile to digital")
-                        if not self.hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
-                            log.info("Failed to set headphone vref")
+                        if not hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
+                            log.info("Failed to set headphone vref on plugin")
 
-def _thread_ess_dac_autoswitch(model):
+def ess_dac_autoswitch_sleep(sleeping):
+    if sleeping:
+        log.info("Sleeping")
+    else:
+        log.info("Resuming")
+        if not hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
+            log.info("Failed to set headphone vref on resume")
+
+def thread_ess_dac_autoswitch(model):
+    try:
+        eda = EssDacAutoswitch()
+        eda.run()
+    except Exception:
+        log.exception('Error running EssDacAutoswitch for %r', model)
+
+def _run_ess_dac_autoswitch(model):
     if model not in NEEDS_ESS_DAC_AUTOSWITCH:
         log.info('ESS DAC autoswitch not needed for %r', model)
         return
     log.info('ESS DAC autoswitch for %r', model)
-    eda = EssDacAutoswitch()
-    eda.run()
-
-def thread_ess_dac_autoswitch(model):
-    try:
-        return _thread_ess_dac_autoswitch(model)
-    except Exception:
-        log.exception('Error calling _thread_ess_dac_autoswitch(%r):', model)
+    if not hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
+        log.info("Failed to set headphone vref on startup")
+    DBusGMainLoop(set_as_default=True)     # integrate into gobject main loop
+    bus = dbus.SystemBus()                 # connect to system wide dbus
+    bus.add_signal_receiver(               # define the signal to listen to
+        ess_dac_autoswitch_sleep,          # callback function
+        'PrepareForSleep',                 # signal name
+        'org.freedesktop.login1.Manager',  # interface
+        'org.freedesktop.login1'           # bus name
+    )
+    return _thread.start_new_thread(thread_ess_dac_autoswitch, (model,))
 
 def run_ess_dac_autoswitch(model):
-    return _thread.start_new_thread(thread_ess_dac_autoswitch, (model,))
+    try:
+        return _run_ess_dac_autoswitch(model)
+    except Exception:
+        log.exception('Error calling _run_ess_dac_autoswitch(%r):', model)
