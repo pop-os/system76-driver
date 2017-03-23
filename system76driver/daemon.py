@@ -453,7 +453,7 @@ class EssDacAutoswitch:
     def set_card_profile(self, card, profile):
         #TODO: Cleanup and read through /run/user to find pulse servers
         user_name = subprocess.check_output(
-                "w -h | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
+                "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
                 shell=True
         ).decode('utf-8').rstrip('\n')
 
