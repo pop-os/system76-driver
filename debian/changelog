@@ -1,10 +1,9 @@
-system76-driver (16.04.30~alpha) xenial; urgency=low
+system76-driver (16.04.30) xenial; urgency=low
 
-  * Daily WIP for 16.04.30
   * Apply ESS DAC pinctl on resume
   * Fix ESS DAC autoswitch with long usernames
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 13 Mar 2017 13:50:11 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 23 Mar 2017 13:39:39 -0600
 
 system76-driver (16.04.29) xenial; urgency=low
 
