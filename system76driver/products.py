@@ -204,7 +204,9 @@ PRODUCTS = {
     },
     'gaze12': {
         'name': 'Gazelle',
-        'drivers': [],
+        'drivers': [
+            actions.internal_mic_gain,
+	],
     },
     'gazu1': {
         'name': 'Gazelle Ultra',
@@ -279,7 +281,9 @@ PRODUCTS = {
     },
     'kudu4': {
         'name': 'Kudu',
-        'drivers': [],
+        'drivers': [
+            actions.internal_mic_gain,
+	],
     },
 
     # Lemur:
