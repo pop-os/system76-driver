@@ -380,7 +380,7 @@ PRODUCTS = {
     'meer3': {
         'name': 'Meerkat',
         'drivers': [
-            actions.headset_fixup
+            actions.headset_fixup,
         ],
     },
 
