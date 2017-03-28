@@ -202,6 +202,10 @@ PRODUCTS = {
             actions.backlight_vendor,
         ],
     },
+    'gaze12': {
+        'name': 'Gazelle',
+        'drivers': [],
+    },
     'gazu1': {
         'name': 'Gazelle Ultra',
         'drivers': [
@@ -272,6 +276,10 @@ PRODUCTS = {
             actions.internal_mic_gain,
             actions.backlight_vendor,
         ],
+    },
+    'kudu4': {
+        'name': 'Kudu',
+        'drivers': [],
     },
 
     # Lemur:
