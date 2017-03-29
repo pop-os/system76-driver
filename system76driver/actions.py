@@ -284,9 +284,8 @@ class GrubAction(Action):
         for line in content.splitlines():
             match = CMDLINE_ADD_DEFAULT_RE.match(line)
             if match:
-                print(match.group(0) + '\n' + CMDLINE_TEMPLATE.format(""))
-                yield match.group(0)
                 yield CMDLINE_TEMPLATE.format("")
+                yield match.group(0)
             else:
                 yield line
           
