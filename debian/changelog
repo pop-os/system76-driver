@@ -1,9 +1,8 @@
-system76-driver (16.10.19~alpha) yakkety; urgency=low
+system76-driver (16.10.19) yakkety; urgency=low
 
-  * Daily WIP for 16.10.19
   * Add 'kudu4' and 'gaze12'
 
- -- Jeremy Soller <jeremy@system76.com>  Thu, 23 Mar 2017 14:29:24 -0600
+ -- David Jordan <david2@system76.com>  Wed, 29 Mar 2017 14:20:15 -0600
 
 system76-driver (16.10.18) yakkety; urgency=low
 
