@@ -1,8 +1,8 @@
-system76-driver (16.10.20~alpha) yakkety; urgency=low
+system76-driver (17.04.0~alpha) zesty; urgency=low
 
-  * Daily WIP for 16.10.20
+  * Daily WIP for 17.04.0
 
- -- David Jordan <david2@system76.com>  Wed, 29 Mar 2017 14:28:27 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 06 Apr 2017 14:28:27 -0600
 
 system76-driver (16.10.19) yakkety; urgency=low
 
