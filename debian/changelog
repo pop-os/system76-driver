@@ -1,9 +1,8 @@
-system76-driver (17.04.0~alpha) zesty; urgency=low
+system76-driver (17.04.0) zesty; urgency=low
 
-  * Daily WIP for 17.04.0
   * Update to zesty series
 
- -- Jeremy Soller <jeremy@system76.com>  Thu, 06 Apr 2017 11:49:05 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 06 Apr 2017 12:07:01 -0600
 
 system76-driver (16.10.19) yakkety; urgency=low
 
