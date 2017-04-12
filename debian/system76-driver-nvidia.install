@@ -1,2 +1,2 @@
 quirks/* usr/share/ubuntu-drivers-common/quirks/
-nvidia-375-39-compiz-fix /lib/systemd/system-sleep/
+system76-nvidia-375-39-compiz-fix /lib/systemd/system-sleep/
