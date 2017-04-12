@@ -37,6 +37,9 @@ from .mockable import SubProcess
 log = logging.getLogger()
 CMDLINE_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$')
 CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
+ 
+CMDLINE_CHECK_DEFAULT_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT')
+CMDLINE_ADD_DEFAULT_RE = re.compile('^GRUB_CMDLINE_LINUX="(.*)"$')
 
 WIFI_PM_DISABLE = """#!/bin/sh
 # Installed by system76-driver
@@ -261,6 +264,7 @@ class GrubAction(Action):
     update_grub = True
     add = tuple()
     remove = tuple()
+    insert_default = False
 
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'default', 'grub')
@@ -268,6 +272,23 @@ class GrubAction(Action):
     def read(self):
         return open(self.filename, 'r').read()
 
+    def has_cmdline_default(self):
+        for line in self.read().splitlines():
+            match = CMDLINE_CHECK_DEFAULT_RE.match(line)
+            if match:
+                return True
+        return False
+        
+    def add_cmdline_default(self, content):
+        print(content)
+        for line in content.splitlines():
+            match = CMDLINE_ADD_DEFAULT_RE.match(line)
+            if match:
+                yield CMDLINE_TEMPLATE.format("")
+                yield match.group(0)
+            else:
+                yield line
+          
     def get_current_cmdline(self):
         for line in self.read().splitlines():
             match = CMDLINE_RE.match(line)
@@ -280,8 +301,7 @@ class GrubAction(Action):
         params.update(self.add)
         return ' '.join(sorted(params))
 
-    def iter_lines(self):
-        content = self.read_and_backup()
+    def iter_lines(self, content):
         for line in content.splitlines():
             match = CMDLINE_RE.match(line)
             if match:
@@ -298,12 +318,19 @@ class GrubAction(Action):
         return not params.issuperset(self.add)
 
     def get_isneeded(self):
-        current = self.get_current_cmdline()
-        params = set(current.split())
+        if self.has_cmdline_default():
+            current = self.get_current_cmdline()
+            params = set(current.split())
+        else:
+            self.insert_default = True
+            return True
         return self.get_isneeded_by_set(params)
 
     def perform(self):
-        content = '\n'.join(self.iter_lines())
+        content = self.read_and_backup()
+        if self.insert_default:
+            content = '\n'.join(self.add_cmdline_default(content))
+        content = '\n'.join(self.iter_lines(content))
         self.atomic_write(content)
 
 

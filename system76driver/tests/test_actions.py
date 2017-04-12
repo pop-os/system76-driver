@@ -409,19 +409,22 @@ class TestGrubAction(TestCase):
         tmp.mkdir('default')
         inst = actions.GrubAction(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
-            list(inst.iter_lines())
+            content = inst.read_and_backup()
+            list(inst.iter_lines(content))
         self.assertEqual(cm.exception.filename, inst.filename)
 
         open(inst.filename, 'x').write(GRUB_ORIG)
-        self.assertEqual('\n'.join(inst.iter_lines()), GRUB_ORIG)
+        content = inst.read_and_backup()
+        self.assertEqual('\n'.join(inst.iter_lines(content)), GRUB_ORIG)
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
 
         open(inst.filename, 'w').write(
             GRUB.format('foo bar aye')
         )
+        content = inst.read_and_backup()
         self.assertEqual(
-            '\n'.join(inst.iter_lines()),
+            '\n'.join(inst.iter_lines(content)),
             GRUB.format('aye bar foo')
         )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
@@ -434,19 +437,22 @@ class TestGrubAction(TestCase):
         tmp.mkdir('default')
         inst = Example(etcdir=tmp.dir)
         with self.assertRaises(FileNotFoundError) as cm:
-            list(inst.iter_lines())
+            content = inst.read_and_backup()
+            list(inst.iter_lines(content))
         self.assertEqual(cm.exception.filename, inst.filename)
 
         open(inst.filename, 'x').write(GRUB_ORIG)
+        content = inst.read_and_backup()
         self.assertEqual(
-            '\n'.join(inst.iter_lines()),
+            '\n'.join(inst.iter_lines(content)),
             GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
         )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
         self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
 
+        content = inst.read_and_backup()
         self.assertEqual(
-            '\n'.join(inst.iter_lines()),
+            '\n'.join(inst.iter_lines(content)),
             GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
         )
         self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
