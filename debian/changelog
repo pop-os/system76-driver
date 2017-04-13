@@ -1,9 +1,8 @@
-system76-driver (17.04.1~alpha) zesty; urgency=low
+system76-driver (17.04.1) zesty; urgency=low
 
-  * Daily WIP for 17.04.1
   * Fix grapical corruption issue with compiz and NVIDIA 375.39 driver
 
- -- David Jordan <david2@system76.com>  Wed, 12 Apr 2017 14:25:05 -0600
+ -- David Jordan <david2@system76.com>  Thu, 13 Apr 2017 16:47:41 -0600
 
 system76-driver (17.04.0) zesty; urgency=low
 
