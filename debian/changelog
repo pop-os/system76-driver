@@ -1,6 +1,7 @@
 system76-driver (16.04.33~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.33
+  * Fix grapical corruption issue with compiz and NVIDIA 375.39 driver
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 12 Apr 2017 15:57:53 -0600
 
