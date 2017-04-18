@@ -128,6 +128,12 @@ PRODUCTS = {
             actions.hdmi_hotplug_fix,
         ],
     },
+    'galp2': {
+        'name': 'Galago Pro',
+        'drivers': [
+            actions.internal_mic_gain,
+	    ],
+    },
 
     # Gazelle:
     'gazp1': {
