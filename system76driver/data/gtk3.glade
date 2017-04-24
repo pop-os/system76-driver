@@ -31,7 +31,7 @@ Ian Santopietro
 
 Documentation:
 Carl Richell</property>
-    <property name="logo">system76_logo_white.svg</property>
+    <property name="logo">76icon.svg</property>
     <property name="license_type">gpl-2-0</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
@@ -52,6 +52,9 @@ Carl Richell</property>
         </child>
       </object>
     </child>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
   </object>
   <object class="GtkTextBuffer" id="detailsText">
     <property name="text" translatable="yes">{Long list of items}
@@ -64,7 +67,7 @@ Carl Richell</property>
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
-    <property name="icon">system76_logo_white.svg</property>
+    <property name="icon">76icon.svg</property>
     <signal name="destroy" handler="onDeleteWindow" swapped="no"/>
     <child>
       <object class="GtkBox" id="box2">
@@ -685,7 +688,11 @@ log file will be available in your home folder.</property>
           <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">system76_logo_white.svg</property>
+            <property name="margin_left">6</property>
+            <property name="margin_right">6</property>
+            <property name="margin_top">6</property>
+            <property name="margin_bottom">6</property>
+            <property name="pixbuf">76icon.svg</property>
           </object>
         </child>
         <child>
