@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+
+# system76-driver: Universal driver for System76 computers
+# Copyright (C) 2005-2017 System76, Inc.
+#
+# This file is part of `system76-driver`.
+#
+# `system76-driver` is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# `system76-driver` is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+"""
+HiDPI daemon to workaround X Server scaling limitations.
+"""
+
+import time
+start_time = time.monotonic()
+import argparse
+import os
+import sys
+import logging
+
+from gi.repository import GLib
+
+
+from gi.repository import GObject
+
+import system76driver
+from system76driver import hidpidaemon
+
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    style='{',
+    format='{asctime}  {levelname}  {message}',
+)
+log = logging.getLogger()
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--model', help='force model rather than detecting it')
+parser.add_argument('--debug', action='store_true', default=False,
+    help='print loaded modules',
+)
+args = parser.parse_args()
+
+if os.getuid() == 0:
+    sys.exit('Error: system76-daemon must be run as user')
+log.info('**** Process start at monotonic time %r', start_time)
+
+if not args.model:
+    args.model = (system76driver.get_product_version())
+log.info('model: %r', args.model)
+
+GObject.threads_init()
+hidpi = hidpidaemon.run_hotplug_autoscaling(args.model)
