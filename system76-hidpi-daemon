@@ -37,6 +37,7 @@ from gi.repository import GObject
 
 import system76driver
 from system76driver import hidpidaemon
+from system76driver.daemon import load_json_conf
 
 
 logging.basicConfig(
@@ -57,9 +58,13 @@ if os.getuid() == 0:
     sys.exit('Error: system76-daemon must be run as user')
 log.info('**** Process start at monotonic time %r', start_time)
 
+disable = daemon.load_json_conf('/etc/system76-daemon.json').get('disable-hidpi')
+log.info(disable)
+
 if not args.model:
     args.model = (system76driver.get_product_version())
 log.info('model: %r', args.model)
 
 GObject.threads_init()
-hidpi = hidpidaemon.run_hotplug_autoscaling(args.model)
+if disable != "True":
+    hidpi = hidpidaemon.run_hotplug_autoscaling(args.model)

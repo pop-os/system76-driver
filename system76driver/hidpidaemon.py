@@ -130,7 +130,18 @@ class HotplugAutoscaling:
         self.panning_entries = []
         self.screen_maximum = XRes(x=0, y=0)
         self.active = True
+        self.update_rate = 2
         
+    def set_update_rate(self):
+        self.read_xrandr()
+        self.update_display_modes()
+        for display in self.display_modes:
+            xstr, ystr = self.get_display_dpi(display)
+            if display.display in ['DP-0', 'eDP-1'] and (xstr > 170 or ystr > 170):
+                self.update_rate = 2
+                return
+        self.update_rate = 200
+    
     def detect_hotplug_changes(self):
         if True:
             reg = re.compile(r'^DP-0|eDP-1\b', re.MULTILINE)
@@ -371,20 +382,20 @@ class HotplugAutoscaling:
                     '--pos', str(pan_x) + 'x' + str(pan_y)]
         return cmd
     
-    def change_scaling_mode(self):
+    def update_display_modes(self):
         reg = re.compile(r'''^((?:eDP|DP|HDMI|DVI|VGA|LVDS)-[(0-9)](?:.[0-9])?) (connected|disconnected).*?(\d+)x(\d+)\+(\d+)\+(\d+).*?(\d+)mm\ x\ (\d+)mm|^   ([0-9]{3,4})x([0-9]{3,4})''', re.MULTILINE)
         xrandr_tokens = reg.findall(str(self.xrandr))
         
-        display_list_nt = []
-        current_display_nt = None
-        current_mode_list_nt = []
+        display_list = []
+        current_display = None
+        current_mode_list = []
         for (display, status, pan_res_x, pan_res_y, pan_pos_x, pan_pos_y, width, height, x_res, y_res) in xrandr_tokens:
             if display != '' and status != '':
                 # Beginning of new display.  The previous display is complete,
                 # so let's append it to the list.
-                if current_display_nt is not None:
-                    display_list_nt.append(current_display_nt)
-                    current_mode_list_nt = []
+                if current_display is not None:
+                    display_list.append(current_display)
+                    current_mode_list = []
                 
                 # Then if we have physical display dimensions,
                 # start building new display.
@@ -396,19 +407,19 @@ class HotplugAutoscaling:
                                           res_y=pan_res_y, 
                                           pos_x=pan_pos_x, 
                                           pos_y=pan_pos_y)
-                    current_display_nt = XDisplay(display=display, 
+                    current_display = XDisplay(display=display, 
                                                   size=size_nt, 
                                                   panning=panning_nt,
                                                   modes=[])
                 else:
                     # Ignore this display.  
                     # It didn't report a physical size, so we can't determine it's density.
-                    current_display_nt = None
+                    current_display = None
             else:
                 # Make sure we actually have a current display.
                 # Bug with simultaneous displays suddenly not reporting physical
                 # dimensions makes this check necessary.
-                if current_display_nt == None:
+                if current_display == None:
                     log.info("Failed to generate XDisplay data: Is xrandr reporting physical size?")
                     self.read_xrandr()
                     time.sleep(1)
@@ -416,19 +427,21 @@ class HotplugAutoscaling:
                     return
                 if x_res.isdecimal() and y_res.isdecimal():
                     # Got mode line. Append it to the current display.
-                    current_mode_list_nt.append(XRes(x=int(x_res), y=int(y_res)))
-                    current_display_nt.modes.append(XRes(x=int(x_res), y=int(y_res)))
+                    current_mode_list.append(XRes(x=int(x_res), y=int(y_res)))
+                    current_display.modes.append(XRes(x=int(x_res), y=int(y_res)))
         
-        current_display_nt.modes.append(current_mode_list_nt)
-        display_list_nt.append(current_display_nt)
-        self.display_modes = display_list_nt
-        
+        current_display.modes.append(current_mode_list)
+        display_list.append(current_display)
+        self.display_modes = display_list
+    
+    def change_scaling_mode(self):
+        self.update_display_modes()
         self.calculate_layout()
         
         internal_hidpi = False
         external_lowdpi = False
         # Check for low-dpi displays
-        for display in display_list_nt:
+        for display in self.display_modes:
             xstr, ystr = self.get_display_dpi(display)
             if display.display in ['DP-0', 'eDP-1'] and (xstr > 170 or ystr > 170):
                 internal_hidpi = True
@@ -442,7 +455,7 @@ class HotplugAutoscaling:
         if internal_hidpi == True and external_lowdpi == True:
             # Assemble xrandr command to set scaling for all displays
             cmd_list = ['xrandr']
-            for display in display_list_nt:
+            for display in self.display_modes:
                 self.unityscales[display.display] = 8
                 cmd_part = self.set_display_scaling(display, force_lowdpi=True)
                 if cmd_part != None:
@@ -463,15 +476,16 @@ class HotplugAutoscaling:
             self.show_dialog()
         else:
             if internal_hidpi == True and external_lowdpi == False:
-                for display in display_list_nt:
+                for display in self.display_modes:
                     self.unityscales[display.display] = 16
             self.revert_display_settings()
         
         return True;
     
     def run(self):
+        self.set_update_rate()
         self.transfer_timeout = False
-        self.timeout_id = GLib.timeout_add(2 * 1000, self.on_timeout)
+        self.timeout_id = GLib.timeout_add(self.update_rate * 1000, self.on_timeout)
         
     def on_timeout(self):
         try:
