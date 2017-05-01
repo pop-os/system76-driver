@@ -1,0 +1,11 @@
+# system76-hidpi-daemon - Support Multi-Monitor Setups on HiDPI System76 Laptops
+#
+#
+
+description "System76 HiDPI Daemon for Unity"
+
+start on desktop-start
+stop on desktop-end
+respawn
+
+exec /usr/lib/system76-driver/system76-hidpi-daemon

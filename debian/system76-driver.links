@@ -1,0 +1,1 @@
+usr/lib/systemd/user/system76-driver-hidpi.service usr/lib/systemd/user/ubuntu-session.target.wants/system76-driver-hidpi.service
