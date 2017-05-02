@@ -239,10 +239,11 @@ class HotplugAutoscaling:
         for display in self.display_modes:
             mode = display.modes[0]
             pan_x, pan_y = self.get_display_panning(display)
-            cmd = cmd + ['--output', display.display, 
-                '--scale', '1x1',
-                '--panning', str(mode.x) + 'x' + str(mode.y) + '+' + str(pan_x) + '+' + str(pan_y) 
-                + '/tracking:' + str(mode.x) + 'x' + str(mode.y) + '+0+0/border:0/0/0/0']
+            if self.model in NVIDIA:
+                cmd = cmd + ['--output', display.display, 
+                    '--scale', '1x1',
+                    '--panning', str(mode.x) + 'x' + str(mode.y) + '+' + str(pan_x) + '+' + str(pan_y) 
+                    + '/tracking:' + str(mode.x) + 'x' + str(mode.y) + '+0+0/border:0/0/0/0']
             if self.model in INTEL:
                 cmd = cmd + ['--output', display.display, 
                     '--mode', str(mode.x) + 'x' + str(mode.y), 
