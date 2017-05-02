@@ -99,7 +99,7 @@ class HotplugDialog(Gtk.MessageDialog):
         
         self.set_keep_above(True)
         self.set_skip_taskbar_hint(False)
-        self.set_title("System76 HiDPI Scaling Dialog")
+        self.set_title("System76 HiDPI Scaling")
         self.set_icon_name("preferences-desktop-display")
         self.thread = None
         
