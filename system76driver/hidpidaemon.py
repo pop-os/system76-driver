@@ -130,16 +130,21 @@ class HotplugAutoscaling:
         self.panning_entries = []
         self.screen_maximum = XRes(x=0, y=0)
         self.active = True
+        self.has_internal_hidpi = False
         self.update_rate = 2
         
-    def set_update_rate(self):
-        self.read_xrandr()
-        self.update_display_modes()
+    def find_internal_hidpi():
         for display in self.display_modes:
             xstr, ystr = self.get_display_dpi(display)
             if display.display in ['DP-0', 'eDP-1'] and (xstr > 170 or ystr > 170):
-                self.update_rate = 2
-                return
+                self.has_internal_hidpi = True
+    
+    def set_update_rate(self):
+        self.read_xrandr()
+        self.update_display_modes()
+        if self.has_internal_hidpi:
+            self.update_rate = 2
+            return
         self.update_rate = 200
     
     def detect_hotplug_changes(self):
@@ -433,11 +438,18 @@ class HotplugAutoscaling:
         current_display.modes.append(current_mode_list)
         display_list.append(current_display)
         self.display_modes = display_list
+        
+        self.find_internal_hidpi()
     
     def change_scaling_mode(self):
         self.update_display_modes()
         self.calculate_layout()
         
+        # Don't manage display modes on non-hidpi laptops.  However, once we start
+        # managing displays we need to keep doing so.
+        if not self.has_internal_hidpi:
+            return False
+            
         internal_hidpi = False
         external_lowdpi = False
         # Check for low-dpi displays
