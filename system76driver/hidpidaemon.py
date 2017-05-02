@@ -133,7 +133,7 @@ class HotplugAutoscaling:
         self.has_internal_hidpi = False
         self.update_rate = 2
         
-    def find_internal_hidpi():
+    def find_internal_hidpi(self):
         for display in self.display_modes:
             xstr, ystr = self.get_display_dpi(display)
             if display.display in ['DP-0', 'eDP-1'] and (xstr > 170 or ystr > 170):
