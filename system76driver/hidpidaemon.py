@@ -82,7 +82,7 @@ class HotplugDialog(Gtk.MessageDialog):
         nvidia_warning = """Please use the NVIDIA X Server Settings tool to arrange your displays.\n\n"""
         if model in INTEL:
             nvidia_warning = """"""
-        secondary_markup = """This will allow normal use of the external display. Graphics on your laptop's display may appear less sharp while an external display is connected, and some apps may need to be restarted.\n\n""" + nvidia_warning + """For more information, see <a href=\"https:system76.com\">this System76 Support article</a>"""
+        secondary_markup = """This will allow normal use of the external display. Graphics on your laptop's display may appear less sharp while an external display is connected, and some apps may need to be restarted.\n\n""" + nvidia_warning + """For more information, see <a href=\"http://support.system76.com/articles/hidpi-multi-monitor/\">this System76 Support article</a>"""
         self.format_secondary_markup(secondary_markup)
         
         self.active = True
