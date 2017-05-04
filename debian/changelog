@@ -1,9 +1,8 @@
-system76-driver (17.04.3~alpha) zesty; urgency=low
+system76-driver (17.04.3) zesty; urgency=low
 
-  * Daily WIP for 17.04.3
   * Add HiDPI/LoDPI autoscaling daemon for multi-monitor setups.
 
- -- David Jordan <david2@system76.com>  Fri, 28 Apr 2017 13:47:04 -0600
+ -- David Jordan <david2@system76.com>  Thu, 04 May 2017 15:07:28 -0600
 
 system76-driver (17.04.2) zesty; urgency=low
 
