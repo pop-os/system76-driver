@@ -665,9 +665,9 @@ DPI_DEFAULT = 96
 
 DPI_LIMIT = 170
 
-HIDPI_GSETTINGS_OVERRIDE = """[com.ubuntu.user-interface]
-scale-factor={'DP-0': 16}
-"""
+HIDPI_GSETTINGS_OVERRIDE = ["""[com.ubuntu.user-interface]
+scale-factor={'""", """': 16}
+"""]
 
 CONSOLE_SETUP_CONTENT = """# CONFIGURATION FILE FOR SETUPCON
 
@@ -689,7 +689,7 @@ VIDEOMODE=
 class hidpi_scaling(FileAction):
     relpath = ('usr', 'share', 'glib-2.0', 'schemas',
         '90_system76-driver-hidpi.gschema.override')
-    content = HIDPI_GSETTINGS_OVERRIDE
+    content = HIDPI_GSETTINGS_OVERRIDE[0] + "DP-0" + HIDPI_GSETTINGS_OVERRIDE[1]
 
     console_setup_content = CONSOLE_SETUP_CONTENT
     console_setup_mode = 0o644
@@ -709,14 +709,14 @@ class hidpi_scaling(FileAction):
 
         try:
             # Check if DP-0 exists
-            reg = re.compile(r'^DP-0\b', re.MULTILINE)
+            reg = re.compile(r'^(DP-0|eDP-1)\b', re.MULTILINE)
             if not reg.findall(str(xrandr_string)):
                 log.info('Could not find internal display in xrandr.')
                 return False
 
             # Retrieve physical display dimensions and screen resolution
             # Picks first resolution entry, may not be the native or current one
-            reg = re.compile(r'''^DP-0\b            # Find the entry for DP-0
+            reg = re.compile(r'''^(DP-0|eDP-1)\b            # Find the entry for DP-0
                             .*?
                             (\d+)mm\ x\ (\d+)mm # Get the physical dimensions
                             \s*\n\s*
@@ -724,7 +724,7 @@ class hidpi_scaling(FileAction):
                             ''',
                             flags=re.VERBOSE | re.MULTILINE)
             xrandr_tokens = reg.findall(xrandr_string)
-            width_mm, height_mm, width_pix, height_pix = xrandr_tokens[0]
+            display_name, width_mm, height_mm, width_pix, height_pix = xrandr_tokens[0]
         except:
             log.info('Failed to retrieve display size and resolution.')
             return False
@@ -739,6 +739,8 @@ class hidpi_scaling(FileAction):
             dpi_y = 25.4 * int(height_pix) / int(height_mm)
 
         if (dpi_x > DPI_LIMIT or dpi_y > DPI_LIMIT):
+            self.content = HIDPI_GSETTINGS_OVERRIDE[0] 
+                + display_name + HIDPI_GSETTINGS_OVERRIDE[1]
             return True
         return False
 
