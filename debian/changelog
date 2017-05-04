@@ -1,6 +1,8 @@
 system76-driver (16.04.35~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.35
+  * Add HiDPI/LoDPI autoscaling daemon for multi-monitor setups.
+  * Update HiDPI action for galp2.
 
  -- David Jordan <david2@system76.com>  Mon, 01 May 2017 16:04:57 -0600
 
