@@ -346,6 +346,14 @@ class HotplugAutoscaling:
         width, height = display.size
         mode = display.modes[0]
         x_res, y_res = mode
+        
+        # Some displays report aspect ratio instead of actual dimensions.
+        if width == 160 and height == 90:
+            if x_res >= 3840 and y_res >= 2160:
+                return 192, 192
+            else:
+                return 96, 96
+            
         if width > 0 and height > 0:
             dpi_x = x_res/width * 25.4
             dpi_y = y_res/height * 25.4
