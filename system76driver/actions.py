@@ -739,8 +739,7 @@ class hidpi_scaling(FileAction):
             dpi_y = 25.4 * int(height_pix) / int(height_mm)
 
         if (dpi_x > DPI_LIMIT or dpi_y > DPI_LIMIT):
-            self.content = HIDPI_GSETTINGS_OVERRIDE[0] 
-                + display_name + HIDPI_GSETTINGS_OVERRIDE[1]
+            self.content = HIDPI_GSETTINGS_OVERRIDE[0] + display_name + HIDPI_GSETTINGS_OVERRIDE[1]
             return True
         return False
 
