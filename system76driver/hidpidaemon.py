@@ -82,7 +82,7 @@ class HotplugDialog(Gtk.MessageDialog):
         nvidia_warning = """Please use the NVIDIA X Server Settings tool to arrange your displays.\n\n"""
         if model in INTEL:
             nvidia_warning = """"""
-        secondary_markup = """This will allow normal use of the external display. Graphics on your laptop's display may appear less sharp while an external display is connected, and some apps may need to be restarted.\n\n""" + nvidia_warning + """For more information, see <a href=\"https:system76.com\">this System76 Support article</a>"""
+        secondary_markup = """This will allow normal use of the external display. Graphics on your laptop's display may appear less sharp while an external display is connected, and some apps may need to be restarted.\n\n""" + nvidia_warning + """For more information, see <a href=\"http://support.system76.com/articles/hidpi-multi-monitor/\">this System76 Support article</a>"""
         self.format_secondary_markup(secondary_markup)
         
         self.active = True
@@ -98,6 +98,9 @@ class HotplugDialog(Gtk.MessageDialog):
         self.set_image(image)
         
         self.set_keep_above(True)
+        self.set_skip_taskbar_hint(False)
+        self.set_title("System76 HiDPI Scaling")
+        self.set_icon_name("preferences-desktop-display")
         self.thread = None
         
     def on_checkbox_toggled(self, button):
@@ -130,16 +133,21 @@ class HotplugAutoscaling:
         self.panning_entries = []
         self.screen_maximum = XRes(x=0, y=0)
         self.active = True
+        self.has_internal_hidpi = False
         self.update_rate = 2
         
-    def set_update_rate(self):
-        self.read_xrandr()
-        self.update_display_modes()
+    def find_internal_hidpi(self):
         for display in self.display_modes:
             xstr, ystr = self.get_display_dpi(display)
             if display.display in ['DP-0', 'eDP-1'] and (xstr > 170 or ystr > 170):
-                self.update_rate = 2
-                return
+                self.has_internal_hidpi = True
+    
+    def set_update_rate(self):
+        self.read_xrandr()
+        self.update_display_modes()
+        if self.has_internal_hidpi:
+            self.update_rate = 2
+            return
         self.update_rate = 200
     
     def detect_hotplug_changes(self):
@@ -234,10 +242,11 @@ class HotplugAutoscaling:
         for display in self.display_modes:
             mode = display.modes[0]
             pan_x, pan_y = self.get_display_panning(display)
-            cmd = cmd + ['--output', display.display, 
-                '--scale', '1x1',
-                '--panning', str(mode.x) + 'x' + str(mode.y) + '+' + str(pan_x) + '+' + str(pan_y) 
-                + '/tracking:' + str(mode.x) + 'x' + str(mode.y) + '+0+0/border:0/0/0/0']
+            if self.model in NVIDIA:
+                cmd = cmd + ['--output', display.display, 
+                    '--scale', '1x1',
+                    '--panning', str(mode.x) + 'x' + str(mode.y) + '+' + str(pan_x) + '+' + str(pan_y) 
+                    + '/tracking:' + str(mode.x) + 'x' + str(mode.y) + '+0+0/border:0/0/0/0']
             if self.model in INTEL:
                 cmd = cmd + ['--output', display.display, 
                     '--mode', str(mode.x) + 'x' + str(mode.y), 
@@ -337,6 +346,14 @@ class HotplugAutoscaling:
         width, height = display.size
         mode = display.modes[0]
         x_res, y_res = mode
+        
+        # Some displays report aspect ratio instead of actual dimensions.
+        if width == 160 and height == 90:
+            if x_res >= 3840 and y_res >= 2160:
+                return 192, 192
+            else:
+                return 96, 96
+            
         if width > 0 and height > 0:
             dpi_x = x_res/width * 25.4
             dpi_y = y_res/height * 25.4
@@ -433,11 +450,18 @@ class HotplugAutoscaling:
         current_display.modes.append(current_mode_list)
         display_list.append(current_display)
         self.display_modes = display_list
+        
+        self.find_internal_hidpi()
     
     def change_scaling_mode(self):
         self.update_display_modes()
         self.calculate_layout()
         
+        # Don't manage display modes on non-hidpi laptops.  However, once we start
+        # managing displays we need to keep doing so.
+        if not self.has_internal_hidpi:
+            return False
+            
         internal_hidpi = False
         external_lowdpi = False
         # Check for low-dpi displays
