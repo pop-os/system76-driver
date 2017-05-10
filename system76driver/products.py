@@ -132,6 +132,7 @@ PRODUCTS = {
         'name': 'Galago Pro',
         'drivers': [
             actions.internal_mic_gain,
+            actions.hidpi_scaling,
 	    ],
     },
 
