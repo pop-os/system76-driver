@@ -709,14 +709,14 @@ class hidpi_scaling(FileAction):
 
         try:
             # Check if DP-0 exists
-            reg = re.compile(r'^DP-0\b', re.MULTILINE)
+            reg = re.compile(r'^(DP-0|eDP-1)\b', re.MULTILINE)
             if not reg.findall(str(xrandr_string)):
                 log.info('Could not find internal display in xrandr.')
                 return False
 
             # Retrieve physical display dimensions and screen resolution
             # Picks first resolution entry, may not be the native or current one
-            reg = re.compile(r'''^DP-0\b            # Find the entry for DP-0
+            reg = re.compile(r'''^(DP-0|eDP-1)\b            # Find the entry for DP-0
                             .*?
                             (\d+)mm\ x\ (\d+)mm # Get the physical dimensions
                             \s*\n\s*

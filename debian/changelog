@@ -1,6 +1,7 @@
 system76-driver (17.04.4~alpha) zesty; urgency=low
 
   * Daily WIP for 17.04.4
+  * Set hidpi console font on galp2.
 
  -- David Jordan <david2@system76.com>  Wed, 10 May 2017 11:30:28 -0600
 
