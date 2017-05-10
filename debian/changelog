@@ -1,9 +1,8 @@
-system76-driver (17.04.4~alpha) zesty; urgency=low
+system76-driver (17.04.4) zesty; urgency=low
 
-  * Daily WIP for 17.04.4
   * Update HiDPI action for galp2.
 
- -- David Jordan <david2@system76.com>  Wed, 10 May 2017 11:30:28 -0600
+ -- David Jordan <david2@system76.com>  Wed, 10 May 2017 16:35:01 -0600
 
 system76-driver (17.04.3) zesty; urgency=low
 
