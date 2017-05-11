@@ -11,11 +11,11 @@ if [ "$2" = "suspend" ] || [ "$2" = "hybrid-sleep" ]; then
         pre) true ;;
         post)
 
-    FGUSER="$(w -h | grep "tty$(sudo fgconsole)"  | cut -d ' ' -f1)"
+    FGUSER="$(who | awk -v vt=tty$(sudo fgconsole) '$0 ~ vt {print $1}')"
     echo "fix FGUSER: $FGUSER"
-    
+
     sleep 2
-    
+
     BACKGROUND="$(su - "$FGUSER" -c 'gsettings get org.gnome.desktop.background picture-uri')"
     GTK="$(su - "$FGUSER" -c 'gsettings get org.gnome.desktop.interface gtk-theme')"
 
@@ -23,16 +23,16 @@ if [ "$2" = "suspend" ] || [ "$2" = "hybrid-sleep" ]; then
     su - "$FGUSER" -c "gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ override-decoration-theme true"
     su - "$FGUSER" -c "gsettings set org.gnome.desktop.interface gtk-theme ''"
     su - "$FGUSER" -c "gsettings set org.gnome.desktop.background picture-uri ''"
-    
+
     sleep 1
-    
+
     su - "$FGUSER" -c "gsettings set org.gnome.desktop.background picture-uri $BACKGROUND"
     su - "$FGUSER" -c "gsettings set org.gnome.desktop.interface gtk-theme $GTK"
-    
+
     sleep 1
-    
+
     su - "$FGUSER" -c "gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ override-decoration-theme false"
-    
+
     BACKGROUND="$(su - "$FGUSER" -c 'gsettings get org.gnome.desktop.background picture-uri')"
     GTK="$(su - "$FGUSER" -c 'gsettings get org.gnome.desktop.interface gtk-theme')"
 
@@ -40,4 +40,3 @@ if [ "$2" = "suspend" ] || [ "$2" = "hybrid-sleep" ]; then
     ;;
 esac
 fi
-
