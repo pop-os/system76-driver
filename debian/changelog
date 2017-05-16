@@ -1,6 +1,8 @@
 system76-driver (16.04.36~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.36
+  * Remove compiz workarounds after releasing NVIDIA 375.66 driver
+  * Enable OpenGL flipping for GTX 1060
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 11 May 2017 09:47:47 -0600
 
