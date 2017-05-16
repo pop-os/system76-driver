@@ -9,7 +9,6 @@ Section "Quirk"
             Driver "nvidia"
             Option "NoLogo" "True"
             Option "FlatPanelProperties" "DFP-1: Dithering = Enabled"
-            Option "NoFlip" "True"
         EndSection
     EndXorgSnippet
 EndSection
