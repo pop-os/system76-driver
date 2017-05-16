@@ -1,11 +1,10 @@
-system76-driver (17.04.5~alpha) zesty; urgency=low
+system76-driver (17.04.5) zesty; urgency=low
 
-  * Daily WIP for 17.04.5
   * Remove compiz workarounds after releasing NVIDIA 375.66 driver
   * Enable OpenGL flipping for GTX 1060
   * Change gsettings override priority to 40
 
- -- David Jordan <david2@system76.com>  Tue, 16 May 2017 11:08:11 -0600
+ -- David Jordan <david2@system76.com>  Tue, 16 May 2017 16:25:28 -0600
 
 system76-driver (17.04.4) zesty; urgency=low
 
