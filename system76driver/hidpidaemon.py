@@ -260,7 +260,7 @@ class HotplugAutoscaling:
             SubProcess.check_output(cmd_gsettings)
         except:
             log.info("Couldn't revert display settings.")
-        self.compiz_workarounds()
+        #self.compiz_workarounds()
     
     def show_dialog(self):
         if not self.dialog:
@@ -495,10 +495,10 @@ class HotplugAutoscaling:
             if self.model not in INTEL:
                 cmd = ['xrandr', '-s', '0']
                 SubProcess.check_output(cmd)
-                # The current NVIDIA driver causes corruption on Compiz when changing xrandr config.  
+                # The NVIDIA driver 375.39 causes corruption on Compiz when changing xrandr config.  
                 # The theme will flicker for a moment.
-                # TODO: Remove workaround once the bug is fixed.
-                self.compiz_workarounds()
+                # FIXED in NVIDIA driver 375.66
+                #self.compiz_workarounds()
             
             self.show_dialog()
         else:
