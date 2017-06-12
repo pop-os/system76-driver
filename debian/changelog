@@ -1,3 +1,9 @@
+system76-driver (17.04.6~alpha) zesty; urgency=low
+
+  * Daily WIP for 17.04.6
+
+ -- David Jordan <david2@system76.com>  Mon, 12 Jun 2017 15:14:29 -0600
+
 system76-driver (17.04.5) zesty; urgency=low
 
   * Remove compiz workarounds after releasing NVIDIA 375.66 driver
