@@ -1,3 +1,9 @@
+system76-driver (16.04.37~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.37
+
+ -- David Jordan <david2@system76.com>  Tue, 13 Jun 2017 17:02:00 -0600
+
 system76-driver (16.04.36) xenial; urgency=low
 
   * Remove compiz workarounds after releasing NVIDIA 375.66 driver
