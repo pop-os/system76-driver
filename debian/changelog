@@ -1,9 +1,8 @@
-system76-driver (16.04.37~alpha) xenial; urgency=low
+system76-driver (16.04.37) xenial; urgency=low
 
-  * Daily WIP for 16.04.37
   * Keep the system76-dev/stable ppa enabled through release upgrades
 
- -- David Jordan <david2@system76.com>  Tue, 13 Jun 2017 17:02:00 -0600
+ -- David Jordan <david2@system76.com>  Mon, 19 Jun 2017 13:52:25 -0600
 
 system76-driver (16.04.36) xenial; urgency=low
 
