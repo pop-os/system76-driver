@@ -1,6 +1,7 @@
 system76-driver (17.04.6~alpha) zesty; urgency=low
 
   * Daily WIP for 17.04.6
+  * Keep the system76-dev/stable ppa enabled through release upgrades
 
  -- David Jordan <david2@system76.com>  Mon, 12 Jun 2017 15:14:29 -0600
 
