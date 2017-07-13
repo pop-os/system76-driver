@@ -43,6 +43,29 @@ log = logging.getLogger(__name__)
 
 FIRMWARE_URI = 'http://iso.system76.com/firmware/current/'
 
+FIRMWARE_SET_NEXT_BOOT = """#!/bin/bash -e
+
+if [ "$EUID" != "0" ]
+then
+    echo "You are not running as root" >&2
+    exit 1
+fi
+
+DISK="$(findmnt -n /boot/efi -o 'MAJ:MIN' | cut -d ':' -f 1)"
+PART="$(findmnt -n /boot/efi -o 'MAJ:MIN' | cut -d ':' -f 2)"
+DEV="/dev/$(lsblk -n -o 'KNAME,MAJ:MIN' | grep "${DISK}:0" | cut -d ' ' -f 1)"
+
+echo -e "\e[1mCreating Boot1776\e[0m" >&2
+efibootmgr -B -b 1776 || true
+efibootmgr -C -b 1776 -d "${DEV}" -p "${PART}" -l '\\system76-fu\\boot.efi' -L "System76 Firmware Update"
+
+echo -e "\e[1mSetting BootNext\e[0m" >&2
+efibootmgr -n 1776
+
+echo -e "\e[1mInstalled system76-fu\e[0m" >&2
+"""
+
+
 class FirmwareDialog(Gtk.MessageDialog):
     def __init__(self, parent):
         Gtk.MessageDialog.__init__(self, parent, 0, Gtk.MessageType.QUESTION,
@@ -67,6 +90,7 @@ def get_url(filename):
     return 'http://iso.system76.com/firmware/current/{}'.format(filename)
 
 def get_signed_tarball(filename=None):
+    request.urlcleanup()
     signed_firmware = request.urlopen(get_url(filename)).read()
     key_file = open('verify', 'rb')
     verify_key = nacl.signing.VerifyKey(key_file.read(), encoder=nacl.encoding.HexEncoder)
@@ -84,6 +108,17 @@ def extract_tarball(tar, directory):
     os.chmod(directory, 0o700)
     tar.extractall(directory)
     os.chmod(directory, 0o500)
+    
+def set_next_boot():
+    handle, name = tempfile.mkstemp()
+    f = open(handle, 'w')
+    f.write(FIRMWARE_SET_NEXT_BOOT)
+    f.close()
+    os.chmod(name, 0o500)
+    try:
+        output = SubProcess.check_output(['sudo', name])
+    except:
+        return      
 
 def _run_firmware_updater(model):
     updater = get_signed_tarball('system76-fu')
@@ -98,8 +133,14 @@ def _run_firmware_updater(model):
             response = dialog.run()
             if response == Gtk.ResponseType.YES:
                 log.info("Setting up firmware installation.")
-                #Now install firmware to /efi/boot and set boot.efi on next boot
+                #Remove old firmware updater
+                try:
+                    shutil.rmtree('/boot/efi/system76-fu')
+                except:
+                    pass
+                #Install firmware to /efi/boot and set boot.efi on next boot.
                 shutil.copytree(tempdirname, '/boot/efi/system76-fu')
+                set_next_boot()
             else:
                 return
     
