@@ -69,8 +69,17 @@ echo -e "\e[1mInstalled system76-fu\e[0m" >&2
 class FirmwareDialog(Gtk.MessageDialog):
     def __init__(self, parent):
         Gtk.MessageDialog.__init__(self, parent, 0, Gtk.MessageType.QUESTION,
-            Gtk.ButtonsType.YES_NO, "New Firmware is available for your computer.  Install on next reboot?")
-        print("dialog")
+            Gtk.ButtonsType.YES_NO, "New Firmware is available.\nInstall on next reboot?")
+        
+        image = Gtk.Image()
+        image.set_from_icon_name('system76-driver', Gtk.IconSize.DIALOG)
+        image.show()
+        self.set_image(image)
+        
+        self.set_keep_above(True)
+        self.set_skip_taskbar_hint(False)
+        self.set_title("System76 Firmware Updater")
+        self.set_icon_name("system76-driver")
 
 def get_url(filename):
     if not filename:
@@ -81,7 +90,6 @@ def get_url(filename):
         ec = Ec()
         project = ec.project()
         ec.close()
-        print(project)
         
         project_hash = nacl.hash.sha256(bytes(project, 'utf8'), encoder=nacl.encoding.HexEncoder).decode('utf-8')
         
@@ -121,33 +129,35 @@ def set_next_boot():
         return      
 
 def _run_firmware_updater(model):
+    #Download the latest updater and firmware for this machine and verify source.
     updater = get_signed_tarball('system76-fu')
     firmware = get_signed_tarball()
+    
     if updater and firmware:
+        #Extract to temporary directory and set safe permissions.
         with tempfile.TemporaryDirectory() as tempdirname:
             extract_tarball(updater, tempdirname)
             os.mkdir(path.join(tempdirname, 'firmware'))
             extract_tarball(firmware, path.join(tempdirname, 'firmware'))
-            print("Extracted firmware...Do you want to install it?")
+            
+            #Confirm installation with the user.
             dialog = FirmwareDialog(Gtk.Window())
             response = dialog.run()
             if response == Gtk.ResponseType.YES:
                 log.info("Setting up firmware installation.")
+                
                 #Remove old firmware updater
                 try:
                     shutil.rmtree('/boot/efi/system76-fu')
                 except:
                     pass
+                    
                 #Install firmware to /efi/boot and set boot.efi on next boot.
                 shutil.copytree(tempdirname, '/boot/efi/system76-fu')
                 set_next_boot()
             else:
                 return
-    
-    
-    
-    
-    return
+    log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
 
 def run_firmware_updater(model):
     try:
