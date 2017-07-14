@@ -33,7 +33,8 @@ import time
 from os import path
 import os
 import shutil
-from .mockable import SubProcess 
+import subprocess
+from .mockable import SubProcess
 from gi.repository import Gtk
 from gi.repository import GLib
 
@@ -70,12 +71,12 @@ class FirmwareDialog(Gtk.MessageDialog):
     def __init__(self, parent):
         Gtk.MessageDialog.__init__(self, parent, 0, Gtk.MessageType.QUESTION,
             Gtk.ButtonsType.YES_NO, "New Firmware is available.\nInstall on next reboot?")
-        
+
         image = Gtk.Image()
         image.set_from_icon_name('system76-driver', Gtk.IconSize.DIALOG)
         image.show()
         self.set_image(image)
-        
+
         self.set_keep_above(True)
         self.set_skip_taskbar_hint(False)
         self.set_title("System76 Firmware Updater")
@@ -90,11 +91,11 @@ def get_url(filename):
         ec = Ec()
         project = ec.project()
         ec.close()
-        
+
         project_hash = nacl.hash.sha256(bytes(project, 'utf8'), encoder=nacl.encoding.HexEncoder).decode('utf-8')
-        
+
         filename = "{}_{}".format(model, project_hash)
-    
+
     return 'http://iso.system76.com/firmware/current/{}'.format(filename)
 
 def get_signed_tarball(filename=None):
@@ -116,7 +117,7 @@ def extract_tarball(tar, directory):
     os.chmod(directory, 0o700)
     tar.extractall(directory)
     os.chmod(directory, 0o500)
-    
+
 def set_next_boot():
     handle, name = tempfile.mkstemp()
     f = open(handle, 'w')
@@ -126,32 +127,62 @@ def set_next_boot():
     try:
         output = SubProcess.check_output(['sudo', name])
     except:
-        return      
+        return
 
 def _run_firmware_updater(model):
     #Download the latest updater and firmware for this machine and verify source.
     updater = get_signed_tarball('system76-fu')
     firmware = get_signed_tarball()
-    
+
     if updater and firmware:
         #Extract to temporary directory and set safe permissions.
         with tempfile.TemporaryDirectory() as tempdirname:
             extract_tarball(updater, tempdirname)
             os.mkdir(path.join(tempdirname, 'firmware'))
             extract_tarball(firmware, path.join(tempdirname, 'firmware'))
-            
+
             #Confirm installation with the user.
-            dialog = FirmwareDialog(Gtk.Window())
-            response = dialog.run()
-            if response == Gtk.ResponseType.YES:
+            if False:
+                user_name = subprocess.check_output(
+                        "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
+                        shell=True
+                ).decode('utf-8').rstrip('\n')
+
+                display_name = subprocess.check_output(
+                        "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $5}'",
+                        shell=True
+                ).decode('utf-8').rstrip('\n').lstrip('(').rstrip(')')
+
+                if len(user_name) == 0 or len(display_name) == 0:
+                    return
+
+                args = [
+                    "sudo",
+                    "-u", user_name,
+                    "DISPLAY=" + display_name,
+                    "--",
+                    "zenity",
+                    "--question",
+                    "--icon-name=system76-driver",
+                    "--title=System76 Firmware Updater",
+                    "--text=New firmware is available.\nWould you like to update?"
+                ]
+
+                proceed = subprocess.call(args) == 0
+            else:
+                dialog = FirmwareDialog(Gtk.Window())
+                response = dialog.run()
+                proceed = response == Gtk.ResponseType.YES
+
+            if proceed:
                 log.info("Setting up firmware installation.")
-                
+
                 #Remove old firmware updater
                 try:
                     shutil.rmtree('/boot/efi/system76-fu')
                 except:
                     pass
-                    
+
                 #Install firmware to /efi/boot and set boot.efi on next boot.
                 shutil.copytree(tempdirname, '/boot/efi/system76-fu')
                 set_next_boot()
