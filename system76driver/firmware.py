@@ -59,12 +59,12 @@ DEV="/dev/$(lsblk -n -o 'KNAME,MAJ:MIN' | grep "${DISK}:0" | cut -d ' ' -f 1)"
 
 echo -e "\e[1mCreating Boot1776\e[0m" >&2
 efibootmgr -B -b 1776 || true
-efibootmgr -C -b 1776 -d "${DEV}" -p "${PART}" -l '\\system76-fu\\boot.efi' -L "System76 Firmware Update"
+efibootmgr -C -b 1776 -d "${DEV}" -p "${PART}" -l '\\system76-firmware-update\\boot.efi' -L "System76 Firmware Update"
 
 echo -e "\e[1mSetting BootNext\e[0m" >&2
 efibootmgr -n 1776
 
-echo -e "\e[1mInstalled system76-fu\e[0m" >&2
+echo -e "\e[1mInstalled system76-firmware-update\e[0m" >&2
 """
 
 def get_url(filename):
@@ -121,8 +121,8 @@ def set_next_boot():
         return
 
 def _run_firmware_updater(model):
-    if path.isdir('/boot/efi/system76-fu'):
-        old_date = path.getmtime('/boot/efi/system76-fu')
+    if path.isdir('/boot/efi/system76-firmware-update'):
+        old_date = path.getmtime('/boot/efi/system76-firmware-update')
         print(old_date)
     else:
         old_date = 0
@@ -159,7 +159,7 @@ def _run_firmware_updater(model):
         log.info("Firmware package not found")
         return
 
-    updater = get_signed_tarball('system76-fu')
+    updater = get_signed_tarball('system76-firmware-update')
     if not updater:
         log.info("Firmware updater not found")
         return
@@ -186,11 +186,11 @@ def _run_firmware_updater(model):
             log.info("Setting up firmware installation.")
 
             #Remove old firmware updater
-            if path.isdir('/boot/efi/system76-fu'):
-                shutil.rmtree('/boot/efi/system76-fu')
+            if path.isdir('/boot/efi/system76-firmware-update'):
+                shutil.rmtree('/boot/efi/system76-firmware-update')
 
             #Install firmware to /efi/boot and set boot.efi on next boot.
-            shutil.copytree(tempdirname, '/boot/efi/system76-fu')
+            shutil.copytree(tempdirname, '/boot/efi/system76-firmware-update')
             set_next_boot()
 
             log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
