@@ -44,6 +44,8 @@ class FirmwareDialog(Gtk.MessageDialog):
 dialog = FirmwareDialog(Gtk.Window())
 response = dialog.run()
 if response == Gtk.ResponseType.YES:
+    dialog.hide()
     os._exit(0)
 else:
+    dialog.hide()
     os._exit(1)

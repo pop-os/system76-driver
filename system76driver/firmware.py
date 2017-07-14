@@ -121,10 +121,21 @@ def set_next_boot():
         return
 
 def _run_firmware_updater(model):
+    if path.isdir('/boot/efi/system76-fu'):
+        old_date = path.getmtime('/boot/efi/system76-fu')
+        print(old_date)
+    else:
+        old_date = 0
+
     #Check for newer timestamp
     info = get_info()
     html_date = info['Last-Modified']
-    date = datetime.datetime(*parsedate(html_date)[:6])
+    date = datetime.datetime(*parsedate(html_date)[:6]).timestamp()
+    print(date, old_date)
+
+    if old_date >= date:
+        print("Already up to date")
+        return
 
     #Wait for user
     while True:
