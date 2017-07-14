@@ -35,7 +35,6 @@ import os
 import shutil
 import subprocess
 from .mockable import SubProcess
-from gi.repository import Gtk
 from gi.repository import GLib
 
 import logging
@@ -65,22 +64,6 @@ efibootmgr -n 1776
 
 echo -e "\e[1mInstalled system76-fu\e[0m" >&2
 """
-
-
-class FirmwareDialog(Gtk.MessageDialog):
-    def __init__(self, parent):
-        Gtk.MessageDialog.__init__(self, parent, 0, Gtk.MessageType.QUESTION,
-            Gtk.ButtonsType.YES_NO, "New Firmware is available.\nInstall on next reboot?")
-
-        image = Gtk.Image()
-        image.set_from_icon_name('system76-driver', Gtk.IconSize.DIALOG)
-        image.show()
-        self.set_image(image)
-
-        self.set_keep_above(True)
-        self.set_skip_taskbar_hint(False)
-        self.set_title("System76 Firmware Updater")
-        self.set_icon_name("system76-driver")
 
 def get_url(filename):
     if not filename:
@@ -142,39 +125,29 @@ def _run_firmware_updater(model):
             extract_tarball(firmware, path.join(tempdirname, 'firmware'))
 
             #Confirm installation with the user.
-            if False:
-                user_name = subprocess.check_output(
-                        "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
-                        shell=True
-                ).decode('utf-8').rstrip('\n')
 
-                display_name = subprocess.check_output(
-                        "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $5}'",
-                        shell=True
-                ).decode('utf-8').rstrip('\n').lstrip('(').rstrip(')')
+            user_name = subprocess.check_output(
+                    "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
+                    shell=True
+            ).decode('utf-8').rstrip('\n')
 
-                if len(user_name) == 0 or len(display_name) == 0:
-                    return
+            display_name = subprocess.check_output(
+                    "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $5}'",
+                    shell=True
+            ).decode('utf-8').rstrip('\n').lstrip('(').rstrip(')')
 
-                args = [
-                    "sudo",
-                    "-u", user_name,
-                    "DISPLAY=" + display_name,
-                    "--",
-                    "zenity",
-                    "--question",
-                    "--icon-name=system76-driver",
-                    "--title=System76 Firmware Updater",
-                    "--text=New firmware is available.\nWould you like to update?"
-                ]
+            if len(user_name) == 0 or len(display_name) == 0:
+                return
 
-                proceed = subprocess.call(args) == 0
-            else:
-                dialog = FirmwareDialog(Gtk.Window())
-                response = dialog.run()
-                proceed = response == Gtk.ResponseType.YES
+            args = [
+                "sudo",
+                "-u", user_name,
+                "DISPLAY=" + display_name,
+                "--",
+                "./system76-firmware-dialog"
+            ]
 
-            if proceed:
+            if subprocess.call(args) == 0:
                 log.info("Setting up firmware installation.")
 
                 #Remove old firmware updater
