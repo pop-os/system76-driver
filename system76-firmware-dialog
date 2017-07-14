@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+
+# system76-driver: Universal driver for System76 computers
+# Copyright (C) 2005-2016 System76, Inc.
+#
+# This file is part of `system76-driver`.
+#
+# `system76-driver` is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# `system76-driver` is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+import gi
+gi.require_version('Gtk', '3.0')
+
+from gi.repository import Gtk
+import os
+
+class FirmwareDialog(Gtk.MessageDialog):
+    def __init__(self, parent):
+        Gtk.MessageDialog.__init__(self, parent, 0, Gtk.MessageType.QUESTION,
+            Gtk.ButtonsType.YES_NO, "New Firmware is available.\nInstall on next reboot?")
+
+        image = Gtk.Image()
+        image.set_from_icon_name('system76-driver', Gtk.IconSize.DIALOG)
+        image.show()
+        self.set_image(image)
+
+        self.set_keep_above(True)
+        self.set_skip_taskbar_hint(False)
+        self.set_title("System76 Firmware Updater")
+        self.set_icon_name("system76-driver")
+
+
+dialog = FirmwareDialog(Gtk.Window())
+response = dialog.run()
+if response == Gtk.ResponseType.YES:
+    os._exit(0)
+else:
+    os._exit(1)
