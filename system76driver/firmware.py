@@ -21,7 +21,9 @@
 Firmware updater for System76 computers.
 """
 
+import datetime
 from .ecflash import Ec
+from email.utils import parsedate
 import nacl.encoding
 import nacl.signing
 import nacl.hash
@@ -81,6 +83,12 @@ def get_url(filename):
 
     return 'http://iso.system76.com/firmware/current/{}'.format(filename)
 
+def get_info(filename=None):
+    request.urlcleanup()
+    response = request.urlopen(get_url(filename))
+    return response.info()
+
+
 def get_signed_tarball(filename=None):
     request.urlcleanup()
     signed_firmware = request.urlopen(get_url(filename)).read()
@@ -113,55 +121,70 @@ def set_next_boot():
         return
 
 def _run_firmware_updater(model):
+    #Check for newer timestamp
+    info = get_info()
+    html_date = info['Last-Modified']
+    date = datetime.datetime(*parsedate(html_date)[:6])
+
+    #Wait for user
+    while True:
+        names = subprocess.check_output(
+                "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1 \",\" $5}'",
+                shell=True
+        ).decode('utf-8').rstrip('\n').split(',')
+
+        if len(names) == 2:
+            user_name = names[0]
+            display_name = names[1].lstrip('(').rstrip(')')
+            log.info("User %r logged in at %r", user_name, display_name)
+            break
+        else:
+            log.info("Waiting for logged in user")
+            time.sleep(5)
+
     #Download the latest updater and firmware for this machine and verify source.
-    updater = get_signed_tarball('system76-fu')
     firmware = get_signed_tarball()
+    if not firmware:
+        log.info("Firmware package not found")
+        return
 
-    if updater and firmware:
-        #Extract to temporary directory and set safe permissions.
-        with tempfile.TemporaryDirectory() as tempdirname:
-            extract_tarball(updater, tempdirname)
-            os.mkdir(path.join(tempdirname, 'firmware'))
-            extract_tarball(firmware, path.join(tempdirname, 'firmware'))
+    updater = get_signed_tarball('system76-fu')
+    if not updater:
+        log.info("Firmware updater not found")
+        return
 
-            #Confirm installation with the user.
+    #Extract to temporary directory and set safe permissions.
+    with tempfile.TemporaryDirectory() as tempdirname:
+        extract_tarball(updater, tempdirname)
+        os.mkdir(path.join(tempdirname, 'firmware'))
+        extract_tarball(firmware, path.join(tempdirname, 'firmware'))
 
-            user_name = subprocess.check_output(
-                    "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
-                    shell=True
-            ).decode('utf-8').rstrip('\n')
+        log.info("Prompting %r at %r for firmware installation", user_name, display_name)
 
-            display_name = subprocess.check_output(
-                    "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $5}'",
-                    shell=True
-            ).decode('utf-8').rstrip('\n').lstrip('(').rstrip(')')
+        #Confirm installation with the user.
+        args = [
+            "sudo",
+            "-u", user_name,
+            "DISPLAY=" + display_name,
+            "--",
+            "./system76-firmware-dialog"
+        ]
 
-            if len(user_name) == 0 or len(display_name) == 0:
-                return
+        code = subprocess.call(args)
+        if code == 0:
+            log.info("Setting up firmware installation.")
 
-            args = [
-                "sudo",
-                "-u", user_name,
-                "DISPLAY=" + display_name,
-                "--",
-                "./system76-firmware-dialog"
-            ]
+            #Remove old firmware updater
+            if path.isdir('/boot/efi/system76-fu'):
+                shutil.rmtree('/boot/efi/system76-fu')
 
-            if subprocess.call(args) == 0:
-                log.info("Setting up firmware installation.")
+            #Install firmware to /efi/boot and set boot.efi on next boot.
+            shutil.copytree(tempdirname, '/boot/efi/system76-fu')
+            set_next_boot()
 
-                #Remove old firmware updater
-                try:
-                    shutil.rmtree('/boot/efi/system76-fu')
-                except:
-                    pass
-
-                #Install firmware to /efi/boot and set boot.efi on next boot.
-                shutil.copytree(tempdirname, '/boot/efi/system76-fu')
-                set_next_boot()
-            else:
-                return
-    log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
+            log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
+        else:
+            log.info("Firmware installation cancelled with code %r", code)
 
 def run_firmware_updater(model):
     try:

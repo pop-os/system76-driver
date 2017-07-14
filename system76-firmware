@@ -59,12 +59,3 @@ if not args.model:
     #args.model = (model or system76driver.get_product_version())
     args.model = system76driver.get_product_version()
 updater = firmware.run_firmware_updater(args.model)
-
-#mainloop = GLib.MainLoop()
-#if args.debug:
-#    names = sorted(sys.modules)
-#    for name in names:
-#        print(name)
-#    print(len(names))
-#mainloop.run()
-
