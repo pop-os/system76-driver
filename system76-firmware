@@ -58,4 +58,6 @@ if not args.model:
     #model = daemon.load_json_conf('/etc/system76-daemon.json').get('model')
     #args.model = (model or system76driver.get_product_version())
     args.model = system76driver.get_product_version()
-updater = firmware.run_firmware_updater(args.model)
+    updater = firmware.run_firmware_updater(model=None)
+else:
+    updater = firmware.run_firmware_updater(args.model)

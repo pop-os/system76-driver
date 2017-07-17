@@ -67,18 +67,20 @@ efibootmgr -n 1776
 echo -e "\e[1mInstalled system76-firmware-update\e[0m" >&2
 """
 
+def get_project_hash():
+    ec = Ec()
+    project = ec.project()
+    ec.close()
+
+    return nacl.hash.sha256(bytes(project, 'utf8'), encoder=nacl.encoding.HexEncoder).decode('utf-8')
+
 def get_url(filename):
     if not filename:
         f = open("/sys/class/dmi/id/product_version")
         model = f.read().strip()
         f.close()
 
-        ec = Ec()
-        project = ec.project()
-        ec.close()
-
-        project_hash = nacl.hash.sha256(bytes(project, 'utf8'), encoder=nacl.encoding.HexEncoder).decode('utf-8')
-
+        project_hash = get_project_hash()
         filename = "{}_{}".format(model, project_hash)
 
     return 'http://iso.system76.com/firmware/current/{}'.format(filename)
@@ -154,7 +156,11 @@ def _run_firmware_updater(model):
             time.sleep(5)
 
     #Download the latest updater and firmware for this machine and verify source.
-    firmware = get_signed_tarball()
+    if not model:
+        firmware = get_signed_tarball()
+    else:
+        firmware = get_signed_tarball("{}_{}".format(model, get_project_hash()))
+        
     if not firmware:
         log.info("Firmware package not found")
         return
