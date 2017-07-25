@@ -25,6 +25,7 @@ from .ecflash import Ec
 import nacl.encoding
 import nacl.signing
 import nacl.hash
+import hashlib
 from urllib import parse, request
 import tarfile
 import io
@@ -88,43 +89,98 @@ def needs_update(new_bios_version, new_ec_version):
     elif new_ec_version != get_ec_version():
         return True
     return False
-        
+
+def get_firmware_id():
+    f = open("/sys/class/dmi/id/product_version")
+    model = f.read().strip()
+    f.close()
+
+    ec = Ec()
+    project = ec.project()
+    ec.close()
+
+    project_hash = nacl.hash.sha256(bytes(project, 'utf8'), encoder=nacl.encoding.HexEncoder).decode('utf-8')
+
+    return "{}_{}".format(model, project_hash)
 
 def get_url(filename):
-    if not filename:
-        f = open("/sys/class/dmi/id/product_version")
-        model = f.read().strip()
-        f.close()
+    return 'http://iso.system76.com/firmware/develop/{}'.format(filename)
 
-        ec = Ec()
-        project = ec.project()
-        ec.close()
-
-        project_hash = nacl.hash.sha256(bytes(project, 'utf8'), encoder=nacl.encoding.HexEncoder).decode('utf-8')
-
-        filename = "{}_{}".format(model, project_hash)
-
-    return 'http://iso.system76.com/firmware/master/{}'.format(filename)
-
-def get_signed_tarball(filename=None):
+def get_file(filename):
     request.urlcleanup()
-    signed_firmware = request.urlopen(get_url(filename)).read()
-    key_file = open('verify', 'rb')
+    return request.urlopen(get_url(filename)).read()
+
+def get_hashed_file(filename):
+    hashed_file = get_file(filename)
+    digest = hashlib.sha384(hashed_file).hexdigest()
+    if filename == digest:
+        return hashed_file
+    else:
+        log.exception("Got bad checksum for file: '" 
+                      + get_url(filename)
+                      + "\nExpected: " + filename
+                      + "\nGot: " + digest)
+        raise Exception
+
+def get_signed_file(filename, key=open('verify', 'rb')):
+    signed_file = get_file(filename)
+    key_file = key
     verify_key = nacl.signing.VerifyKey(key_file.read(), encoder=nacl.encoding.HexEncoder)
     try:
-        firmware = verify_key.verify(signed_firmware)
-        log.info("Verified firmware signature, extracting...")
-        tar = tarfile.open(fileobj=io.BytesIO(firmware))
-        return tar
+        f = verify_key.verify(signed_file)
+        log.info("Verified manifest signature...")
+        return f
     except nacl.exceptions.BadSignatureError:
-        log.exception("Bad firmware signature! Aborting...")
+        log.exception("Bad manifest signature! Aborting...")
         raise nacl.exceptions.BadSignatureError
         return
+   
 
-def extract_tarball(tar, directory):
-    os.chmod(directory, 0o700)
-    tar.extractall(directory)
-    os.chmod(directory, 0o500)
+class Tarball():
+    def __init__(self, filename):
+        tarball = get_file(filename)
+        self.tar = tarfile.open(fileobj=io.BytesIO(tarball))
+        
+    def extract(self, directory):
+        os.chmod(directory, 0o700)
+        self.tar.extractall(directory)
+        os.chmod(directory, 0o500)
+
+
+class HashedTarball(Tarball):
+    def __init__(self, filename):
+        hashed_tarball = get_hashed_file(filename)
+        self.tar = tarfile.open(fileobj=io.BytesIO(hashed_tarball))
+
+
+class SignedTarball(Tarball):
+    def __init__(self, filename):
+        try:
+            signed_tarball = get_signed_file(filename).read()
+            self.tar = tarfile.open(fileobj=io.BytesIO(signed_tarball))
+        except nacl.exceptions.BadSignatureError:
+            log.exception("Bad firmware signature! Aborting...")
+            raise nacl.exceptions.BadSignatureError
+
+
+class SignedManifest():
+    def __init__(self):
+        try:
+            # Verify checksum signature, then look up manifest by checksum.
+            manifest_lookup = get_signed_file('manifest.sha384sum.signed').decode('utf-8')
+            self.manifest = get_hashed_file(manifest_lookup)
+        except nacl.exceptions.BadSignatureError:
+            log.exception("Bad manifest signature! Aborting...")
+            raise nacl.exceptions.BadSignatureError
+        except:
+            log.exception("Could not get manifest.")
+        
+    def lookup(self, filename):
+        for line in self.manifest.decode().split('\n'):
+            if filename in line:
+                split = line.split(': ')
+                return split[1]
+
 
 def confirm_dialog(changes_list=['No Changes']):
     user_name = subprocess.check_output(
@@ -246,16 +302,21 @@ def set_next_boot():
         return
 
 def _run_firmware_updater(model):
+    # Download the manifest and check that it is signed by the private master key.
+    # The public master key is pinned in our driver.
+    # Then download the firmware and check the checksum against the manifest.
+    manifest = SignedManifest()
+    
     #Download the latest updater and firmware for this machine and verify source.
-    updater = get_signed_tarball('system76-firmware-update')
-    firmware = get_signed_tarball()
+    firmware = HashedTarball(manifest.lookup(get_firmware_id()))
+    updater = HashedTarball(manifest.lookup('system76-firmware-update'))
 
     if updater and firmware:
         #Extract to temporary directory and set safe permissions.
         with tempfile.TemporaryDirectory() as tempdirname:
-            extract_tarball(updater, tempdirname)
+            updater.extract(tempdirname)
             os.mkdir(path.join(tempdirname, 'firmware'))
-            extract_tarball(firmware, path.join(tempdirname, 'firmware'))
+            firmware.extract(path.join(tempdirname, 'firmware'))
             
             #Process changelog and component versions
             with open(path.join(tempdirname, 'firmware', 'changelog.yaml')) as f:
