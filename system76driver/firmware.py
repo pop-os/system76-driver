@@ -22,28 +22,33 @@ Firmware updater for System76 computers.
 """
 
 from .ecflash import Ec
+
 import nacl.encoding
 import nacl.signing
 import nacl.hash
 import hashlib
-from urllib import parse, request
+
+import ssl
+from urllib import request
+
 import tarfile
 import io
 import tempfile
-import time
+
 from os import path
 import os
 import shutil
-import subprocess
-import json
+
 from .mockable import SubProcess
-from gi.repository import GLib
+import subprocess
+
+import json
 
 import logging
 
 log = logging.getLogger(__name__)
 
-FIRMWARE_URI = 'http://iso.system76.com/firmware/master/'
+FIRMWARE_URI = 'https://firmware.system76.com/develop/'
 
 FIRMWARE_SET_NEXT_BOOT = """#!/bin/bash -e
 
@@ -104,11 +109,32 @@ def get_firmware_id():
     return "{}_{}".format(model, project_hash)
 
 def get_url(filename):
-    return 'http://iso.system76.com/firmware/develop/{}'.format(filename)
+    print('{}{}'.format(FIRMWARE_URI, filename))
+    return '{}{}'.format(FIRMWARE_URI, filename)
 
 def get_file(filename):
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    ssl_context.options |= ssl.OP_NO_COMPRESSION
+    #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    #ssl_options = (ssl.OP_NO_SSLv2 
+    #              | ssl.OP_NO_SSLv3 
+    #              | ssl.OP_NO_TLSv1
+    #              | ssl.OP_NO_TLSv1_1
+    #              | ssl.OP_NO_COMPRESSION)
+    #ssl_context.options |= ssl_options
+    ssl_context.set_ciphers('ECDHE-RSA-AES256-GCM-SHA384')
+    ssl_context.verify_mode=ssl.CERT_REQUIRED
+    ssl_context.check_hostname = True
+    
+    ssl_context.load_verify_locations("ssl/certs/firmware.system76.com.crt") 
+
     request.urlcleanup()
-    return request.urlopen(get_url(filename)).read()
+    try:
+        return request.urlopen(get_url(filename), context=ssl_context).read()
+    except:
+        log.exception("Failed to open secure TLS connection: \
+                       possible Man-in-the-Middle attack or outdated certificate. \
+                       Updating to the latest driver may solve the issue.")
 
 def get_hashed_file(filename):
     hashed_file = get_file(filename)
