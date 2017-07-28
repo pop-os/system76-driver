@@ -126,7 +126,7 @@ def get_file(filename):
     ssl_context.verify_mode=ssl.CERT_REQUIRED
     ssl_context.check_hostname = True
     
-    ssl_context.load_verify_locations("ssl/certs/firmware.system76.com.crt") 
+    ssl_context.load_verify_locations("/usr/share/system76-driver/ssl/certs/firmware.system76.com.cert") 
 
     request.urlcleanup()
     try:
@@ -148,9 +148,10 @@ def get_hashed_file(filename):
                       + "\nGot: " + digest)
         raise Exception
 
-def get_signed_file(filename, key=open('verify', 'rb')):
+def get_signed_file(filename, key='/usr/share/system76-driver/keys/verify'):
+    
     signed_file = get_file(filename)
-    key_file = key
+    key_file = open(key, 'rb')
     verify_key = nacl.signing.VerifyKey(key_file.read(), encoder=nacl.encoding.HexEncoder)
     try:
         f = verify_key.verify(signed_file)
@@ -323,7 +324,7 @@ def set_next_boot():
     f.close()
     os.chmod(name, 0o500)
     try:
-        output = SubProcess.check_output(['sudo', name])
+        SubProcess.check_output(['sudo', name])
     except:
         return
 
