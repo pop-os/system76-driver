@@ -43,12 +43,13 @@ from .mockable import SubProcess
 import subprocess
 
 import json
+import yaml
 
 import logging
 
 log = logging.getLogger(__name__)
 
-FIRMWARE_URI = 'https://firmware.system76.com/develop/'
+FIRMWARE_URI = 'https://firmware.system76.com/master/'
 
 FIRMWARE_SET_NEXT_BOOT = """#!/bin/bash -e
 
@@ -77,13 +78,13 @@ def get_ec_version():
     version = ec.version()
     ec.close()
     return version
-    
+
 def get_bios_version():
     f = open("/sys/class/dmi/id/bios_version")
     version = f.read().strip()
     f.close()
     return version
-    
+
 def needs_update(new_bios_version, new_ec_version):
     if not new_bios_version:
         log.warn("Couldn't get the new bios version from changelog!")
@@ -116,8 +117,8 @@ def get_file(filename):
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
     ssl_context.options |= ssl.OP_NO_COMPRESSION
     #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    #ssl_options = (ssl.OP_NO_SSLv2 
-    #              | ssl.OP_NO_SSLv3 
+    #ssl_options = (ssl.OP_NO_SSLv2
+    #              | ssl.OP_NO_SSLv3
     #              | ssl.OP_NO_TLSv1
     #              | ssl.OP_NO_TLSv1_1
     #              | ssl.OP_NO_COMPRESSION)
@@ -125,8 +126,8 @@ def get_file(filename):
     ssl_context.set_ciphers('ECDHE-RSA-AES256-GCM-SHA384')
     ssl_context.verify_mode=ssl.CERT_REQUIRED
     ssl_context.check_hostname = True
-    
-    ssl_context.load_verify_locations("/usr/share/system76-driver/ssl/certs/firmware.system76.com.cert") 
+
+    ssl_context.load_verify_locations("/usr/share/system76-driver/ssl/certs/firmware.system76.com.cert")
 
     request.urlcleanup()
     try:
@@ -142,14 +143,14 @@ def get_hashed_file(filename):
     if filename == digest:
         return hashed_file
     else:
-        log.exception("Got bad checksum for file: '" 
+        log.exception("Got bad checksum for file: '"
                       + get_url(filename)
                       + "\nExpected: " + filename
                       + "\nGot: " + digest)
         raise Exception
 
 def get_signed_file(filename, key='/usr/share/system76-driver/keys/verify'):
-    
+
     signed_file = get_file(filename)
     key_file = open(key, 'rb')
     verify_key = nacl.signing.VerifyKey(key_file.read(), encoder=nacl.encoding.HexEncoder)
@@ -161,13 +162,13 @@ def get_signed_file(filename, key='/usr/share/system76-driver/keys/verify'):
         log.exception("Bad manifest signature! Aborting...")
         raise nacl.exceptions.BadSignatureError
         return
-   
+
 
 class Tarball():
     def __init__(self, filename):
         tarball = get_file(filename)
         self.tar = tarfile.open(fileobj=io.BytesIO(tarball))
-        
+
     def extract(self, directory):
         os.chmod(directory, 0o700)
         self.tar.extractall(directory)
@@ -195,18 +196,15 @@ class SignedManifest():
         try:
             # Verify checksum signature, then look up manifest by checksum.
             manifest_lookup = get_signed_file('manifest.sha384sum.signed').decode('utf-8')
-            self.manifest = get_hashed_file(manifest_lookup)
+            self.manifest = yaml.safe_load(get_hashed_file(manifest_lookup))
         except nacl.exceptions.BadSignatureError:
             log.exception("Bad manifest signature! Aborting...")
             raise nacl.exceptions.BadSignatureError
         except:
             log.exception("Could not get manifest.")
-        
+
     def lookup(self, filename):
-        for line in self.manifest.decode().split('\n'):
-            if filename in line:
-                split = line.split(': ')
-                return split[1]
+        return self.manifest["files"][filename]
 
 
 def confirm_dialog(changes_list=['No Changes']):
@@ -219,20 +217,20 @@ def confirm_dialog(changes_list=['No Changes']):
                     "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $5}'",
                     shell=True
                 ).decode('utf-8').rstrip('\n').lstrip('(').rstrip(')')
-            
+
     user_pid = subprocess.check_output(
                     "who -u | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $6}'",
                     shell=True
                 ).decode('utf-8').rstrip('\n')
-            
+
     user_session_pids = subprocess.check_output(['pgrep', '-P', user_pid]
                 ).decode('utf-8').rstrip('\n')
     user_session_pid = user_session_pids.split()[0]
-            
-    environ = subprocess.check_output(['cat', '/proc/' + str(user_session_pid) 
+
+    environ = subprocess.check_output(['cat', '/proc/' + str(user_session_pid)
                                       + '/environ']
                 ).decode('utf-8').rstrip('\n')
-            
+
     if "DESKTOP_SESSION=gnome" in environ:
         desktop_env = 'gnome'
     #changes = ["Quieter fan curve", "Added HyperThreading toggle"]
@@ -251,40 +249,13 @@ def confirm_dialog(changes_list=['No Changes']):
         "EC_CHANGES=" + json.dumps(ec_changes),
         "su",
         user_name,
-        "XAUTHORITY=/home/" + user_name + "/.Xauthority", 
+        "XAUTHORITY=/home/" + user_name + "/.Xauthority",
         "DISPLAY=" + display_name,
         "-c",
         './system76-firmware-dialog',
     ]
 
     return subprocess.call(args)
-
-def read_changelog(f):
-    version_token = None
-    indent_level = 0
-    section = None
-    sections = []
-    for line in f.readlines():
-        #parse 'version'
-        if not version_token:
-            if line == 'versions:\n':
-                version_token = line
-                indent_level = 6
-        else:
-            #Parse each section.  Indented section starts with a '-'
-            if line[4] == '-':
-                if section:
-                    sections.append(section)
-                section = {'description': None, 'bios': None, 'ec': None, 'ec2': None}
-            if True:
-                section_line = line[indent_level:]
-                for key in ['description', 'bios', 'ec', 'ec2']:
-                    key_str = key + ': '
-                    if (section_line.startswith(key_str) and len(section_line) > len(key_str)):
-                        value = section_line[len(key_str):].strip('\n')
-                        section[key] = value
-    sections.append(section)
-    return sections
 
 def get_changes_list(changelog_entries, current_bios, current_ec, current_ec2=None):
     found_bios = False
@@ -315,7 +286,7 @@ def get_changes_list(changelog_entries, current_bios, current_ec, current_ec2=No
     if changes_list == []:
         changes_list.append('No Changes')
     return changes_list
-            
+
 
 def set_next_boot():
     handle, name = tempfile.mkstemp()
@@ -333,10 +304,10 @@ def _run_firmware_updater(model):
     # The public master key is pinned in our driver.
     # Then download the firmware and check the checksum against the manifest.
     manifest = SignedManifest()
-    
+
     #Download the latest updater and firmware for this machine and verify source.
-    firmware = HashedTarball(manifest.lookup(get_firmware_id()))
-    updater = HashedTarball(manifest.lookup('system76-firmware-update'))
+    firmware = HashedTarball(manifest.lookup(get_firmware_id() + '.tar.xz'))
+    updater = HashedTarball(manifest.lookup('system76-firmware-update.tar.xz'))
 
     if updater and firmware:
         #Extract to temporary directory and set safe permissions.
@@ -344,17 +315,17 @@ def _run_firmware_updater(model):
             updater.extract(tempdirname)
             os.mkdir(path.join(tempdirname, 'firmware'))
             firmware.extract(path.join(tempdirname, 'firmware'))
-            
+
             #Process changelog and component versions
             with open(path.join(tempdirname, 'firmware', 'changelog.yaml')) as f:
-                changelog_entries = read_changelog(f)
-                
+                changelog = yaml.safe_load(f)
+
                 #Don't offer the update if its already installed
-                if not needs_update(changelog_entries[0]['bios'], changelog_entries[0]['ec']):
+                if not needs_update(changelog['versions'][0]['bios'], changelog['versions'][0]['ec']):
                     log.info('No new firmware to install.')
                     return
-                    
-                changes_list = get_changes_list(changelog_entries, get_bios_version(), get_ec_version())
+
+                changes_list = get_changes_list(changelog['versions'], get_bios_version(), get_ec_version())
 
             #Confirm installation with the user.
             if confirm_dialog(changes_list) == 0:
