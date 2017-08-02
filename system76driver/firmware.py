@@ -43,13 +43,14 @@ from .mockable import SubProcess
 import subprocess
 
 import json
-import yaml
 
 import logging
 
 log = logging.getLogger(__name__)
 
-FIRMWARE_URI = 'https://firmware.system76.com/master/'
+FIRMWARE_URI = 'https://firmware.system76.com/develop/'
+
+CACHE_PATH = "/var/cache/system76-firmware"
 
 FIRMWARE_SET_NEXT_BOOT = """#!/bin/bash -e
 
@@ -110,58 +111,91 @@ def get_firmware_id():
     return "{}_{}".format(model, project_hash)
 
 def get_url(filename):
-    print('{}{}'.format(FIRMWARE_URI, filename))
     return '{}{}'.format(FIRMWARE_URI, filename)
 
-def get_file(filename):
-    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-    ssl_context.options |= ssl.OP_NO_COMPRESSION
-    #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    #ssl_options = (ssl.OP_NO_SSLv2
-    #              | ssl.OP_NO_SSLv3
-    #              | ssl.OP_NO_TLSv1
-    #              | ssl.OP_NO_TLSv1_1
-    #              | ssl.OP_NO_COMPRESSION)
-    #ssl_context.options |= ssl_options
-    ssl_context.set_ciphers('ECDHE-RSA-AES256-GCM-SHA384')
-    ssl_context.verify_mode=ssl.CERT_REQUIRED
-    ssl_context.check_hostname = True
-
-    ssl_context.load_verify_locations("/usr/share/system76-driver/ssl/certs/firmware.system76.com.cert")
-
-    request.urlcleanup()
-    try:
-        return request.urlopen(get_url(filename), context=ssl_context).read()
-    except:
-        log.exception("Failed to open secure TLS connection: \
-                       possible Man-in-the-Middle attack or outdated certificate. \
-                       Updating to the latest driver may solve the issue.")
-
-def get_hashed_file(filename):
-    hashed_file = get_file(filename)
-    digest = hashlib.sha384(hashed_file).hexdigest()
-    if filename == digest:
-        return hashed_file
+def get_file(filename, cache=None):
+    if cache:
+        log.info("Fetching {} with cache {}".format(filename, cache))
+        
+        if not os.path.isdir(CACHE_PATH):
+            log.info("Creating cache directory at {}".format(cache))
+            os.mkdir(CACHE_PATH)
+        
+        p = path.join(cache, filename)
+        if path.isfile(p):
+            f = open(p, 'rb')
+            return f.read()
+        else:
+            data = get_file(filename)
+            f = open(p, 'wb')
+            f.write(data)
+            f.close()
+            return data
     else:
-        log.exception("Got bad checksum for file: '"
-                      + get_url(filename)
-                      + "\nExpected: " + filename
-                      + "\nGot: " + digest)
-        raise Exception
+        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        ssl_context.options |= ssl.OP_NO_COMPRESSION
+        #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+        #ssl_options = (ssl.OP_NO_SSLv2
+        #              | ssl.OP_NO_SSLv3
+        #              | ssl.OP_NO_TLSv1
+        #              | ssl.OP_NO_TLSv1_1
+        #              | ssl.OP_NO_COMPRESSION)
+        #ssl_context.options |= ssl_options
+        ssl_context.set_ciphers('ECDHE-RSA-AES256-GCM-SHA384')
+        ssl_context.verify_mode=ssl.CERT_REQUIRED
+        ssl_context.check_hostname = True
 
-def get_signed_file(filename, key='/usr/share/system76-driver/keys/verify'):
+        ssl_context.load_verify_locations("/usr/share/system76-driver/ssl/certs/firmware.system76.com.cert")
 
+        request.urlcleanup()
+        try:
+            url = get_url(filename)
+            f = request.urlopen(url, context=ssl_context)
+            return f.read()
+        except:
+            log.exception("Failed to open secure TLS connection:\n"
+                          + "    possible Man-in-the-Middle attack or outdated certificate.\n"
+                          + "    Updating to the latest driver may solve the issue.")
+        
+
+def get_hashed_file(filename, decode=None):
+    hashed_file = get_file(filename, CACHE_PATH)
+    if hashed_file is not None:
+        digest = hashlib.sha384(hashed_file).hexdigest()
+        if filename == digest:
+            if decode is not None:
+                return hashed_file.decode(decode)
+            else:
+                return hashed_file
+        else:
+            log.exception("Got bad checksum for file: '"
+                          + get_url(filename)
+                          + "\nExpected: " + filename
+                          + "\nGot: " + digest)
+            raise Exception
+    else:
+        log.error("Hashed file not found: " + filename)
+
+def get_signed_file(filename, key='/usr/share/system76-driver/keys/verify', decode=None):
+    # DO NOT CACHE - get_signed_file is used to fetch the manifest location.
+    # There is no way to verify ahead of time that what's on disk matches repo.
     signed_file = get_file(filename)
     key_file = open(key, 'rb')
     verify_key = nacl.signing.VerifyKey(key_file.read(), encoder=nacl.encoding.HexEncoder)
-    try:
-        f = verify_key.verify(signed_file)
-        log.info("Verified manifest signature...")
-        return f
-    except nacl.exceptions.BadSignatureError:
-        log.exception("Bad manifest signature! Aborting...")
-        raise nacl.exceptions.BadSignatureError
-        return
+    if signed_file is not None:
+        try:
+            f = verify_key.verify(signed_file)
+            log.info("Verified manifest signature...")
+            if decode is not None:
+                return f.decode(decode)
+            else:
+                return f
+        except nacl.exceptions.BadSignatureError:
+            log.exception("Bad manifest signature! Aborting...")
+            raise nacl.exceptions.BadSignatureError
+            return
+    else:
+        log.error("Signed file not found: " + filename)
 
 
 class Tarball():
@@ -193,15 +227,19 @@ class SignedTarball(Tarball):
 
 class SignedManifest():
     def __init__(self):
-        try:
-            # Verify checksum signature, then look up manifest by checksum.
-            manifest_lookup = get_signed_file('manifest.sha384sum.signed').decode('utf-8')
-            self.manifest = yaml.safe_load(get_hashed_file(manifest_lookup))
-        except nacl.exceptions.BadSignatureError:
-            log.exception("Bad manifest signature! Aborting...")
-            raise nacl.exceptions.BadSignatureError
-        except:
-            log.exception("Could not get manifest.")
+        manifest_lookup = get_signed_file('manifest.sha384sum.signed', decode='utf-8')
+        if manifest_lookup is not None:
+            try:
+                # Verify checksum signature, then look up manifest by checksum.
+                self.manifest = json.loads(get_hashed_file(manifest_lookup, decode='utf-8'))
+            except nacl.exceptions.BadSignatureError:
+                log.exception("Bad manifest signature! Aborting...")
+                raise nacl.exceptions.BadSignatureError
+            except:
+                log.exception("Could not get manifest.")
+        else:
+            log.exception("Could not locate manifest.")
+            raise Exception
 
     def lookup(self, filename):
         return self.manifest["files"][filename]
@@ -233,10 +271,7 @@ def confirm_dialog(changes_list=['No Changes']):
 
     if "DESKTOP_SESSION=gnome" in environ:
         desktop_env = 'gnome'
-    #changes = ["Quieter fan curve", "Added HyperThreading toggle"]
     changes = changes_list
-    bios_changes = ["Quieter fan curve", "Added HyperThreading toggle"]
-    ec_changes = ["Quieter fan curve"]
 
     if len(user_name) == 0 or len(display_name) == 0:
         return
@@ -245,8 +280,6 @@ def confirm_dialog(changes_list=['No Changes']):
         "sudo",
         "DESKTOP_SESSION=" + desktop_env,
         "FIRMWARE_CHANGES=" + json.dumps(changes),
-        "BIOS_CHANGES=" + json.dumps(bios_changes),
-        "EC_CHANGES=" + json.dumps(ec_changes),
         "su",
         user_name,
         "XAUTHORITY=/home/" + user_name + "/.Xauthority",
@@ -276,9 +309,11 @@ def get_changes_list(changelog_entries, current_bios, current_ec, current_ec2=No
             if entry['ec'] and current_ec:
                 if current_ec >= entry['ec']:
                     found_ec = True
-            if entry['ec2'] and current_ec2:
+            if 'ec2' in entry and entry['ec2'] and current_ec2:
                 if current_ec2 >= entry['ec2']:
                     found_ec2 = True
+            elif not current_ec2:
+                found_ec2 = True
         if not (found_bios and found_ec and found_ec2):
             changes_list.append(entry['description'])
         else:
@@ -303,7 +338,11 @@ def _run_firmware_updater(model):
     # Download the manifest and check that it is signed by the private master key.
     # The public master key is pinned in our driver.
     # Then download the firmware and check the checksum against the manifest.
-    manifest = SignedManifest()
+    try:
+        manifest = SignedManifest()
+    except:
+        log.error("Failed to get firmware manifest. Aborting!")
+        return
 
     #Download the latest updater and firmware for this machine and verify source.
     firmware = HashedTarball(manifest.lookup(get_firmware_id() + '.tar.xz'))
@@ -317,8 +356,8 @@ def _run_firmware_updater(model):
             firmware.extract(path.join(tempdirname, 'firmware'))
 
             #Process changelog and component versions
-            with open(path.join(tempdirname, 'firmware', 'changelog.yaml')) as f:
-                changelog = yaml.safe_load(f)
+            with open(path.join(tempdirname, 'firmware', 'changelog.json')) as f:
+                changelog = json.load(f)
 
                 #Don't offer the update if its already installed
                 if not needs_update(changelog['versions'][0]['bios'], changelog['versions'][0]['ec']):
