@@ -604,7 +604,7 @@ log file will be available in your home folder.</property>
                             <property name="can_focus">False</property>
                             <property name="hexpand">True</property>
                             <property name="vexpand">True</property>
-                            <property name="label" translatable="yes">Install Patches</property>
+                            <property name="label" translatable="yes">Install Drivers</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

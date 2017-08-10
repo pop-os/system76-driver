@@ -19,48 +19,48 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""
+Update firmware.
+"""
+
+import time
+start_time = time.monotonic()
 import argparse
 import os
 import sys
-import time
 import logging
-import platform
+
+from gi.repository import GLib
 
 import system76driver
-from system76driver.model import determine_model_new
-from system76driver.products import PRODUCTS
-from system76driver.firmware_gtk import UI
+from system76driver import firmware
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--home', help='specify home directory')
-parser.add_argument('--model', help='force model rather than detecting it')
-parser.add_argument('--dry', action='store_true', default=False,
-    help='print what would be done but without calling Action.perform()',
-)
-args = parser.parse_args()
-
-if os.getuid() != 0:
-    sys.exit('Error: must be run as root')
+NOTIFICATION_TIMEOUT = 24*60*60 # 24 hours
 
 logging.basicConfig(
-    filename='/var/log/system76-driver.log',
     level=logging.DEBUG,
     style='{',
     format='{asctime}  {levelname}  {message}',
 )
 log = logging.getLogger()
 
-if args.home is None:
-    args.home = os.environ['HOME']
-if args.model is None:
-    args.model = determine_model_new()
-product = PRODUCTS.get(args.model)
+parser = argparse.ArgumentParser()
+parser.add_argument('--reinstall', action='store_true', help='install latest firmware even if its already installed')
+parser.add_argument('--debug', action='store_true', default=False,
+    help='print loaded modules',
+)
+args = parser.parse_args()
 
-log.info('** Process start at monotonic time %r', time.monotonic())
-log.info('system76driver.__version__: %r', system76driver.__version__)
-log.info('OS: %r', platform.dist())
-log.info('kernel: %r', platform.uname().release)
-log.info('model: %r', args.model)
+if os.getuid() != 0:
+    sys.exit('Error: system76-daemon must be run as root')
+log.info('**** Process start at monotonic time %r', start_time)
 
-ui = UI(args)
+start_time = time.time()
+updater = firmware.run_firmware_updater(args.reinstall)
+end_time = time.time()
 
+#Delay exit until notification timeout
+if end_time < start_time + NOTIFICATION_TIMEOUT:
+    log.info((start_time + NOTIFICATION_TIMEOUT) - end_time)
+    time.sleep((start_time + NOTIFICATION_TIMEOUT) - end_time)
+print('firmware-exit')
