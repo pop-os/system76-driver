@@ -454,8 +454,11 @@ class HotplugAutoscaling:
         self.find_internal_hidpi()
     
     def change_scaling_mode(self):
-        self.update_display_modes()
-        self.calculate_layout()
+        try:
+            self.update_display_modes()
+            self.calculate_layout()
+        except:
+            log.exception("Couldn't update display modes")
         
         # Don't manage display modes on non-hidpi laptops.  However, once we start
         # managing displays we need to keep doing so.
