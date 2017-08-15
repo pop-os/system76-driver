@@ -175,6 +175,7 @@ TABLES = {
         'oryp2-ess': 'oryp2-ess',
         'oryp3': 'oryp3',
         'oryp3-ess': 'oryp3-ess',
+        'oryp3-l': 'oryp3-l',
         'ratv6': 'ratv6',
         'ratu1': 'ratu1',
         'ratu2': 'ratu2',
@@ -255,4 +256,3 @@ def determine_model_new(sysdir='/sys', info=None):
     if model in TABLES['system-version']:
         return model
     return determine_model(info)
-
