@@ -444,6 +444,13 @@ PRODUCTS = {
             actions.hidpi_scaling,
         ],
     },
+    'oryp3-l': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.backlight_vendor,
+            actions.hidpi_scaling,
+        ],
+    },
 
     # Pangolin:
     'panp4i': {
