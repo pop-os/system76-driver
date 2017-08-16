@@ -1,9 +1,8 @@
-system76-driver (16.04.39~alpha) xenial; urgency=low
+system76-driver (16.04.39) xenial; urgency=low
 
-  * Daily WIP for 16.04.39
   * Add 'leow8'
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 16 Aug 2017 10:56:40 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 16 Aug 2017 11:11:33 -0600
 
 system76-driver (16.04.38) xenial; urgency=low
 
