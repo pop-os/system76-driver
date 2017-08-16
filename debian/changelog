@@ -1,9 +1,8 @@
-system76-driver (17.04.7~alpha) zesty; urgency=low
+system76-driver (17.04.7) zesty; urgency=low
 
-  * Daily WIP for 17.04.7
   * Add 'oryp3-l' and 'leow8'
 
- -- David Jordan <david2@system76.com>  Thu, 29 Jun 2017 15:06:03 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 16 Aug 2017 11:14:15 -0600
 
 system76-driver (17.04.6) zesty; urgency=low
 
