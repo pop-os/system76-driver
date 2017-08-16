@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.18"/>
   <!-- interface-local-resource-path /opt/system76/system76-driver/src/images -->
   <object class="GtkAboutDialog" id="aboutDialog">
     <property name="can_focus">False</property>
@@ -10,10 +11,9 @@
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
-    <property name="has_resize_grip">False</property>
     <property name="program_name">System76 Driver</property>
     <property name="version">{driver version - you should not see this}</property>
-    <property name="copyright" translatable="yes">Copyright (c) 2006-2012 System76, Inc.</property>
+    <property name="copyright" translatable="yes">Copyright (c) 2006-2017 System76, Inc.</property>
     <property name="comments" translatable="yes">A simple utility for drivers on System76 computers.</property>
     <property name="website">http://www.system76.com/</property>
     <property name="website_label" translatable="yes">www.system76.com</property>
@@ -31,7 +31,7 @@ Ian Santopietro
 
 Documentation:
 Carl Richell</property>
-    <property name="logo">logo-round.png</property>
+    <property name="logo">76icon.svg</property>
     <property name="license_type">gpl-2-0</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
@@ -52,6 +52,9 @@ Carl Richell</property>
         </child>
       </object>
     </child>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
   </object>
   <object class="GtkTextBuffer" id="detailsText">
     <property name="text" translatable="yes">{Long list of items}
@@ -62,11 +65,9 @@ Carl Richell</property>
   </object>
   <object class="GtkWindow" id="mainWindow">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">System76 Driver</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="icon">76icon.svg</property>
-    <property name="has_resize_grip">False</property>
     <signal name="destroy" handler="onDeleteWindow" swapped="no"/>
     <child>
       <object class="GtkBox" id="box2">
@@ -74,60 +75,46 @@ Carl Richell</property>
         <property name="can_focus">False</property>
         <property name="margin_left">9</property>
         <property name="margin_right">9</property>
+        <property name="margin_top">12</property>
         <property name="margin_bottom">10</property>
         <property name="orientation">vertical</property>
         <property name="spacing">5</property>
         <child>
-          <object class="GtkImage" id="image1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="pixbuf">logo.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkGrid" id="grid3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="row_spacing">6</property>
+            <property name="column_spacing">12</property>
             <child>
               <object class="GtkLabel" id="sysName">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="xpad">12</property>
+                <property name="halign">start</property>
                 <property name="label" translatable="yes">{model name - you should not see this}</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="sysModel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="xpad">12</property>
+                <property name="halign">start</property>
                 <property name="label" translatable="yes">{model number - you should not see this}</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="sysNameLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">1</property>
+                <property name="halign">end</property>
                 <property name="label" translatable="yes">Product</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -136,16 +123,14 @@ Carl Richell</property>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">0</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="sysModelLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">end</property>
                 <property name="margin_left">10</property>
-                <property name="xalign">1</property>
                 <property name="label" translatable="yes">Model</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -154,15 +139,13 @@ Carl Richell</property>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">1</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">1</property>
+                <property name="halign">end</property>
                 <property name="label" translatable="yes">Driver Version</property>
                 <property name="justify">right</property>
                 <attributes>
@@ -172,30 +155,26 @@ Carl Richell</property>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">3</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="driverVersion">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="xpad">12</property>
+                <property name="halign">start</property>
                 <property name="label">{driver version - you should not see this}</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">3</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="osVersionLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">1</property>
+                <property name="halign">end</property>
+                <property name="valign">end</property>
                 <property name="label" translatable="yes">Operating System</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -204,23 +183,18 @@ Carl Richell</property>
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">2</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="ubuntuVersion">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="xpad">12</property>
+                <property name="halign">start</property>
                 <property name="label">{os version - you should not see this}</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">2</property>
-                <property name="width">1</property>
-                <property name="height">1</property>
               </packing>
             </child>
           </object>
@@ -304,9 +278,9 @@ Carl Richell</property>
                                   <object class="GtkLabel" id="label10">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">To restore the factory default settings, click on Restore System below. This will
 not erase any files, programs, or data you have stored on this system.</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                 </child>
                               </object>
@@ -341,10 +315,10 @@ not erase any files, programs, or data you have stored on this system.</property
                                   <object class="GtkLabel" id="label11">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
                                     <property name="label" translatable="yes">A support technician may request that you create a log file to help diagnose a 
 problem. You can create this log file by clicking Create Log Files below. The saved
 log file will be available in your home folder.</property>
+                                    <property name="xalign">0</property>
                                   </object>
                                 </child>
                               </object>
@@ -374,103 +348,59 @@ log file will be available in your home folder.</property>
               <object class="GtkLabel" id="label7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
                 <property name="ypad">4</property>
                 <property name="label" translatable="yes">Driver installation details                                                                                                                              </property>
                 <property name="justify">right</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
               </object>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">4</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box3">
+          <object class="GtkGrid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
-            <property name="orientation">vertical</property>
-            <property name="spacing">3</property>
-            <child>
-              <object class="GtkButton" id="driverInstall">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="relief">none</property>
-                <signal name="clicked" handler="onInstallClicked" swapped="no"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkBox" id="box4">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkImage" id="image2">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xpad">10</property>
-                            <property name="ypad">10</property>
-                            <property name="icon_name">go-bottom</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label13">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="ypad">10</property>
-                            <property name="label" translatable="yes">Install Drivers</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
+            <property name="row_homogeneous">True</property>
+            <property name="column_homogeneous">True</property>
             <child>
               <object class="GtkButton" id="driverRestore">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
                 <property name="relief">none</property>
                 <signal name="clicked" handler="onRestoreClicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <child>
                       <object class="GtkBox" id="box5">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkImage" id="image3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
                             <property name="xpad">10</property>
                             <property name="ypad">10</property>
-                            <property name="icon_name">view-refresh</property>
+                            <property name="pixel_size">48</property>
+                            <property name="icon_name">software-update-available</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -479,10 +409,12 @@ log file will be available in your home folder.</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="label2">
+                          <object class="GtkLabel" id="driverRestor">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes"> Restore System</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <property name="label" translatable="yes">Restore System</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -496,32 +428,42 @@ log file will be available in your home folder.</property>
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="driverCreate">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
                 <property name="relief">none</property>
                 <signal name="clicked" handler="onCreateClicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <child>
                       <object class="GtkBox" id="box6">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkImage" id="image4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
                             <property name="xpad">10</property>
                             <property name="ypad">10</property>
+                            <property name="pixel_size">48</property>
                             <property name="icon_name">help-faq</property>
                           </object>
                           <packing>
@@ -534,6 +476,8 @@ log file will be available in your home folder.</property>
                           <object class="GtkLabel" id="label4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
                             <property name="label" translatable="yes">Create Log Files</property>
                           </object>
                           <packing>
@@ -548,45 +492,147 @@ log file will be available in your home folder.</property>
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="left_attach">2</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="driverSystem76Opts">
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="receives_default">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="relief">none</property>
+                <child>
+                  <object class="GtkAlignment" id="alignment7">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <child>
+                      <object class="GtkBox" id="box3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkImage" id="image6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <property name="xpad">10</property>
+                            <property name="ypad">10</property>
+                            <property name="pixel_size">48</property>
+                            <property name="icon_name">preferences-desktop</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <property name="label" translatable="yes">Tweaks</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="driverInstall">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="receives_default">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="onInstallClicked" swapped="no"/>
+                <child>
+                  <object class="GtkAlignment" id="alignment1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <child>
+                      <object class="GtkBox" id="box4">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkImage" id="image2">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <property name="xpad">10</property>
+                            <property name="ypad">10</property>
+                            <property name="pixel_size">48</property>
+                            <property name="icon_name">application-x-executable</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label3">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <property name="label" translatable="yes">Install Drivers</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">5</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="box1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkButton" id="aboutButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="relief">none</property>
-                <signal name="clicked" handler="onAboutClicked" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="image5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="stock">gtk-about</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="padding">3</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
             <child>
               <object class="GtkBox" id="box8">
                 <property name="visible">True</property>
@@ -628,6 +674,44 @@ log file will be available in your home folder.</property>
             <property name="fill">True</property>
             <property name="padding">1</property>
             <property name="position">6</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child type="titlebar">
+      <object class="GtkHeaderBar">
+        <property name="visible">True</property>
+        <property name="app_paintable">True</property>
+        <property name="can_focus">False</property>
+        <property name="show_close_button">True</property>
+        <child type="title">
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">6</property>
+            <property name="margin_right">6</property>
+            <property name="margin_top">6</property>
+            <property name="margin_bottom">6</property>
+            <property name="pixbuf">76icon.svg</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="aboutButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="relief">none</property>
+            <signal name="clicked" handler="onAboutClicked" swapped="no"/>
+            <child>
+              <object class="GtkImage" id="image5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-about</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
           </packing>
         </child>
       </object>

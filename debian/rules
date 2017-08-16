@@ -24,5 +24,4 @@ override_dh_auto_install:
 	install -m 644 -D debian/system76-driver-hidpi.user-session.upstart debian/system76-driver/usr/share/upstart/sessions/system76-driver-hidpi.conf
 
 override_dh_installgsettings:
-	dh_installgsettings --priority=90
-
+	dh_installgsettings --priority=40
