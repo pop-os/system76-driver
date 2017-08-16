@@ -364,6 +364,10 @@ PRODUCTS = {
         'name': 'Leopard WS',
         'drivers': [],
     },
+    'leow8': {
+        'name': 'Leopard WS',
+        'drivers': [],
+    },
 
     # Meerkat:
     'meec1': {
