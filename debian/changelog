@@ -1,9 +1,8 @@
-system76-driver (16.04.40~alpha) xenial; urgency=low
+system76-driver (16.04.40) xenial; urgency=low
 
-  * Daily WIP for 16.04.40
   * Rename 'oryp3-l' to 'oryp3-b'
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 16 Aug 2017 11:48:37 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 21 Aug 2017 10:52:23 -0600
 
 system76-driver (16.04.39) xenial; urgency=low
 
