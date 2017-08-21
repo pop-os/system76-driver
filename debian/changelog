@@ -1,6 +1,7 @@
 system76-driver (17.04.9~alpha) zesty; urgency=low
 
   * Daily WIP for 17.04.9
+  * Rename 'oryp3-l' to 'oryp3-b'
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 16 Aug 2017 11:58:43 -0600
 

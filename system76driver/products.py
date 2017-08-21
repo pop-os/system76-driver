@@ -448,7 +448,7 @@ PRODUCTS = {
             actions.hidpi_scaling,
         ],
     },
-    'oryp3-l': {
+    'oryp3-b': {
         'name': 'Oryx Pro',
         'drivers': [
             actions.backlight_vendor,
