@@ -89,7 +89,7 @@ def get_bios_version():
 def needs_update(new_bios_version, new_ec_version):
     if not new_bios_version:
         log.warn("Couldn't get the new bios version from changelog!")
-    elif new_bios_version == get_bios_version():
+    elif new_bios_version != get_bios_version():
         return True
     if not new_ec_version:
         log.warn("Couldn't get the new ec version from changelog!")

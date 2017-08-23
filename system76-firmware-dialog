@@ -291,7 +291,7 @@ def notification_action(notification, action=None, data=None):
 def needs_update(new_bios_version, new_ec_version):
     if not new_bios_version:
         log.warn("Couldn't get the new bios version from changelog!")
-    elif new_bios_version == os.environ.get('FIRMWARE_CURRENT_BIOS'):
+    elif new_bios_version != os.environ.get('FIRMWARE_CURRENT_BIOS'):
         return True
     if not new_ec_version:
         log.warn("Couldn't get the new ec version from changelog!")
