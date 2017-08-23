@@ -1,2 +1,2 @@
 #!/bin/sh
-pkexec "/usr/bin/system76-firmware"
+pkexec "/usr/bin/system76-firmware" --reinstall
