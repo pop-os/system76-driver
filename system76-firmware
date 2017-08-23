@@ -19,21 +19,19 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+"""
+Update firmware.
+"""
+
+import time
 import argparse
 import os
 import sys
 import logging
-import platform
 
 from system76driver.firmware import run_firmware_updater
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--reinstall', action='store_true', help='install latest firmware even if its already installed')
-parser.add_argument('--notification', action='store_true', help='install latest firmware even if its already installed')
-args = parser.parse_args()
-
-if os.getuid() != 0:
-    sys.exit('Error: must be run as root')
+NOTIFICATION_TIMEOUT = 24*60*60 # 24 hours
 
 logging.basicConfig(
     filename='/var/log/system76-driver.log',
@@ -42,7 +40,21 @@ logging.basicConfig(
     format='{asctime}  {levelname}  {message}',
 )
 log = logging.getLogger()
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--reinstall', action='store_true', help='install latest firmware even if its already installed')
+parser.add_argument('--notification', action='store_true', help='install latest firmware even if its already installed')
+args = parser.parse_args()
+
 if os.getuid() != 0:
     sys.exit('Error: system76-firmware must be run as root')
 
+start_time = time.time()
 updater = run_firmware_updater(reinstall=args.reinstall, notification=args.notification)
+end_time = time.time()
+
+#Delay exit until notification timeout
+if end_time < start_time + NOTIFICATION_TIMEOUT:
+    log.info((start_time + NOTIFICATION_TIMEOUT) - end_time)
+    time.sleep((start_time + NOTIFICATION_TIMEOUT) - end_time)
+print('firmware-exit')
