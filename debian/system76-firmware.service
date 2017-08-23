@@ -2,7 +2,7 @@
 Description=System76 Firmware Updater
 
 [Service]
-ExecStart=/usr/lib/system76-driver/system76-firmware-cli --reinstall --notification
+ExecStart=/usr/lib/system76-driver/system76-firmware --reinstall --notification
 Restart=always
 
 [Install]
