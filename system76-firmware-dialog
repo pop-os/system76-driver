@@ -187,7 +187,7 @@ class FirmwareWindow (Gtk.Window):
         self.box.pack_start(self.changelog_expander, True, True, 3)
     
     def create_buttons(self, is_notification):
-        self.buttonbox = Gtk.HBox()
+        self.buttonbox = Gtk.HBox(halign=Gtk.Align.CENTER)
         self.box.pack_start(self.buttonbox, False, False, 12)
         if is_notification == True:
             self.create_remind_later_button()
@@ -204,16 +204,18 @@ class FirmwareWindow (Gtk.Window):
         self.buttonbox.pack_start(self.remind_later_button, True, True, 6)
         
     def create_install_button(self):
-        self.install_button = Gtk.Button("Install Firmware", always_show_image=True)
         image = Gtk.Image()
         image.set_from_file(get_datafile('download-firmware-icon-48.svg'))
         image.set_padding(6, 0)
-        self.install_button.set_image(image)
-        self.install_button.set_image_position(Gtk.PositionType.TOP)
-        self.install_button.set_image_position(Gtk.PositionType.LEFT)
-        self.install_button.set_size_request(250, 0)
-        self.install_button.set_relief(Gtk.ReliefStyle.NONE)
-        self.install_button.set_halign(Gtk.Align.CENTER)
+        
+        self.install_button = Gtk.Button("Install Firmware", 
+                                         always_show_image=True,
+                                         relief=Gtk.ReliefStyle.NONE,
+                                         halign=Gtk.Align.CENTER,
+                                         image=image,
+                                         image_position=Gtk.PositionType.LEFT,
+                                         width_request=250,
+                                         height_request=0)
         
         btnlabel = self.install_button.get_child().get_child().get_children()[1]
         btnlabel.set_valign(Gtk.Align.CENTER)
