@@ -38,6 +38,47 @@ USES_NOTIFICATIONS = ['gnome']
 NOTIFICATION_TIMEOUT = 24*60*60 # 24 hours
 
 
+class AbortWindow (Gtk.Window):
+    def __init__(self):
+        Gtk.Window.__init__(self, title="System76 Firmware Updater")
+        self.set_size_request(400, 100)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
+        
+        self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
+        self.add(self.box)
+        
+        self.head_label = Gtk.Label("<b>Could not download firmware.</b>",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.head_label, False, False, 6)
+        
+        self.body_label = Gtk.Label("<span>Please check your network connection and try again.</span>",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.body_label, False, False, 6)
+        
+        
+        self.button = Gtk.Button("Network Settings")
+        self.button.connect('clicked', self.open_network_settings)
+        self.box.pack_start(self.button, False, False, 6)
+        
+        self.show_all()
+        Gtk.main()
+        
+    def open_network_settings(self, e):
+        self.hide()
+        
+        import subprocess
+        try:
+            subprocess.Popen(['gnome-control-center', 'network'])
+        except:
+            log.info("Couldn't open network settings.")
+        
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(1)
+
 class FirmwareWindow (Gtk.Window):
     def __init__(self, changelog=None, current_bios=None, current_ec=None, needs_update=False, can_update=False, is_notification=True):
         Gtk.Window.__init__(self, title="System76 Firmware Updater")
@@ -237,7 +278,7 @@ class FirmwareWindow (Gtk.Window):
         self.hide()
         while Gtk.events_pending():
             Gtk.main_iteration()
-        os._exit(0)
+        os._exit(76)
         
     def remind_later(self, e):
         self.hide()
@@ -292,11 +333,11 @@ def notification_action(notification, action=None, data=None):
 
 def needs_update(new_bios_version, new_ec_version):
     if not new_bios_version:
-        log.warn("Couldn't get the new bios version from changelog!")
+        return False
     elif new_bios_version != os.environ.get('FIRMWARE_CURRENT_BIOS'):
         return True
     if not new_ec_version:
-        log.warn("Couldn't get the new ec version from changelog!")
+        return False
     elif new_ec_version != os.environ.get('FIRMWARE_CURRENT_BIOS'):
         return True
     return False
@@ -369,6 +410,10 @@ def send_notification():
     GLib.timeout_add_seconds(NOTIFICATION_TIMEOUT, notification.close)
     mainloop.run()
 
+
+if 'FIRMWARE_ABORT' in os.environ:
+    AbortWindow()
+    os.exit(1)
 
 desktop_env = os.environ.get('NOTIFICATION_ENVIRONMENT')
 is_notification = os.environ.get('IS_NOTIFICATION')

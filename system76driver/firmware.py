@@ -248,7 +248,7 @@ class SignedManifest():
         return self.manifest["files"][filename]
 
 
-def confirm_dialog(use_notifications=True, is_notification=False):
+def get_user_session():
     user_name = subprocess.check_output(
                     "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
                     shell=True
@@ -271,8 +271,11 @@ def confirm_dialog(use_notifications=True, is_notification=False):
     environ = subprocess.check_output(['cat', '/proc/' + str(user_session_pid)
                                       + '/environ']
                 ).decode('utf-8').rstrip('\n')
+                
+    return user_name, display_name, environ
     
-    if use_notifications and "DESKTOP_SESSION=gnome" in environ:
+def create_environment(is_notification, user_name, display_name, environ):
+    if "DESKTOP_SESSION=gnome" in environ:
         desktop_env = 'gnome'
     else:
         desktop_env = ''
@@ -290,7 +293,10 @@ def confirm_dialog(use_notifications=True, is_notification=False):
     for var in environ.split("\00"):
         if len(var.split("=", maxsplit=1)) == 2:
             environment.append(str(var))
+            
+    return environment
     
+def call_gui(user_name, display_name, environment):
     if len(user_name) == 0 or len(display_name) == 0:
         return
 
@@ -304,6 +310,29 @@ def confirm_dialog(use_notifications=True, is_notification=False):
     ]
     
     return subprocess.call(args)
+
+def confirm_dialog(is_notification=False):
+    user_name, display_name, environ = get_user_session()
+    environment = create_environment(is_notification, user_name, display_name, environ)
+    return call_gui(user_name, display_name, environment)
+    
+def abort_dialog(is_notification=False):
+    if is_notification:
+        return
+    
+    user_name, display_name, environ = get_user_session()
+    
+    environment = [
+        "FIRMWARE_ABORT=True",
+        "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
+        "DISPLAY=" + display_name
+    ]
+    
+    for var in environ.split("\00"):
+        if len(var.split("=", maxsplit=1)) == 2:
+            environment.append(str(var))
+    
+    return call_gui(user_name, display_name, environment)
 
 def set_next_boot():
     handle, name = tempfile.mkstemp()
@@ -359,7 +388,7 @@ def get_processed_changelog():
             return process_changelog(changelog)
         
 
-def _run_firmware_updater(reinstall, use_notifications, is_notification):
+def _run_firmware_updater(reinstall, is_notification):
     # Download the manifest and check that it is signed by the private master key.
     # The public master key is pinned in our driver.
     # Then download the firmware and check the checksum against the manifest.
@@ -384,7 +413,7 @@ def _run_firmware_updater(reinstall, use_notifications, is_notification):
                     return
             
             #Confirm installation with the user.
-            if confirm_dialog(use_notifications, is_notification) == 0:
+            if confirm_dialog(is_notification) == 76:
                 log.info("Setting up firmware installation.")
 
                 #Remove old firmware updater
@@ -398,15 +427,18 @@ def _run_firmware_updater(reinstall, use_notifications, is_notification):
                 set_next_boot()
             else:
                 return
+                
+    else:
+        abort_dialog(is_notification)
+        return
     log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
 
-def run_firmware_updater(reinstall=None, use_notifications=True, notification=False):
+def run_firmware_updater(reinstall=None, notification=False):
     # Make sure we're running as root.  Should fail anyway
     if os.getuid() != 0:
         return
     try:
-        ret = _run_firmware_updater(reinstall, use_notifications, notification)
-        log.info("finisho")
+        ret = _run_firmware_updater(reinstall, notification)
         return ret
     except Exception:
         log.exception('Error calling _run_firmware_updater()')
