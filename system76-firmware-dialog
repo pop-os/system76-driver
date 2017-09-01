@@ -82,18 +82,19 @@ class AbortWindow (Gtk.Window):
 class FirmwareWindow (Gtk.Window):
     def __init__(self, changelog=None, current_bios=None, current_ec=None, needs_update=False, can_update=False, is_notification=True):
         Gtk.Window.__init__(self, title="System76 Firmware Updater")
-        self.set_size_request(480, 300)
+        self.set_size_request(480, 200)
         self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
         self.add(self.box)
         
-        self.titlebar = Gtk.HeaderBar()
-        self.titlebar.set_show_close_button(True)
-        
-        image = Gtk.Image()
-        image.set_from_file(get_datafile('76icon.svg'))
-        image.set_padding(6, 6)
-        self.titlebar.set_custom_title(image)
-        self.set_titlebar(self.titlebar)
+        if desktop_env == 'gnome':
+            self.titlebar = Gtk.HeaderBar()
+            self.titlebar.set_show_close_button(True)
+            
+            image = Gtk.Image()
+            image.set_from_file(get_datafile('76icon.svg'))
+            image.set_padding(6, 6)
+            self.titlebar.set_custom_title(image)
+            self.set_titlebar(self.titlebar)
         
         changelog = json.loads(changelog)
         
@@ -101,7 +102,7 @@ class FirmwareWindow (Gtk.Window):
         self.create_version_ui(current_bios, current_ec)
         self.create_update_available_label(needs_update, changelog[0]['bios'], changelog[0]['ec'])
         self.create_changelog_ui(changelog)
-        self.create_buttons(is_notification)
+        self.create_buttons(is_notification, needs_update)
         
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
@@ -117,7 +118,8 @@ class FirmwareWindow (Gtk.Window):
             self.grid.hide()
             self.note.hide()
             self.changelog_expander.hide()
-            self.titlebar.set_show_close_button(False)
+            if desktop_env == 'gnome':
+                self.titlebar.set_show_close_button(False)
         else:
             self.notification_area.hide()
         
@@ -230,12 +232,12 @@ class FirmwareWindow (Gtk.Window):
         self.changelog_expander.add(scrollwindow)
         self.box.pack_start(self.changelog_expander, True, True, 3)
     
-    def create_buttons(self, is_notification):
+    def create_buttons(self, is_notification, needs_update):
         self.buttonbox = Gtk.HBox(halign=Gtk.Align.CENTER)
         self.box.pack_start(self.buttonbox, False, False, 12)
         if is_notification == True:
             self.create_remind_later_button()
-        self.create_install_button()
+        self.create_install_button(needs_update)
     
     def create_remind_later_button(self):
         self.remind_later_button = Gtk.Button("Remind Me Later",
@@ -247,12 +249,16 @@ class FirmwareWindow (Gtk.Window):
         self.remind_later_button.connect('clicked', self.remind_later)
         self.buttonbox.pack_start(self.remind_later_button, True, True, 6)
         
-    def create_install_button(self):
+    def create_install_button(self, needs_update):
         image = Gtk.Image()
         image.set_from_file(get_datafile('download-firmware-icon-48.svg'))
         image.set_padding(6, 0)
         
-        self.install_button = Gtk.Button("Install Firmware", 
+        button_text = "Install Firmware"
+        if needs_update == False:
+            button_text = "Reinstall Firmware"
+        
+        self.install_button = Gtk.Button(button_text, 
                                          always_show_image=True,
                                          relief=Gtk.ReliefStyle.NONE,
                                          halign=Gtk.Align.CENTER,
