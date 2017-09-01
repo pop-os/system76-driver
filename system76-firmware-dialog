@@ -109,6 +109,9 @@ class FirmwareWindow (Gtk.Window):
         self.connect("delete-event", Gtk.main_quit)
         self.show_all()
         
+        if needs_update == True:
+            self.changelog_expander.set_expanded(True)
+            
         #show simplified UI if launched as notification. User can click for details.
         if is_notification == True and needs_update == True:
             self.grid.hide()
@@ -192,7 +195,7 @@ class FirmwareWindow (Gtk.Window):
         self.box.pack_start(self.note, False, False, 3)
     
     def create_changelog_ui(self, changelog):
-        self.changelog_expander = Gtk.Expander(resize_toplevel=True, expanded=True)
+        self.changelog_expander = Gtk.Expander(resize_toplevel=True, expanded=False)
         self.changelog_expander.set_label('Change History')
         
         scrollwindow = Gtk.ScrolledWindow(min_content_height=100, 
