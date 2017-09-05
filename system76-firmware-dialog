@@ -275,6 +275,8 @@ class FirmwareWindow (Gtk.Window):
         self.install_button.connect('clicked', self.run_firmware_updater)
         self.buttonbox.pack_start(self.install_button, True, True, 6)
         
+        self.install_button.grab_focus()
+        
     def show_details(self, e):
         #hide
         self.notification_area.hide()
