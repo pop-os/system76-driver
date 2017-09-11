@@ -125,6 +125,7 @@ TABLES = {
         'bonw12': 'bonw12',
         'galu1': 'galu1',
         'galp2': 'galp2',
+        'galp3': 'galp3',
         'gazu1': 'gazu1',
         'gazp6': 'gazp6',
         'gazp7': 'gazp7',

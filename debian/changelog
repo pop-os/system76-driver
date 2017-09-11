@@ -1,6 +1,7 @@
 system76-driver (16.04.41~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.41
+  * Add 'galp3'
 
  -- Jeremy Soller <jeremy@system76.com>  Mon, 21 Aug 2017 10:56:17 -0600
 
