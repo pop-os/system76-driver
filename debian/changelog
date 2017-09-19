@@ -1,9 +1,8 @@
-system76-driver (17.10.1~alpha) artful; urgency=low
+system76-driver (17.10.1) artful; urgency=low
 
-  * Daily WIP for 17.10.1
   * Remove acpi_backlight action from 10XX NVIDIA models
 
- -- Jeremy Soller <jeremy@system76.com>  Tue, 19 Sep 2017 15:04:19 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 19 Sep 2017 15:13:19 -0600
 
 system76-driver (17.10.0) artful; urgency=low
 
