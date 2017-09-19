@@ -135,6 +135,13 @@ PRODUCTS = {
             actions.hidpi_scaling,
 	    ],
     },
+    'galp3': {
+        'name': 'Galago Pro',
+        'drivers': [
+            actions.internal_mic_gain,
+            actions.hidpi_scaling,
+	    ],
+    },
 
     # Gazelle:
     'gazp1': {

@@ -1,6 +1,7 @@
 system76-driver (17.04.10~alpha) zesty; urgency=low
 
   * Daily WIP for 17.04.10
+  * Add 'galp3'
 
  -- Jeremy Soller <jeremy@system76.com>  Mon, 21 Aug 2017 10:56:21 -0600
 
