@@ -34,7 +34,7 @@ from system76driver import __version__
 from system76driver.tests.helpers import TempDir
 
 
-DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty')
+DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful')
 PPA = 'ppa:system76-dev/pre-stable'
 ALPHA = '~alpha'
 
@@ -217,4 +217,3 @@ if confirm():
 # We're done:
 print('-' * 80)
 print('Released {!r} for {!r}'.format(version, distro))
-

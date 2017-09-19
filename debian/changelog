@@ -1,3 +1,9 @@
+system76-driver (17.10.0) artful; urgency=low
+
+  * Update to artful series
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 19 Sep 2017 15:02:04 -0600
+
 system76-driver (17.04.10) zesty; urgency=low
 
   * Add 'galp3'

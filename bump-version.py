@@ -34,7 +34,7 @@ from system76driver import __version__
 from system76driver.tests.helpers import TempDir
 
 
-DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty')
+DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful')
 ALPHA = '~alpha'
 
 TREE = path.dirname(path.abspath(__file__))
@@ -184,4 +184,3 @@ if not confirm():
 check_call(['bzr', 'commit', '-m', 'Bump version to {}'.format(newdeb)])
 print('-' * 80)
 print('{!r} is now at version {!r}'.format(distro, newdeb))
-
