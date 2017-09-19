@@ -79,7 +79,7 @@ PRODUCTS = {
     'bonw11': {
         'name': 'Bonobo WS',
         'drivers': [
-            actions.backlight_vendor,
+            actions.remove_backlight_vendor,
             actions.gfxpayload_text,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
@@ -89,7 +89,7 @@ PRODUCTS = {
     'bonw12': {
         'name': 'Bonobo WS',
         'drivers': [
-            actions.backlight_vendor,
+            actions.remove_backlight_vendor,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
             actions.hidpi_scaling,
@@ -424,7 +424,7 @@ PRODUCTS = {
     'oryp2': {
         'name': 'Oryx Pro',
         'drivers': [
-            actions.backlight_vendor,
+            actions.remove_backlight_vendor,
             actions.i8042_reset_nomux,
             actions.hidpi_scaling,
         ],
@@ -432,7 +432,7 @@ PRODUCTS = {
     'oryp2-ess': {
         'name': 'Oryx Pro',
         'drivers': [
-            actions.backlight_vendor,
+            actions.remove_backlight_vendor,
             actions.i8042_reset_nomux,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
@@ -442,14 +442,14 @@ PRODUCTS = {
     'oryp3': {
         'name': 'Oryx Pro',
         'drivers': [
-            actions.backlight_vendor,
+            actions.remove_backlight_vendor,
             actions.hidpi_scaling,
         ],
     },
     'oryp3-ess': {
         'name': 'Oryx Pro',
         'drivers': [
-            actions.backlight_vendor,
+            actions.remove_backlight_vendor,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
             actions.hidpi_scaling,
@@ -458,7 +458,7 @@ PRODUCTS = {
     'oryp3-b': {
         'name': 'Oryx Pro',
         'drivers': [
-            actions.backlight_vendor,
+            actions.remove_backlight_vendor,
             actions.hidpi_scaling,
         ],
     },
@@ -661,7 +661,7 @@ PRODUCTS = {
     'serw10': {
         'name': 'Serval WS',
         'drivers': [
-            actions.backlight_vendor,
+            actions.remove_backlight_vendor,
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
             actions.hidpi_scaling,
