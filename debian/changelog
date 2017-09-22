@@ -1,9 +1,8 @@
-system76-driver (16.04.42~alpha) xenial; urgency=low
+system76-driver (16.04.42) xenial; urgency=low
 
-  * Daily WIP for 16.04.42
   * Add 'lemu8'
 
- -- Jeremy Soller <jeremy@system76.com>  Tue, 19 Sep 2017 15:04:31 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 22 Sep 2017 10:31:34 -0600
 
 system76-driver (16.04.41) xenial; urgency=low
 
