@@ -1,6 +1,7 @@
 system76-driver (17.10.2~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.2
+  * Add 'lemu8'
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 19 Sep 2017 15:19:32 -0600
 
