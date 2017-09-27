@@ -1,3 +1,9 @@
+system76-driver (17.10.3~alpha) artful; urgency=low
+
+  * Daily WIP for 17.10.3
+
+ -- David Jordan <david2@system76.com>  Wed, 27 Sep 2017 15:45:34 -0600
+
 system76-driver (17.10.2) artful; urgency=low
 
   * Add 'lemu8'
