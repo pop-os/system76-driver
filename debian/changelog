@@ -1,6 +1,7 @@
 system76-driver (17.10.3~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.3
+  * Process quirks when nvidia driver is already installed
 
  -- David Jordan <david2@system76.com>  Wed, 27 Sep 2017 15:45:34 -0600
 
