@@ -1,6 +1,7 @@
 system76-driver (16.04.43~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.43
+  * Process quirks when nvidia driver is already installed
 
  -- Jeremy Soller <jeremy@system76.com>  Fri, 22 Sep 2017 10:34:57 -0600
 
