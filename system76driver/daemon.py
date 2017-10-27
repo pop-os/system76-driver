@@ -330,11 +330,13 @@ class Brightness:
         assert isinstance(brightness, int) and brightness > 0
         with open(self.brightness_file, 'wb', 0) as fp:
             fp.write(str(brightness).encode())
-        xbrightness = ['xbacklight', 
-                       '-set', 
-                       str(int(100 * brightness / self.xbacklight_max_brightness))
-        ]
-        subprocess.check_output(xbrightness)
+        xbrightness = int(100 * brightness / self.xbacklight_max_brightness)
+        if xbrightness <= 100:
+            xbrightness_cmd = ['xbacklight', 
+                               '-set', 
+                               str(int(100 * brightness / self.xbacklight_max_brightness))
+            ]
+            subprocess.check_output(xbrightness_cmd)
 
     def load(self):
         conf = load_json_conf(self.saved_file)
