@@ -355,6 +355,8 @@ class Brightness:
         
     def set_xbacklight(self, brightness):
         xbrightness = int(100 * brightness / self.xbacklight_max_brightness)
+        if xbrightness == 0:
+            xbrightness = 1:
         if xbrightness <= 100:
             xbrightness_cmd = ['xbacklight', 
                                '-set', 
@@ -380,7 +382,7 @@ class Brightness:
     def run(self):
         self.xbacklight_max_brightness = self.read_max_brightness()
         self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
-        self.timeout_id = GLib.timeout_add(250, self.on_timeout)
+        self.timeout_id = GLib.timeout_add(100, self.update_xbacklight)
 
     def on_timeout(self):
         try:
