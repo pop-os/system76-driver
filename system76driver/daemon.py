@@ -316,6 +316,7 @@ class Brightness:
         self.saved_file = path.join(rootdir,
             'var', 'lib', 'system76-driver', 'brightness.json'
         )
+        self.xbacklight_max_brightness = 10
 
     def read_max_brightness(self):
         with open(self.max_brightness_file, 'rb', 0) as fp:
@@ -329,6 +330,11 @@ class Brightness:
         assert isinstance(brightness, int) and brightness > 0
         with open(self.brightness_file, 'wb', 0) as fp:
             fp.write(str(brightness).encode())
+        xbrightness = ['xbacklight', 
+                       '-set', 
+                       str(int(100 * brightness / self.xbacklight_max_brightness))
+        ]
+        subprocess.check_output(xbrightness)
 
     def load(self):
         conf = load_json_conf(self.saved_file)
@@ -368,6 +374,7 @@ class Brightness:
         self.current = current
 
     def run(self):
+        self.xbacklight_max_brightness = self.read_max_brightness()
         self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
 
     def on_timeout(self):
