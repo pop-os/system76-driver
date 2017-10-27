@@ -330,13 +330,6 @@ class Brightness:
         assert isinstance(brightness, int) and brightness > 0
         with open(self.brightness_file, 'wb', 0) as fp:
             fp.write(str(brightness).encode())
-        xbrightness = int(100 * brightness / self.xbacklight_max_brightness)
-        if xbrightness <= 100:
-            xbrightness_cmd = ['xbacklight', 
-                               '-set', 
-                               str(int(100 * brightness / self.xbacklight_max_brightness))
-            ]
-            subprocess.check_output(xbrightness_cmd)
 
     def load(self):
         conf = load_json_conf(self.saved_file)
@@ -359,6 +352,15 @@ class Brightness:
         conf = load_json_conf(self.saved_file)
         conf[self.key] = brightness
         save_json_conf(self.saved_file, conf)
+        
+    def set_xbacklight(self, brightness):
+        xbrightness = int(100 * brightness / self.xbacklight_max_brightness)
+        if xbrightness <= 100:
+            xbrightness_cmd = ['xbacklight', 
+                               '-set', 
+                               str(xbrightness)
+            ]
+            subprocess.check_output(xbrightness_cmd)
 
     def restore(self):
         current = self.load()
@@ -378,6 +380,7 @@ class Brightness:
     def run(self):
         self.xbacklight_max_brightness = self.read_max_brightness()
         self.timeout_id = GLib.timeout_add(10 * 1000, self.on_timeout)
+        self.timeout_id = GLib.timeout_add(250, self.on_timeout)
 
     def on_timeout(self):
         try:
@@ -394,6 +397,14 @@ class Brightness:
             if brightness > 0:
                 log.info('saving brightness at %d', brightness)
                 self.save(brightness)
+    
+    def update_xbacklight(self):
+        brightness = self.read_brightness()
+        if self.current != brightness:
+            self.current = brightness
+            if brightness > 0:
+                log.info('saving brightness at %d', brightness)
+                self.set_xbacklight(brightness)
 
 
 def _run_brightness(model):
