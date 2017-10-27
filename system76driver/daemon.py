@@ -408,6 +408,7 @@ class Brightness:
             if brightness > 0:
                 log.info('saving brightness at %d', brightness)
                 self.set_xbacklight(brightness)
+        return True
 
 
 def _run_brightness(model):
