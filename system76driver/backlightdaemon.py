@@ -56,7 +56,6 @@ class Backlight:
         assert name in ('acpi_video0')
         self.model = model
         self.name = name
-        self.key = '.'.join([model, name])
         self.current = None
         self.backlight_dir = path.join(rootdir,
             'sys', 'class', 'backlight', name
@@ -116,6 +115,8 @@ def _run_backlight(model):
     name = 'acpi_video0'
     backlight = Backlight(model, name)
     backlight.run()
+    mainloop = GLib.MainLoop()
+    mainloop.run()
     return backlight
 
 

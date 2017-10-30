@@ -65,4 +65,4 @@ log.info('model: %r', args.model)
 
 GObject.threads_init()
 if disable != "True":
-    backlight = backlightdaemon.run_backlightdaemon(args.model)
+    backlight = backlightdaemon.run_backlight(args.model)
