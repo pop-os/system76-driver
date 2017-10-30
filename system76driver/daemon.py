@@ -362,7 +362,10 @@ class Brightness:
                                '-set', 
                                str(xbrightness)
             ]
-            subprocess.check_output(xbrightness_cmd)
+            try:
+                subprocess.check_output(xbrightness_cmd)
+            except:
+                time.sleep(1)
 
     def restore(self):
         current = self.load()
