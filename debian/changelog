@@ -1,6 +1,7 @@
 system76-driver (17.10.5~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.5
+  * make xbacklight workaround its own systemd user daemon.
 
  -- David Jordan <david2@system76.com>  Mon, 30 Oct 2017 16:33:14 -0600
 

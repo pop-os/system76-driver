@@ -102,7 +102,7 @@ class Backlight:
         brightness = self.read_brightness()
         if self.current != brightness:
             self.current = brightness
-            if brightness > 0:
+            if brightness >= 0:
                 self.set_xbacklight(brightness)
         return True
 
