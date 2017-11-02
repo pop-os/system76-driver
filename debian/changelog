@@ -1,9 +1,8 @@
-system76-driver (17.10.6~alpha) artful; urgency=low
+system76-driver (17.10.6) artful; urgency=low
 
-  * Daily WIP for 17.10.6
   * xdg autostart .desktop for xbacklight workaround
 
- -- David Jordan <david2@system76.com>  Tue, 31 Oct 2017 15:21:03 -0600
+ -- David Jordan <david2@system76.com>  Thu, 02 Nov 2017 16:21:36 -0600
 
 system76-driver (17.10.5) artful; urgency=low
 
