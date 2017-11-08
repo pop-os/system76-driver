@@ -34,7 +34,7 @@ from system76driver import __version__
 from system76driver.tests.helpers import TempDir
 
 
-DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful')
+DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful', 'bionic')
 PPA = 'ppa:system76-dev/pre-stable'
 ALPHA = '~alpha'
 
@@ -66,7 +66,9 @@ def confirm():
 
 
 def check_for_uncommitted_changes():
-    if check_output(['bzr', 'diff']).decode() != '':
+    if check_output(['git', 'diff']).decode() != '':
+        sys.exit('ERROR: unstaged changes!')
+    if check_output(['git', 'diff', '--cached']).decode() != '':
         sys.exit('ERROR: uncommited changes!')
 
 
@@ -167,12 +169,7 @@ check_call([SETUP, 'test'])
 # Make sure package builds okay locally using pbuilder-dist:
 check_call(['pbuilder-dist', distro, 'update'])
 tmp = TempDir()
-cmd = [
-    'bzr', 'bd', '-S',
-    '--build-dir', tmp.mkdir('build'),
-    '--result-dir', tmp.mkdir('result'),
-]
-check_call(cmd)
+check_call(['dpkg-source', '-b', TREE], cwd=tmp.join('result'))
 check_call(['pbuilder-dist', distro, 'build', tmp.join('result', DSC_NAME)])
 del tmp
 
@@ -181,14 +178,14 @@ def abort(msg=None):
         print('\nERROR: ' + msg)
     print('')
     print('Release not made, reverting changes...')
-    check_call(['bzr', 'revert'])
+    check_call(['git', 'checkout', '--', CHANGELOG, INIT])
     print('Goodbye.')
     status = (0 if msg is None else 2)
     sys.exit(status)
 
 # Confirm before we make the commit:
 print('-' * 80)
-call(['bzr', 'diff'])
+call(['git', 'diff'])
 print('-' * 80)
 print('Source tree is {!r}'.format(TREE))
 print('Will release {!r} for {!r}'.format(version, distro))
@@ -201,11 +198,11 @@ for filename in (DSC, CHANGES):
         abort('Already exists: {!r}'.format(filename))
 
 # Commit and tag:
-check_call(['bzr', 'commit', '-m', 'Release {}'.format(version)])
-check_call(['bzr', 'tag', version])
+check_call(['git', 'commit', CHANGELOG, INIT, '-am', 'Release {}'.format(version)])
+check_call(['git', 'tag', version])
 
 # Build source package:
-check_call(['bzr', 'bd', '-S'])
+check_call(['gbp', 'buildpackage', '-S'])
 
 # Confirm before we dput to PPA:
 print('-' * 80)
@@ -217,4 +214,3 @@ if confirm():
 # We're done:
 print('-' * 80)
 print('Released {!r} for {!r}'.format(version, distro))
-
