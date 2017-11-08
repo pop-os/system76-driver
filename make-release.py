@@ -169,6 +169,7 @@ check_call([SETUP, 'test'])
 # Make sure package builds okay locally using pbuilder-dist:
 check_call(['pbuilder-dist', distro, 'update'])
 tmp = TempDir()
+os.mkdir(tmp.join('result'))
 check_call(['dpkg-source', '-b', TREE], cwd=tmp.join('result'))
 check_call(['pbuilder-dist', distro, 'build', tmp.join('result', DSC_NAME)])
 del tmp

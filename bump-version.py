@@ -158,6 +158,7 @@ check_call([SETUP, 'test'])
 dsc_name = 'system76-driver_{}.dsc'.format(newdeb)
 check_call(['pbuilder-dist', distro, 'update'])
 tmp = TempDir()
+os.mkdir(tmp.join('result'))
 check_call(['dpkg-source', '-b', TREE], cwd=tmp.join('result'))
 check_call(['pbuilder-dist', distro, 'build', tmp.join('result', dsc_name)])
 del tmp
