@@ -199,7 +199,7 @@ for filename in (DSC, CHANGES):
         abort('Already exists: {!r}'.format(filename))
 
 # Commit and tag:
-check_call(['git', 'commit', CHANGELOG, INIT, '-am', 'Release {}'.format(version)])
+check_call(['git', 'commit', CHANGELOG, INIT, '-m', 'Release {}'.format(version)])
 check_call(['git', 'tag', version])
 
 # Build source package:

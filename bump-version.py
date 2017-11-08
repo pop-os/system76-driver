@@ -179,6 +179,6 @@ if not confirm():
     sys.exit(0)
 
 # Make the commit:
-check_call(['git', 'commit', CHANGELOG, INIT, '-am', 'Bump version to {}'.format(newdeb)])
+check_call(['git', 'commit', CHANGELOG, INIT, '-m', 'Bump version to {}'.format(newdeb)])
 print('-' * 80)
 print('{!r} is now at version {!r}'.format(distro, newdeb))
