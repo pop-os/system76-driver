@@ -203,7 +203,7 @@ check_call(['git', 'commit', CHANGELOG, '-m', 'Release {}'.format(version)])
 check_call(['git', 'tag', version])
 
 # Build source package:
-check_call(['gbp', 'buildpackage', '-S'])
+check_call(['gbp', 'buildpackage', '--git-ignore-branch', '-S'])
 
 # Confirm before we dput to PPA:
 print('-' * 80)
