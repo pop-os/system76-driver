@@ -1,3 +1,15 @@
+system76-driver (18.04.1) bionic; urgency=low
+
+  * Something
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 08 Nov 2017 11:22:35 -0700
+
+system76-driver (18.04.0) bionic; urgency=low
+
+  * Update to bionic series
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 08 Nov 2017 09:39:16 -0700
+
 system76-driver (17.10.6) artful; urgency=low
 
   * xdg autostart .desktop for xbacklight workaround
