@@ -360,7 +360,11 @@ class HiDPIAutoscaling:
             else:
                 res_in_x = 2 * mode['width']
                 res_in_y = 2 * mode['height']
-            pan_x, pan_y = layout[display_name]
+                
+            if display_name in layout:
+                pan_x, pan_y = layout[display_name]
+            else:
+                return ''
             panning_pos = "+" + str(pan_x) + "+" + str(pan_y)
             
             viewportin = str(res_in_x) + "x" + str(res_in_y) + " "
@@ -370,8 +374,6 @@ class HiDPIAutoscaling:
             display_str = display_str + "+" + str(pan_x) + "+" + str(pan_y) + " "
             display_str = display_str + self.get_nvidia_settings_options(display_name, viewportin, viewportout)
             return display_str
-            
-            dpys = subprocess.check_output(['nvidia-settings', '-q', 'dpys'])
         
     
     def set_display_scaling(self, display, layout, force_lowdpi=False):
@@ -405,7 +407,7 @@ class HiDPIAutoscaling:
                     e = randr.OutputChangeNotify(display=display.display, binarydata = e._binary)
                     running = False
                     
-                time.sleep(.01)
+                time.sleep(.1)
                 if self.update_display_connections():
                     self.set_scaled_display_modes()
                 
