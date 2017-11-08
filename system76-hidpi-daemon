@@ -36,7 +36,7 @@ from gi.repository import GLib
 from gi.repository import GObject
 
 import system76driver
-from system76driver import hidpidaemon
+from system76driver import hidpidaemon2
 from system76driver.daemon import load_json_conf
 
 
@@ -67,4 +67,4 @@ log.info('model: %r', args.model)
 
 GObject.threads_init()
 if disable != "True":
-    hidpi = hidpidaemon.run_hotplug_autoscaling(args.model)
+    hidpi = hidpidaemon2.run_hidpi_autoscaling(args.model)
