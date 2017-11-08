@@ -60,15 +60,16 @@ then
     exit 1
 fi
 
-DISK="$(findmnt -n /boot/efi -o 'MAJ:MIN' | cut -d ':' -f 1)"
-PART="$(findmnt -n /boot/efi -o 'MAJ:MIN' | cut -d ':' -f 2)"
+EFIDEV="$(basename "$(findmnt -n /boot/efi -o SOURCE)")"
+DISK="$(cut -d ':' -f 1 "/sys/class/block/${EFIDEV}/dev")"
+PART="$(cat "/sys/class/block/${EFIDEV}/partition")"
 DEV="/dev/$(lsblk -n -o 'KNAME,MAJ:MIN' | grep "${DISK}:0" | cut -d ' ' -f 1)"
 
-echo -e "\e[1mCreating Boot1776\e[0m" >&2
+echo -e "\e[1mCreating Boot1776 on "${DEV}" "${PART}" \e[0m" >&2
 efibootmgr -B -b 1776 || true
 efibootmgr -C -b 1776 -d "${DEV}" -p "${PART}" -l '\\system76-firmware-update\\boot.efi' -L "System76 Firmware Update"
 
-echo -e "\e[1mSetting BootNext\e[0m" >&2
+echo -e "\e[1mSetting BootNext to 1776\e[0m" >&2
 efibootmgr -n 1776
 
 echo -e "\e[1mInstalled system76-firmware-update\e[0m" >&2
@@ -116,11 +117,11 @@ def get_url(filename):
 def get_file(filename, cache=None):
     if cache:
         log.info("Fetching {} with cache {}".format(filename, cache))
-        
+
         if not os.path.isdir(CACHE_PATH):
             log.info("Creating cache directory at {}".format(cache))
             os.mkdir(CACHE_PATH)
-        
+
         p = path.join(cache, filename)
         if path.isfile(p):
             f = open(p, 'rb')
@@ -156,7 +157,7 @@ def get_file(filename, cache=None):
             log.exception("Failed to open secure TLS connection:\n"
                           + "    possible Man-in-the-Middle attack or outdated certificate.\n"
                           + "    Updating to the latest driver may solve the issue.")
-        
+
 
 def get_hashed_file(filename, decode=None):
     hashed_file = get_file(filename, CACHE_PATH)
@@ -207,7 +208,7 @@ class Tarball():
         os.chmod(directory, 0o700)
         self.tar.extractall(directory)
         os.chmod(directory, 0o500)
-    
+
     def extractfile(self, f):
         return self.tar.extractfile(f)
 
@@ -271,15 +272,15 @@ def get_user_session():
     environ = subprocess.check_output(['cat', '/proc/' + str(user_session_pid)
                                       + '/environ']
                 ).decode('utf-8').rstrip('\n')
-                
+
     return user_name, display_name, environ
-    
+
 def create_environment(is_notification, user_name, display_name, environ):
     if "DESKTOP_SESSION=gnome" in environ:
         desktop_env = 'gnome'
     else:
         desktop_env = ''
-    
+
     environment = [
         "NOTIFICATION_ENVIRONMENT=" + desktop_env,
         "IS_NOTIFICATION=" + str(is_notification),
@@ -289,13 +290,13 @@ def create_environment(is_notification, user_name, display_name, environ):
         "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
         "DISPLAY=" + display_name
     ]
-    
+
     for var in environ.split("\00"):
         if len(var.split("=", maxsplit=1)) == 2:
             environment.append(str(var))
-            
+
     return environment
-    
+
 def call_gui(user_name, display_name, environment):
     if len(user_name) == 0 or len(display_name) == 0:
         return
@@ -308,30 +309,30 @@ def call_gui(user_name, display_name, environment):
         "-c",
         '/usr/lib/system76-driver/system76-firmware-dialog',
     ]
-    
+
     return subprocess.call(args)
 
 def confirm_dialog(is_notification=False):
     user_name, display_name, environ = get_user_session()
     environment = create_environment(is_notification, user_name, display_name, environ)
     return call_gui(user_name, display_name, environment)
-    
+
 def abort_dialog(is_notification=False):
     if is_notification:
         return
-    
+
     user_name, display_name, environ = get_user_session()
-    
+
     environment = [
         "FIRMWARE_ABORT=True",
         "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
         "DISPLAY=" + display_name
     ]
-    
+
     for var in environ.split("\00"):
         if len(var.split("=", maxsplit=1)) == 2:
             environment.append(str(var))
-    
+
     return call_gui(user_name, display_name, environment)
 
 def set_next_boot():
@@ -362,13 +363,13 @@ def get_changelog(tempdirname):
         changelog = json.load(f)
         return changelog
 
-#Submit the subset of json relevant to the GUI (And add the detected version)    
+#Submit the subset of json relevant to the GUI (And add the detected version)
 def process_changelog(changelog):
     if changelog['versions']:
         versions = changelog['versions']
     else:
         return None, None
-    
+
     version_entries = []
     for version in versions:
         entry = {}
@@ -377,23 +378,23 @@ def process_changelog(changelog):
                 entry[component] = str(version[component])
         version_entries.append(entry)
     return version_entries
-    
+
 def get_processed_changelog():
     firmware, updater = download_from_repo()
-    
+
     if firmware and updater:
         with firmware.extractfile('./changelog.json') as f:
             c = f.read().decode('utf-8')
             changelog = json.loads(c)
             return process_changelog(changelog)
-        
+
 
 def _run_firmware_updater(reinstall, is_notification):
     # Download the manifest and check that it is signed by the private master key.
     # The public master key is pinned in our driver.
     # Then download the firmware and check the checksum against the manifest.
     firmware, updater = download_from_repo()
-    
+
     if firmware and updater:
         #Extract to temporary directory and set safe permissions.
         with tempfile.TemporaryDirectory() as tempdirname:
@@ -403,15 +404,15 @@ def _run_firmware_updater(reinstall, is_notification):
 
             #Process changelog and component versions
             changelog = get_changelog(tempdirname)
-            update_needed = needs_update(changelog['versions'][0]['bios'], 
+            update_needed = needs_update(changelog['versions'][0]['bios'],
                                         changelog['versions'][0]['ec'])
-            
+
             #Don't offer the update if its already installed
             if not update_needed:
                 log.info('No new firmware to install.')
                 if not reinstall:
                     return
-            
+
             #Confirm installation with the user.
             if confirm_dialog(is_notification) == 76:
                 log.info("Setting up firmware installation.")
@@ -427,7 +428,7 @@ def _run_firmware_updater(reinstall, is_notification):
                 set_next_boot()
             else:
                 return
-                
+
     else:
         abort_dialog(is_notification)
         return
