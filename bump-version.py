@@ -61,7 +61,9 @@ def confirm():
 
 
 def check_for_uncommitted_changes():
-    if check_output(['bzr', 'diff']).decode() != '':
+    if check_output(['git', 'diff']).decode() != '':
+        sys.exit('ERROR: unstaged changes!')
+    if check_output(['git', 'diff', '--cached']).decode() != '':
         sys.exit('ERROR: uncommited changes!')
 
 
@@ -156,18 +158,14 @@ check_call([SETUP, 'test'])
 dsc_name = 'system76-driver_{}.dsc'.format(newdeb)
 check_call(['pbuilder-dist', distro, 'update'])
 tmp = TempDir()
-cmd = [
-    'bzr', 'bd', '-S',
-    '--build-dir', tmp.mkdir('build'),
-    '--result-dir', tmp.mkdir('result'),
-]
-check_call(cmd)
+os.mkdir(tmp.join('result'))
+check_call(['dpkg-source', '-b', TREE], cwd=tmp.join('result'))
 check_call(['pbuilder-dist', distro, 'build', tmp.join('result', dsc_name)])
 del tmp
 
 # Confirm before we make the commit:
 print('-' * 80)
-call(['bzr', 'diff'])
+call(['git', 'diff'])
 print('-' * 80)
 print('Source tree is {!r}'.format(TREE))
 print(
@@ -176,12 +174,11 @@ print(
 if not confirm():
     print('')
     print('Version bump not committed, reverting changes...')
-    check_call(['bzr', 'revert'])
+    check_call(['git', 'checkout', '--', CHANGELOG, INIT])
     print('Goodbye.')
     sys.exit(0)
 
 # Make the commit:
-check_call(['bzr', 'commit', '-m', 'Bump version to {}'.format(newdeb)])
+check_call(['git', 'commit', CHANGELOG, INIT, '-m', 'Bump version to {}'.format(newdeb)])
 print('-' * 80)
 print('{!r} is now at version {!r}'.format(distro, newdeb))
-
