@@ -286,7 +286,7 @@ def create_environment(is_notification, user_name, display_name, environ):
         "IS_NOTIFICATION=" + str(is_notification),
         "FIRMWARE_CHANGELOG=" + json.dumps(get_processed_changelog()),
         "FIRMWARE_CURRENT_BIOS=" + get_bios_version(),
-        "FIRMWARE_CURRENT_EC=" + get_bios_version(),
+        "FIRMWARE_CURRENT_EC=" + get_ec_version(),
         "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
         "DISPLAY=" + display_name
     ]
