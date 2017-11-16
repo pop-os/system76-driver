@@ -1,6 +1,7 @@
 system76-driver (18.04.2~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.2
+  * Add 'leow9', 'leow9-w', and 'wilp14'
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 16 Nov 2017 09:36:12 -0700
 
