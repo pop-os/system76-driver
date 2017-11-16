@@ -16,6 +16,8 @@ import threading, queue
 
 from collections import namedtuple
 
+from system76driver import dbusutil
+
 log = logging.getLogger(__name__)
 
 NEEDS_HIDPI_AUTOSCALING = (
@@ -335,10 +337,9 @@ class HiDPIAutoscaling:
                 if self.scale_mode == 'hidpi':
                     self.scale_mode = 'lowdpi'
                 else:
-                    self.scale_mode == 'hidpi'
+                    self.scale_mode = 'hidpi'
                 self.queue.put(self.scale_mode)
                 self.queue.put(self.unforce)
-            
             if self.get_gpu_vendor() == 'intel':
                 # for threading reasons, create a new autoscaling instance...but do not call run() on it!
                 h = HiDPIAutoscaling(self.model)
@@ -347,8 +348,9 @@ class HiDPIAutoscaling:
                 self.send_scaling_notification(self.queue, unforce=self.unforce)
             if self.get_gpu_vendor() == 'nvidia': # nvidia
                 h = HiDPIAutoscaling(self.model)
+                h.scale_mode = self.scale_mode
                 h.set_scaled_display_modes(notification=False)
-                self.send_scaling_notification(self.queue, unforce=self.unforce)
+                self.send_scaling_notification(self.queue)
     
     def send_scaling_notification(self, queue=None, unforce=False):
         if self.unforce:
@@ -515,7 +517,7 @@ class HiDPIAutoscaling:
         return attribute_mapping[display_name]
 
 
-    def set_display_scaling_nvidia_settings(self, display_name, layout, force_hidpi=True):
+    def set_display_scaling_nvidia_settings(self, display_name, layout):
         #DP-0: nvidia-auto-select @3840x2160 +0+0 {ViewPortIn=3840x2160, ViewPortOut=3840x2160+0+0, ForceCompositionPipeline=On}
         #DISPLAY_NAME
         #nvidia-auto-select
@@ -528,33 +530,40 @@ class HiDPIAutoscaling:
         dpi = self.get_display_dpi(display_name)
         if dpi is None:
             return ''
-        if force_hidpi == True:
-            display_str = display_name + ": nvidia-auto-select "
-            
-            mode = self.displays[display_name]['modes'][0]
-            res_out_x = mode['width']
-            res_out_y = mode['height']
-            
+        display_str = display_name + ": nvidia-auto-select "
+        
+        mode = self.displays[display_name]['modes'][0]
+        res_out_x = mode['width']
+        res_out_y = mode['height']
+        
+        if self.scale_mode == 'hidpi':
             if dpi > 170:
                 res_in_x = mode['width']
                 res_in_y = mode['height']
             else:
                 res_in_x = 2 * mode['width']
                 res_in_y = 2 * mode['height']
-                
-            if display_name in layout:
-                pan_x, pan_y = layout[display_name]
+        else:
+            if dpi > 170:
+                res_in_x = round(mode['width'] / 2)
+                res_in_y = round(mode['height'] / 2)
             else:
-                return ''
-            panning_pos = "+" + str(pan_x) + "+" + str(pan_y)
-            
-            viewportin = str(res_in_x) + "x" + str(res_in_y) + " "
-            viewportout = str(res_out_x) + "x" + str(res_out_y) + panning_pos
-            
-            display_str = display_str + "@" + str(res_in_x) + "x" + str(res_in_y) + " "
-            display_str = display_str + "+" + str(pan_x) + "+" + str(pan_y) + " "
-            display_str = display_str + self.get_nvidia_settings_options(display_name, viewportin, viewportout)
-            return display_str
+                res_in_x = mode['width']
+                res_in_y = mode['height']
+        
+        if display_name in layout:
+            pan_x, pan_y = layout[display_name]
+        else:
+            return ''
+        panning_pos = "+" + str(pan_x) + "+" + str(pan_y)
+        
+        viewportin = str(res_in_x) + "x" + str(res_in_y) + " "
+        viewportout = str(res_out_x) + "x" + str(res_out_y) + panning_pos
+        
+        display_str = display_str + "@" + str(res_in_x) + "x" + str(res_in_y) + " "
+        display_str = display_str + "+" + str(pan_x) + "+" + str(pan_y) + " "
+        display_str = display_str + self.get_nvidia_settings_options(display_name, viewportin, viewportout)
+        return display_str
         
     def set_display_scaling_xrandr(self, display_name, layout, force_lowdpi=True):
         dpi = self.get_display_dpi(display_name)
@@ -593,7 +602,7 @@ class HiDPIAutoscaling:
     
     def set_display_scaling(self, display, layout, force=False):
         if self.get_gpu_vendor() == 'nvidia':
-            return self.set_display_scaling_nvidia_settings(display, layout, force_hidpi=True)
+            return self.set_display_scaling_nvidia_settings(display, layout)
         elif self.get_gpu_vendor() == 'intel':
             return self.set_display_scaling_xrandr(display, layout, force_lowdpi=force)
     
@@ -635,6 +644,20 @@ class HiDPIAutoscaling:
                 dpi = self.get_display_dpi(display)
                 cmd = cmd + self.set_display_scaling(display, layout, force=force)
         if self.get_gpu_vendor() == 'nvidia':
+            # First set scale mode manually since Mutter can't see the effective display resolution.
+            if self.scale_mode == 'lowdpi':
+                try:
+                    dbusutil.set_scale(1)
+                except:
+                    log.info("Could not set Mutter scale mode")
+            elif dbusutil.get_scale() < 2.0:
+                #Need to set a display mode Mutter is happy with before setting scale
+                try:
+                    subprocess.call('nvidia-settings --assign CurrentMetaMode="' + cmd + '"', shell=True)
+                    dbusutil.set_scale(2)
+                except:
+                    log.info("Could not set Mutter scale mode")
+            # Now call nvidia settings with the metamodes we calculated in set_display_scaling()
             subprocess.call('nvidia-settings --assign CurrentMetaMode="' + cmd + '"', shell=True)
         
         if self.notification and notification:
