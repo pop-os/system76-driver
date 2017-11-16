@@ -1,9 +1,8 @@
-system76-driver (18.04.1~alpha) bionic; urgency=low
+system76-driver (18.04.1) bionic; urgency=low
 
-  * Daily WIP for 18.04.1
   * Add 'bonw13' and 'serw11'
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 08 Nov 2017 13:31:40 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 16 Nov 2017 09:26:38 -0700
 
 system76-driver (18.04.0) bionic; urgency=low
 
