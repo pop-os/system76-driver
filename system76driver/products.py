@@ -95,6 +95,15 @@ PRODUCTS = {
             actions.hidpi_scaling,
         ],
     },
+    'bonw13': {
+        'name': 'Bonobo WS',
+        'drivers': [
+            actions.remove_backlight_vendor,
+            actions.dac_fixup,
+            actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
+        ],
+    },
 
     # Darter:
     'daru1': {
@@ -665,6 +674,15 @@ PRODUCTS = {
         ],
     },
     'serw10': {
+        'name': 'Serval WS',
+        'drivers': [
+            actions.remove_backlight_vendor,
+            actions.dac_fixup,
+            actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
+        ],
+    },
+    'serw11': {
         'name': 'Serval WS',
         'drivers': [
             actions.remove_backlight_vendor,

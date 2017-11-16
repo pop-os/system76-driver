@@ -44,18 +44,22 @@ log = logging.getLogger(__name__)
 
 NEEDS_HOTPLUG_AUTOSCALING = (
     'bonw12',
+    'bonw13',
     'galp2',
     'galp3',
     'oryp2-ess',
     'oryp3-ess',
     'serw10',
+    'serw11',
 )
 
 NVIDIA = {
     'bonw12',
+    'bonw13',
     'oryp2-ess',
     'oryp3-ess',
     'serw10',
+    'serw11',
 }
 
 INTEL = {
