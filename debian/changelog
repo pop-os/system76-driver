@@ -1,9 +1,8 @@
-system76-driver (17.10.7~alpha) artful; urgency=low
+system76-driver (17.10.7) artful; urgency=low
 
-  * Daily WIP for 17.10.7
   * Add 'bonw13' and 'serw11'
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 08 Nov 2017 13:25:26 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 16 Nov 2017 09:22:17 -0700
 
 system76-driver (17.10.6) artful; urgency=low
 
