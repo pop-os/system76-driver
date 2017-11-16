@@ -390,6 +390,14 @@ PRODUCTS = {
         'name': 'Leopard WS',
         'drivers': [],
     },
+    'leow9': {
+        'name': 'Leopard WS',
+        'drivers': [],
+    },
+    'leow9-w': {
+        'name': 'Leopard WS',
+        'drivers': [],
+    },
 
     # Meerkat:
     'meec1': {
@@ -780,6 +788,10 @@ PRODUCTS = {
         'drivers': [],
     },
     'wilp13': {
+        'name': 'Wild Dog Pro',
+        'drivers': [],
+    },
+    'wilp14': {
         'name': 'Wild Dog Pro',
         'drivers': [],
     },

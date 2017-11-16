@@ -1,6 +1,7 @@
 system76-driver (17.10.8~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.8
+  * Add 'leow9', 'leow9-w', and 'wilp14'
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 16 Nov 2017 09:36:07 -0700
 
