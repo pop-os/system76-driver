@@ -1,9 +1,8 @@
-system76-driver (16.04.44~alpha) xenial; urgency=low
+system76-driver (16.04.44) xenial; urgency=low
 
-  * Daily WIP for 16.04.44
   * Add 'bonw13' and 'serw11'
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 18 Oct 2017 12:41:06 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 16 Nov 2017 09:19:13 -0700
 
 system76-driver (16.04.43) xenial; urgency=low
 
