@@ -60,6 +60,7 @@ NEEDS_AIRPLANE = frozenset([
     'bonw10',
     'bonw11',
     'bonw12',
+    'bonw13',
     'daru4',
     'galu1',
     'galp2',
@@ -76,8 +77,6 @@ NEEDS_AIRPLANE = frozenset([
     'kudu2',
     'kudu3',
     'kudu4',
-    'serw9',
-    'serw10',
     'lemu6',
     'lemu7',
     'lemu8',
@@ -87,6 +86,9 @@ NEEDS_AIRPLANE = frozenset([
     'oryp3',
     'oryp3-ess',
     'oryp3-b',
+    'serw9',
+    'serw10',
+    'serw11',
 ])
 
 # These products use 'acpi_video0' instead of 'intel_backlight':
@@ -135,9 +137,11 @@ NEEDS_FIRMWARE_ACPI_INTERRUPTS_GPE6F = (
 NEEDS_ESS_DAC_AUTOSWITCH = (
     'bonw11',
     'bonw12',
+    'bonw13',
     'oryp2-ess',
     'oryp3-ess',
     'serw10',
+    'serw11',
 )
 
 def load_json_conf(filename):

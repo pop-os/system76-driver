@@ -1,6 +1,7 @@
 system76-driver (16.04.44~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.44
+  * Add 'bonw13' and 'serw11'
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 18 Oct 2017 12:41:06 -0600
 
@@ -283,7 +284,7 @@ system76-driver (16.04.4) xenial; urgency=low
 
 system76-driver (16.04.3) xenial; urgency=low
 
-  * Fix warning about not using gi.require_version('Gtk', '3.0') 
+  * Fix warning about not using gi.require_version('Gtk', '3.0')
     (thanks, James Gross)
 
  -- David Jordan <david2@system76.com>  Thu, 26 May 2016 11:47:17 -0600
