@@ -64,7 +64,7 @@ class HiDPINotification:
                 header = "Displays Set to Native Resolution"
                 message = "Click to match display scales."
                 action = "Set Uniform Scale"
-        elif self.gpu_vendor == 'instel': # nvidia
+        elif self.gpu_vendor == 'nvidia': # nvidia
             if scale_mode == 'hidpi':
                 header = "Displays set to HiDPI mode for crisp rendering."
                 #message = "LoDPI mode fixes issues with legacy apps and faster performance"
@@ -75,7 +75,7 @@ class HiDPINotification:
                 message = "Switch to HiDPI mode for crisper display."
                 action = "Switch to HiDPI"
         
-        self.notification = Notify.Notification.new(header, message)
+        self.notification = Notify.Notification.new(header, message, "preferences-desktop-display")
         self.notification.connect("closed", self.notification_closed)
         self.notification.add_action("default", action, self.notification_action)
         self.notification.show()
