@@ -698,13 +698,6 @@ class HiDPIAutoscaling:
     
     def update(self, e):
         last_time = time.time()
-        if e.__class__.__name__ == randr.ScreenChangeNotify.__name__:
-            pass
-        elif (e.type, e.sub_code) == self.xlib_display.extension_event.OutputChangeNotify:
-            #Do we ever get here???
-            e = randr.OutputChangeNotify(display=display.display, binarydata = e._binary)
-            running = False
-            
         time.sleep(.1)
         if self.update_display_connections():
             self.set_scaled_display_modes()
