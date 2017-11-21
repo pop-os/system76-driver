@@ -47,7 +47,6 @@ def unpack_current_state(current_state):
     log_displays = current_state[2]
     logical_displays = []
     for log_display in log_displays:
-        processed_displays = []
         logical_display = { 'x_position' : log_display[0],
                             'y_position' : log_display[1],
                             'scale'      : log_display[2],

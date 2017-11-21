@@ -1,6 +1,7 @@
-from Xlib import X, display
+from Xlib import X
+from Xlib import display as xdisplay
 from Xlib.ext import randr
-from Xlib.protocol import rq, structs
+from Xlib.protocol import rq
 import logging
 import time
 
@@ -9,11 +10,6 @@ import re
 import threading, queue
 from shutil import which
 from collections import namedtuple
-
-import gi
-gi.require_version('Notify', '0.7')
-
-from gi.repository import Notify
 
 from system76driver import dbusutil
 
@@ -231,16 +227,12 @@ class HiDPIAutoscaling:
         self.init_xlib()
         
     def init_xlib(self):
-        self.xlib_display = display.Display()
+        self.xlib_display = xdisplay.Display()
         screen = self.xlib_display.screen()
         self.xlib_window = screen.root.create_window(10,10,10,10,0, 0, window_class=X.InputOnly, visual=X.CopyFromParent, event_mask=0)
         self.xlib_window.xrandr_select_input(randr.RRScreenChangeNotifyMask
                     | randr.RROutputChangeNotifyMask
                     | randr.RROutputPropertyNotifyMask)
-
-        resources = self.xlib_window.xrandr_get_screen_resources()._data
-        for output in resources['outputs']:
-                    info = dpi_get_output_info(self.xlib_display, output, resources['config_timestamp'])._data
                     
         self.update_display_connections()
         if self.get_gpu_vendor() == 'nvidia':
@@ -264,12 +256,12 @@ class HiDPIAutoscaling:
         # '1600x900  118.25  1600 1696 1856 2112  900 903 908 934 -hsync +vsync',
         modeline = MODEL_MODES[self.model].split()
         mode_id = 0
-        mode_name = modeline[0]
+        #mode_name = modeline[0]
         mode_clk = int(round(float(modeline[1])))
         mode_horizontal = [int(modeline[2]), int(modeline[3]), int(modeline[4]), int(modeline[5])]
         mode_vertical = [int(modeline[6]), int(modeline[7]), int(modeline[8])]
         mode_name_length = len(modeline[0])
-        flags = modeline[10:]
+        #flags = modeline[10:]
         mode_flags = int(randr.HSyncNegative | randr.VSyncPositive)
         newmode = (mode_id, 1600, 900, mode_clk) +  tuple(mode_horizontal) + tuple(mode_vertical) + ( mode_name_length, mode_flags )
         try:
@@ -596,7 +588,6 @@ class HiDPIAutoscaling:
             pan_x, pan_y = layout[display_name]
         else:
             return ''
-        panning_pos = "+" + str(pan_x) + "+" + str(pan_y)
         
         #now find the mode we want
         new_mode = None
@@ -708,7 +699,6 @@ class HiDPIAutoscaling:
             thread.start()
     
     def update(self, e):
-        last_time = time.time()
         time.sleep(.1)
         if self.update_display_connections():
             has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
