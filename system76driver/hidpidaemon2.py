@@ -336,10 +336,11 @@ class HiDPIAutoscaling:
         if self.notification.returncode == 76:
             if self.queue is not None:
                 self.unforce = not self.unforce
-                if self.scale_mode == 'hidpi':
-                    self.scale_mode = 'lowdpi'
-                else:
-                    self.scale_mode = 'hidpi'
+                if self.get_gpu_vendor() == 'nvidia':
+                    if self.scale_mode == 'hidpi':
+                        self.scale_mode = 'lowdpi'
+                    else:
+                        self.scale_mode = 'hidpi'
                 self.queue.put(self.scale_mode)
                 self.queue.put(self.unforce)
             if self.get_gpu_vendor() == 'intel':
@@ -386,7 +387,10 @@ class HiDPIAutoscaling:
     def get_display_dpi(self, display_name):
         width = self.displays[display_name]['mm_width']
         height = self.displays[display_name]['mm_height']
-        mode = self.displays[display_name]['modes'][0]
+        try:
+            mode = self.displays[display_name]['modes'][0]
+        except:
+            return None
         x_res = mode['width']
         y_res = mode['height']
         
@@ -570,7 +574,6 @@ class HiDPIAutoscaling:
     def set_display_scaling_xrandr(self, display_name, layout, force_lowdpi=True):
         dpi = self.get_display_dpi(display_name)
         
-        
         resources = self.xlib_window.xrandr_get_screen_resources()._data
         
         if dpi is None:
@@ -578,7 +581,10 @@ class HiDPIAutoscaling:
         mode = self.displays[display_name]['modes'][0]
         crtc = self.displays[display_name]['crtc']
         
-        crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
+        try:
+            crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
+        except:
+            return ''
         if force_lowdpi == True and dpi > 170:
             x_res = round(mode['width'] / 2)
             y_res = round(mode['height'] / 2)
@@ -598,11 +604,16 @@ class HiDPIAutoscaling:
             if mode['width'] == x_res and mode['height'] == y_res:
                 new_mode = mode
                 break
-        dpi_set_crtc_config(self.xlib_display,crtc, int(time.time()), int(pan_x), int(pan_y), new_mode['id'], crtc_info['rotation'], crtc_info['outputs'])
+        try:
+            dpi_set_crtc_config(self.xlib_display,crtc, int(time.time()), int(pan_x), int(pan_y), new_mode['id'], crtc_info['rotation'], crtc_info['outputs'])
+        except:
+            log.info("Could not set CRTC for " + str(display_name))
         
         return ''
     
     def set_display_scaling(self, display, layout, force=False):
+        if self.displays[display]['modes'] == []:
+            return ''
         if self.get_gpu_vendor() == 'nvidia':
             return self.set_display_scaling_nvidia_settings(display, layout)
         elif self.get_gpu_vendor() == 'intel':
@@ -634,7 +645,7 @@ class HiDPIAutoscaling:
         has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
         
         if not self.unforce:
-            force = has_mixed_dpi
+            force = has_hidpi
         else:
             force = False
         
@@ -643,7 +654,7 @@ class HiDPIAutoscaling:
             if self.displays[display]['connected'] == True:
                 cmd = cmd + self.set_display_scaling(display, layout, force=force)
         if self.get_gpu_vendor() == 'nvidia':
-            if has_mixed_dpi:
+            if has_hidpi:
                 # First set scale mode manually since Mutter can't see the effective display resolution.
                 if self.scale_mode == 'lowdpi':
                     try:
@@ -688,11 +699,11 @@ class HiDPIAutoscaling:
                 except:
                     log.info("Could not set Mutter scale mode only lowdpi")
                 
-        
+        self.prev_display_types = (has_mixed_dpi, has_hidpi, has_lowdpi)
         if self.notification and notification:
-            thread = threading.Thread(target = self.notification_update, args=(has_mixed_dpi, self.unforce), daemon=True)
+            thread = threading.Thread(target = self.notification_update, args=(has_hidpi, self.unforce), daemon=True)
             thread.start()
-        elif has_mixed_dpi and notification:
+        elif has_hidpi and notification:
             thread = threading.Thread(target = self.send_scaling_notification, args=(self.queue, self.unforce), daemon=True)
             thread.start()
     
@@ -700,11 +711,27 @@ class HiDPIAutoscaling:
         last_time = time.time()
         time.sleep(.1)
         if self.update_display_connections():
+            has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
+            if self.get_gpu_vendor() == 'nvidia':
+                pass
+            elif not has_lowdpi and self.prev_display_types[2]:
+                self.unforce = True
+            elif has_mixed_dpi and not self.prev_display_types[0]:
+                self.unforce = False
             self.set_scaled_display_modes()
         return False
     
     def run(self):
-        running = True;
+        self.prev_display_types = self.has_mixed_hi_low_dpi_displays()
+        if self.get_gpu_vendor() == 'nvidia':
+            self.set_scaled_display_modes()
+        elif not self.prev_display_types[2]:
+            self.unforce = True
+            self.set_scaled_display_modes()
+        elif self.prev_display_types[0]:
+            self.unforce = False
+            self.set_scaled_display_modes()
+        running = True
         last_time = time.time()
         while(running):
             # Get subscribed xlib RANDR events.  Multiple events are fired in quick succession, only act on first one.
