@@ -360,7 +360,7 @@ class HiDPIAutoscaling:
             self.notification.wait()
             on_done()
             
-        cmd = ['./system76-hidpi-notification', '--scale-mode=' + scale_mode, '--gpu-vendor=' + self.get_gpu_vendor()]
+        cmd = ['/usr/lib/system76-driver/system76-hidpi-notification', '--scale-mode=' + scale_mode, '--gpu-vendor=' + self.get_gpu_vendor()]
         thread = threading.Thread(target=cmd_in_thread, args=(self.notification_return, cmd))
         thread.daemon = True
         thread.start()
