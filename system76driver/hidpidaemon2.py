@@ -254,6 +254,8 @@ class HiDPIAutoscaling:
         # GALP2 EXAMPLE
         # name       pclk   hdisp,hsyncstart,hsyncend,hsyncend,htotal, v..., flags
         # '1600x900  118.25  1600 1696 1856 2112  900 903 908 934 -hsync +vsync',
+        if self.model not in MODEL_MODES:
+            return
         modeline = MODEL_MODES[self.model].split()
         mode_id = 0
         #mode_name = modeline[0]
@@ -733,11 +735,6 @@ class HiDPIAutoscaling:
 
 
 def _run_hidpi_autoscaling(model):
-    if model not in NEEDS_HIDPI_AUTOSCALING:
-        log.info('Hidpi Autoscaling not needed for %r', model)
-        return
-    log.info('Hidpi autoscaling for %r', model)
-
     if model in MODEL_MODES:
         try:
             # Using subprocess.call() with shell=True because of way xrandr
