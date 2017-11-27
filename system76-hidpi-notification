@@ -58,21 +58,20 @@ class HiDPINotification:
         if self.gpu_vendor == 'intel':
             if scale_mode == 'lowdpi':
                 header = "Displays Set to Matching Scale"
-                message = "Click to set native resolution."
+                message = "Select to change to native resolution."
                 action = "Revert"
             else:
                 header = "Displays Set to Native Resolution"
-                message = "Click to match display scales."
+                message = "Select to match display scales."
                 action = "Set Uniform Scale"
         elif self.gpu_vendor == 'nvidia': # nvidia
             if scale_mode == 'hidpi':
-                header = "Displays set to HiDPI mode for crisp rendering."
-                #message = "LoDPI mode fixes issues with legacy apps and faster performance"
-                message = "Switch to LoDPI for faster performance and scaling issues in legacy applications."
+                header = "Displays Set to HiDPI"
+                message = "Select for LoDPI, increased performance, and to work around issues in legacy apps."
                 action = "Switch to LoDPI"
             else:
-                header = "Displays set to LoDPI mode for performance."
-                message = "Switch to HiDPI mode for crisper display."
+                header = "Displays set to LoDPI"
+                message = "Select to set HiDPI for crisper display."
                 action = "Switch to HiDPI"
         
         self.notification = Notify.Notification.new(header, message, "preferences-desktop-display")

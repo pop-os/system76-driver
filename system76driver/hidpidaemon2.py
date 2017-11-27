@@ -355,6 +355,13 @@ class HiDPIAutoscaling:
         else:
             scale_mode=self.scale_mode
         
+        # Change notification text on intel graphics if we only have hidpi displays
+        gpu_vendor = get_gpu_vendor()
+        if gpu_vendor == 'intel':
+            has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
+            if has_hidpi and not has_mixed_dpi:
+                gpu_vendor == 'nvidia'
+        
         def cmd_in_thread(on_done, cmd):
             self.notification = subprocess.Popen(cmd)
             if queue is not None:
