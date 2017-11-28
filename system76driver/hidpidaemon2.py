@@ -337,12 +337,13 @@ class HiDPIAutoscaling:
     def notification_return(self):
         if self.notification.returncode == 76:
             if self.queue is not None:
-                self.unforce = not self.unforce
                 if self.get_gpu_vendor() == 'nvidia':
                     if self.scale_mode == 'hidpi':
                         self.scale_mode = 'lowdpi'
                     else:
                         self.scale_mode = 'hidpi'
+                else:
+                    self.unforce = not self.unforce
                 self.queue.put(self.scale_mode)
                 self.queue.put(self.unforce)
             if self.get_gpu_vendor() == 'intel':
@@ -368,8 +369,7 @@ class HiDPIAutoscaling:
         if gpu_vendor == 'intel':
             has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
             if has_hidpi and not has_mixed_dpi:
-                gpu_vendor == 'nvidia'
-        
+                gpu_vendor = 'nvidia'
         def cmd_in_thread(on_done, cmd):
             self.notification = subprocess.Popen(cmd)
             if queue is not None:
@@ -475,7 +475,7 @@ class HiDPIAutoscaling:
                         elif dpi > 170 and revert == False:
                             scale_factor = 2
                         else:
-                            scale_factor =1
+                            scale_factor = 1
                             
                         if self.scale_mode == 'hidpi' and revert == False:
                             scale_factor = scale_factor / 2
