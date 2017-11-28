@@ -230,9 +230,9 @@ class HiDPIAutoscaling:
         self.xlib_display = xdisplay.Display()
         screen = self.xlib_display.screen()
         self.xlib_window = screen.root.create_window(10,10,10,10,0, 0, window_class=X.InputOnly, visual=X.CopyFromParent, event_mask=0)
-        self.xlib_window.xrandr_select_input(randr.RRScreenChangeNotifyMask
-                    | randr.RROutputChangeNotifyMask
-                    | randr.RROutputPropertyNotifyMask)
+        self.xlib_window.xrandr_select_input(randr.RRScreenChangeNotifyMask)
+        #            | randr.RROutputChangeNotifyMask
+        #            | randr.RROutputPropertyNotifyMask)
                     
         self.update_display_connections()
         if self.get_gpu_vendor() == 'nvidia':
@@ -312,6 +312,14 @@ class HiDPIAutoscaling:
                 if status != old_status:
                     self.displays = new_displays
                     return True
+                # Need to check for laptop lid closed.
+                # When laptop lid is closed, crtc is 0, when open it should be a positive integer.
+                new_crtc = new_displays[display]['crtc']
+                old_crtc = self.displays[display]['crtc']
+                if new_crtc != old_crtc:
+                    if new_crtc == 0 or old_crtc == 0:
+                        self.displays = new_displays
+                        return True
             else:
                 self.displays = new_displays
                 return True
@@ -356,7 +364,7 @@ class HiDPIAutoscaling:
             scale_mode=self.scale_mode
         
         # Change notification text on intel graphics if we only have hidpi displays
-        gpu_vendor = get_gpu_vendor()
+        gpu_vendor = self.get_gpu_vendor()
         if gpu_vendor == 'intel':
             has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
             if has_hidpi and not has_mixed_dpi:
@@ -369,7 +377,7 @@ class HiDPIAutoscaling:
             self.notification.wait()
             on_done()
             
-        cmd = ['/usr/lib/system76-driver/system76-hidpi-notification', '--scale-mode=' + scale_mode, '--gpu-vendor=' + self.get_gpu_vendor()]
+        cmd = ['/usr/lib/system76-driver/system76-hidpi-notification', '--scale-mode=' + scale_mode, '--gpu-vendor=' + gpu_vendor]
         thread = threading.Thread(target=cmd_in_thread, args=(self.notification_return, cmd))
         thread.daemon = True
         thread.start()
@@ -731,13 +739,16 @@ class HiDPIAutoscaling:
             self.unforce = False
             self.set_scaled_display_modes()
         running = True
-        last_time = time.time()
+        prev_timestamp = 0
         while(running):
             # Get subscribed xlib RANDR events.  Multiple events are fired in quick succession, only act on first one.
             e = self.xlib_display.next_event()
-            new_time = time.time()
-            if new_time - last_time > 1:
-                last_time = time.time()
+            try:
+                new_timestamp = e.timestamp
+            except:
+                new_timestamp = 0
+            if new_timestamp > prev_timestamp:
+                prev_timestamp = new_timestamp
                 self.update(e)
 
 
