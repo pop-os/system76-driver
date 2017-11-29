@@ -209,6 +209,45 @@ def dpi_set_crtc_config(d, crtc, config_timestamp, x, y, mode, rotation, outputs
         timestamp=timestamp,
 )
 
+class DPIGetOutputProperty(rq.ReplyRequest):
+    _request = rq.Struct(
+        rq.Card8('opcode'),
+        rq.Opcode(15),
+        rq.RequestLength(),
+        rq.Card32('output'),
+        rq.Card32('property'),
+        rq.Card32('type'),
+        rq.Card32('long_offset'),
+        rq.Card32('long_length'),
+        rq.Bool('delete'),
+        rq.Bool('pending'),
+        rq.Pad(2),
+        )
+    _reply = rq.Struct(
+        rq.ReplyCode(),
+        rq.Format('value', 1),
+        rq.Card16('sequence_number'),
+        rq.ReplyLength(),
+        rq.Card32('property_type'),
+        rq.Card32('bytes_after'),
+        rq.LengthOf('value', 4),
+        rq.Pad(12),
+        rq.List('value', rq.Card8Obj),
+        )
+
+def dpi_get_output_property(d, output, property, type, long_offset, long_length, delete=False, pending=False):
+    return DPIGetOutputProperty(
+        display=d.display,
+        opcode=d.display.get_extension_major(extname),
+        output=output,
+        property=property,
+        type=type,
+        long_offset=long_offset,
+        long_length=long_length,
+        delete=delete,
+        pending=pending,
+)
+
 
 XRes = namedtuple('XRes', ['x', 'y'])
 
@@ -305,6 +344,15 @@ class HiDPIAutoscaling:
             new_displays[info['name']]['modes'] = modelist
             new_displays[info['name']]['crtc'] = info['crtc']
             
+            # Get connector type for each display. 'Panel' indicates internal display.
+            properties_list = self.xlib_display.xrandr_list_output_properties(output)._data
+            for atom in properties_list['atoms']:
+                atom_name = self.xlib_display.get_atom_name(atom)
+                if atom_name == randr.PROPERTY_CONNECTOR_TYPE:
+                    prop = dpi_get_output_property(self.xlib_display, output, atom, 4, 0, 100)._data
+                    connector_type = self.xlib_display.get_atom_name(prop['value'][0])
+                    new_displays[info['name']]['connector_type'] = connector_type
+        
         for display in new_displays:
             status = new_displays[display]['connected']
             if display in self.displays:
@@ -387,9 +435,12 @@ class HiDPIAutoscaling:
     def get_display_position(self, display_name):
         resources = self.xlib_window.xrandr_get_screen_resources()._data
         crtc = self.displays[display_name]['crtc']
+        connected = self.displays[display_name]['connected']
         if crtc != 0:
             crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
             return crtc_info['x'], crtc_info['y']
+        elif connected == True and not self.panel_activation_override(display_name):
+            return 0, 0
         else:
             return -1, -1
     
@@ -500,6 +551,23 @@ class HiDPIAutoscaling:
                             
         return display_positions
 
+    def get_internal_lid_state(self):
+        try:
+            lid_file = open('/proc/acpi/button/lid/LID0/state', 'r')
+            if 'open' in lid_file.read():
+                return True
+            else:
+                return False
+        except:
+            log.info('Could not find lid state.  System may not be a laptop.')
+            return True
+    
+    def panel_activation_override(self, display_name):
+        if self.displays[display_name]['connector_type'] == 'Panel' and not self.get_internal_lid_state():
+            #Don't activate display
+            return True
+        return False
+    
     def get_nvidia_settings_options(self, display_name, viewportin, viewportout):
         cmd = [ 'nvidia-settings', '-q', 'CurrentMetaMode' ]
         output = subprocess.check_output(cmd).decode("utf-8")
@@ -528,6 +596,17 @@ class HiDPIAutoscaling:
                 attributes = re.sub(r'{', r'{ViewPortIn=' + viewportin + ', ', attributes)
                 attributes = re.sub(r'}', r'ForceCompositionPipeline=On}, ', attributes)
                 attribute_mapping[connector_name] = attributes
+        
+        # Create new attributes if we are activating a currently inactive display.
+        # This fixes issues when plugging multiple displays in at the same time.
+        if display_name not in attribute_mapping:
+            attributes = '{ViewPortIn=' + viewportin + ', ' + \
+                        'ViewPortOut=' + viewportout + ', ' + \
+                        'ForceCompositionPipeline=On},'
+            attribute_mapping[display_name] = attributes
+        
+        if self.panel_activation_override(display_name):
+            return ''
         
         return attribute_mapping[display_name]
 
