@@ -419,6 +419,8 @@ class HiDPIAutoscaling:
             has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
             if has_hidpi and not has_mixed_dpi:
                 gpu_vendor = 'nvidia'
+                if scale_mode == "unforce":
+                    scale_mode='hidpi'
         def cmd_in_thread(on_done, cmd):
             self.notification = subprocess.Popen(cmd)
             if queue is not None:
@@ -696,6 +698,7 @@ class HiDPIAutoscaling:
             if mode['width'] == x_res and mode['height'] == y_res:
                 new_mode = mode
                 break
+        
         try:
             dpi_set_crtc_config(self.xlib_display,crtc, int(time.time()), int(pan_x), int(pan_y), new_mode['id'], crtc_info['rotation'], crtc_info['outputs'])
         except:
@@ -722,6 +725,8 @@ class HiDPIAutoscaling:
                     found_hidpi = True
                 elif dpi == None:
                     pass
+                elif self.panel_activation_override(display):
+                    pass
                 else:
                     found_lowdpi = True
         
@@ -733,25 +738,35 @@ class HiDPIAutoscaling:
     def set_scaled_display_modes(self, notification=True):
         layout = self.calculate_layout(revert=self.unforce)
         
-        #has_mixed_dpi = self.has_mixed_dpi_displays()
         has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
         
+        # INTEL: match display scales unless user selects 'native resolution'
         if not self.unforce:
             force = has_hidpi
         else:
             force = False
         
+        # For each connected display, configure display modes.
         cmd = ''
         for display in self.displays:
             if self.displays[display]['connected'] == True:
+                # INTEL: set the display crtc
+                # NVIDIA: just get display parameters for nvidia-settings line
                 cmd = cmd + self.set_display_scaling(display, layout, force=force)
+        # NVIDIA: got parameters for nvidia-settings - actually set display modes
         if self.get_gpu_vendor() == 'nvidia':
             if has_hidpi:
                 # First set scale mode manually since Mutter can't see the effective display resolution.
+                # Step 1) Let's try setting scale.  If this works, we can skip the later steps (less flickering).
+                # Step 2) That didn't work.  We'll need to set everything up at the native resolution for Mutter 
+                #         to accept the display configuration.  Calculate a layout and nvidia-settings cmd at 
+                #         native resolution and set it momentarily.
+                # Step 3) Try setting the scale with displays at native resolution.  This should almost always work.
                 if self.scale_mode == 'lowdpi':
                     try:
                         dbusutil.set_scale(1)
                     except:
+                        # Need to setup displays at native resolution before setting scale.
                         layout_native = self.calculate_layout(revert=True)
                         cmd_native = ''
                         for display in self.displays:
@@ -767,6 +782,7 @@ class HiDPIAutoscaling:
                     try:
                         dbusutil.set_scale(2)
                     except:
+                        # Need to setup displays at native resolution before setting scale.
                         layout_native = self.calculate_layout(revert=True)
                         cmd_native = ''
                         for display in self.displays:
@@ -777,6 +793,7 @@ class HiDPIAutoscaling:
                             dbusutil.set_scale(2)
                         except:
                             log.info("Could not set Mutter scale mode hidpi")
+                # Let things settle down.
                 time.sleep(0.1)
                 # Now call nvidia settings with the metamodes we calculated in set_display_scaling()
                 subprocess.call('nvidia-settings --assign CurrentMetaMode="' + cmd + '"', shell=True)
@@ -785,18 +802,47 @@ class HiDPIAutoscaling:
                         dbusutil.set_scale(1)
                     except:
                         log.info("Could not set Mutter scale mode lowdpi")
+            # We don't have any hidpi displays (maybe one was disconnected).
+            # No need to call nvidia-settings, but the scale could still be 2x.
+            # Set scale back to 1x, so the user isn't stuck with everything unusably large.
             elif has_lowdpi and dbusutil.get_scale() > 1:
                 try:
                     dbusutil.set_scale(1)
                 except:
                     log.info("Could not set Mutter scale mode only lowdpi")
+        # Special cases on INTEL.  Specifically 'native resolution' mode has some quirks.
         elif self.get_gpu_vendor() == 'intel' and force == False:
             if dbusutil.get_scale() < 2:
                 for display in self.displays:
-                    if 'eDP' in display or self.displays[display]['connector_type'] == 'Panel':
-                        if self.get_display_dpi(display) > 192:
-                            dbusutil.set_scale(2)
+                    if self.displays[display]['connected']:
+                        # Under some circumstances, Mutter may not set the scaling.
+                        # In 'native resolution' ('unforced') mode, we must set scaling if:
+                        # a) - the internal panel is hidpi
+                        # b) - there is an external panel between 170 and 192 dpi (mutter already sets scale if above 192)
+                        #    - and no lowdpi monitors are present (1x scaling is better if there are)
+                        if 'eDP' in display or self.displays[display]['connector_type'] == 'Panel':
+                            if self.get_display_dpi(display) > 192:
+                                try:
+                                    dbusutil.set_scale(2)
+                                except:
+                                    log.info("Could not set Mutter scale internal hidpi")
+                        elif self.get_display_dpi(display) > 170 and not has_lowdpi: # same thing for external displays
+                            try:
+                                dbusutil.set_scale(2)
+                            except:
+                                log.info("Could not set Mutter scale external hidpi")
                 
+        # Displays are all setup - Notify the user!
+        # Note: The notification creates a new HiDPIAutoscaling object and calls set_scaled_display_modes() on completion.
+        #       The 'notification' argument prevents these non-running instances from creating extra dead, useless notifications.
+        #       To ensure the displayed notification can interact with the instance in the main thread and avoid duplicates, 
+        #       don't process notifications from this child if notification == False.
+        # Otherwise, there are two cases...
+        # a) Notification already exists:
+        #    - we either need to update its contents (hidpi/mixed) or remove it (lowdpi-only)
+        # b) Notification doesn't exist yet:
+        #    - send a new notification
+        # The notification is sent/resent in a separate thread since the main thread will block until the next xlib display event.
         self.prev_display_types = (has_mixed_dpi, has_hidpi, has_lowdpi)
         if self.notification and notification:
             thread = threading.Thread(target = self.notification_update, args=(has_hidpi, self.unforce), daemon=True)
@@ -809,6 +855,11 @@ class HiDPIAutoscaling:
         time.sleep(.1)
         if self.update_display_connections():
             has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
+            # NVIDIA: always remember user's selected mode
+            # INTEL: only remember while in same display combination type
+            #        When switching from hidpi-only to mixed-dpi or vice versa, set the appropriate default mode
+            #        remember setting if eg, a user plugs a hidpi display into a hidpi laptop
+            #        or if another display is plugged into an already mixed-dpi config.
             if self.get_gpu_vendor() == 'nvidia':
                 pass
             elif not has_lowdpi and self.prev_display_types[2]:
@@ -819,6 +870,7 @@ class HiDPIAutoscaling:
         return False
     
     def run(self):
+        # First set appropriate initial display configuration
         self.prev_display_types = self.has_mixed_hi_low_dpi_displays()
         if self.get_gpu_vendor() == 'nvidia':
             self.set_scaled_display_modes()
@@ -831,8 +883,9 @@ class HiDPIAutoscaling:
         running = True
         prev_timestamp = 0
         while(running):
-            # Get subscribed xlib RANDR events.  Multiple events are fired in quick succession, only act on first one.
+            # Get subscribed xlib RANDR events. Blocks until next event is received.
             e = self.xlib_display.next_event()
+            # Multiple events are fired in quick succession, only act once.
             try:
                 new_timestamp = e.timestamp
             except:
