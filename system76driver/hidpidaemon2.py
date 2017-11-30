@@ -348,6 +348,7 @@ class HiDPIAutoscaling:
             properties_list = self.xlib_display.xrandr_list_output_properties(output)._data
             for atom in properties_list['atoms']:
                 atom_name = self.xlib_display.get_atom_name(atom)
+                new_displays[info['name']]['connector_type'] = ''
                 if atom_name == randr.PROPERTY_CONNECTOR_TYPE:
                     prop = dpi_get_output_property(self.xlib_display, output, atom, 4, 0, 100)._data
                     connector_type = self.xlib_display.get_atom_name(prop['value'][0])
@@ -563,9 +564,13 @@ class HiDPIAutoscaling:
             return True
     
     def panel_activation_override(self, display_name):
-        if self.displays[display_name]['connector_type'] == 'Panel' and not self.get_internal_lid_state():
-            #Don't activate display
-            return True
+        try:
+            if 'eDP' in display_name or self.displays[display_name]['connector_type'] == 'Panel':
+                if not self.get_internal_lid_state():
+                    #Don't activate display
+                    return True
+        except:
+            return False
         return False
     
     def get_nvidia_settings_options(self, display_name, viewportin, viewportout):
@@ -785,6 +790,12 @@ class HiDPIAutoscaling:
                     dbusutil.set_scale(1)
                 except:
                     log.info("Could not set Mutter scale mode only lowdpi")
+        elif self.get_gpu_vendor() == 'intel' and force == False:
+            if dbusutil.get_scale() < 2:
+                for display in self.displays:
+                    if 'eDP' in display or self.displays[display]['connector_type'] == 'Panel':
+                        if self.get_display_dpi(display) > 192:
+                            dbusutil.set_scale(2)
                 
         self.prev_display_types = (has_mixed_dpi, has_hidpi, has_lowdpi)
         if self.notification and notification:
