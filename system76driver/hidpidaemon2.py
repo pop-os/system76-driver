@@ -345,10 +345,10 @@ class HiDPIAutoscaling:
             new_displays[info['name']]['crtc'] = info['crtc']
             
             # Get connector type for each display. 'Panel' indicates internal display.
+            new_displays[info['name']]['connector_type'] = ''
             properties_list = self.xlib_display.xrandr_list_output_properties(output)._data
             for atom in properties_list['atoms']:
                 atom_name = self.xlib_display.get_atom_name(atom)
-                new_displays[info['name']]['connector_type'] = ''
                 if atom_name == randr.PROPERTY_CONNECTOR_TYPE:
                     prop = dpi_get_output_property(self.xlib_display, output, atom, 4, 0, 100)._data
                     connector_type = self.xlib_display.get_atom_name(prop['value'][0])
@@ -612,9 +612,6 @@ class HiDPIAutoscaling:
                         'ForceCompositionPipeline=On},'
             attribute_mapping[display_name] = attributes
         
-        if self.panel_activation_override(display_name):
-            return ''
-        
         return attribute_mapping[display_name]
 
 
@@ -627,6 +624,10 @@ class HiDPIAutoscaling:
         #{ViewPortIn=,ViewPortOut=
         #other attributes from matched display
         #ForceCompositionPipeline=On}
+        
+        # Don't generate config for laptop display if the lid is closed.
+        if self.panel_activation_override(display_name):
+            return ''
         
         dpi = self.get_display_dpi(display_name)
         if dpi is None:
