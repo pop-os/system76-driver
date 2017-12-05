@@ -57,20 +57,20 @@ class HiDPINotification:
         
         if self.gpu_vendor == 'intel':
             if scale_mode == 'lowdpi':
-                header = "Displays Set to Matching Scale"
-                message = "Select to change to native resolution."
+                header = "Displays Set to Optimized Mode"
+                message = "Select to switch to Native Mode."
                 action = "Revert"
             else:
-                header = "Displays Set to Native Resolution"
-                message = "Select to match display scales."
+                header = "Displays Set to Native Mode"
+                message = "Select to switch to Optimized Mode."
                 action = "Set Uniform Scale"
         elif self.gpu_vendor == 'nvidia': # nvidia
             if scale_mode == 'hidpi':
-                header = "Displays Set to HiDPI"
+                header = "Displays Set to HiDPI Mode"
                 message = "Select for LoDPI, increased performance, and to work around issues in legacy apps."
                 action = "Switch to LoDPI"
             else:
-                header = "Displays set to LoDPI"
+                header = "Displays Set to LoDPI Mode"
                 message = "Select to set HiDPI for crisper display."
                 action = "Switch to HiDPI"
         
