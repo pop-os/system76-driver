@@ -262,6 +262,7 @@ class HiDPIAutoscaling:
         self.notification = None
         self.queue = queue.Queue()
         self.unforce = False
+        self.calculated_display_size = (0,0) # Used to hack around intel black band bug (wrong XScreen size)
         
         self.init_xlib()
         
@@ -551,7 +552,11 @@ class HiDPIAutoscaling:
                         prev_top = display_top
                         if prev_bottom < display_top + logical_resolution_y:
                             prev_bottom = display_top + logical_resolution_y
-                            
+        
+        # Work around Mutter(?) bug where the X Screen (not output) resolution is set too small.
+        if self.get_gpu_vendor() == 'intel':
+            self.calculated_display_size = (prev_right, prev_bottom)
+        
         return display_positions
 
     def get_internal_lid_state(self):
@@ -832,7 +837,17 @@ class HiDPIAutoscaling:
                                 dbusutil.set_scale(2)
                             except:
                                 log.info("Could not set Mutter scale external hidpi")
-                
+        
+        # Work around Mutter(?) bug where the X Screen (not output) resolution is set too small.
+        # Because of this, sometimes some displays may be rendered partially or completely black.
+        # Calling 'xrandr --auto' causes the correct screen size to be set without other notable changes.
+        if self.get_gpu_vendor() == 'intel':
+            size_x, size_y = self.calculated_display_size
+            size_str = 'current ' + str(size_x) + ' x ' + str(size_y)
+            xrandr_output = subprocess.check_output(['xrandr']).decode('utf-8')
+            if size_str  not in xrandr_output:
+                subprocess.call('xrandr --auto', shell=True)
+        
         # Displays are all setup - Notify the user!
         # Note: The notification creates a new HiDPIAutoscaling object and calls set_scaled_display_modes() on completion.
         #       The 'notification' argument prevents these non-running instances from creating extra dead, useless notifications.
