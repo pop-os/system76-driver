@@ -60,19 +60,23 @@ then
     exit 1
 fi
 
-EFIDEV="$(basename "$(findmnt -n /boot/efi -o SOURCE)")"
-DISK="$(cut -d ':' -f 1 "/sys/class/block/${EFIDEV}/dev")"
-PART="$(cat "/sys/class/block/${EFIDEV}/partition")"
-DEV="/dev/$(lsblk -n -o 'KNAME,MAJ:MIN' | grep "${DISK}:0" | cut -d ' ' -f 1)"
+EFIDEV="$(findmnt -n /boot/efi -o SOURCE)"
+EFINAME="$(basename "${EFIDEV}")"
+EFISYS="$(readlink -f "/sys/class/block/${EFINAME}")"
+EFIPART="$(cat "${EFISYS}/partition")"
+DISKSYS="$(dirname "${EFISYS}")"
+DISKNAME="$(basename "${DISKSYS}")"
+DISKDEV="/dev/${DISKNAME}"
 
-echo -e "\e[1mCreating Boot1776 on "${DEV}" "${PART}" \e[0m" >&2
+echo -e "\e[1mCreating Boot1776 on "${DISKDEV}" "${EFIPART}" \e[0m" >&2
 efibootmgr -B -b 1776 || true
-efibootmgr -C -b 1776 -d "${DEV}" -p "${PART}" -l '\\system76-firmware-update\\boot.efi' -L "System76 Firmware Update"
+efibootmgr -C -b 1776 -d "${DISKDEV}" -p "${EFIPART}" -l '\\system76-firmware-update\\boot.efi' -L "system76-firmware-update"
 
 echo -e "\e[1mSetting BootNext to 1776\e[0m" >&2
 efibootmgr -n 1776
 
 echo -e "\e[1mInstalled system76-firmware-update\e[0m" >&2
+efibootmgr -v
 """
 
 def get_ec_version():
