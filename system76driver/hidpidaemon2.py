@@ -382,7 +382,8 @@ class HiDPIAutoscaling:
             self.notification.terminate()
         else:
             self.notification.terminate()
-            self.send_scaling_notification( queue=self.queue, unforce=unforce)
+            # uncomment if disabling persistent notifications
+            #self.send_scaling_notification( queue=self.queue, unforce=unforce)
     
     def notification_return(self):
         if self.notification.returncode == 76:
@@ -407,6 +408,8 @@ class HiDPIAutoscaling:
                 h.scale_mode = self.scale_mode
                 h.set_scaled_display_modes(notification=False)
                 self.send_scaling_notification(self.queue)
+        else:
+            self.send_scaling_notification(self.queue, unforce=self.unforce)
     
     def send_scaling_notification(self, queue=None, unforce=False):
         if self.unforce:
@@ -847,10 +850,12 @@ class HiDPIAutoscaling:
             xrandr_output = subprocess.check_output(['xrandr']).decode('utf-8')
             if size_str not in xrandr_output:
                 if self.get_internal_lid_state():
-                    print("calling xrandr auto")
                     subprocess.call('xrandr --auto', shell=True)
                     if force == False and dbusutil.get_scale() < 2:
-                        dbusutil.set_scale(2)
+                        try:
+                            dbusutil.set_scale(2)
+                        except:
+                            log.info("Could not set Mutter scale for workaround.")
                 else:
                     subprocess.call('xrandr --output eDP-1 --off', shell=True)
         
