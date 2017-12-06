@@ -853,9 +853,6 @@ class HiDPIAutoscaling:
                         dbusutil.set_scale(2)
                 else:
                     subprocess.call('xrandr --output eDP-1 --off', shell=True)
-                    #for display in self.displays:
-                    #    if self.displays[display]['connected'] == True:
-                    #        self.set_display_scaling(display, layout, force=force)
         
         # Displays are all setup - Notify the user!
         # Note: The notification creates a new HiDPIAutoscaling object and calls set_scaled_display_modes() on completion.
