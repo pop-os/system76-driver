@@ -58,6 +58,10 @@ if os.getuid() == 0:
     sys.exit('Error: system76-daemon must be run as user')
 log.info('**** Process start at monotonic time %r', start_time)
 
+desktop_session = os.environ.get('XDG_CURRENT_DESKTOP')
+if 'GNOME' not in desktop_session:
+    sys.exit('The System76 HiDPI Daemon requires a GNOME-based desktop environment.  Stopping...')
+
 disable = load_json_conf('/etc/system76-daemon.json').get('disable-hidpi')
 log.info(disable)
 
