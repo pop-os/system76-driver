@@ -907,6 +907,11 @@ class HiDPIAutoscaling:
         elif self.prev_display_types[0]:
             self.unforce = False
             self.set_scaled_display_modes()
+        
+        # calling update fixes overlap bug on first mode set.
+        if self.get_gpu_vendor() == 'intel':
+            self.update(None)
+        
         running = True
         prev_timestamp = 0
         while(running):
