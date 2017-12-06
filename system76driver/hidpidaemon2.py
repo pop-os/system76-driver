@@ -845,8 +845,17 @@ class HiDPIAutoscaling:
             size_x, size_y = self.calculated_display_size
             size_str = 'current ' + str(size_x) + ' x ' + str(size_y)
             xrandr_output = subprocess.check_output(['xrandr']).decode('utf-8')
-            if size_str  not in xrandr_output:
-                subprocess.call('xrandr --auto', shell=True)
+            if size_str not in xrandr_output:
+                if self.get_internal_lid_state():
+                    print("calling xrandr auto")
+                    subprocess.call('xrandr --auto', shell=True)
+                    if force == False and dbusutil.get_scale() < 2:
+                        dbusutil.set_scale(2)
+                else:
+                    subprocess.call('xrandr --output eDP-1 --off', shell=True)
+                    #for display in self.displays:
+                    #    if self.displays[display]['connected'] == True:
+                    #        self.set_display_scaling(display, layout, force=force)
         
         # Displays are all setup - Notify the user!
         # Note: The notification creates a new HiDPIAutoscaling object and calls set_scaled_display_modes() on completion.
