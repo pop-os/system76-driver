@@ -857,8 +857,9 @@ class HiDPIAutoscaling:
                         if has_lowdpi == False:
                             workaround_set_hidpi = True
                         for display in self.displays:
-                            if self.get_display_dpi(display) > 192:
-                                workaround_set_hidpi = True
+                            if self.displays[display]['connected']:
+                                if self.get_display_dpi(display) > 192:
+                                    workaround_set_hidpi = True
                         if workaround_set_hidpi:
                             try:
                                 dbusutil.set_scale(2)
