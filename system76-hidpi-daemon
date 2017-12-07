@@ -75,8 +75,10 @@ log.info('model: %r', args.model)
 
 GObject.threads_init()
 if disable != "True":
-    while True:
+    restart_count = 0
+    while restart_count < 100:
         try:
             hidpi = hidpidaemon2.run_hidpi_autoscaling(args.model)
         except:
             os.execv(__file__, sys.argv)
+        restart_count = restart_count + 1
