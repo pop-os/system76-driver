@@ -62,6 +62,10 @@ desktop_session = os.environ.get('XDG_CURRENT_DESKTOP')
 if 'GNOME' not in desktop_session:
     sys.exit('The System76 HiDPI Daemon requires a GNOME-based desktop environment.  Stopping...')
 
+session_type = os.environ.get('XDG_SESSION_TYPE')
+if 'x11' not in session_type:
+    sys.exit('The System76 HiDPI Daemon is for X11 sessions only.  Stopping...')
+
 disable = load_json_conf('/etc/system76-daemon.json').get('disable-hidpi')
 log.info(disable)
 
