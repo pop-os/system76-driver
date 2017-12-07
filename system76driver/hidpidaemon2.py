@@ -851,11 +851,19 @@ class HiDPIAutoscaling:
             if size_str not in xrandr_output:
                 if self.get_internal_lid_state():
                     subprocess.call('xrandr --auto', shell=True)
+                    # Force Scale to 2x (unless we have only low-dpi + almost-hidpi)
                     if force == False and dbusutil.get_scale() < 2:
-                        try:
-                            dbusutil.set_scale(2)
-                        except:
-                            log.info("Could not set Mutter scale for workaround.")
+                        workaround_set_hidpi = False
+                        if has_lowdpi == False:
+                            workaround_set_hidpi = True
+                        for display in self.displays:
+                            if self.get_display_dpi(display) > 192:
+                                workaround_set_hidpi = True
+                        if workaround_set_hidpi:
+                            try:
+                                dbusutil.set_scale(2)
+                            except:
+                                log.info("Could not set Mutter scale for workaround.")
                 else:
                     subprocess.call('xrandr --output eDP-1 --off', shell=True)
         
