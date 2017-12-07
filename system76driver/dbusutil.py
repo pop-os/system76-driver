@@ -65,27 +65,22 @@ def unpack_current_state(current_state):
             for mon in monitors:
                 if mon[0][0] == monitor[0]:
                     processed_monitor['modes'] = mon[1]
-                    #print(processed_monitor)
             processed_monitors.append(processed_monitor)
         logical_display['monitors'] = processed_monitors
         logical_displays.append(logical_display)
-        #print(logical_displays)
     return configuration_serial, logical_displays
 
 def get_current_state():
     current_state = dbus_helper(method='GetCurrentState', 
                                 answer_fmt  = GLib.VariantType.new ('(ua((ssss)a(siiddada{sv})a{sv})a(iiduba(ssss)a{sv})a{sv})')
     )
-    #print(current_state.unpack())
     
     return unpack_current_state(current_state)
     
 def apply_monitors_configuration(configuration_serial, displays, scale):
     displays_arg = []
     
-    #print(displays)
     for display in displays:
-        #print("display")
         #generate monitors argument for each display
         monitors_arg = []
         display_scale = scale
@@ -108,14 +103,12 @@ def apply_monitors_configuration(configuration_serial, displays, scale):
                     monitors_arg, 
                 )
         displays_arg.append(display_arg)
-    #print(displays_arg)
     args = GLib.Variant('(uua(iiduba(ssa{sv}))a{sv})', ( configuration_serial, 1,
             displays_arg,
                 {
                 },
             )
             )
-    #print(args)
     dbus_helper(method='ApplyMonitorsConfig',
                     args = args)
 
