@@ -1,9 +1,8 @@
-system76-driver (17.10.9~alpha) artful; urgency=low
+system76-driver (17.10.9) artful; urgency=low
 
-  * Daily WIP for 17.10.9
   * Release multimonitor HiDPI daemon for GNOME on X11 for all products.
 
- -- David Jordan <david2@system76.com>  Thu, 07 Dec 2017 11:26:14 -0700
+ -- David Jordan <david2@system76.com>  Thu, 07 Dec 2017 11:30:45 -0700
 
 system76-driver (17.10.8) artful; urgency=low
 
