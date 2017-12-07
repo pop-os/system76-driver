@@ -67,7 +67,7 @@ class HiDPINotification:
         elif self.gpu_vendor == 'nvidia': # nvidia
             if scale_mode == 'hidpi':
                 header = "Displays Set to HiDPI Mode"
-                message = "Select for LoDPI, increased performance, and to work around issues in legacy apps."
+                message = "Select for LoDPI, increased performance, and app compatibility."
                 action = "Switch to LoDPI"
             else:
                 header = "Displays Set to LoDPI Mode"
