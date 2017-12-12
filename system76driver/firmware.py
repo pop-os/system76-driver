@@ -80,10 +80,13 @@ efibootmgr -v
 """
 
 def get_ec_version():
-    ec = Ec()
-    version = ec.version()
-    ec.close()
-    return version
+    try:
+        ec = Ec()
+        version = ec.version()
+        ec.close()
+        return version
+    except:
+        return ""
 
 def get_bios_version():
     f = open("/sys/class/dmi/id/bios_version")
@@ -107,9 +110,12 @@ def get_firmware_id():
     model = f.read().strip()
     f.close()
 
-    ec = Ec()
-    project = ec.project()
-    ec.close()
+    try:
+        ec = Ec()
+        project = ec.project()
+        ec.close()
+    except:
+        project = "none"
 
     project_hash = nacl.hash.sha256(bytes(project, 'utf8'), encoder=nacl.encoding.HexEncoder).decode('utf-8')
 
@@ -408,8 +414,19 @@ def _run_firmware_updater(reinstall, is_notification):
 
             #Process changelog and component versions
             changelog = get_changelog(tempdirname)
-            update_needed = needs_update(changelog['versions'][0]['bios'],
-                                        changelog['versions'][0]['ec'])
+            version = changelog['versions'][0]
+
+            if 'bios' in version.keys():
+                bios_version = version['bios']
+            else:
+                bios_version = ''
+
+            if 'ec' in version.keys():
+                ec_version = version['ec']
+            else:
+                ec_version = ''
+
+            update_needed = needs_update(bios_version, ec_version)
 
             #Don't offer the update if its already installed
             if not update_needed:
