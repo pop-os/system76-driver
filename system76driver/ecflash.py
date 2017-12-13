@@ -1,11 +1,15 @@
 import os
 
 class Ec:
-    def __init__(self):
+    def __init__(self, primary=True):
         self.fd = os.open("/dev/port", os.O_RDWR)
 
-        self.data_port = 0x62
-        self.cmd_port = 0x66
+        if primary:
+            self.data_port = 0x62
+            self.cmd_port = 0x66
+        else:
+            self.data_port = 0x68
+            self.cmd_port = 0x6c
 
         chip_id = self.id()
         if chip_id != 0x8587:

@@ -79,9 +79,9 @@ echo -e "\e[1mInstalled system76-firmware-update\e[0m" >&2
 efibootmgr -v
 """
 
-def get_ec_version():
+def get_ec_version(primary=True):
     try:
-        ec = Ec()
+        ec = Ec(primary)
         version = ec.version()
         ec.close()
         return version
@@ -295,8 +295,12 @@ def create_environment(is_notification, user_name, display_name, environ):
         "NOTIFICATION_ENVIRONMENT=" + desktop_env,
         "IS_NOTIFICATION=" + str(is_notification),
         "FIRMWARE_CHANGELOG=" + json.dumps(get_processed_changelog()),
-        "FIRMWARE_CURRENT_BIOS=" + get_bios_version(),
-        "FIRMWARE_CURRENT_EC=" + get_ec_version(),
+        "FIRMWARE_CURRENT=" + json.dumps({
+            'bios': get_bios_version(),
+            'ec': get_ec_version(True),
+            'ec2': get_ec_version(False),
+            'me': ''
+        }),
         "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
         "DISPLAY=" + display_name
     ]
