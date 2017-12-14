@@ -107,10 +107,13 @@ def get_model():
     return version
 
 def get_bios_version():
-    f = open("/sys/class/dmi/id/bios_version")
-    version = f.read().strip()
-    f.close()
-    return version
+    try:
+        f = open("/sys/class/dmi/id/bios_version")
+        version = f.read().strip()
+        f.close()
+        return version
+    except:
+        return ""
 
 def get_ec_version(primary=True):
     try:
@@ -122,23 +125,26 @@ def get_ec_version(primary=True):
         return ""
 
 def get_me_version():
-    mei_fd = os.open("/dev/mei0", os.O_RDWR)
+    try:
+        mei_fd = os.open("/dev/mei0", os.O_RDWR)
 
-    # Connect to ME version interface
-    _id = uuid.UUID('8e6a6715-9abc-4043-88ef-9e39c6f63e0f')
-    buf = array.array('b', _id.bytes_le)
-    fcntl.ioctl(mei_fd, 0xc0104801, buf, 1)
+        # Connect to ME version interface
+        _id = uuid.UUID('8e6a6715-9abc-4043-88ef-9e39c6f63e0f')
+        buf = array.array('b', _id.bytes_le)
+        fcntl.ioctl(mei_fd, 0xc0104801, buf, 1)
 
-    # Send FW version request
-    os.write(mei_fd, struct.pack("I", 0x000002FF))
+        # Send FW version request
+        os.write(mei_fd, struct.pack("I", 0x000002FF))
 
-    # Receive FW version response
-    fw_ver = struct.unpack("4BH2B2HH2B2HH2B2H", os.read(mei_fd, 28))
+        # Receive FW version response
+        fw_ver = struct.unpack("4BH2B2HH2B2HH2B2H", os.read(mei_fd, 28))
 
-    os.close(mei_fd)
+        os.close(mei_fd)
 
-    # Return FW software version
-    return "%d.%d.%d.%d" % (fw_ver[5], fw_ver[4], fw_ver[8], fw_ver[7])
+        # Return FW software version
+        return "%d.%d.%d.%d" % (fw_ver[5], fw_ver[4], fw_ver[8], fw_ver[7])
+    except:
+        return ""
 
 def get_firmware_id():
     f = open("/sys/class/dmi/id/product_version")
