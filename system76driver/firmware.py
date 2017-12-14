@@ -52,6 +52,23 @@ import logging
 
 log = logging.getLogger(__name__)
 
+# Products to flash firmware for
+FLASH_FIRMWARE = (
+    'bonw12',
+    'bonw13',
+    'galp2',
+    'galp3',
+    'gaze12',
+    'kudu4',
+    'lemu7',
+    'lemu8',
+    'oryp3',
+    'oryp3-ess',
+    'oryp3-b',
+    'serw10',
+    'serw11',
+)
+
 FIRMWARE_URI = 'https://firmware.system76.com/master/'
 
 CACHE_PATH = "/var/cache/system76-firmware"
@@ -83,6 +100,18 @@ echo -e "\e[1mInstalled system76-firmware-update\e[0m" >&2
 efibootmgr -v
 """
 
+def get_model():
+    f = open("/sys/class/dmi/id/product_version")
+    version = f.read().strip()
+    f.close()
+    return version
+
+def get_bios_version():
+    f = open("/sys/class/dmi/id/bios_version")
+    version = f.read().strip()
+    f.close()
+    return version
+
 def get_ec_version(primary=True):
     try:
         ec = Ec(primary)
@@ -91,12 +120,6 @@ def get_ec_version(primary=True):
         return version
     except:
         return ""
-
-def get_bios_version():
-    f = open("/sys/class/dmi/id/bios_version")
-    version = f.read().strip()
-    f.close()
-    return version
 
 def get_me_version():
     mei_fd = os.open("/dev/mei0", os.O_RDWR)
@@ -116,17 +139,6 @@ def get_me_version():
 
     # Return FW software version
     return "%d.%d.%d.%d" % (fw_ver[5], fw_ver[4], fw_ver[8], fw_ver[7])
-
-def needs_update(new_bios_version, new_ec_version):
-    if not new_bios_version:
-        log.warn("Couldn't get the new bios version from changelog!")
-    elif new_bios_version != get_bios_version():
-        return True
-    if not new_ec_version:
-        log.warn("Couldn't get the new ec version from changelog!")
-    elif new_ec_version != get_ec_version():
-        return True
-    return False
 
 def get_firmware_id():
     f = open("/sys/class/dmi/id/product_version")
@@ -308,32 +320,6 @@ def get_user_session():
 
     return user_name, display_name, environ
 
-def create_environment(is_notification, user_name, display_name, environ):
-    if "DESKTOP_SESSION=gnome" in environ:
-        desktop_env = 'gnome'
-    else:
-        desktop_env = ''
-
-    environment = [
-        "NOTIFICATION_ENVIRONMENT=" + desktop_env,
-        "IS_NOTIFICATION=" + str(is_notification),
-        "FIRMWARE_CHANGELOG=" + json.dumps(get_processed_changelog()),
-        "FIRMWARE_CURRENT=" + json.dumps({
-            'bios': get_bios_version(),
-            'ec': get_ec_version(True),
-            'ec2': get_ec_version(False),
-            'me': get_me_version()
-        }),
-        "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
-        "DISPLAY=" + display_name
-    ]
-
-    for var in environ.split("\00"):
-        if len(var.split("=", maxsplit=1)) == 2:
-            environment.append(str(var))
-
-    return environment
-
 def call_gui(user_name, display_name, environment):
     if len(user_name) == 0 or len(display_name) == 0:
         return
@@ -349,13 +335,26 @@ def call_gui(user_name, display_name, environment):
 
     return subprocess.call(args)
 
-def confirm_dialog(is_notification=False):
+def confirm_dialog(data):
     user_name, display_name, environ = get_user_session()
-    environment = create_environment(is_notification, user_name, display_name, environ)
+
+    if "DESKTOP_SESSION=gnome" in environ:
+        data["desktop"] = 'gnome'
+
+    environment = [
+        "FIRMWARE_DATA=" + json.dumps(data),
+        "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
+        "DISPLAY=" + display_name
+    ]
+
+    for var in environ.split("\00"):
+        if len(var.split("=", maxsplit=1)) == 2:
+            environment.append(str(var))
+
     return call_gui(user_name, display_name, environment)
 
-def abort_dialog(is_notification=False):
-    if is_notification:
+def abort_dialog(data):
+    if data["notification"]:
         return
 
     user_name, display_name, environ = get_user_session()
@@ -425,6 +424,40 @@ def get_processed_changelog():
             changelog = json.loads(c)
             return process_changelog(changelog)
 
+def get_data(is_notification):
+    model = get_model()
+    flash = model in FLASH_FIRMWARE
+
+    changelog = get_processed_changelog()
+
+    current = {
+        'bios': get_bios_version(),
+        'ec': get_ec_version(True),
+        'ec2': get_ec_version(False),
+        'me': get_me_version()
+    }
+
+    latest = {
+        "bios": "",
+        "ec": "",
+        "ec2": "",
+        "me": ""
+    }
+
+    for entry in changelog:
+        for component in latest.keys():
+            if component in entry and not latest[component]:
+                latest[component] = entry[component]
+
+    return {
+        'desktop': '',
+        'notification': is_notification,
+        'model': model,
+        'flash': flash,
+        'changelog': changelog,
+        'current': current,
+        'latest': latest
+    }
 
 def _run_firmware_updater(reinstall, is_notification):
     # Download the manifest and check that it is signed by the private master key.
@@ -439,30 +472,24 @@ def _run_firmware_updater(reinstall, is_notification):
             os.mkdir(path.join(tempdirname, 'firmware'))
             firmware.extract(path.join(tempdirname, 'firmware'))
 
-            #Process changelog and component versions
-            changelog = get_changelog(tempdirname)
-            version = changelog['versions'][0]
+            data = get_data(is_notification)
 
-            if 'bios' in version.keys():
-                bios_version = version['bios']
-            else:
-                bios_version = ''
+            current = data["current"]
+            latest = data["latest"]
 
-            if 'ec' in version.keys():
-                ec_version = version['ec']
-            else:
-                ec_version = ''
-
-            update_needed = needs_update(bios_version, ec_version)
+            needs_update = False
+            for component in current.keys():
+                if latest[component] and current[component] != latest[component]:
+                    needs_update = True
 
             #Don't offer the update if its already installed
-            if not update_needed:
+            if not needs_update:
                 log.info('No new firmware to install.')
                 if not reinstall:
                     return
 
             #Confirm installation with the user.
-            if confirm_dialog(is_notification) == 76:
+            if confirm_dialog(data) == 76:
                 log.info("Setting up firmware installation.")
 
                 #Remove old firmware updater
@@ -478,7 +505,7 @@ def _run_firmware_updater(reinstall, is_notification):
                 return
 
     else:
-        abort_dialog(is_notification)
+        abort_dialog(data)
         return
     log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
 
