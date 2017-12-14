@@ -35,9 +35,13 @@ import tarfile
 import io
 import tempfile
 
+import array
+import fcntl
 from os import path
 import os
 import shutil
+import struct
+import uuid
 
 from .mockable import SubProcess
 import subprocess
@@ -93,6 +97,25 @@ def get_bios_version():
     version = f.read().strip()
     f.close()
     return version
+
+def get_me_version():
+    mei_fd = os.open("/dev/mei0", os.O_RDWR)
+
+    # Connect to ME version interface
+    _id = uuid.UUID('8e6a6715-9abc-4043-88ef-9e39c6f63e0f')
+    buf = array.array('b', _id.bytes_le)
+    fcntl.ioctl(mei_fd, 0xc0104801, buf, 1)
+
+    # Send FW version request
+    os.write(mei_fd, struct.pack("I", 0x000002FF))
+
+    # Receive FW version response
+    fw_ver = struct.unpack("4BH2B2HH2B2HH2B2H", os.read(mei_fd, 28))
+
+    os.close(mei_fd)
+
+    # Return FW software version
+    return "%d.%d.%d.%d" % (fw_ver[5], fw_ver[4], fw_ver[8], fw_ver[7])
 
 def needs_update(new_bios_version, new_ec_version):
     if not new_bios_version:
@@ -299,7 +322,7 @@ def create_environment(is_notification, user_name, display_name, environ):
             'bios': get_bios_version(),
             'ec': get_ec_version(True),
             'ec2': get_ec_version(False),
-            'me': ''
+            'me': get_me_version()
         }),
         "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
         "DISPLAY=" + display_name
