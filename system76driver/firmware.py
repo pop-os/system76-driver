@@ -359,10 +359,7 @@ def confirm_dialog(data):
 
     return call_gui(user_name, display_name, environment)
 
-def abort_dialog(data):
-    if data["notification"]:
-        return
-
+def abort_dialog():
     user_name, display_name, environ = get_user_session()
 
     environment = [
@@ -511,7 +508,8 @@ def _run_firmware_updater(reinstall, is_notification):
                 return
 
     else:
-        abort_dialog(data)
+        if not is_notification:
+            abort_dialog()
         return
     log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
 
