@@ -54,17 +54,37 @@ log = logging.getLogger(__name__)
 
 # Products to flash firmware for
 FLASH_FIRMWARE = (
+    'bonw11',
     'bonw12',
     'bonw13',
     'galp2',
     'galp3',
+    'gaze10',
+    'gaze11',
     'gaze12',
+    'kudu2',
+    'kudu3',
     'kudu4',
+    'lemu6',
     'lemu7',
     'lemu8',
+    'orxp1',
+    'oryp2',
+    'oryp2-ess',
     'oryp3',
     'oryp3-ess',
     'oryp3-b',
+    'serw9',
+    'serw10',
+    'serw11',
+)
+
+# Products with a second EC
+HAS_EC2 = (
+    'bonw11',
+    'bonw12',
+    'bonw13',
+    'serw9',
     'serw10',
     'serw11',
 )
@@ -433,13 +453,6 @@ def get_data(is_notification):
 
     changelog = get_processed_changelog()
 
-    current = {
-        'bios': get_bios_version(),
-        'ec': get_ec_version(True),
-        'ec2': get_ec_version(False),
-        'me': get_me_version()
-    }
-
     latest = {
         "bios": "",
         "ec": "",
@@ -451,6 +464,18 @@ def get_data(is_notification):
         for component in latest.keys():
             if component in entry and not latest[component]:
                 latest[component] = entry[component]
+
+    if model in HAS_EC2:
+        ec2 = get_ec_version(False)
+    else:
+        ec2 = ""
+
+    current = {
+        'bios': get_bios_version(),
+        'ec': get_ec_version(True),
+        'ec2': ec2,
+        'me': get_me_version()
+    }
 
     return {
         'desktop': '',
