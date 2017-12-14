@@ -80,6 +80,7 @@ class AbortWindow (Gtk.Window):
 
 class FirmwareWindow (Gtk.Window):
     def __init__(self, data):
+        self.data = data
         current = data["current"]
         latest = data["latest"]
 
@@ -321,7 +322,10 @@ class FirmwareWindow (Gtk.Window):
             Gtk.main_iteration()
 
         try:
-            subprocess.Popen(["xdg-open", "https://github.com/system76/firmware-desktop"])
+            subprocess.Popen([
+                "xdg-open",
+                "https://github.com/system76/firmware-desktop/tree/master/" + self.data["model"]
+            ])
         except:
             log.info("Couldn't open firmware site.")
 
