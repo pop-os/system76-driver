@@ -1,6 +1,7 @@
 system76-driver (17.10.10~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.10
+  * Add journalctl to logs
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 14 Dec 2017 14:24:34 -0700
 
