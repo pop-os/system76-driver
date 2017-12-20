@@ -86,7 +86,7 @@ class FirmwareWindow (Gtk.Window):
 
         needs_update = False
         for component in current.keys():
-            if latest[component] and current[component] != latest[component]:
+            if current[component] and latest[component] and current[component] != latest[component]:
                 needs_update = True
 
         Gtk.Window.__init__(self, title="System76 Firmware Updater")

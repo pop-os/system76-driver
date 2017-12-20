@@ -144,6 +144,9 @@ def get_ec_version(primary=True):
     except:
         return ""
 
+def get_me_enabled():
+    return path.exists("/dev/mei0")
+
 def get_me_version():
     try:
         mei_fd = os.open("/dev/mei0", os.O_RDWR)
@@ -470,11 +473,16 @@ def get_data(is_notification):
     else:
         ec2 = ""
 
+    if get_me_enabled():
+        me = get_me_version()
+    else:
+        me = ""
+
     current = {
         'bios': get_bios_version(),
         'ec': get_ec_version(True),
         'ec2': ec2,
-        'me': get_me_version()
+        'me': me
     }
 
     return {
@@ -507,7 +515,7 @@ def _run_firmware_updater(reinstall, is_notification):
 
             needs_update = False
             for component in current.keys():
-                if latest[component] and current[component] != latest[component]:
+                if current[component] and latest[component] and current[component] != latest[component]:
                     needs_update = True
 
             #Don't offer the update if its already installed
