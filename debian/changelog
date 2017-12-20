@@ -1,3 +1,9 @@
+system76-driver (17.10.10) artful; urgency=low
+
+  * Add journalctl to logs
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 14 Dec 2017 14:28:09 -0700
+
 system76-driver (17.10.9) artful; urgency=low
 
   * Release multimonitor HiDPI daemon for GNOME on X11 for all products.
