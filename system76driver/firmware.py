@@ -192,7 +192,7 @@ def get_file(filename, cache=None):
     if cache:
         log.info("Fetching {} with cache {}".format(filename, cache))
 
-        if not os.path.isdir(CACHE_PATH):
+        if not path.isdir(CACHE_PATH):
             log.info("Creating cache directory at {}".format(cache))
             os.mkdir(CACHE_PATH)
 
@@ -526,17 +526,21 @@ def _run_firmware_updater(reinstall, is_notification):
 
             #Confirm installation with the user.
             if confirm_dialog(data) == 76:
-                log.info("Setting up firmware installation.")
+                if path.isdir("/sys/firmware/efi"):
+                    log.info("Setting up firmware installation.")
 
-                #Remove old firmware updater
-                try:
-                    shutil.rmtree('/boot/efi/system76-firmware-update')
-                except:
-                    pass
+                    #Remove old firmware updater
+                    try:
+                        shutil.rmtree('/boot/efi/system76-firmware-update')
+                    except:
+                        pass
 
-                #Install firmware to /efi/boot and set boot.efi on next boot.
-                shutil.copytree(tempdirname, '/boot/efi/system76-firmware-update')
-                set_next_boot()
+                    #Install firmware to /efi/boot and set boot.efi on next boot.
+                    shutil.copytree(tempdirname, '/boot/efi/system76-firmware-update')
+                    set_next_boot()
+                else:
+                    log.info("Not running in EFI mode, aborting firmware installation")
+                    return
             else:
                 return
 
