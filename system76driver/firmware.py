@@ -52,7 +52,13 @@ import logging
 
 log = logging.getLogger(__name__)
 
-# Products to flash firmware for
+# Products that will check for updates
+CHECK_UPDATES = (
+    "kudu4",
+    "gaze12"
+)
+
+# Products to flash firmware automatically
 FLASH_FIRMWARE = (
     'bonw11',
     'bonw12',
@@ -496,6 +502,12 @@ def get_data(is_notification):
     }
 
 def _run_firmware_updater(reinstall, is_notification):
+    # For now, whitelist the models that can update firmware
+    model = get_model()
+    if not model in CHECK_UPDATES:
+        log.info("Updates are not available for " + model + " yet.")
+        return
+
     # Download the manifest and check that it is signed by the private master key.
     # The public master key is pinned in our driver.
     # Then download the firmware and check the checksum against the manifest.
