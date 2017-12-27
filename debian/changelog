@@ -1,6 +1,6 @@
 system76-driver (17.10.11~alpha) artful; urgency=low
 
-  * Daily WIP for 17.10.11
+  * Add `actions.i915_alpha_support` for wilp14
 
  -- Jason Gerard DeRose <jason@system76.com>  Wed, 27 Dec 2017 13:02:36 -0700
 
