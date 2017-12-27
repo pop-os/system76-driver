@@ -414,6 +414,17 @@ class disable_power_well(GrubAction):
         return _('Fix HDMI audio playback speed')
 
 
+class i915_alpha_support(GrubAction):
+    """
+    Add `i915.alpha_support=1` to GRUB_CMDLINE_LINUX_DEFAULT.
+    """
+
+    add = ('i915.alpha_support=1',)
+
+    def describe(self):
+        return _('Enable Intel i915 Alpha Driver Support')
+
+
 class plymouth1080(Action):
     update_grub = True
     value = 'GRUB_GFXPAYLOAD_LINUX="1920x1080"'
