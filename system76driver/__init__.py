@@ -25,7 +25,7 @@ from os import path
 import logging
 
 
-__version__ = '17.10.10'
+__version__ = '17.10.11'
 
 datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
 log = logging.getLogger(__name__)

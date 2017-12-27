@@ -1,3 +1,9 @@
+system76-driver (17.10.11~alpha) artful; urgency=low
+
+  * Daily WIP for 17.10.11
+
+ -- Jason Gerard DeRose <jason@system76.com>  Wed, 27 Dec 2017 13:02:36 -0700
+
 system76-driver (17.10.10) artful; urgency=low
 
   * Add journalctl to logs
