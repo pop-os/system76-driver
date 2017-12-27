@@ -793,6 +793,8 @@ PRODUCTS = {
     },
     'wilp14': {
         'name': 'Wild Dog Pro',
-        'drivers': [],
+        'drivers': [
+            actions.i915_alpha_support,
+        ],
     },
 }
