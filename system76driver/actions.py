@@ -135,6 +135,15 @@ def get_has_nvidia(pci):
     return False
 
 
+def has_nvidia():
+    try:
+        text = SubProcess.check_output(['lspci', '-vmnn']).decode()
+        pci = parse_lspci(text)
+        return get_has_nvidia(pci)
+    except:
+        return False
+
+
 class Action:
     _isneeded = None
     _description = None
@@ -466,6 +475,11 @@ class i915_alpha_support(GrubAction):
 
     def describe(self):
         return _('Enable Intel i915 Alpha Driver Support')
+
+    def get_isneeded(self):
+        if has_nvidia():
+            return False
+        return super().get_isneeded()
 
 
 class plymouth1080(Action):
