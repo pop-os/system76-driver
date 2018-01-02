@@ -1,6 +1,7 @@
 system76-driver (17.10.12~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.12
+  * wilp14: don't add i915.alpha_support=1 when NVIDIA GPU is present
 
  -- Jason Gerard DeRose <jason@system76.com>  Tue, 02 Jan 2018 15:06:24 -0700
 
