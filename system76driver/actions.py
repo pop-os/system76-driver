@@ -41,6 +41,8 @@ CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
 CMDLINE_CHECK_DEFAULT_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT')
 CMDLINE_ADD_DEFAULT_RE = re.compile('^GRUB_CMDLINE_LINUX="(.*)"$')
 
+LSPCI_RE = re.compile('^(.+) \[(.+)\]$')
+
 WIFI_PM_DISABLE = """#!/bin/sh
 # Installed by system76-driver
 # Fixes poor Intel wireless performance when on battery power
@@ -90,6 +92,47 @@ def backup_filename(filename, date=None):
 def update_grub():
     log.info('Calling `update-grub`...')
     SubProcess.check_call(['update-grub'])
+
+
+def parse_lspci(text):
+    """
+    Parse output of `lspci -vmnn`.
+    """
+    pci = {}
+    bdf =  None  # BDF: bus/device/function
+    for line in text.splitlines():
+        if line == '':
+            bdf = None
+        else:
+            (name, value) = line.split(':\t')
+            if name == 'Device' and bdf is None:
+                bdf = value
+                assert bdf not in pci
+                pci[bdf] = {}
+            elif name in ('Class', 'Vendor', 'Device', 'SVendor', 'SDevice', 'Rev'):
+                assert bdf is not None
+                key = name.lower()
+                assert key not in pci[bdf]
+                if name == 'Rev':
+                    pci[bdf][key] = value
+                else:
+                    key_id = key + '_id'
+                    assert key_id not in pci[bdf]
+                    match = LSPCI_RE.match(value)
+                    pci[bdf][key] = match.group(1)
+                    pci[bdf][key_id] = match.group(2)
+    return pci
+
+
+CLASS_VGA = '0300'
+VENDOR_NVIDIA = '10de'
+
+
+def get_has_nvidia(pci):
+    for (bdf, info) in pci.items():
+        if info['class_id'] == CLASS_VGA and info['vendor_id'] == VENDOR_NVIDIA:
+            return True
+    return False
 
 
 class Action:
