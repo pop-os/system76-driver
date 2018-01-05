@@ -324,6 +324,9 @@ class HiDPIAutoscaling:
             if mode['width'] == 1600 and mode['height'] == 900:
                 dpi_add_output_mode(self.xlib_display, selected_output, mode['id'])
     
+        # Need to refresh display modes to reflect the mode we just added
+        self.update_display_connections()
+    
     def update_display_connections(self):
         resources = self.xlib_window.xrandr_get_screen_resources()._data
         
