@@ -263,6 +263,7 @@ class HiDPIAutoscaling:
         self.queue = queue.Queue()
         self.unforce = False
         self.calculated_display_size = (0,0) # Used to hack around intel black band bug (wrong XScreen size)
+        self.prev_lid_state = self.get_internal_lid_state()
         
         self.init_xlib()
         
@@ -270,9 +271,9 @@ class HiDPIAutoscaling:
         self.xlib_display = xdisplay.Display()
         screen = self.xlib_display.screen()
         self.xlib_window = screen.root.create_window(10,10,10,10,0, 0, window_class=X.InputOnly, visual=X.CopyFromParent, event_mask=0)
-        self.xlib_window.xrandr_select_input(randr.RRScreenChangeNotifyMask)
-        #            | randr.RROutputChangeNotifyMask
-        #            | randr.RROutputPropertyNotifyMask)
+        self.xlib_window.xrandr_select_input(randr.RRScreenChangeNotifyMask
+                    | randr.RROutputChangeNotifyMask
+                    | randr.RROutputPropertyNotifyMask)
                     
         self.update_display_connections()
         if self.get_gpu_vendor() == 'nvidia':
@@ -323,7 +324,7 @@ class HiDPIAutoscaling:
         for mode in resources['modes']:
             if mode['width'] == 1600 and mode['height'] == 900:
                 dpi_add_output_mode(self.xlib_display, selected_output, mode['id'])
-    
+        
         # Need to refresh display modes to reflect the mode we just added
         self.update_display_connections()
     
@@ -357,6 +358,18 @@ class HiDPIAutoscaling:
                     prop = dpi_get_output_property(self.xlib_display, output, atom, 4, 0, 100)._data
                     connector_type = self.xlib_display.get_atom_name(prop['value'][0])
                     new_displays[info['name']]['connector_type'] = connector_type
+        
+        
+        # In some cases, the CRTC won't have changed when the lid opens.
+        # So always update displays if the lid state has changed.
+        lid_state = self.get_internal_lid_state()
+        if lid_state != self.prev_lid_state:
+            self.prev_lid_state = lid_state
+            self.displays = new_displays
+            return True
+        else:
+            self.prev_lid_state = lid_state
+        
         
         for display in new_displays:
             status = new_displays[display]['connected']
@@ -926,9 +939,23 @@ class HiDPIAutoscaling:
         
         running = True
         prev_timestamp = 0
+        #mapping_notify_sequence = 0
         while(running):
             # Get subscribed xlib RANDR events. Blocks until next event is received.
             e = self.xlib_display.next_event()
+            if e.type == self.xlib_display.extension_event.ScreenChangeNotify:
+                pass
+            elif e.type == 34:
+                # Received MappingNotify event.
+                pass
+                #if e.sequence_number > mapping_notify_sequence:
+                #   mapping_notify_sequence = e.sequence_number
+                #   self.update(e)
+            else:
+                if (e.type + e.sub_code) == self.xlib_display.extension_event.OutputPropertyNotify:
+                        # MUST set e to correct type from binary data.  Otherwise 
+                        # we'll have wrong contents, including nonsense timestamp.
+                        e = randr.OutputPropertyNotify(display=self.xlib_display.display, binarydata = e._binary)
             # Multiple events are fired in quick succession, only act once.
             try:
                 new_timestamp = e.timestamp
