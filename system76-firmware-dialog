@@ -34,7 +34,7 @@ import subprocess
 
 from system76driver import get_datafile
 
-USES_NOTIFICATIONS = ['gnome']
+USES_NOTIFICATIONS = ['gnome', 'pop:gnome']
 
 NOTIFICATION_TIMEOUT = 24*60*60 # 24 hours
 
@@ -78,6 +78,7 @@ class AbortWindow (Gtk.Window):
             Gtk.main_iteration()
         os._exit(1)
 
+
 class FirmwareWindow (Gtk.Window):
     def __init__(self, data):
         self.data = data
@@ -104,7 +105,7 @@ class FirmwareWindow (Gtk.Window):
             self.titlebar.set_custom_title(image)
             self.set_titlebar(self.titlebar)
 
-        self.create_notification_ui(data)
+        self.create_notification_ui(data)        
         self.create_version_ui(current, latest)
 
         self.create_update_available_label(needs_update)
@@ -158,11 +159,6 @@ class FirmwareWindow (Gtk.Window):
         details_button.connect('clicked', self.show_details)
         self.notification_area.pack_start(details_button, False, False, 0)
 
-        question_label = Gtk.Label("<b>Install firmware during the next reboot?</b>",
-                                   use_markup=True,
-                                   halign=Gtk.Align.CENTER)
-        self.notification_area.pack_start(question_label, False, False, 0)
-
         self.box.pack_start(self.notification_area, False, False, 6)
 
     def create_version_ui(self, current, latest):
@@ -207,7 +203,7 @@ class FirmwareWindow (Gtk.Window):
     def create_update_available_label(self, needs_update):
         self.note = Gtk.Label("Your computer's firmware is up-to-date.")
         if needs_update:
-            self.note.set_markup("<b>Updates are available for your computer</b>")
+            self.note.set_markup("<b>Updates are available for your computer.</b>")
         self.note.set_vexpand(False)
         self.box.pack_start(self.note, False, False, 3)
 
@@ -251,6 +247,11 @@ class FirmwareWindow (Gtk.Window):
         self.box.pack_start(self.changelog_expander, True, True, 3)
 
     def create_buttons(self, is_notification, needs_update, can_flash):
+        question_label = Gtk.Label("<b>Install firmware during the next reboot?</b>",
+                                   use_markup=True,
+                                   halign=Gtk.Align.CENTER)
+        self.box.pack_start(question_label, False, False, 0)
+        
         self.buttonbox = Gtk.HBox(halign=Gtk.Align.CENTER)
         self.box.pack_start(self.buttonbox, False, False, 12)
         if is_notification == True:
@@ -366,7 +367,7 @@ def notification_action(notification, action=None, data=None):
     global got_action
     got_action[0] = True
 
-    app = App()
+    app = App(data)
     app.run(sys.argv)
 
 def get_changes_list(data):
@@ -427,8 +428,8 @@ def send_notification(data):
     Notify.init("system76-firmware-dialog")
     notification = Notify.Notification.new("New firmware available...", get_changes(data))
     notification.connect("closed", notification_closed)
-    notification.add_action("default", "Default Action", notification_action)
-    notification.add_action("update_firmware", "Install Firmware...", notification_action, None)
+    notification.add_action("default", "Default Action", notification_action, data)
+    notification.add_action("update_firmware", "Install Firmware...", notification_action, data)
     notification.show()
 
     # Cancel this notification just before then next one starts.

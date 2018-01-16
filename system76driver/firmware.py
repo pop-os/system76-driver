@@ -55,7 +55,8 @@ log = logging.getLogger(__name__)
 # Products that will check for updates
 CHECK_UPDATES = (
     "kudu4",
-    "gaze12"
+    "gaze12",
+    'serw11'
 )
 
 # Products to flash firmware automatically
@@ -347,11 +348,15 @@ def get_user_session():
 
     user_session_pids = subprocess.check_output(['pgrep', '-P', user_pid]
                 ).decode('utf-8').rstrip('\n')
-    user_session_pid = user_session_pids.split()[0]
+    #user_session_pid = user_session_pids.split()[0]
 
-    environ = subprocess.check_output(['cat', '/proc/' + str(user_session_pid)
+    environ = ""
+    for user_session_pid in user_session_pids.split():
+        environ = subprocess.check_output(['cat', '/proc/' + str(user_session_pid)
                                       + '/environ']
                 ).decode('utf-8').rstrip('\n')
+        if len(environ) > 0:
+            break
 
     return user_name, display_name, environ
 
@@ -374,6 +379,10 @@ def confirm_dialog(data):
     user_name, display_name, environ = get_user_session()
 
     if "DESKTOP_SESSION=gnome" in environ:
+        data["desktop"] = 'gnome'
+    elif "XDG_CURRENT_DESKTOP=pop:GNOME" in environ:
+        data["desktop"] = 'gnome'
+    elif "XDG_CURRENT_DESKTOP=ubuntu:GNOME" in environ:
         data["desktop"] = 'gnome'
 
     environment = [
@@ -482,7 +491,7 @@ def get_data(is_notification):
     if get_me_enabled():
         me = get_me_version()
     else:
-        me = ""
+        me = "disabled"
 
     current = {
         'bios': get_bios_version(),
