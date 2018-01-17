@@ -567,8 +567,7 @@ def _run_firmware_updater(reinstall, is_notification):
                 if component == 'me' and current[component] == 'disabled' and 'disabled' in latest[component]:
                     pass
                 elif current[component] and latest[component] and current[component] != latest[component]:
-                    else:
-                        needs_update = True
+                    needs_update = True
 
             #Don't offer the update if its already installed
             if not needs_update:
