@@ -412,6 +412,22 @@ def abort_dialog():
 
     return call_gui(user_name, display_name, environment)
 
+def success_dialog():
+    user_name, display_name, environ = get_user_session()
+
+    environment = [
+        "FIRMWARE_SUCCESS=True",
+        "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
+        "DISPLAY=" + display_name
+    ]
+
+    for var in environ.split("\00"):
+        if len(var.split("=", maxsplit=1)) == 2:
+            environment.append(str(var))
+
+    return call_gui(user_name, display_name, environment)
+
+
 def set_next_boot():
     handle, name = tempfile.mkstemp()
     f = open(handle, 'w')
@@ -453,6 +469,10 @@ def process_changelog(changelog):
         for component in ['description', 'bios', 'ec', 'ec2', 'me']:
             if component in version.keys():
                 entry[component] = str(version[component])
+        
+        for component in ['bios_me', 'bios_set', 'me_hap', 'me_cr']:
+            if component in version.keys():
+                entry[component] = str(version[component])
         version_entries.append(entry)
     return version_entries
 
@@ -488,10 +508,20 @@ def get_data(is_notification):
     else:
         ec2 = ""
 
+    enable_me = False
+    for me_component in ['bios_me', 'me_hap', 'me_cr']:
+        if latest[component] == 'true':
+            # ME will be purposely enabled by next update.
+            enable_me = True
+    
     if get_me_enabled():
         me = get_me_version()
+        if not enable_me:
+            latest['me'] = latest['me'] + ' (disabled)'
     else:
         me = "disabled"
+        if not enable_me:
+            latest['me'] = 'disabled'
 
     current = {
         'bios': get_bios_version(),
@@ -536,8 +566,11 @@ def _run_firmware_updater(reinstall, is_notification):
 
             needs_update = False
             for component in current.keys():
-                if current[component] and latest[component] and current[component] != latest[component]:
-                    needs_update = True
+                if component == 'me' and current[component] == 'disabled' and 'disabled' in latest[component]:
+                    pass
+                elif current[component] and latest[component] and current[component] != latest[component]:
+                    else:
+                        needs_update = True
 
             #Don't offer the update if its already installed
             if not needs_update:
@@ -562,6 +595,21 @@ def _run_firmware_updater(reinstall, is_notification):
                 else:
                     log.info("Not running in EFI mode, aborting firmware installation")
                     return
+                
+                # Prompt user if we can't automatically disable the ME.
+                # bios_me: ME is configurable in bios.
+                # bios_set: BIOS settings can be set automatically.
+                if data['changelog'][0]:
+                    latest_entry = data['changelog'][0]
+                    if latest_entry['bios_me']:
+                        if latest_entry['bios_me'] == 'True':
+                            if latest_entry['bios_set']:
+                                if latest_entry['bios_set'] == 'False':
+                                    # Me is configurable, but default settings 
+                                    # need to be loaded manually to disable.
+                                    success_dialog()
+                                # else:
+                                #     ME is configurable and set/disabled by default.
             else:
                 return
 
