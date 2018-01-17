@@ -54,9 +54,7 @@ log = logging.getLogger(__name__)
 
 # Products that will check for updates
 CHECK_UPDATES = (
-    "kudu4",
-    "gaze12",
-    'serw11'
+    'serw11',
 )
 
 # Products to flash firmware automatically
