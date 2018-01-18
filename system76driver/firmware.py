@@ -601,6 +601,8 @@ def get_data(model, model_data, is_notification):
     }
 
     for entry in changelog:
+        if entry.get("bios_me") or entry.get("me_hap") or entry.get("me_cr"):
+            entry["me"] = "disabled"
         for component in latest.keys():
             if component in entry and not latest[component]:
                 latest[component] = entry[component]
