@@ -126,9 +126,9 @@ class SuccessWindow (Gtk.Window):
         self.restart_button.props.margin_top = 12
         Gtk.StyleContext.add_class(self.restart_button.get_style_context(), "destructive-action")
 
-        self.grid.attach(self.head_label,    0, 0, 2, 1)
-        self.grid.attach(self.body_label,    0, 1, 2, 1)
-        self.grid.attach(self.button,        0, 2, 1, 1)
+        self.grid.attach(self.head_label,     0, 0, 2, 1)
+        self.grid.attach(self.body_label,     0, 1, 2, 1)
+        self.grid.attach(self.button,         0, 2, 1, 1)
         self.grid.attach(self.restart_button, 1, 2, 1, 1)
 
         self.connect("delete-event", Gtk.main_quit)
