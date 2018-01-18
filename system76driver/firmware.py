@@ -52,47 +52,152 @@ import logging
 
 log = logging.getLogger(__name__)
 
-# Products that will check for updates
-CHECK_UPDATES = (
-    'serw11',
-)
+# Model definitions, by bios product name
+# - check - Products that will check for updates
+# - ec - Product has embedded controller firmware
+# - ec2 - Product has second embedded controller firmware
+# - me - Product has management engine firmware
 
-# Products to flash firmware automatically
-FLASH_FIRMWARE = (
-    'bonw11',
-    'bonw12',
-    'bonw13',
-    'galp2',
-    'galp3',
-    'gaze10',
-    'gaze11',
-    'gaze12',
-    'kudu2',
-    'kudu3',
-    'kudu4',
-    'lemu6',
-    'lemu7',
-    'lemu8',
-    'orxp1',
-    'oryp2',
-    'oryp2-ess',
-    'oryp3',
-    'oryp3-ess',
-    'oryp3-b',
-    'serw9',
-    'serw10',
-    'serw11',
-)
-
-# Products with a second EC
-HAS_EC2 = (
-    'bonw11',
-    'bonw12',
-    'bonw13',
-    'serw9',
-    'serw10',
-    'serw11',
-)
+MODELS = {
+    'bonw11': {
+        "check": False,
+        "ec": True,
+        "ec2": True,
+        "me": True,
+    },
+    'bonw12': {
+        "check": False,
+        "ec": True,
+        "ec2": True,
+        "me": True,
+    },
+    'bonw13': {
+        "check": False,
+        "ec": True,
+        "ec2": True,
+        "me": True,
+    },
+    'galp2': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'galp3': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'gaze10': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'gaze11': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'gaze12': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'kudu2': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'kudu3': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'kudu4': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'lemu6': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'lemu7': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'lemu8': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'orxp1': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'oryp2': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'oryp2-ess': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'oryp3': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'oryp3-ess': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'oryp3-b': {
+        "check": False,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
+    'serw9': {
+        "check": False,
+        "ec": True,
+        "ec2": True,
+        "me": True,
+    },
+    'serw10': {
+        "check": False,
+        "ec": True,
+        "ec2": True,
+        "me": True,
+    },
+    'serw11': {
+        "check": True,
+        "ec": True,
+        "ec2": True,
+        "me": True,
+    },
+}
 
 FIRMWARE_URI = 'https://firmware.system76.com/master/'
 
@@ -467,7 +572,7 @@ def process_changelog(changelog):
         for component in ['description', 'bios', 'ec', 'ec2', 'me']:
             if component in version.keys():
                 entry[component] = str(version[component])
-        
+
         for component in ['bios_me', 'bios_set', 'me_hap', 'me_cr']:
             if component in version.keys():
                 entry[component] = str(version[component])
@@ -485,7 +590,9 @@ def get_processed_changelog():
 
 def get_data(is_notification):
     model = get_model()
-    flash = model in FLASH_FIRMWARE
+    data = MODELS.get(model)
+
+    flash = False
 
     changelog = get_processed_changelog()
 
@@ -501,29 +608,28 @@ def get_data(is_notification):
             if component in entry and not latest[component]:
                 latest[component] = entry[component]
 
-    if model in HAS_EC2:
+    if data.get("ec"):
+        flash = True
+        ec = get_ec_version(True)
+    else:
+        ec = ""
+
+    if data.get("ec2"):
         ec2 = get_ec_version(False)
     else:
         ec2 = ""
 
-    enable_me = False
-    for me_component in ['bios_me', 'me_hap', 'me_cr']:
-        if latest[component] == 'true':
-            # ME will be purposely enabled by next update.
-            enable_me = True
-    
-    if get_me_enabled():
-        me = get_me_version()
-        if not enable_me:
-            latest['me'] = latest['me'] + ' (disabled)'
+    if data.get("me"):
+        if get_me_enabled():
+            me = get_me_version()
+        else:
+            me = "disabled"
     else:
-        me = "disabled"
-        if not enable_me:
-            latest['me'] = 'disabled'
+        me = ""
 
     current = {
         'bios': get_bios_version(),
-        'ec': get_ec_version(True),
+        'ec': ec,
         'ec2': ec2,
         'me': me
     }
@@ -592,7 +698,7 @@ def _run_firmware_updater(reinstall, is_notification):
                 else:
                     log.info("Not running in EFI mode, aborting firmware installation")
                     return
-                
+
                 # Prompt user if we can't automatically disable the ME.
                 # bios_me: ME is configurable in bios.
                 # bios_set: BIOS settings can be set automatically.
@@ -602,7 +708,7 @@ def _run_firmware_updater(reinstall, is_notification):
                         if latest_entry['bios_me'] == 'True':
                             if latest_entry['bios_set']:
                                 if latest_entry['bios_set'] == 'False':
-                                    # Me is configurable, but default settings 
+                                    # Me is configurable, but default settings
                                     # need to be loaded manually to disable.
                                     success_dialog()
                                 # else:

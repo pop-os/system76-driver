@@ -437,18 +437,18 @@ def get_changes_list(data):
     changes_list = []
 
     for entry in changelog:
-        found_any = False
+        found_all = True
         for component in found.keys():
             if component in entry and entry[component] and current[component]:
-                if current[component] >= entry[component]:
+                if current[component] == entry[component]:
                     found[component] = True
             elif not current[component]:
                 found[component] = True
 
-            if found[component]:
-                found_any = True
+            if not found[component]:
+                found_all = False
 
-        if not found_any:
+        if not found_all:
             changes_list.append(entry['description'])
         else:
             break
