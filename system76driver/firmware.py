@@ -588,10 +588,7 @@ def get_processed_changelog():
             changelog = json.loads(c)
             return process_changelog(changelog)
 
-def get_data(is_notification):
-    model = get_model()
-    data = MODELS.get(model)
-
+def get_data(model, model_data, is_notification):
     flash = False
 
     changelog = get_processed_changelog()
@@ -608,18 +605,18 @@ def get_data(is_notification):
             if component in entry and not latest[component]:
                 latest[component] = entry[component]
 
-    if data.get("ec"):
+    if model_data.get("ec"):
         flash = True
         ec = get_ec_version(True)
     else:
         ec = ""
 
-    if data.get("ec2"):
+    if model_data.get("ec2"):
         ec2 = get_ec_version(False)
     else:
         ec2 = ""
 
-    if data.get("me"):
+    if model_data.get("me"):
         if get_me_enabled():
             me = get_me_version()
         else:
@@ -647,7 +644,11 @@ def get_data(is_notification):
 def _run_firmware_updater(reinstall, is_notification):
     # For now, whitelist the models that can update firmware
     model = get_model()
-    if not model in CHECK_UPDATES:
+    model_data = MODELS.get(model)
+    if not model_data:
+        log.info(model + " not known.")
+        return
+    if not model_data.get("check"):
         log.info("Updates are not available for " + model + " yet.")
         return
 
@@ -663,7 +664,7 @@ def _run_firmware_updater(reinstall, is_notification):
             os.mkdir(path.join(tempdirname, 'firmware'))
             firmware.extract(path.join(tempdirname, 'firmware'))
 
-            data = get_data(is_notification)
+            data = get_data(model, model_data, is_notification)
 
             current = data["current"]
             latest = data["latest"]
