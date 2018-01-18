@@ -94,7 +94,7 @@ class SuccessWindow (Gtk.Window):
                                wrap=True)
         self.box.pack_start(self.head_label, False, False, 6)
 
-        self.body_label = Gtk.Label("<span><b>The Intel ME may not be disabled for this model after the firmware update.</b></span>\n\n<span><b>To ensure the Intel ME remains disabled:</b></span>\n    Wait for the firmware update to complete.\n    1) Press F2 during boot to enter the Setup menu.\n    2) Go to the Exit tab.\n    3) Select and confirm Load Setup Defaults.\n    4) Select and confirm Save Changes and Reset.",
+        self.body_label = Gtk.Label("<span><b>The Intel ME may not be disabled for this model after the firmware update.</b></span>\n\n<span><b>To ensure the Intel ME remains disabled:</b></span>\n    Wait for the firmware update to complete.\n    1) Press F2 during boot to enter the Setup menu.\n    2) Go to the Exit tab.\n    3) Select and confirm Load Setup Defaults.\n    4) Select and confirm Save Changes and Reset.\n\nRemember to take a picture of these instructions before rebooting.",
                                use_markup=True,
                                wrap=True)
         self.box.pack_start(self.body_label, False, False, 6)
