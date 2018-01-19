@@ -86,36 +86,50 @@ class SuccessWindow (Gtk.Window):
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
 
-        self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
-        self.add(self.box)
+        self.grid = Gtk.Grid()
+        self.grid.props.column_spacing = 12
+        self.grid.props.row_spacing = 12
+        self.grid.props.margin = 12
+        self.add(self.grid)
 
         self.head_label = Gtk.Label(
-            "<b>Firmware is set to update on next boot.</b>",
+            "Firmware will be updated when you restart your device.",
+            max_width_chars=35,
             use_markup=True,
             wrap=True
         )
-        self.box.pack_start(self.head_label, False, False, 6)
+        Gtk.StyleContext.add_class(self.head_label.get_style_context(), "h1")
 
         self.body_label = Gtk.Label(
-            "<span><b>The Intel ME may not be disabled for this model after the firmware update.</b></span>\n" +
-            "\n" +
-            "<span><b>To ensure the Intel ME remains disabled:</b></span>\n" +
-            "    Wait for the firmware update to complete.\n" +
-            "    1) Press F2 during boot to enter the Setup menu.\n" +
-            "    2) Go to the Exit tab.\n" +
-            "    3) Select and confirm Load Setup Defaults.\n" +
-            "    4) Select and confirm Save Changes and Reset.\n" +
-            "\n" +
-            "Remember to take a picture of these instructions before rebooting.",
+            "The Intel ME <b>may require further action</b> to be disabled for this model. To ensure the Intel ME " +
+            "remains disabled, restart your device, wait for the firmware update to complete, then:\n\n" +
+            "    1. <b>Press F2 during boot</b> to enter the Setup menu.\n" +
+            "    2. Go to the <b>Exit</b> tab.\n" +
+            "    3. Select and confirm <b>Load Setup Defaults</b>.\n" +
+            "    4. Select and confirm <b>Save Changes and Reset</b>.\n\n" +
+            "Remember to take a picture of these instructions before restarting.",
+            max_width_chars=70,
             use_markup=True,
             wrap=True
         )
-        self.box.pack_start(self.body_label, False, False, 6)
 
-
-        self.button = Gtk.Button("Got it!")
+        self.button = Gtk.Button("Restart Later")
         self.button.connect('clicked', self.acknowledge)
-        self.box.pack_start(self.button, False, False, 6)
+        self.button.props.width_request = 30
+        self.button.props.halign = Gtk.Align.START
+        self.button.props.margin_top = 12
+
+        self.restart_button = Gtk.Button("Restart Now")
+        self.restart_button.connect('clicked', self.acknowledge)
+        self.restart_button.props.width_request = 30
+        self.restart_button.props.halign = Gtk.Align.END
+        self.restart_button.props.margin_top = 12
+        Gtk.StyleContext.add_class(self.restart_button.get_style_context(), "destructive-action")
+
+        self.grid.attach(self.head_label,     0, 0, 2, 1)
+        self.grid.attach(self.body_label,     0, 1, 2, 1)
+        self.grid.attach(self.button,         0, 2, 1, 1)
+        self.grid.attach(self.restart_button, 1, 2, 1, 1)
 
         self.connect("delete-event", Gtk.main_quit)
         self.show_all()
