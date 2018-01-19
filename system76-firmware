@@ -34,7 +34,6 @@ from system76driver.firmware import run_firmware_updater
 NOTIFICATION_TIMEOUT = 24*60*60 # 24 hours
 
 logging.basicConfig(
-    filename='/var/log/system76-driver.log',
     level=logging.DEBUG,
     style='{',
     format='{asctime}  {levelname}  {message}',
