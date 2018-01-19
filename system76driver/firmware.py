@@ -698,24 +698,13 @@ def _run_firmware_updater(reinstall, is_notification):
                     #Install firmware to /efi/boot and set boot.efi on next boot.
                     shutil.copytree(tempdirname, '/boot/efi/system76-firmware-update')
                     set_next_boot()
+
+                    if success_dialog() == 76:
+                        log.info("Restarting computer")
+                        subprocess.call(["sudo", "reboot"])                        
                 else:
                     log.info("Not running in EFI mode, aborting firmware installation")
                     return
-
-                # Prompt user if we can't automatically disable the ME.
-                # bios_me: ME is configurable in bios.
-                # bios_set: BIOS settings can be set automatically.
-                if data['changelog'][0]:
-                    latest_entry = data['changelog'][0]
-                    if latest_entry['bios_me']:
-                        if latest_entry['bios_me'] == 'True':
-                            if latest_entry['bios_set']:
-                                if latest_entry['bios_set'] == 'False':
-                                    # Me is configurable, but default settings
-                                    # need to be loaded manually to disable.
-                                    success_dialog()
-                                # else:
-                                #     ME is configurable and set/disabled by default.
             else:
                 return
 

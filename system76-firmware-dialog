@@ -120,7 +120,7 @@ class SuccessWindow (Gtk.Window):
         self.button.props.margin_top = 12
 
         self.restart_button = Gtk.Button("Restart Now")
-        self.restart_button.connect('clicked', self.acknowledge)
+        self.restart_button.connect('clicked', self.restart)
         self.restart_button.props.width_request = 30
         self.restart_button.props.halign = Gtk.Align.END
         self.restart_button.props.margin_top = 12
@@ -139,6 +139,11 @@ class SuccessWindow (Gtk.Window):
         while Gtk.events_pending():
             Gtk.main_iteration()
         os._exit(1)
+
+    def restart(self, e):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(76)
 
 
 class FirmwareWindow (Gtk.Window):
