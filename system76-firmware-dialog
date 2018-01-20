@@ -168,8 +168,6 @@ class SuccessWindow (Gtk.Window):
         self.grid.attach(self.preupdate_label, 0, 2, 2, 1)
         self.grid.attach(self.update_header_label, 0, 3, 2, 1)
         self.grid.attach(self.update_label, 0, 4, 2, 1)
-        #self.grid.attach(self.head_label,     0, 0, 2, 1)
-        #self.grid.attach(self.body_label,     0, 1, 2, 1)
         self.grid.attach(self.button,         0, 5, 1, 1)
         self.grid.attach(self.restart_button, 1, 5, 1, 1)
 
