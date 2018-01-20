@@ -99,16 +99,53 @@ class SuccessWindow (Gtk.Window):
             wrap=True
         )
         Gtk.StyleContext.add_class(self.head_label.get_style_context(), "h1")
-
-        self.body_label = Gtk.Label(
-            "The Intel ME <b>may require further action</b> to be disabled for this model. To ensure the Intel ME " +
-            "remains disabled, restart your device, wait for the firmware update to complete, then:\n\n" +
-            "    1. <b>Press F2 during boot</b> to enter the Setup menu.\n" +
-            "    2. Go to the <b>Exit</b> tab.\n" +
-            "    3. Select and confirm <b>Load Setup Defaults</b>.\n" +
-            "    4. Select and confirm <b>Save Changes and Reset</b>.\n\n" +
-            "Remember to take a picture of these instructions before restarting.",
+        
+        self.preupdate_header_label = Gtk.Label("<b>Before You Begin</b>", 
             max_width_chars=70,
+            use_markup=True,
+            wrap=True
+        )
+        Gtk.StyleContext.add_class(self.preupdate_header_label.get_style_context(), "h2")
+        
+        self.preupdate_label = Gtk.Label("Make sure the laptop is <b>plugged " +
+            "into power</b> for the entire firmware updating process.\n\n" +
+            "<b>Take a picture of these instructions</b> or pull up " +
+            "s76.co/lfw on a phone or other device for reference.\n\nDuring" +
+            " the firmware updating process, <b>the laptop will restart " +
+            "several times</b>. Prompts will occasionally ask for user " +
+            "involvement.\n\n",
+            max_width_chars=70,
+            use_markup=True,
+            wrap=True
+        )
+        
+        self.update_header_label = Gtk.Label("<b>Performing the Update</b>",
+            max_width_chars=70,
+            use_markup=True,
+            wrap=True
+        )        
+        Gtk.StyleContext.add_class(self.update_header_label.get_style_context(), "h2")
+
+        self.update_label = Gtk.Label(
+            "    1. Select <b>Restart Now</b> to begin.\n\n" +
+            "    2. The System76 Firmware updater will start on reboot. " +
+            "Once it has initialized, you'll be prompted to <b>press " +
+            "Enter</b> to commence flashing.\n\n" +
+            "    3. The firmware update process will begin, then the system will "+
+            "restart back into the System76 Firmware updater. The fans on " +
+            "the laptop will be on full blast.\n\n" +
+            "    4. The firmware update process will finish. When prompted, " +
+            "<b>press any key</b> to shutdown.\n\n" +
+            "    5. After the laptop powers off, <b>press the power button</b>" +
+            " to turn it back on.\n\n" +
+            "    6. Two small blue boxes will appear in succession with a " +
+            "message about the CMOS. <b>Press Enter</b> to dismiss each one.\n\n" +
+            "    7. The machine will boot into the BIOS settings. Using the " +
+            "arrow keys, go over to the <b>Exit</b> tab.\n\n" +
+            "    8. Select and confirm <b>Load Setup Defaults</b>.\n\n" +
+            "    9. Select and confirm <b>Save changes and reset</b>.\n\n" +
+            "    10. Once the laptop restarts, the firmware will be up to date!",
+            max_width_chars=170,
             use_markup=True,
             wrap=True
         )
@@ -126,10 +163,13 @@ class SuccessWindow (Gtk.Window):
         self.restart_button.props.margin_top = 12
         Gtk.StyleContext.add_class(self.restart_button.get_style_context(), "destructive-action")
 
-        self.grid.attach(self.head_label,     0, 0, 2, 1)
-        self.grid.attach(self.body_label,     0, 1, 2, 1)
-        self.grid.attach(self.button,         0, 2, 1, 1)
-        self.grid.attach(self.restart_button, 1, 2, 1, 1)
+        self.grid.attach(self.head_label, 0, 0, 2, 1)
+        self.grid.attach(self.preupdate_header_label, 0, 1, 2, 1)
+        self.grid.attach(self.preupdate_label, 0, 2, 2, 1)
+        self.grid.attach(self.update_header_label, 0, 3, 2, 1)
+        self.grid.attach(self.update_label, 0, 4, 2, 1)
+        self.grid.attach(self.button,         0, 5, 1, 1)
+        self.grid.attach(self.restart_button, 1, 5, 1, 1)
 
         self.connect("delete-event", Gtk.main_quit)
         self.show_all()
