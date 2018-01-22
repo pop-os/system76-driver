@@ -141,7 +141,7 @@ class SuccessWindow (Gtk.Window):
             "    6. Two small blue boxes will appear in succession with a " +
             "message about the CMOS. <b>Press Enter</b> to dismiss each one.\n\n" +
             "    7. The machine will then reboot. Repeatedly press the `F2` button" +
-            "to boot into the BIOS settings. Using the " +
+            " to boot into the BIOS settings. Using the " +
             "arrow keys, go over to the <b>Exit</b> tab.\n\n" +
             "    8. Select and confirm <b>Load Setup Defaults</b>.\n\n" +
             "    9. Select and confirm <b>Save changes and reset</b>.\n\n" +
