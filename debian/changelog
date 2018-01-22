@@ -1,3 +1,9 @@
+system76-driver (17.10.13) artful; urgency=medium
+
+  * Add firmware update code and enable updates on the serw11
+
+ -- Jeremy Soller <jackpot51@gmail.com>  Mon, 22 Jan 2018 08:37:41 -0700
+
 system76-driver (17.10.12) artful; urgency=low
 
   * wilp14: don't add i915.alpha_support=1 when NVIDIA GPU is present
