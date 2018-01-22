@@ -1,5 +1,7 @@
 [Unit]
 Description=System76 Firmware Updater
+Wants=network-online.target
+After=network-online.target
 
 [Service]
 ExecStart=/usr/bin/system76-firmware --notification
@@ -7,4 +9,3 @@ Restart=always
 
 [Install]
 WantedBy=graphical.target
-
