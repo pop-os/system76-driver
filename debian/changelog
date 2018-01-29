@@ -1,3 +1,9 @@
+system76-driver (17.10.14~alpha) artful; urgency=low
+
+  * Daily WIP for 17.10.14
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 29 Jan 2018 09:59:53 -0700
+
 system76-driver (17.10.13) artful; urgency=low
 
   * Add firmware update code and enable updates on the serw11 
