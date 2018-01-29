@@ -120,7 +120,7 @@ MODELS = {
         "me": True,
     },
     'kudu4': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
@@ -701,7 +701,7 @@ def _run_firmware_updater(reinstall, is_notification):
 
                     if success_dialog() == 76:
                         log.info("Restarting computer")
-                        subprocess.call(["sudo", "reboot"])                        
+                        subprocess.call(["sudo", "reboot"])
                 else:
                     log.info("Not running in EFI mode, aborting firmware installation")
                     return
