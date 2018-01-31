@@ -1,9 +1,8 @@
-system76-driver (17.10.15~alpha) artful; urgency=low
+system76-driver (17.10.15) artful; urgency=low
 
-  * Daily WIP for 17.10.15
   * Enable updates on the gaze12
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 31 Jan 2018 15:34:23 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 31 Jan 2018 15:37:58 -0700
 
 system76-driver (17.10.14) artful; urgency=low
 
