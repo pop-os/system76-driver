@@ -12,6 +12,7 @@ from shutil import which
 from collections import namedtuple
 
 from system76driver import dbusutil
+from system76driver import monitorsxml
 
 log = logging.getLogger(__name__)
 
@@ -262,6 +263,7 @@ class HiDPIAutoscaling:
         self.notification = None
         self.queue = queue.Queue()
         self.unforce = False
+        self.saved = True
         self.calculated_display_size = (0,0) # Used to hack around intel black band bug (wrong XScreen size)
         self.prev_lid_state = self.get_internal_lid_state()
         
@@ -281,6 +283,8 @@ class HiDPIAutoscaling:
             self.screen_maximum = XRes(x=32768, y=32768)
         else:
             self.add_output_mode()
+            
+        self.displays_xml = self.get_displays_xml()
 
     #Test for nvidia proprietary driver and nvidia-settings
     def get_gpu_vendor(self):
@@ -328,8 +332,68 @@ class HiDPIAutoscaling:
         # Need to refresh display modes to reflect the mode we just added
         self.update_display_connections()
     
+    def get_displays_xml(self):
+        mon_list = []
+        resources = self.xlib_window.xrandr_get_screen_resources()._data
+        for output in resources['outputs']:
+            info = dpi_get_output_info(self.xlib_display, output, resources['config_timestamp'])._data
+            
+            properties_list = self.xlib_display.xrandr_list_output_properties(output)._data
+            for atom in properties_list['atoms']:
+                atom_name = self.xlib_display.get_atom_name(atom)
+                if atom_name == 'EDID':
+                    prop = dpi_get_output_property(self.xlib_display, output, atom, 19, 0, 128)._data
+                    edid = bytes(prop['value'])
+                    # get edid vendor code
+                    edidv = prop['value'][9] + (prop['value'][8] << 8)
+                    char1 = (int(edidv) & 0x7C00) >> 10
+                    char2 = (int(edidv) & 0x3E0) >> 5
+                    char3 = (int(edidv) & 0x001F) >> 0
+                    table = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+                    edid_vendor = table[char1-1] + table[char2-1] + table[char3-1]
+                    
+                    edidp = prop['value'][10] + (prop['value'][11] << 8)
+                    modelname = None
+                    for i in range(0x36, 0x7E, 0x12):
+                        if edid[i] == 0x00 and edid[i+3] ==0xfc:
+                            modelname = []
+                            for j in range(0,13):
+                                if edid[i+5+j] == 0x0a:
+                                    modelname.append(0x00)
+                                else:
+                                    modelname.append(edid[i+5+j])
+                    if not modelname:
+                        edid_product = str(hex(edidp))
+                    else:
+                        edid_product = bytes(modelname).decode('utf-8').rstrip(' ').rstrip('\x00')
+                    
+                    edids = prop['value'][12] + (prop['value'][13] << 8) + (prop['value'][14] << 16) + (prop['value'][15] << 24)
+                    edid_serial = str.format('0x{:08x}', edids)
+                    serial = None
+                    for i in range(0x36, 0x7E, 0x12):
+                        if edid[i] == 0x00 and edid[i+3] ==0xff:
+                            serial = []
+                            for j in range(0,13):
+                                if edid[i+5+j] == 0x0a:
+                                    serial.append(0x00)
+                                else:
+                                    serial.append(edid[i+5+j])
+                    if not serial:
+                        edid_serial = str.format('0x{:08x}', edids)
+                    else:
+                        edid_serial = bytes(serial).decode('utf-8').rstrip('\x00')
+                    
+                    mon_list.append({'connector': info['name'], 'vendor': edid_vendor, 'product': edid_product, 'serial': edid_serial})
+        
+        
+        xml = monitorsxml.MonitorsXml()
+        c = xml.get_config_from_monitors(mon_list)
+        return c
+        
+    
     def update_display_connections(self):
         resources = self.xlib_window.xrandr_get_screen_resources()._data
+        self.resources = resources
         
         modes = dict()
         for mode in resources['modes']:
@@ -417,6 +481,7 @@ class HiDPIAutoscaling:
                 # for threading reasons, create a new autoscaling instance...but do not call run() on it!
                 h = HiDPIAutoscaling(self.model)
                 h.unforce = self.unforce
+                h.saved = not self.unforce
                 h.set_scaled_display_modes(notification=False)
                 self.send_scaling_notification(self.queue, unforce=self.unforce)
             if self.get_gpu_vendor() == 'nvidia': # nvidia
@@ -455,34 +520,80 @@ class HiDPIAutoscaling:
         
         return False        
         
-    def get_display_position(self, display_name):
-        resources = self.xlib_window.xrandr_get_screen_resources()._data
+    def get_display_position(self, display_name, align=(0,0)):
+        # For performance reasons, self.resources must be set with self.xlib_window.xrandr_get_screen_resources() before calling.
+        #resources = self.xlib_window.xrandr_get_screen_resources()._data
+        resources = self.resources._data
         crtc = self.displays[display_name]['crtc']
         connected = self.displays[display_name]['connected']
+        if self.displays_xml:
+            for log_mon in self.displays_xml['logical_monitors']:
+                if log_mon['monitor_spec']['connector'] == display_name:
+                    x = int(log_mon['x']) + align[0] * int(log_mon['mode']['width'])
+                    y = int(log_mon['y']) + align[1] * int(log_mon['mode']['height'])
+                    return x, y
+                
         if crtc != 0:
             crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
-            return crtc_info['x'], crtc_info['y']
+            if align != (0,0):
+                # Align to integer for easier/more consistent math elsewhere
+                mode = dict()
+                mode['width'] = crtc_info['width']
+                mode['height'] = crtc_info['height']
+                x = int(crtc_info['x'] + align[0] * mode['width'])
+                y = int(crtc_info['y'] + align[1] * mode['height'])
+                return x, y
+            else:
+                return crtc_info['x'], crtc_info['y']
         elif connected == True and not self.panel_activation_override(display_name):
             return 0, 0
         else:
             return -1, -1
     
-    def get_display_dpi(self, display_name):
+    def get_display_dpi(self, display_name, current=False, saved=False):
         width = self.displays[display_name]['mm_width']
         height = self.displays[display_name]['mm_height']
-        try:
-            mode = self.displays[display_name]['modes'][0]
-        except:
-            return None
+        
+        mode = {}
+        
+        if current:
+            try:
+                resources = self.resources._data
+                crtc = self.displays[display_name]['crtc']
+                if crtc != 0:
+                    crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
+                    mode = dict()
+                    mode['width'] = crtc_info['width']
+                    mode['height'] = crtc_info['height']
+                else:
+                    # No current mode is set, fallback to default resolution.
+                    current = False
+                    mode = self.displays[display_name]['modes'][0]
+            except:
+                return None
+        elif saved and self.displays_xml:
+                for log_mon in self.displays_xml['logical_monitors']:
+                    if log_mon['monitor_spec']['connector'] == display_name:
+                        mode = dict()
+                        mode['width'] = int(log_mon['mode']['width'])
+                        mode['height'] = int(log_mon['mode']['height'])
+                if mode == {}:
+                    return None
+        else:
+            try:
+                mode = self.displays[display_name]['modes'][0]
+            except:
+                return None
+        
         x_res = mode['width']
         y_res = mode['height']
         
         # Some displays report aspect ratio instead of actual dimensions.
         if width == 160 and height == 90:
             if x_res >= 3840 and y_res >= 2160:
-                return 192, 192
+                return 192
             else:
-                return 96, 96
+                return 96
         
         if width > 0 and height > 0:
             dpi_x = x_res/width * 25.4
@@ -493,14 +604,223 @@ class HiDPIAutoscaling:
         else:
             return None
         
-    def get_display_logical_resolution(self, display_name, scale_factor):
+    def get_display_logical_resolution(self, display_name, scale_factor, saved=False):
         try:
             mode = self.displays[display_name]['modes'][0]
             x_res = mode['width']
             y_res = mode['height']
+            if saved and self.displays_xml:
+                for log_mon in self.displays_xml['logical_monitors']:
+                    if log_mon['monitor_spec']['connector'] == display_name:
+                        x_res = int(log_mon['mode']['width'])
+                        y_res = int(log_mon['mode']['height'])
             return int(x_res/scale_factor), int(y_res/scale_factor)
         except:
             return 0, 0
+    
+    def get_aligned_layout_entries(self, alignment):
+        position_lookup_entries_x = dict()
+        position_lookup_entries_y = dict()
+        
+        for display in self.displays:
+            position_x, position_y = self.get_display_position(display, align=alignment)
+            if position_x != -1 and position_y != -1:
+                if position_x in position_lookup_entries_x:
+                    position_lookup_entries_x[position_x].append(display)
+                else:
+                    position_lookup_entries_x[position_x] = [display]
+                if position_y in position_lookup_entries_y:
+                    position_lookup_entries_y[position_y].append(display)
+                else:
+                    position_lookup_entries_y[position_y] = [display]
+                    
+        return position_lookup_entries_x, position_lookup_entries_y
+    
+    def align_display_with_adjacent_x(self, display_left, display_right, adjacent_left, adjacent_right, adjacent_logical_resolution_x, offset, logical_resolution_x):
+        # Left edges are aligned, keep them snapped
+        if adjacent_left == display_left:
+            new_display_left_x = offset
+        # Right edges are aligned, keep them snapped
+        elif adjacent_right == display_right:
+            new_display_left_x = offset - adjacent_logical_resolution_x + adjacent_logical_resolution_x
+        else:
+            span_range = (adjacent_right - adjacent_left) + (display_right - display_left)
+            span = adjacent_right - display_left
+            new_span_range = int(adjacent_logical_resolution_x) + logical_resolution_x
+            new_span = span * (new_span_range / span_range)
+            
+            new_adjacent_right = adjacent_left + offset + adjacent_logical_resolution_x
+            new_display_left_x = (int(new_adjacent_right - new_span) - (adjacent_left))
+        return new_display_left_x
+    
+    def calculate_layout2(self, revert=False):
+        # Layout displays without overlap.  We need to make sure not to exceed
+        # the maximum X screen size.  Intel graphics are limited to 8192x8192,
+        # so a hidpi internal display and two external displays can exceed this
+        # limit.
+        
+        # First, we calculate lookups for edge positions and use these to find 
+        # adjacent displays.  We build and traverse a graph of these adjacent 
+        # displays and position each display relative to its neighbor.
+        
+        self.resources = self.xlib_window.xrandr_get_screen_resources()
+        
+        center_lookup_entries_x,       center_lookup_entries_y       = self.get_aligned_layout_entries((0.5,0.5))
+        top_left_lookup_entries_x,     top_left_lookup_entries_y     = self.get_aligned_layout_entries((0.0,0.0))
+        bottom_right_lookup_entries_x, bottom_right_lookup_entries_y = self.get_aligned_layout_entries((1.0,1.0))
+        
+        display_graph = dict()
+        display_positions = dict()
+        display_scales = dict()
+        
+        # Calculate scales and Generate graph of adjacent displays.
+        for display in self.displays:
+            display_left, display_top = self.get_display_position(display, align=(0,0))
+            display_right, display_bottom = self.get_display_position(display, align=(1,1))
+            
+            # Get correct dpi and scale factor based on context.
+            # Revert needs native resolution
+            # Otherwise we need to use current resolution or value stored in monitors.xml if available.
+            if revert:
+                dpi = self.get_display_dpi(display)
+            else:
+                if self.displays_xml:
+                    dpi = self.get_display_dpi(display, saved=self.saved)
+                else:
+                    dpi = self.get_display_dpi(display, current=True)
+            if dpi is None:
+                scale_factor = 1
+            elif dpi > 170 and revert == False:
+                scale_factor = 2
+            else:
+                scale_factor = 1
+                
+            if self.scale_mode == 'hidpi' and revert == False:
+                scale_factor = scale_factor / 2
+                
+            display_scales[display] = scale_factor
+            
+            # Find adjacencies
+            display_graph[display] = []
+            if display_left in bottom_right_lookup_entries_x:
+                for adjacent_display in bottom_right_lookup_entries_x[display_left]:
+                    if adjacent_display not in display_graph:
+                        adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                        adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                        
+                        if adjacent_top < display_bottom and adjacent_bottom > display_top: 
+                            display_graph[display].append((adjacent_display, 'left'))
+                            
+            if display_right in top_left_lookup_entries_x:
+                for adjacent_display in top_left_lookup_entries_x[display_right]:
+                    if adjacent_display not in display_graph:
+                        adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                        adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                        
+                        if adjacent_top < display_bottom and adjacent_bottom > display_top: 
+                            display_graph[display].append((adjacent_display, 'right'))
+                            
+            if display_top in bottom_right_lookup_entries_y:
+                for adjacent_display in bottom_right_lookup_entries_y[display_top]:
+                    if adjacent_display not in display_graph:
+                        adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                        adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                        
+                        if adjacent_left < display_right and adjacent_right > display_left:
+                            display_graph[display].append((adjacent_display, 'top'))
+                            
+            if display_bottom in top_left_lookup_entries_y:
+                for adjacent_display in top_left_lookup_entries_y[display_bottom]:
+                    if adjacent_display not in display_graph:
+                        adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                        adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                        
+                        if adjacent_left < display_right and adjacent_right > display_left:
+                            display_graph[display].append((adjacent_display, 'bottom'))
+            
+            # Remove display from graph if no adjacenies
+            if not display_graph[display]:
+                del display_graph[display]
+        
+        
+        #Single display has no adjacencies!
+        if len(display_graph) < 1:
+            for display in self.displays:
+                if self.displays[display]['connected'] == True:
+                    display_positions[display] = (0, 0)
+        
+        time_a = time.time()
+        # Walk adjacent display graph to generate new positions for each display.
+        max_negative_offset_x = 0
+        max_negative_offset_y = 0
+        for adjacent_display in display_graph:
+            if len(display_positions) < 1:
+                display_positions[adjacent_display] = (0, 0)
+            
+            for display, direction in display_graph[adjacent_display]:
+                if adjacent_display in display_positions:
+                    offset_x = display_positions[adjacent_display][0]
+                    offset_y = display_positions[adjacent_display][1]
+                elif display in display_positions:
+                    # Swap display with adjacent display
+                    offset_x = display_positions[display][0]
+                    offset_y = display_positions[display][1]
+                    temp_display = adjacent_display
+                    adjacent_display = display
+                    display = temp_display
+                    # Need to invert directions so the math works out
+                    if direction == 'left':
+                        direction = 'right'
+                    elif direction == 'right':
+                        direction = 'left'
+                    elif direction == 'top':
+                        direction = 'bottom'
+                    elif direction == 'bottom':
+                        direction = 'top'
+                else:
+                    log.warning("Cannot find adjacent display in layout")
+                
+                # Get positions, scale, and logical resolution for both displays
+                scale_factor = display_scales[display]
+                # getting correct logical resolution depends on whether to use native or saved values
+                logical_resolution_x, logical_resolution_y = self.get_display_logical_resolution(display, scale_factor, saved=(self.saved and not revert))
+                
+                display_left, display_top = self.get_display_position(display, align=(0,0))
+                display_right, display_bottom = self.get_display_position(display, align=(1,1))
+                
+                adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                
+                # getting correct logical resolution depends on whether to use native or saved values
+                adjacent_logical_resolution_x, adjacent_logical_resolution_y = self.get_display_logical_resolution(adjacent_display, display_scales[adjacent_display], saved=(self.saved and not revert))
+                # Calculate new display position based on adjacent.
+                if direction == 'left':
+                    new_current_display_left = offset_x - logical_resolution_x
+                    new_current_display_top = self.align_display_with_adjacent_x(display_top, display_bottom, adjacent_top, adjacent_bottom, adjacent_logical_resolution_y, offset_y, logical_resolution_y)
+                elif direction == 'right':
+                    new_current_display_left = offset_x + adjacent_logical_resolution_x
+                    new_current_display_top = self.align_display_with_adjacent_x(display_top, display_bottom, adjacent_top, adjacent_bottom, adjacent_logical_resolution_y, offset_y, logical_resolution_y)
+                elif direction == 'top':
+                    new_current_display_left = self.align_display_with_adjacent_x(display_left, display_right, adjacent_left, adjacent_right, adjacent_logical_resolution_x, offset_x, logical_resolution_x)
+                    new_current_display_top = offset_y - logical_resolution_y
+                elif direction == 'bottom':
+                    new_current_display_left = self.align_display_with_adjacent_x(display_left, display_right, adjacent_left, adjacent_right, adjacent_logical_resolution_x, offset_x, logical_resolution_x)
+                    new_current_display_top = offset_y + adjacent_logical_resolution_y
+                    
+                if new_current_display_left < max_negative_offset_x:
+                    max_negative_offset_x = new_current_display_left
+                if new_current_display_top < max_negative_offset_y:
+                    max_negative_offset_y = new_current_display_top
+                
+                # Now add display to list
+                display_positions[display] = (new_current_display_left, new_current_display_top)
+                
+        # Offset display positions so all coordinates are non-negative
+        for display in display_positions:
+            display_positions[display] = (display_positions[display][0] - max_negative_offset_x, display_positions[display][1] - max_negative_offset_y)
+        
+        return display_positions
+        
     
     def calculate_layout(self, revert=False):
         position_lookup_entries_x = dict()
@@ -692,19 +1012,72 @@ class HiDPIAutoscaling:
         return display_str
         
     def set_display_scaling_xrandr(self, display_name, layout, force_lowdpi=True):
-        dpi = self.get_display_dpi(display_name)
+        native_dpi = self.get_display_dpi(display_name)
+        saved_dpi = self.get_display_dpi(display_name, saved=True)
+        current_dpi = self.get_display_dpi(display_name, current=True)
+        dpi = None
+        
         
         resources = self.xlib_window.xrandr_get_screen_resources()._data
-        
-        if dpi is None:
-            return ''
-        mode = self.displays[display_name]['modes'][0]
         crtc = self.displays[display_name]['crtc']
+        mode = None
         
         try:
             crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
         except:
             return ''
+        
+        # Get appropriate Mode and DPI
+        if crtc != 0 and current_dpi <= 170 and force_lowdpi:
+            # use current dpi and resolution
+            try:
+                crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
+                mode = dict()
+                mode['width'] = crtc_info['width']
+                mode['height'] = crtc_info['height']
+                dpi = current_dpi
+            except:
+                return ''
+        if self.displays_xml:
+            if saved_dpi <= 170 and force_lowdpi:
+                #use saved resolution
+                for log_mon in self.displays_xml['logical_monitors']:
+                    if log_mon['monitor_spec']['connector'] == display_name:
+                        mode = dict()
+                        mode['width'] = int(log_mon['mode']['width'])
+                        mode['height'] = int(log_mon['mode']['height'])
+                        dpi = saved_dpi
+            elif saved_dpi > 170 and force_lowdpi:
+                # use half of max redolution
+                try:
+                    crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
+                    mode = self.displays[display_name]['modes'][0]
+                    dpi = native_dpi
+                except:
+                    return ''
+                # later halve it
+            else:
+                try:
+                    crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
+                    mode = self.displays[display_name]['modes'][0]
+                    dpi = native_dpi
+                except:
+                    return ''
+                    
+        else:
+            # use native resolution
+            try:
+                crtc_info = dpi_get_crtc_info(self.xlib_display, crtc, resources['config_timestamp'])._data
+                mode = self.displays[display_name]['modes'][0]
+                dpi = native_dpi
+            except:
+                return ''
+        
+        
+        if dpi is None:
+            return ''
+        
+        
         if force_lowdpi == True and dpi > 170:
             x_res = round(mode['width'] / 2)
             y_res = round(mode['height'] / 2)
@@ -761,7 +1134,8 @@ class HiDPIAutoscaling:
         return has_mixed_dpi, found_hidpi, found_lowdpi
     
     def set_scaled_display_modes(self, notification=True):
-        layout = self.calculate_layout(revert=self.unforce)
+        self.displays_xml = self.get_displays_xml()
+        layout = self.calculate_layout2(revert=self.unforce)
         
         has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
         
@@ -993,3 +1367,4 @@ def run_hidpi_autoscaling(model):
         return _run_hidpi_autoscaling(model)
     except Exception:
         log.exception('Error calling _run_hidpi_autoscaling(%r):', model)
+
