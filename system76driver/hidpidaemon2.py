@@ -425,12 +425,29 @@ class HiDPIAutoscaling:
         
         
         # In some cases, the CRTC won't have changed when the lid opens.
-        # So always update displays if the lid state has changed.
+        # So update displays if the lid state has changed.
         lid_state = self.get_internal_lid_state()
         if lid_state != self.prev_lid_state:
             self.prev_lid_state = lid_state
-            self.displays = new_displays
-            return True
+            
+            # Always update displays on lid open
+            if lid_state:
+                self.displays = new_displays
+                # delay to prevent race
+                time.sleep(1)
+                return True
+            # Only update displays on lid close if an external display is connected.
+            # This prevents mutter crashes.
+            else:
+                has_external = False
+                for display in new_displays:
+                    status = new_displays[display]['connected']
+                    connector_type = new_displays[display]['connector_type']
+                    if 'eDP' in display or connector_type == 'Panel':
+                        pass
+                    elif status == True:
+                        self.displays = new_displays
+                        return True
         else:
             self.prev_lid_state = lid_state
         
