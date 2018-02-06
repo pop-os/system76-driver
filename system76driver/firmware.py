@@ -84,7 +84,7 @@ MODELS = {
         "me": True,
     },
     'galp3': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
