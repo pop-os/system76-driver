@@ -5,7 +5,11 @@ class MonitorsXml():
         lines = []
         self.state = []
         
-        fp = open('.config/monitors.xml', 'r')
+        try:
+            fp = open('.config/monitors.xml', 'r')
+        except:
+            self.monitors = []
+            return
         line = fp.readline()
         while line:
             line_type = self.getLineType(line.lstrip())
