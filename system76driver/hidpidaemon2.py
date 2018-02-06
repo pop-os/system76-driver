@@ -686,8 +686,10 @@ class HiDPIAutoscaling:
             else:
                 if self.displays_xml:
                     dpi = self.get_display_dpi(display, saved=self.saved)
-                else:
+                elif self.get_gpu_vendor == 'intel':
                     dpi = self.get_display_dpi(display, current=True)
+                else:
+                    dpi = self.get_display_dpi(display)
             if dpi is None:
                 scale_factor = 1
             elif dpi > 170 and revert == False:
@@ -1166,7 +1168,7 @@ class HiDPIAutoscaling:
                         dbusutil.set_scale(1)
                     except:
                         # Need to setup displays at native resolution before setting scale.
-                        layout_native = self.calculate_layout(revert=True)
+                        layout_native = self.calculate_layout2(revert=True)
                         cmd_native = ''
                         for display in self.displays:
                             if self.displays[display]['connected'] == True:
@@ -1182,7 +1184,7 @@ class HiDPIAutoscaling:
                         dbusutil.set_scale(2)
                     except:
                         # Need to setup displays at native resolution before setting scale.
-                        layout_native = self.calculate_layout(revert=True)
+                        layout_native = self.calculate_layout2(revert=True)
                         cmd_native = ''
                         for display in self.displays:
                             if self.displays[display]['connected'] == True:
