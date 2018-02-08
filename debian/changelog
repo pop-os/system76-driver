@@ -1,6 +1,7 @@
 system76-driver (17.10.17~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.17
+  * Enable updates on the bonw13 and lemu8
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Feb 2018 12:22:18 -0700
 

@@ -72,7 +72,7 @@ MODELS = {
         "me": True,
     },
     'bonw13': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": True,
         "me": True,
@@ -138,7 +138,7 @@ MODELS = {
         "me": True,
     },
     'lemu8': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
