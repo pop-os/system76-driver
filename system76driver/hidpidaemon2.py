@@ -653,6 +653,122 @@ class HiDPIAutoscaling:
                     
         return position_lookup_entries_x, position_lookup_entries_y
     
+    def get_adjacent_displays(self, display, display_graph, lookup_entries):
+        display_left, display_top = self.get_display_position(display, align=(0,0))
+        display_right, display_bottom = self.get_display_position(display, align=(1,1))
+        
+        center_lookup_entries_x       = lookup_entries['center_x']
+        top_left_lookup_entries_x     = lookup_entries['top_left_x']
+        bottom_right_lookup_entries_x = lookup_entries['bottom_right_x']
+        center_lookup_entries_y       = lookup_entries['center_y']
+        top_left_lookup_entries_y     = lookup_entries['top_left_y']
+        bottom_right_lookup_entries_y = lookup_entries['bottom_right_y']
+        
+        display_graph[display] = []
+        has_adjacent = False
+        
+        if display_left != -1:
+            if display_left in bottom_right_lookup_entries_x:
+                for adjacent_display in bottom_right_lookup_entries_x[display_left]:
+                    adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                    adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                    if adjacent_top < display_bottom and adjacent_bottom > display_top: 
+                        has_adjacent = True
+                        if adjacent_display not in display_graph:
+                            display_graph[display].append((adjacent_display, 'left'))
+                            
+            if display_right in top_left_lookup_entries_x:
+                for adjacent_display in top_left_lookup_entries_x[display_right]:
+                    adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                    adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                    if adjacent_top < display_bottom and adjacent_bottom > display_top: 
+                        has_adjacent = True
+                        if adjacent_display not in display_graph:
+                            display_graph[display].append((adjacent_display, 'right'))
+                            
+            if display_top in bottom_right_lookup_entries_y:
+                for adjacent_display in bottom_right_lookup_entries_y[display_top]:
+                    adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                    adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                    if adjacent_left < display_right and adjacent_right > display_left:
+                        has_adjacent = True
+                        if adjacent_display not in display_graph:
+                            display_graph[display].append((adjacent_display, 'top'))
+                            
+            if display_bottom in top_left_lookup_entries_y:
+                for adjacent_display in top_left_lookup_entries_y[display_bottom]:
+                    adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
+                    adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
+                    if adjacent_left < display_right and adjacent_right > display_left:
+                        has_adjacent = True
+                        if adjacent_display not in display_graph:
+                            display_graph[display].append((adjacent_display, 'bottom'))
+            
+            
+            # If there's no adjacent display, find nearest one and flag it as adjacent with direction.
+            # System will favor top/bottom over left/right, so adjust vertical offset by 9/16. 
+            if not has_adjacent:
+                closest_display = None
+                closest_distance = -1
+                closest_direction = None
+                for near in self.displays:
+                    if self.displays[near]['connected'] and near != display:
+                        match_y = False
+                        match_x = False
+                        dist_x = -1
+                        dist_y = -1
+                        near_left, near_top = self.get_display_position(near, (0,0))
+                        near_right, near_bottom = self.get_display_position(near, (1,1))
+                        
+                        if near_left <= display_right and near_right >= display_left:
+                            match_y = True
+                            bottom_x = near_top - display_bottom
+                            top_x = display_top - near_bottom
+                            dist_x = min(bottom_x, top_x, key=abs)
+                            if dist_x == bottom_x:
+                                direction = 'bottom'
+                            else:
+                                direction = 'top'
+                            
+                            if not closest_display or abs(dist_x) < abs(closest_distance):
+                                closest_display = near
+                                closest_distance = dist_x
+                                closest_direction = direction
+                        
+                        elif near_top <= display_bottom and near_bottom >= display_top:
+                            match_x = True
+                            right_y = near_left - display_right
+                            left_y = display_left - near_right
+                            dist_y = min(right_y, left_y, key=abs)
+                            if dist_y == right_y:
+                                direction = 'right'
+                            else:
+                                direction = 'left'
+                            
+                            dist_y = int(dist_y * 9 / 16)
+                            
+                            if not closest_display or abs(dist_y) < abs(closest_distance):
+                                closest_display = near
+                                closest_distance = dist_y
+                                closest_direction = direction
+                
+                if closest_display:
+                    display_graph[display].append((closest_display, closest_direction))
+        
+        return display_graph[display]
+    
+    def get_display_graph(self, lookup_entries, revert=False):
+        display_graph = {}
+        for display in self.displays:
+            # Find adjacencies
+            display_graph[display] = self.get_adjacent_displays(display, display_graph, lookup_entries)
+            
+            # Remove display from graph if no adjacenies
+            if not display_graph[display]:
+                del display_graph[display]
+        
+        return display_graph
+    
     def align_display_with_adjacent_x(self, display_left, display_right, adjacent_left, adjacent_right, adjacent_logical_resolution_x, offset, logical_resolution_x):
         # Left edges are aligned, keep them snapped
         if adjacent_left == display_left:
@@ -686,11 +802,18 @@ class HiDPIAutoscaling:
         top_left_lookup_entries_x,     top_left_lookup_entries_y     = self.get_aligned_layout_entries((0.0,0.0))
         bottom_right_lookup_entries_x, bottom_right_lookup_entries_y = self.get_aligned_layout_entries((1.0,1.0))
         
+        lookup_entries = {'top_left_x': top_left_lookup_entries_x, 
+                          'top_left_y': top_left_lookup_entries_y, 
+                          'center_x': center_lookup_entries_x, 
+                          'center_y': center_lookup_entries_y, 
+                          'bottom_right_x': bottom_right_lookup_entries_x, 
+                          'bottom_right_y': bottom_right_lookup_entries_y}
+        
         display_graph = dict()
         display_positions = dict()
         display_scales = dict()
         
-        # Calculate scales and Generate graph of adjacent displays.
+        # Calculate display scales
         for display in self.displays:
             display_left, display_top = self.get_display_position(display, align=(0,0))
             display_right, display_bottom = self.get_display_position(display, align=(1,1))
@@ -718,49 +841,9 @@ class HiDPIAutoscaling:
                 scale_factor = scale_factor / 2
                 
             display_scales[display] = scale_factor
-            
-            # Find adjacencies
-            display_graph[display] = []
-            if display_left in bottom_right_lookup_entries_x:
-                for adjacent_display in bottom_right_lookup_entries_x[display_left]:
-                    if adjacent_display not in display_graph:
-                        adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
-                        adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
-                        
-                        if adjacent_top < display_bottom and adjacent_bottom > display_top: 
-                            display_graph[display].append((adjacent_display, 'left'))
-                            
-            if display_right in top_left_lookup_entries_x:
-                for adjacent_display in top_left_lookup_entries_x[display_right]:
-                    if adjacent_display not in display_graph:
-                        adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
-                        adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
-                        
-                        if adjacent_top < display_bottom and adjacent_bottom > display_top: 
-                            display_graph[display].append((adjacent_display, 'right'))
-                            
-            if display_top in bottom_right_lookup_entries_y:
-                for adjacent_display in bottom_right_lookup_entries_y[display_top]:
-                    if adjacent_display not in display_graph:
-                        adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
-                        adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
-                        
-                        if adjacent_left < display_right and adjacent_right > display_left:
-                            display_graph[display].append((adjacent_display, 'top'))
-                            
-            if display_bottom in top_left_lookup_entries_y:
-                for adjacent_display in top_left_lookup_entries_y[display_bottom]:
-                    if adjacent_display not in display_graph:
-                        adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
-                        adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
-                        
-                        if adjacent_left < display_right and adjacent_right > display_left:
-                            display_graph[display].append((adjacent_display, 'bottom'))
-            
-            # Remove display from graph if no adjacenies
-            if not display_graph[display]:
-                del display_graph[display]
         
+        # Generate graph of adjacent displays.
+        display_graph = self.get_display_graph(lookup_entries, revert=revert)
         
         #Single display has no adjacencies!
         if len(display_graph) < 1:
@@ -833,7 +916,7 @@ class HiDPIAutoscaling:
                 
                 # Now add display to list
                 display_positions[display] = (new_current_display_left, new_current_display_top)
-                
+        
         # Offset display positions so all coordinates are non-negative
         for display in display_positions:
             display_positions[display] = (display_positions[display][0] - max_negative_offset_x, display_positions[display][1] - max_negative_offset_y)
@@ -1311,6 +1394,12 @@ class HiDPIAutoscaling:
                 self.unforce = True
             elif has_mixed_dpi and not self.prev_display_types[0]:
                 self.unforce = False
+            
+            # Work around bug where display event triggers update with bad data, destroying layout
+            if self.get_gpu_vendor() == 'nvidia':
+                time.sleep(0.1)
+                self.update_display_connections()
+            
             self.set_scaled_display_modes()
         return False
     
