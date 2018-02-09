@@ -439,7 +439,6 @@ class HiDPIAutoscaling:
             # Only update displays on lid close if an external display is connected.
             # This prevents mutter crashes.
             else:
-                has_external = False
                 for display in new_displays:
                     status = new_displays[display]['connected']
                     connector_type = new_displays[display]['connector_type']
@@ -657,10 +656,10 @@ class HiDPIAutoscaling:
         display_left, display_top = self.get_display_position(display, align=(0,0))
         display_right, display_bottom = self.get_display_position(display, align=(1,1))
         
-        center_lookup_entries_x       = lookup_entries['center_x']
+        #center_lookup_entries_x       = lookup_entries['center_x']
         top_left_lookup_entries_x     = lookup_entries['top_left_x']
         bottom_right_lookup_entries_x = lookup_entries['bottom_right_x']
-        center_lookup_entries_y       = lookup_entries['center_y']
+        #center_lookup_entries_y       = lookup_entries['center_y']
         top_left_lookup_entries_y     = lookup_entries['top_left_y']
         bottom_right_lookup_entries_y = lookup_entries['bottom_right_y']
         
@@ -713,15 +712,12 @@ class HiDPIAutoscaling:
                 closest_direction = None
                 for near in self.displays:
                     if self.displays[near]['connected'] and near != display:
-                        match_y = False
-                        match_x = False
                         dist_x = -1
                         dist_y = -1
                         near_left, near_top = self.get_display_position(near, (0,0))
                         near_right, near_bottom = self.get_display_position(near, (1,1))
                         
                         if near_left <= display_right and near_right >= display_left:
-                            match_y = True
                             bottom_x = near_top - display_bottom
                             top_x = display_top - near_bottom
                             dist_x = min(bottom_x, top_x, key=abs)
@@ -736,7 +732,6 @@ class HiDPIAutoscaling:
                                 closest_direction = direction
                         
                         elif near_top <= display_bottom and near_bottom >= display_top:
-                            match_x = True
                             right_y = near_left - display_right
                             left_y = display_left - near_right
                             dist_y = min(right_y, left_y, key=abs)
@@ -851,7 +846,6 @@ class HiDPIAutoscaling:
                 if self.displays[display]['connected'] == True:
                     display_positions[display] = (0, 0)
         
-        time_a = time.time()
         # Walk adjacent display graph to generate new positions for each display.
         max_negative_offset_x = 0
         max_negative_offset_y = 0

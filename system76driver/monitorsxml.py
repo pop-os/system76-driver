@@ -87,7 +87,7 @@ class MonitorsXml():
                 return 'nope'
     
     def process_state(self, line):
-        line_type = line[0]
+        #line_type = line[0]
         tag = line[1]
         contents = line[2]
         
