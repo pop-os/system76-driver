@@ -1,10 +1,9 @@
-system76-driver (16.04.46~alpha) xenial; urgency=low
+system76-driver (16.04.46) xenial; urgency=low
 
-  * Daily WIP for 16.04.46
   * Add 'wilp14' intel graphics support
   * Add journalctl to log output
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 12 Feb 2018 14:42:23 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 12 Feb 2018 14:52:10 -0700
 
 system76-driver (16.04.45) xenial; urgency=low
 
