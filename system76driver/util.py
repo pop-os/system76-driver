@@ -49,6 +49,9 @@ def dump_logs(base):
     fp = open(path.join(base, 'dmesg'), 'xb')
     SubProcess.check_call(['dmesg'], stdout=fp)
 
+    fp = open(path.join(base, 'journalctl'), 'xb')
+    SubProcess.check_call(['journalctl'], stdout=fp)
+
     for parts in [('Xorg.0.log',), ('syslog',)]:  #, ('apt', 'history.log')]:
         src = path.join('/var/log', *parts)
         if path.isfile(src):
@@ -84,4 +87,3 @@ def create_logs(homedir, func=dump_logs):
     shutil.copy(src, dst)
     shutil.rmtree(tmp)
     return dst
-

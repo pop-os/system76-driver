@@ -200,7 +200,9 @@ for filename in (DSC, CHANGES):
 
 # Commit and tag:
 check_call(['git', 'commit', CHANGELOG, '-m', 'Release {}'.format(version)])
+check_call(['git', 'push'])
 check_call(['git', 'tag', version])
+check_call(['git', 'push', 'origin', 'tag', version])
 
 # Build source package:
 check_call(['gbp', 'buildpackage', '--git-ignore-branch', '-S'])
