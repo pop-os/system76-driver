@@ -162,19 +162,19 @@ MODELS = {
         "me": True,
     },
     'oryp3': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp3-ess': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp3-b': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
