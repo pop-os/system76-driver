@@ -1,9 +1,8 @@
-system76-driver (18.04.3~alpha) bionic; urgency=low
+system76-driver (18.04.3) bionic; urgency=low
 
-  * Daily WIP for 18.04.3
   * Sync with artful
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 09 Feb 2018 09:58:49 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 12 Feb 2018 12:36:58 -0700
 
 system76-driver (18.04.2) bionic; urgency=low
 
