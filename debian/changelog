@@ -1,9 +1,8 @@
-system76-driver (17.10.18~alpha) artful; urgency=low
+system76-driver (17.10.18) artful; urgency=low
 
-  * Daily WIP for 17.10.18
   * Enable updates on the oryp3
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 12 Feb 2018 11:44:37 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 12 Feb 2018 11:48:30 -0700
 
 system76-driver (17.10.17) artful; urgency=low
 
