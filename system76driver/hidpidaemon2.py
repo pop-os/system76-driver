@@ -499,6 +499,14 @@ class HiDPIAutoscaling:
                 h.unforce = self.unforce
                 h.saved = not self.unforce
                 h.set_scaled_display_modes(notification=False)
+                # HiDPI scale factor doesn't always take on first mode set with 
+                # lid closed and only marginally hidpi external monitor.  If the
+                # mode should be hidpi, check for scale factor and set again if
+                # needed.
+                has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
+                if not has_lowdpi and self.unforce:
+                    if dbusutil.get_scale() < 2:
+                        h.set_scaled_display_modes(notification=False)
                 self.send_scaling_notification(self.queue, unforce=self.unforce)
             if self.get_gpu_vendor() == 'nvidia': # nvidia
                 h = HiDPIAutoscaling(self.model)
