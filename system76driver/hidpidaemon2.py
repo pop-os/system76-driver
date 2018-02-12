@@ -758,6 +758,16 @@ class HiDPIAutoscaling:
                 if closest_display:
                     display_graph[display].append((closest_display, closest_direction))
         
+        # Remove any closed internal displays from graph.
+        # It can cause mutter to refuse to set scale if we give it space in layout.
+        if self.panel_activation_override(display):
+            display_graph[display] = []
+        else:
+            for adjacent_pair in display_graph[display]:
+                adjacent, direction = adjacent_pair
+                if self.panel_activation_override(adjacent):
+                    display_graph[display].remove(adjacent_pair)
+        
         return display_graph[display]
     
     def get_display_graph(self, lookup_entries, revert=False):
