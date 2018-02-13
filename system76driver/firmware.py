@@ -60,13 +60,13 @@ log = logging.getLogger(__name__)
 
 MODELS = {
     'bonw11': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": True,
         "me": True,
     },
     'bonw12': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": True,
         "me": True,
@@ -78,7 +78,7 @@ MODELS = {
         "me": True,
     },
     'galp2': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
@@ -126,13 +126,13 @@ MODELS = {
         "me": True,
     },
     'lemu6': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'lemu7': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
@@ -144,19 +144,19 @@ MODELS = {
         "me": True,
     },
     'orxp1': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp2': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp2-ess': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
@@ -180,13 +180,13 @@ MODELS = {
         "me": True,
     },
     'serw9': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": True,
         "me": True,
     },
     'serw10': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": True,
         "me": True,
