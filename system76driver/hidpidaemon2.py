@@ -1416,6 +1416,7 @@ class HiDPIAutoscaling:
         return False
     
     def run(self):
+        self.update_display_connections()
         # First set appropriate initial display configuration
         self.prev_display_types = self.has_mixed_hi_low_dpi_displays()
         if self.get_gpu_vendor() == 'nvidia':
