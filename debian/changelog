@@ -1,3 +1,9 @@
+system76-driver (17.10.20~alpha) artful; urgency=low
+
+  * Daily WIP for 17.10.20
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 21 Feb 2018 09:15:04 -0700
+
 system76-driver (17.10.19) artful; urgency=low
 
   * Enable updates on previous generation models
