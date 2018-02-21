@@ -90,13 +90,13 @@ MODELS = {
         "me": True,
     },
     'gaze10': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'gaze11': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
@@ -108,13 +108,13 @@ MODELS = {
         "me": True,
     },
     'kudu2': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'kudu3': {
-        "check": False,
+        "check": True,
         "ec": True,
         "ec2": False,
         "me": True,

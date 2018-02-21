@@ -1,6 +1,7 @@
 system76-driver (17.10.20~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.20
+  * Enable updates on gaze10, gaze11, kudu2, and kudu3
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 21 Feb 2018 09:15:04 -0700
 
