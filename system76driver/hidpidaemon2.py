@@ -681,8 +681,7 @@ class HiDPIAutoscaling:
                     adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
                     if adjacent_top < display_bottom and adjacent_bottom > display_top: 
                         has_adjacent = True
-                        if adjacent_display not in display_graph:
-                            display_graph[display].append((adjacent_display, 'left'))
+                        display_graph[display].append((adjacent_display, 'left'))
                             
             if display_right in top_left_lookup_entries_x:
                 for adjacent_display in top_left_lookup_entries_x[display_right]:
@@ -690,8 +689,7 @@ class HiDPIAutoscaling:
                     adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
                     if adjacent_top < display_bottom and adjacent_bottom > display_top: 
                         has_adjacent = True
-                        if adjacent_display not in display_graph:
-                            display_graph[display].append((adjacent_display, 'right'))
+                        display_graph[display].append((adjacent_display, 'right'))
                             
             if display_top in bottom_right_lookup_entries_y:
                 for adjacent_display in bottom_right_lookup_entries_y[display_top]:
@@ -699,8 +697,7 @@ class HiDPIAutoscaling:
                     adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
                     if adjacent_left < display_right and adjacent_right > display_left:
                         has_adjacent = True
-                        if adjacent_display not in display_graph:
-                            display_graph[display].append((adjacent_display, 'top'))
+                        display_graph[display].append((adjacent_display, 'top'))
                             
             if display_bottom in top_left_lookup_entries_y:
                 for adjacent_display in top_left_lookup_entries_y[display_bottom]:
@@ -708,9 +705,17 @@ class HiDPIAutoscaling:
                     adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
                     if adjacent_left < display_right and adjacent_right > display_left:
                         has_adjacent = True
-                        if adjacent_display not in display_graph:
-                            display_graph[display].append((adjacent_display, 'bottom'))
+                        display_graph[display].append((adjacent_display, 'bottom'))
             
+            
+            # Remove any (adjacent) closed internal displays from graph.
+            # It can cause mutter to refuse to set scale if we give it space in layout.
+            for adjacent_pair in display_graph[display]:
+                adjacent, direction = adjacent_pair
+                if self.panel_activation_override(adjacent):
+                    display_graph[display].remove(adjacent_pair)
+                    if len(display_graph[display]) == 0:
+                       has_adjacent = False
             
             # If there's no adjacent display, find nearest one and flag it as adjacent with direction.
             # System will favor top/bottom over left/right, so adjust vertical offset by 9/16. 
@@ -719,7 +724,7 @@ class HiDPIAutoscaling:
                 closest_distance = -1
                 closest_direction = None
                 for near in self.displays:
-                    if self.displays[near]['connected'] and near != display:
+                    if self.displays[near]['connected'] and not self.panel_activation_override(near) and near != display:
                         dist_x = -1
                         dist_y = -1
                         near_left, near_top = self.get_display_position(near, (0,0))
@@ -758,16 +763,11 @@ class HiDPIAutoscaling:
                 if closest_display:
                     display_graph[display].append((closest_display, closest_direction))
         
-        # Remove any closed internal displays from graph.
+        # Remove from graph if this is a closed internal display.
         # It can cause mutter to refuse to set scale if we give it space in layout.
         if self.panel_activation_override(display):
             display_graph[display] = []
-        else:
-            for adjacent_pair in display_graph[display]:
-                adjacent, direction = adjacent_pair
-                if self.panel_activation_override(adjacent):
-                    display_graph[display].remove(adjacent_pair)
-        
+                    
         return display_graph[display]
     
     def get_display_graph(self, lookup_entries, revert=False):
@@ -871,7 +871,18 @@ class HiDPIAutoscaling:
             if len(display_positions) < 1:
                 display_positions[adjacent_display] = (0, 0)
             
+            # Run through adjacent displays until all have positions.
+            adjacent_displays = []
             for display, direction in display_graph[adjacent_display]:
+                adjacent_displays.append((display, direction))
+            while len(adjacent_displays) > 0:
+                skip_pair = False
+                display, direction = adjacent_displays[0]
+                adjacent = adjacent_display
+                # Set display position from adjacent if possible.
+                # If not, try to swap pair and set position of adjacent display.
+                # If neither has position available, skip this adjacent for now 
+                # and set it later once display position has been set.
                 if adjacent_display in display_positions:
                     offset_x = display_positions[adjacent_display][0]
                     offset_y = display_positions[adjacent_display][1]
@@ -880,7 +891,7 @@ class HiDPIAutoscaling:
                     offset_x = display_positions[display][0]
                     offset_y = display_positions[display][1]
                     temp_display = adjacent_display
-                    adjacent_display = display
+                    adjacent = display
                     display = temp_display
                     # Need to invert directions so the math works out
                     if direction == 'left':
@@ -892,42 +903,50 @@ class HiDPIAutoscaling:
                     elif direction == 'bottom':
                         direction = 'top'
                 else:
-                    log.warning("Cannot find adjacent display in layout")
-                
-                # Get positions, scale, and logical resolution for both displays
-                scale_factor = display_scales[display]
-                # getting correct logical resolution depends on whether to use native or saved values
-                logical_resolution_x, logical_resolution_y = self.get_display_logical_resolution(display, scale_factor, saved=(self.saved and not revert))
-                
-                display_left, display_top = self.get_display_position(display, align=(0,0))
-                display_right, display_bottom = self.get_display_position(display, align=(1,1))
-                
-                adjacent_left, adjacent_top = self.get_display_position(adjacent_display, (0,0))
-                adjacent_right, adjacent_bottom = self.get_display_position(adjacent_display, (1,1))
-                
-                # getting correct logical resolution depends on whether to use native or saved values
-                adjacent_logical_resolution_x, adjacent_logical_resolution_y = self.get_display_logical_resolution(adjacent_display, display_scales[adjacent_display], saved=(self.saved and not revert))
-                # Calculate new display position based on adjacent.
-                if direction == 'left':
-                    new_current_display_left = offset_x - logical_resolution_x
-                    new_current_display_top = self.align_display_with_adjacent_x(display_top, display_bottom, adjacent_top, adjacent_bottom, adjacent_logical_resolution_y, offset_y, logical_resolution_y)
-                elif direction == 'right':
-                    new_current_display_left = offset_x + adjacent_logical_resolution_x
-                    new_current_display_top = self.align_display_with_adjacent_x(display_top, display_bottom, adjacent_top, adjacent_bottom, adjacent_logical_resolution_y, offset_y, logical_resolution_y)
-                elif direction == 'top':
-                    new_current_display_left = self.align_display_with_adjacent_x(display_left, display_right, adjacent_left, adjacent_right, adjacent_logical_resolution_x, offset_x, logical_resolution_x)
-                    new_current_display_top = offset_y - logical_resolution_y
-                elif direction == 'bottom':
-                    new_current_display_left = self.align_display_with_adjacent_x(display_left, display_right, adjacent_left, adjacent_right, adjacent_logical_resolution_x, offset_x, logical_resolution_x)
-                    new_current_display_top = offset_y + adjacent_logical_resolution_y
+                    # Don't have either display position.  Try next adjacent display in list and come back to this pair.
+                    skip_pair = True
+                    del adjacent_displays[0]
+                    if len(adjacent_displays) > 0:
+                        adjacent_displays.append((display, direction))
+                    #log.warning("Cannot find adjacent display in layout")
                     
-                if new_current_display_left < max_negative_offset_x:
-                    max_negative_offset_x = new_current_display_left
-                if new_current_display_top < max_negative_offset_y:
-                    max_negative_offset_y = new_current_display_top
-                
-                # Now add display to list
-                display_positions[display] = (new_current_display_left, new_current_display_top)
+                if not skip_pair:
+                    # Get positions, scale, and logical resolution for both displays
+                    scale_factor = display_scales[display]
+                    # getting correct logical resolution depends on whether to use native or saved values
+                    logical_resolution_x, logical_resolution_y = self.get_display_logical_resolution(display, scale_factor, saved=(self.saved and not revert))
+                    
+                    display_left, display_top = self.get_display_position(display, align=(0,0))
+                    display_right, display_bottom = self.get_display_position(display, align=(1,1))
+                    
+                    adjacent_left, adjacent_top = self.get_display_position(adjacent, (0,0))
+                    adjacent_right, adjacent_bottom = self.get_display_position(adjacent, (1,1))
+                    
+                    # getting correct logical resolution depends on whether to use native or saved values
+                    adjacent_logical_resolution_x, adjacent_logical_resolution_y = self.get_display_logical_resolution(adjacent, display_scales[adjacent], saved=(self.saved and not revert))
+                    # Calculate new display position based on adjacent.
+                    if direction == 'left':
+                        new_current_display_left = offset_x - logical_resolution_x
+                        new_current_display_top = self.align_display_with_adjacent_x(display_top, display_bottom, adjacent_top, adjacent_bottom, adjacent_logical_resolution_y, offset_y, logical_resolution_y)
+                    elif direction == 'right':
+                        new_current_display_left = offset_x + adjacent_logical_resolution_x
+                        new_current_display_top = self.align_display_with_adjacent_x(display_top, display_bottom, adjacent_top, adjacent_bottom, adjacent_logical_resolution_y, offset_y, logical_resolution_y)
+                    elif direction == 'top':
+                        new_current_display_left = self.align_display_with_adjacent_x(display_left, display_right, adjacent_left, adjacent_right, adjacent_logical_resolution_x, offset_x, logical_resolution_x)
+                        new_current_display_top = offset_y - logical_resolution_y
+                    elif direction == 'bottom':
+                        new_current_display_left = self.align_display_with_adjacent_x(display_left, display_right, adjacent_left, adjacent_right, adjacent_logical_resolution_x, offset_x, logical_resolution_x)
+                        new_current_display_top = offset_y + adjacent_logical_resolution_y
+                        
+                    if new_current_display_left < max_negative_offset_x:
+                        max_negative_offset_x = new_current_display_left
+                    if new_current_display_top < max_negative_offset_y:
+                        max_negative_offset_y = new_current_display_top
+                    
+                    del adjacent_displays[0]
+                    
+                    # Now add display to list
+                    display_positions[display] = (new_current_display_left, new_current_display_top)
         
         # Offset display positions so all coordinates are non-negative
         for display in display_positions:
