@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=2.7.3
+Encoding=UTF-8
+Name=System76 Firmware Updater
+GenericName=System76 Firmware Updater
+Comment=Updates Firmware on System76 Systems
+Exec=system76-firmware-pkexec
+Terminal=false
+Type=Application
+Icon=system76-driver
+Categories=GNOME;GTK;Settings;X-GNOME-SystemSettings;X-GNOME-Settings-Panel;X-Unity-Settings-Panel;
+GenericName[en_US]=System76 Firmware Updater
+X-Unity-Settings-Panel=system76-firmware
+X-GNOME-Settings-Panel=system76-firmware
