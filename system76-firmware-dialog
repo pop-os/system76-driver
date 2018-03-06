@@ -99,14 +99,14 @@ class SuccessWindow (Gtk.Window):
             wrap=True
         )
         Gtk.StyleContext.add_class(self.head_label.get_style_context(), "h1")
-        
-        self.preupdate_header_label = Gtk.Label("<b>Before You Begin</b>", 
+
+        self.preupdate_header_label = Gtk.Label("<b>Before You Begin</b>",
             max_width_chars=70,
             use_markup=True,
             wrap=True
         )
         Gtk.StyleContext.add_class(self.preupdate_header_label.get_style_context(), "h2")
-        
+
         self.preupdate_label = Gtk.Label("Make sure the laptop is <b>plugged " +
             "into power</b> for the entire firmware updating process.\n\n" +
             "<b>Take a picture of these instructions</b> or pull up " +
@@ -118,12 +118,12 @@ class SuccessWindow (Gtk.Window):
             use_markup=True,
             wrap=True
         )
-        
+
         self.update_header_label = Gtk.Label("<b>Performing the Update</b>",
             max_width_chars=70,
             use_markup=True,
             wrap=True
-        )        
+        )
         Gtk.StyleContext.add_class(self.update_header_label.get_style_context(), "h2")
 
         self.update_label = Gtk.Label(
@@ -326,7 +326,6 @@ class FirmwareWindow (Gtk.Window):
 
         scrollwindow = Gtk.ScrolledWindow(min_content_height=100,
                                           min_content_width=400,
-                                          max_content_height=150,
                                           vexpand=True)
 
         changelog_vbox = Gtk.VBox(valign=Gtk.Align.START)
