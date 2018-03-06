@@ -1,3 +1,9 @@
+system76-driver (16.04.47~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.47
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 06 Mar 2018 13:28:14 -0700
+
 system76-driver (16.04.46) xenial; urgency=low
 
   * Add 'wilp14' intel graphics support
