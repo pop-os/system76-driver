@@ -9,7 +9,9 @@ Build-Depends: debhelper (>= 9),
     python3-dbus,
     python3-evdev,
     python3-gi,
+    python3-nacl,
     gir1.2-gtk-3.0,
+    gir1.2-notify-0.7,
 Standards-Version: 3.9.6
 X-Python3-Version: >= 3.4
 Homepage: https://launchpad.net/system76-driver
@@ -22,7 +24,9 @@ Depends: ${python3:Depends}, ${misc:Depends},
     python3-dbus,
     python3-evdev,
     python3-gi,
+    python3-nacl,
     gir1.2-gtk-3.0,
+    gir1.2-notify-0.7,
     pm-utils,
 Description: Universal driver for System76 computers
  System76 Driver provides drivers, restore, and regression support for System76
