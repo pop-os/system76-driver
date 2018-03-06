@@ -1,9 +1,8 @@
-system76-driver (17.10.21~alpha) artful; urgency=low
+system76-driver (17.10.21) artful; urgency=low
 
-  * Daily WIP for 17.10.21
   * Fixes for HiDPI
 
- -- Jeremy Soller <jeremy@system76.com>  Tue, 06 Mar 2018 15:34:36 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 06 Mar 2018 16:07:36 -0700
 
 system76-driver (17.10.20) artful; urgency=low
 
