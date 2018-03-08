@@ -1,6 +1,7 @@
 system76-driver (18.04.4~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.4
+  * Enable updates on all systems
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Mar 2018 10:20:30 -0700
 
