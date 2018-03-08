@@ -1,6 +1,7 @@
 system76-driver (17.10.22~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.22
+  * Add error dialog
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Mar 2018 14:16:37 -0700
 
