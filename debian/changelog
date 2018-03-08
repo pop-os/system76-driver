@@ -1,9 +1,8 @@
-system76-driver (16.04.49~alpha) xenial; urgency=low
+system76-driver (16.04.49) xenial; urgency=low
 
-  * Daily WIP for 16.04.49
   * Add error dialog
 
- -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Mar 2018 14:16:07 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Mar 2018 14:25:17 -0700
 
 system76-driver (16.04.48) xenial; urgency=low
 
