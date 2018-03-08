@@ -60,12 +60,17 @@ class ErrorWindow (Gtk.Window):
 
 
         self.button = Gtk.Button("Ok")
-        self.button.connect('clicked', Gtk.main_quit)
+        self.button.connect('clicked', self.acknowledge)
         self.box.pack_start(self.button, False, False, 6)
 
         self.connect("delete-event", Gtk.main_quit)
         self.show_all()
         Gtk.main()
+
+    def acknowledge(self, e):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(1)
 
 class NetworkWindow (Gtk.Window):
     def __init__(self):
