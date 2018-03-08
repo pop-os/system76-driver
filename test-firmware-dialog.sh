@@ -1,3 +1,5 @@
+echo "Showing standard dialog"
+
 export FIRMWARE_DATA=$(cat <<EOF
 {
     "desktop": "gnome",
@@ -27,3 +29,12 @@ EOF
 )
 
 ./system76-firmware-dialog
+
+echo "Showing error dialog"
+FIRMWARE_ERROR="Test error" ./system76-firmware-dialog
+
+echo "Showing network dialog"
+FIRMWARE_NETWORK=1 ./system76-firmware-dialog
+
+echo "Showing success dialog"
+FIRMWARE_SUCCESS=1 ./system76-firmware-dialog
