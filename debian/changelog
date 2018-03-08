@@ -1,3 +1,9 @@
+system76-driver (16.04.48~alpha) xenial; urgency=low
+
+  * Daily WIP for 16.04.48
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Mar 2018 10:13:36 -0700
+
 system76-driver (16.04.47) xenial; urgency=low
 
   * Add firmware update support
