@@ -865,8 +865,8 @@ class HiDPIAutoscaling:
                     display_positions[display] = (0, 0)
         
         # Walk adjacent display graph to generate new positions for each display.
-        max_negative_offset_x = 0
-        max_negative_offset_y = 0
+        max_negative_offset_x = 32767
+        max_negative_offset_y = 32767
         for adjacent_display in display_graph:
             if len(display_positions) < 1:
                 display_positions[adjacent_display] = (0, 0)
@@ -1086,7 +1086,7 @@ class HiDPIAutoscaling:
         if display_name not in attribute_mapping:
             attributes = '{ViewPortIn=' + viewportin + ', ' + \
                         'ViewPortOut=' + viewportout + ', ' + \
-                        'ForceCompositionPipeline=On},'
+                        'ForceCompositionPipeline=On}, '
             attribute_mapping[display_name] = attributes
         
         return attribute_mapping[display_name]
@@ -1263,7 +1263,14 @@ class HiDPIAutoscaling:
                 else:
                     lowdpi_count = lowdpi_count + 1
         
-        if has_internal_panel and lowdpi_count >= 2:
+        prev_nvidia_390_count = 0
+        try:
+            prev_nvidia_390_count = self.prev_nvidia_390_count
+            self.prev_nvidia_390_count = lowdpi_count
+        except:
+            self.prev_nvidia_390_count = 0
+        
+        if has_internal_panel and lowdpi_count >= 2 and prev_nvidia_390_count != lowdpi_count:
             if self.scale_mode == 'hidpi':
                 self.scale_mode = 'lowdpi'
         
