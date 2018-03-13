@@ -1,9 +1,8 @@
-system76-driver (17.10.23~alpha) artful; urgency=low
+system76-driver (17.10.23) artful; urgency=low
 
-  * Daily WIP for 17.10.23
   * Workaround lid close issue with multiple monitors on nvidia-390
 
- -- David Jordan <david2@system76.com>  Tue, 13 Mar 2018 13:52:42 -0600
+ -- David Jordan <david2@system76.com>  Tue, 13 Mar 2018 15:03:36 -0600
 
 system76-driver (17.10.22) artful; urgency=low
 
