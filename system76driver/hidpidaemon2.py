@@ -1245,6 +1245,29 @@ class HiDPIAutoscaling:
         elif self.get_gpu_vendor() == 'intel':
             return self.set_display_scaling_xrandr(display, layout, force_lowdpi=force)
     
+    def workaround_nvidia_390(self):
+        # NVIDIA 390 introduces an issue where a Shell/Mutter crash happens on lid close
+        # when two lowdpi external monitors are connected and hidpi mode is active.
+        # Until this is resolved, switch to lowdpi mode by default when second display is connected.
+        lowdpi_count = 0
+        has_internal_panel = False
+        for display in self.displays:
+            if self.displays[display]['connected'] == True:
+                dpi = self.get_display_dpi(display)
+                if dpi == None:
+                    pass
+                elif 'eDP' in display or self.displays[display]['connector_type'] == 'Panel':
+                    has_internal_panel = True
+                elif dpi > 170:
+                    pass
+                else:
+                    lowdpi_count = lowdpi_count + 1
+        
+        print('has internal %s  count %d' % (has_internal_panel, lowdpi_count))
+        if has_internal_panel and lowdpi_count >= 2:
+            if self.scale_mode == 'hidpi':
+                self.scale_mode = 'lowdpi'
+        
     def has_mixed_hi_low_dpi_displays(self):
         found_hidpi = False
         found_lowdpi = False
@@ -1252,12 +1275,12 @@ class HiDPIAutoscaling:
         for display in self.displays:
             if self.displays[display]['connected'] == True:
                 dpi = self.get_display_dpi(display)
-                if dpi > 170:
-                    found_hidpi = True
-                elif dpi == None:
+                if dpi == None:
                     pass
                 elif self.panel_activation_override(display):
                     pass
+                elif dpi > 170:
+                    found_hidpi = True
                 else:
                     found_lowdpi = True
         
@@ -1430,6 +1453,9 @@ class HiDPIAutoscaling:
             if self.get_gpu_vendor() == 'nvidia':
                 time.sleep(0.1)
                 self.update_display_connections()
+
+            if self.get_gpu_vendor() == 'nvidia':
+                self.workaround_nvidia_390()
             
             self.set_scaled_display_modes()
         return False
@@ -1439,6 +1465,7 @@ class HiDPIAutoscaling:
         # First set appropriate initial display configuration
         self.prev_display_types = self.has_mixed_hi_low_dpi_displays()
         if self.get_gpu_vendor() == 'nvidia':
+            self.workaround_nvidia_390()
             self.set_scaled_display_modes()
         elif not self.prev_display_types[2]:
             self.unforce = True
