@@ -1263,7 +1263,6 @@ class HiDPIAutoscaling:
                 else:
                     lowdpi_count = lowdpi_count + 1
         
-        print('has internal %s  count %d' % (has_internal_panel, lowdpi_count))
         if has_internal_panel and lowdpi_count >= 2:
             if self.scale_mode == 'hidpi':
                 self.scale_mode = 'lowdpi'
