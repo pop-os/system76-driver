@@ -1,6 +1,7 @@
 system76-driver (17.10.25~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.25
+  * HiDPI: Fix login loop
 
  -- David Jordan <david2@system76.com>  Thu, 15 Mar 2018 16:28:56 -0600
 
