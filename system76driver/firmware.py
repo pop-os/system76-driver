@@ -500,11 +500,26 @@ def confirm_dialog(data):
 
     return call_gui(user_name, display_name, environment)
 
-def abort_dialog():
+def error_dialog(message):
     user_name, display_name, environ = get_user_session()
 
     environment = [
-        "FIRMWARE_ABORT=True",
+        "FIRMWARE_ERROR=" + message,
+        "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
+        "DISPLAY=" + display_name
+    ]
+
+    for var in environ.split("\00"):
+        if len(var.split("=", maxsplit=1)) == 2:
+            environment.append(str(var))
+
+    return call_gui(user_name, display_name, environment)
+
+def network_dialog():
+    user_name, display_name, environ = get_user_session()
+
+    environment = [
+        "FIRMWARE_NETWORK=1",
         "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
         "DISPLAY=" + display_name
     ]
@@ -519,7 +534,7 @@ def success_dialog():
     user_name, display_name, environ = get_user_session()
 
     environment = [
-        "FIRMWARE_SUCCESS=True",
+        "FIRMWARE_SUCCESS=1",
         "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
         "DISPLAY=" + display_name
     ]
@@ -648,10 +663,16 @@ def _run_firmware_updater(reinstall, is_notification):
     model = get_model()
     model_data = MODELS.get(model)
     if not model_data:
-        log.info(model + " not known.")
+        message = model + " not known."
+        log.info(message)
+        if not is_notification:
+            error_dialog(message)
         return
     if not model_data.get("check"):
-        log.info("Updates are not available for " + model + " yet.")
+        message = "Updates are not available for " + model + " yet."
+        log.info(message)
+        if not is_notification:
+            error_dialog(message)
         return
 
     # Download the manifest and check that it is signed by the private master key.
@@ -710,7 +731,7 @@ def _run_firmware_updater(reinstall, is_notification):
 
     else:
         if not is_notification:
-            abort_dialog()
+            network_dialog()
         return
     log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
 
