@@ -1,3 +1,9 @@
+system76-driver (17.10.25~alpha) artful; urgency=low
+
+  * Daily WIP for 17.10.25
+
+ -- David Jordan <david2@system76.com>  Thu, 15 Mar 2018 16:28:56 -0600
+
 system76-driver (17.10.24) artful; urgency=low
 
   * Prevent error dialog when running in notification mode
