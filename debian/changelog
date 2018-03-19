@@ -1,3 +1,33 @@
+system76-driver (17.10.25~alpha) artful; urgency=low
+
+  * Daily WIP for 17.10.25
+
+ -- David Jordan <david2@system76.com>  Thu, 15 Mar 2018 16:28:56 -0600
+
+system76-driver (17.10.24) artful; urgency=low
+
+  * Prevent error dialog when running in notification mode
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 14 Mar 2018 16:38:44 -0600
+
+system76-driver (17.10.23) artful; urgency=low
+
+  * Workaround lid close issue with multiple monitors on nvidia-390
+
+ -- David Jordan <david2@system76.com>  Tue, 13 Mar 2018 15:03:36 -0600
+
+system76-driver (17.10.22) artful; urgency=low
+
+  * Add error dialog
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Mar 2018 14:25:19 -0700
+
+system76-driver (17.10.21) artful; urgency=low
+
+  * Fixes for HiDPI
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 06 Mar 2018 16:07:36 -0700
+
 system76-driver (17.10.20) artful; urgency=low
 
   * Enable updates on gaze10, gaze11, kudu2, and kudu3
