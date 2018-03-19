@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=System76 HiDPI Daemon
+Comment=Easy auto-configuration for multi-display hidpi & mixed-dpi configurations on X.  GNOME frontend using notifications.
+Exec=/usr/lib/system76-driver/system76-hidpi-notification
+Terminal=false
+Icon=folder
+NoDisplay=true
+StartupNotify=false
+Categories=System;Settings;
