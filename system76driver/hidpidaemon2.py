@@ -4,6 +4,13 @@ from Xlib.ext import randr
 from Xlib.protocol import rq
 import logging
 import time
+import os
+
+from gi.repository import Gio, GObject, GLib
+from pydbus import SessionBus
+from pydbus.publication import Publication
+from pydbus.generic import signal as PyDBusSignal
+import signal
 
 import subprocess
 import re
@@ -252,6 +259,43 @@ def dpi_get_output_property(d, output, property, type, long_offset, long_length,
 
 XRes = namedtuple('XRes', ['x', 'y'])
 
+class HiDPIGSettings(GObject.GObject):
+    enable = GObject.Property(type=bool, default=True)
+    mode = GObject.Property(type=str, default='lodpi')
+    def __init__(self):
+        GObject.GObject.__init__(self)
+
+class HiDPIDBusServer(object):
+    """
+        <node>
+            <interface name='com.system76.hidpi'>
+                <method name="getstate"/>
+                <signal name="state">
+                    <arg type="s" name="mode" direction="out"/>
+                    <arg type="s" name="monitor-types" direction="out"/>
+                    <arg type="s" name="lodpi-capability" direction="out"/>
+                </signal>
+            </interface>
+        </node>
+    """
+    
+    def __init__(self, hidpi='lowdpi', display_types='lodpi', capability='native'):
+        object.__init__(self)
+        self.hidpi = hidpi
+        self.display_types = display_types
+        self.capability = capability
+    
+    def getstate(self):
+        self.send_state_signal(hidpi=self.hidpi, display_types=self.display_types, capability=self.capability)
+    
+    def send_state_signal(self, hidpi='lowdpi', display_types='lodpi', capability='native'):
+        self.hidpi = hidpi
+        self.display_types = display_types
+        self.capability = capability
+        
+        self.state(self.hidpi, self.display_types, self.capability)
+        
+    state = PyDBusSignal()
 
 class HiDPIAutoscaling:
     def __init__(self, model):
@@ -266,8 +310,16 @@ class HiDPIAutoscaling:
         self.saved = True
         self.calculated_display_size = (0,0) # Used to hack around intel black band bug (wrong XScreen size)
         self.prev_lid_state = self.get_internal_lid_state()
+        self.dbs = HiDPIDBusServer()
+        self.pub = None
         
+        self.init_gsettings()
         self.init_xlib()
+        
+    def init_gsettings(self):
+        #self.gsettings = HiDPIGSettings()
+        self.settings = Gio.Settings('com.system76.hidpi')
+        #self.settings.bind('mode', self.gsettings, 'mode', Gio.SettingsBindFlags.DEFAULT)
         
     def init_xlib(self):
         self.xlib_display = xdisplay.Display()
@@ -473,77 +525,87 @@ class HiDPIAutoscaling:
         self.displays = new_displays
         return False
     
-    def notification_update(self, has_mixed_dpi, unforce):
-        if not has_mixed_dpi:
-            self.notification.terminate()
-        else:
-            self.notification.terminate()
-            # uncomment if disabling persistent notifications
-            #self.send_scaling_notification( queue=self.queue, unforce=unforce)
     
-    def notification_return(self):
-        if self.notification.returncode == 76:
-            if self.queue is not None:
-                if self.get_gpu_vendor() == 'nvidia':
-                    if self.scale_mode == 'hidpi':
-                        self.scale_mode = 'lowdpi'
-                    else:
-                        self.scale_mode = 'hidpi'
-                else:
-                    self.unforce = not self.unforce
-                self.queue.put(self.scale_mode)
-                self.queue.put(self.unforce)
-            if self.get_gpu_vendor() == 'intel':
-                # for threading reasons, create a new autoscaling instance...but do not call run() on it!
-                h = HiDPIAutoscaling(self.model)
-                h.unforce = self.unforce
-                h.saved = not self.unforce
-                h.set_scaled_display_modes(notification=False)
-                # HiDPI scale factor doesn't always take on first mode set with 
-                # lid closed and only marginally hidpi external monitor.  If the
-                # mode should be hidpi, check for scale factor and set again if
-                # needed.
-                has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
-                if not has_lowdpi and self.unforce:
-                    if dbusutil.get_scale() < 2:
-                        h.set_scaled_display_modes(notification=False)
-                self.send_scaling_notification(self.queue, unforce=self.unforce)
-            if self.get_gpu_vendor() == 'nvidia': # nvidia
-                h = HiDPIAutoscaling(self.model)
-                h.scale_mode = self.scale_mode
-                h.set_scaled_display_modes(notification=False)
-                self.send_scaling_notification(self.queue)
-        else:
-            self.send_scaling_notification(self.queue, unforce=self.unforce)
+    def notification_terminate(self, status):
+        self.pub.unpublish()
+        os._exit(0)
     
-    def send_scaling_notification(self, queue=None, unforce=False):
-        if self.unforce:
-            scale_mode="unforce"
-        else:
-            scale_mode=self.scale_mode
-        
-        # Change notification text on intel graphics if we only have hidpi displays
+    def notification_send_signal(self):
         gpu_vendor = self.get_gpu_vendor()
         if gpu_vendor == 'intel':
+            capability = 'native'
+        else:
+            capability = 'pixel-doubling'
+        
+        has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
+        
+        display_types = ''
+        if has_mixed_dpi:
+            display_types = display_types + 'mixed' + ', '
+        if has_hidpi:
+            display_types = display_types + 'hidpi' + ', '
+        if has_lowdpi:
+            display_types = display_types + 'lodpi' + ', '
+        
+        mode = self.settings.get_string('mode')
+        
+        self.dbs.send_state_signal(hidpi=mode, display_types=display_types, capability=capability)
+    
+    def notification_update_scaling(self, restart=True):
+        if self.queue is not None:
+            if self.get_gpu_vendor() == 'nvidia':
+                if self.scale_mode == 'hidpi':
+                    self.scale_mode = 'lowdpi'
+                else:
+                    self.scale_mode = 'hidpi'
+            else:
+                if self.settings.get_string('mode') == 'lodpi':
+                    self.unforce = False
+                else:
+                    self.unforce = True
+            self.queue.put(self.scale_mode)
+            self.queue.put(self.unforce)
+        if self.get_gpu_vendor() == 'intel':
+            # for threading reasons, create a new autoscaling instance...but do not call run() on it!
+            h = HiDPIAutoscaling(self.model)
+            h.unforce = self.unforce
+            h.saved = not self.unforce
+            h.set_scaled_display_modes(notification=False)
+            # HiDPI scale factor doesn't always take on first mode set with
+            # lid closed and only marginally hidpi external monitor.  If the
+            # mode should be hidpi, check for scale factor and set again if
+            # needed.
             has_mixed_dpi, has_hidpi, has_lowdpi = self.has_mixed_hi_low_dpi_displays()
-            if has_hidpi and not has_mixed_dpi:
-                gpu_vendor = 'nvidia'
-                if scale_mode == "unforce":
-                    scale_mode='hidpi'
-        def cmd_in_thread(on_done, cmd):
-            self.notification = subprocess.Popen(cmd)
-            if queue is not None:
-                queue.put(self.notification)
-            self.notification.wait()
-            on_done()
-            
-        cmd = ['/usr/lib/system76-driver/system76-hidpi-notification', '--scale-mode=' + scale_mode, '--gpu-vendor=' + gpu_vendor]
-        thread = threading.Thread(target=cmd_in_thread, args=(self.notification_return, cmd))
-        thread.daemon = True
-        thread.start()
+            if not has_lowdpi and self.unforce:
+                if dbusutil.get_scale() < 2:
+                    h.set_scaled_display_modes(notification=False)
+        if self.get_gpu_vendor() == 'nvidia': # nvidia
+            h = HiDPIAutoscaling(self.model)
+            h.scale_mode = self.scale_mode
+            h.set_scaled_display_modes(notification=False)
         
-        return False        
+    def on_notification_mode(self, obj, gparamstring):
+        self.notification_send_signal()
+        self.notification_update_scaling(restart=False)
+    
+    def notification_register_dbus(self, has_mixed_dpi, unforce):
+        settings = HiDPIGSettings()
+        self.settings.bind('mode', settings, 'mode', Gio.SettingsBindFlags.DEFAULT)
+        settings.connect('notify::mode', self.on_notification_mode)
         
+        self.dbs = HiDPIDBusServer()
+        
+        bus = SessionBus()
+        self.pub = Publication(bus, "com.system76.hidpi", self.dbs, allow_replacement=True, replace=True)
+        if self.queue is not None:
+            self.queue.put(self.dbs)
+            self.queue.put(self.pub)
+        
+        self.loop = GLib.MainLoop()
+        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self.notification_terminate, None)
+        self.loop.run()
+    
+    
     def get_display_position(self, display_name, align=(0,0)):
         # For performance reasons, self.resources must be set with self.xlib_window.xrandr_get_screen_resources() before calling.
         #resources = self.xlib_window.xrandr_get_screen_resources()._data
@@ -1154,6 +1216,8 @@ class HiDPIAutoscaling:
         native_dpi = self.get_display_dpi(display_name)
         saved_dpi = self.get_display_dpi(display_name, saved=True)
         current_dpi = self.get_display_dpi(display_name, current=True)
+        if current_dpi is None:
+            current_dpi = 0
         dpi = None
         
         
@@ -1427,23 +1491,8 @@ class HiDPIAutoscaling:
                     subprocess.call('xrandr --output eDP-1 --off', shell=True)
         
         # Displays are all setup - Notify the user!
-        # Note: The notification creates a new HiDPIAutoscaling object and calls set_scaled_display_modes() on completion.
-        #       The 'notification' argument prevents these non-running instances from creating extra dead, useless notifications.
-        #       To ensure the displayed notification can interact with the instance in the main thread and avoid duplicates, 
-        #       don't process notifications from this child if notification == False.
-        # Otherwise, there are two cases...
-        # a) Notification already exists:
-        #    - we either need to update its contents (hidpi/mixed) or remove it (lowdpi-only)
-        # b) Notification doesn't exist yet:
-        #    - send a new notification
-        # The notification is sent/resent in a separate thread since the main thread will block until the next xlib display event.
         self.prev_display_types = (has_mixed_dpi, has_hidpi, has_lowdpi)
-        if self.notification and notification:
-            thread = threading.Thread(target = self.notification_update, args=(has_hidpi, self.unforce), daemon=True)
-            thread.start()
-        elif has_hidpi and notification:
-            thread = threading.Thread(target = self.send_scaling_notification, args=(self.queue, self.unforce), daemon=True)
-            thread.start()
+        self.notification_send_signal()
     
     def update(self, e):
         time.sleep(.1)
@@ -1458,8 +1507,10 @@ class HiDPIAutoscaling:
                 pass
             elif not has_lowdpi and self.prev_display_types[2]:
                 self.unforce = True
+                self.settings.set_string('mode', 'hidpi')
             elif has_mixed_dpi and not self.prev_display_types[0]:
                 self.unforce = False
+                self.settings.set_string('mode', 'lodpi')
             
             # Work around bug where display event triggers update with bad data, destroying layout
             if self.get_gpu_vendor() == 'nvidia':
@@ -1469,10 +1520,16 @@ class HiDPIAutoscaling:
             if self.get_gpu_vendor() == 'nvidia':
                 self.workaround_nvidia_390()
             
+            if self.settings.get_boolean('enable') == False:
+                return False
+            
             self.set_scaled_display_modes()
         return False
     
     def run(self):
+        thread = threading.Thread(target = self.notification_register_dbus, args=(None, self.unforce), daemon=True)
+        thread.start()
+        #fix cassidy bug
         self.update_display_connections()
         # First set appropriate initial display configuration
         self.prev_display_types = self.has_mixed_hi_low_dpi_displays()

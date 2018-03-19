@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<schemalist>
+    <enum id="com.system76.hidpi.enum">
+        <value nick="hidpi" value="1"/>
+        <value nick="lodpi" value="0"/>
+    </enum>
+    <schema path="/com/system76/hidpi/" id="com.system76.hidpi">
+        
+        <key name='enable' type='b'>
+            <default>true</default>
+            <summary>Enable HiDPI daemon</summary>
+            <description>
+                Allow HiDPI daemon to run.
+            </description>
+        </key>
+        
+        <key name='mode' enum="com.system76.hidpi.enum">
+            <default>"hidpi"</default>
+            <summary>HiDPI Mode</summary>
+            <description>
+                Set displays to HiDPI or LoDPI mode.
+            </description>
+        </key>
+        
+        <key name='monitor-modes' type='a{ss}'>
+            <default>{}</default>
+            <summary>Add monitor modes</summary>
+            <description>
+                Add monitor modes not listed in the EDID. Set this if your HiDPI display doesn't advertise a half resolution mode.  Not needed with NVIDIA graphics.
+                Example:
+                {'eDP-1': '1600x900  118.25  1600 1696 1856 2112  900 903 908 934 -hsync +vsync'}
+            </description>
+        </key>
+    </schema>
+</schemalist>

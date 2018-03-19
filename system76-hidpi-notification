@@ -25,9 +25,9 @@ HiDPI daemon to workaround X Server scaling limitations.
 
 import time
 start_time = time.monotonic()
-import argparse
 import os
 import sys
+import logging
 
 import signal
 
@@ -35,61 +35,117 @@ import gi
 gi.require_version('Notify', '0.7')
 
 from gi.repository import Notify
-from gi.repository import GLib
+from gi.repository import GLib, Gio
 
+from pydbus import SessionBus
+ 
 import system76driver
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--scale-mode', help='Current scale mode: hidpi or lowdpi')
-parser.add_argument('--gpu-vendor', help='GPU Vendor: intel or nvidia')
-args = parser.parse_args()
+
+def notification_closed(arg):
+    global bus
+    obj = bus.get('com.system76.hidpi')
+    args = obj.getstate()
 
 class HiDPINotification:
-    def __init__(self, scale_mode, gpu_vendor):
-        mainloop = GLib.MainLoop()
+    def __init__(self, mode):
         Notify.init("System76 HiDPI Scaling")
         
-        self.gpu_vendor = gpu_vendor
-        self.scale_mode = scale_mode
-        header = str(scale_mode) + str(gpu_vendor)
-        message = str(scale_mode) + str(gpu_vendor)
-        action = str(scale_mode) + str(gpu_vendor)
+        self.mode = mode
         
-        if self.gpu_vendor == 'intel':
-            if scale_mode == 'lowdpi':
-                header = "Displays Set to Optimized Mode"
-                message = "Select to set resolution and scaling to Native Mode."
-                action = "Revert"
-            else:
-                header = "Displays Set to Native Mode"
-                message = "Select to set resolution and scaling to Optimized Mode."
-                action = "Set Uniform Scale"
-        elif self.gpu_vendor == 'nvidia': # nvidia
-            if scale_mode == 'hidpi':
-                header = "Displays Set to HiDPI Mode"
-                message = "Select for LoDPI, increased performance, and app compatibility."
-                action = "Switch to LoDPI"
-            else:
-                header = "Displays Set to LoDPI Mode"
-                message = "Select to set HiDPI for crisper display."
-                action = "Switch to HiDPI"
+        header = ""
+        message = ""
+        action = ""
+        
+        if mode == 'optimized':
+            header = "Displays Set to Optimized Mode"
+            message = "Select to set resolution and scaling to Native Mode."
+            action = "Revert"
+        elif mode == 'native':
+            header = "Displays Set to Native Mode"
+            message = "Select to set resolution and scaling to Optimized Mode."
+            action = "Set Uniform Scale"
+        elif mode == 'hidpi':
+            header = "Displays Set to HiDPI Mode"
+            message = "Select for LoDPI, increased performance, and app compatibility."
+            action = "Switch to LoDPI"
+        else:
+            header = "Displays Set to LoDPI Mode"
+            message = "Select to set HiDPI for crisper display."
+            action = "Switch to HiDPI"
         
         self.notification = Notify.Notification.new(header, message, "preferences-desktop-display")
-        self.notification.connect("closed", self.notification_closed)
+        self.handler_id = self.notification.connect("closed", notification_closed)
         self.notification.add_action("default", action, self.notification_action)
         self.notification.show()
         
-        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.terminate, None)
+        GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self.exit)
         
-        mainloop.run()
+        self.settings = Gio.Settings('com.system76.hidpi')
         
-    def terminate(self, arg):
+    def terminate(self):
+        self.notification.disconnect(self.handler_id)
         self.notification.close()
-    
-    def notification_closed(self, argy):
+        
+    def exit(self):
+        self.terminate()
         os._exit(0)
     
     def notification_action(self, notification, action=None, data=None):
-        os._exit(76)
+        if self.mode == 'lodpi' or self.mode == 'optimized':
+            self.settings.set_string('mode', 'hidpi')
+        if self.mode == 'hidpi' or self.mode == 'native':
+            self.settings.set_string('mode', 'lodpi')
 
-hidpi = HiDPINotification(args.scale_mode, args.gpu_vendor)
+
+def signal_received(num, object, iface, signal, args):
+    global notification
+    
+    if signal == 'state':
+        if notification != None:
+            notification.terminate()
+        if 'mixed' not in args[1] and 'hidpi' not in args[1]:
+            return
+        elif args[0] == 'hidpi':
+            if 'mixed' in args[1] and 'pixel-doubling' not in args[2]:
+                notification = HiDPINotification('native')
+            else:
+                 notification = HiDPINotification('hidpi')
+        else:
+            if 'mixed' in args[1] and 'pixel-doubling' not in args[2]:
+                 notification = HiDPINotification('optimized')
+            else:
+                 notification = HiDPINotification('lodpi')
+
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    style='{',
+    format='{asctime}  {levelname}  {message}',
+)
+log = logging.getLogger()
+
+if os.getuid() == 0:
+    sys.exit('Error: system76-hidpi-daemon must be run as user')
+log.info('**** Process start at monotonic time %r', start_time)
+
+session_type = os.environ.get('XDG_SESSION_TYPE')
+if 'x11' not in session_type:
+    sys.exit('Error: system76-hidpi-notification must be run on an X11 session.  Stopping...')
+
+
+notification = None
+
+desktop_session = os.environ.get('XDG_CURRENT_DESKTOP')
+if 'GNOME' in desktop_session:
+    bus = SessionBus()
+    bus.subscribe(iface='com.system76.hidpi',
+                   signal='state',
+                   object='/com/system76/hidpi',
+                   signal_fired=signal_received)
+    loop = GLib.MainLoop()
+    GLib.idle_add(notification_closed, None)
+    loop.run()
+else:
+    sys.exit('Error: system76-hidpi-notification requires a GNOME-based desktop environment.  Stopping...')
+
