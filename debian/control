@@ -43,7 +43,7 @@ Architecture: all
 Depends: ${misc:Depends},
     system76-driver (>= ${binary:Version}),
     ubuntu-drivers-common,
-    nvidia-375,
+    nvidia-driver-390,
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
  System76 products with an nvidia GPU.
