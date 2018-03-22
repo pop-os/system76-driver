@@ -525,6 +525,21 @@ class HiDPIAutoscaling:
         self.displays = new_displays
         return False
     
+    def acpid_listen(self):
+        import socket
+
+        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        s.connect("/var/run/acpid.socket")
+        
+        while True:
+            for event in s.recv(4096).decode('utf-8').split('\n'):
+                event = event.split(' ')
+                if event[0] == 'button/lid':
+                    if event[2] == 'open':
+                        self.notification_update_scaling()
+                    elif event[2] == 'close':
+                        pass
+    
     
     def notification_terminate(self, status):
         self.pub.unpublish()
@@ -1016,6 +1031,7 @@ class HiDPIAutoscaling:
             max_negative_offset_x = 0
         if max_negative_offset_y == 32769:
             max_negative_offset_y = 0
+        
         # Offset display positions so all coordinates are non-negative
         for display in display_positions:
             display_positions[display] = (display_positions[display][0] - max_negative_offset_x, display_positions[display][1] - max_negative_offset_y)
@@ -1300,6 +1316,9 @@ class HiDPIAutoscaling:
                 new_mode = mode
                 break
         
+        if self.panel_activation_override(display_name):
+            return ''
+        
         try:
             dpi_set_crtc_config(self.xlib_display,crtc, int(time.time()), int(pan_x), int(pan_y), new_mode['id'], crtc_info['rotation'], crtc_info['outputs'])
         except:
@@ -1443,7 +1462,11 @@ class HiDPIAutoscaling:
                     log.info("Could not set Mutter scale mode only lowdpi")
         # Special cases on INTEL.  Specifically 'native resolution' mode has some quirks.
         elif self.get_gpu_vendor() == 'intel' and force == False:
-            if dbusutil.get_scale() < 2:
+            try:
+                current_scale = dbus.get_scale()
+            except:
+                current_scale = 2
+            if current_scale < 2:
                 for display in self.displays:
                     if self.displays[display]['connected']:
                         # Under some circumstances, Mutter may not set the scaling.
@@ -1451,7 +1474,9 @@ class HiDPIAutoscaling:
                         # a) - the internal panel is hidpi
                         # b) - there is an external panel between 170 and 192 dpi (mutter already sets scale if above 192)
                         #    - and no lowdpi monitors are present (1x scaling is better if there are)
-                        if 'eDP' in display or self.displays[display]['connector_type'] == 'Panel':
+                        if self.panel_activation_override(display):
+                            pass
+                        elif ('eDP' in display or self.displays[display]['connector_type'] == 'Panel'):
                             if self.get_display_dpi(display) > 192:
                                 try:
                                     dbusutil.set_scale(2)
@@ -1529,6 +1554,10 @@ class HiDPIAutoscaling:
     def run(self):
         thread = threading.Thread(target = self.notification_register_dbus, args=(None, self.unforce), daemon=True)
         thread.start()
+        
+        thread = threading.Thread(target = self.acpid_listen)
+        thread.start()
+        
         #fix cassidy bug
         self.update_display_connections()
         # First set appropriate initial display configuration
