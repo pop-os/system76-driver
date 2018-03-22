@@ -1463,7 +1463,7 @@ class HiDPIAutoscaling:
         # Special cases on INTEL.  Specifically 'native resolution' mode has some quirks.
         elif self.get_gpu_vendor() == 'intel' and force == False:
             try:
-                current_scale = dbus.get_scale()
+                current_scale = dbusutil.get_scale()
             except:
                 current_scale = 2
             if current_scale < 2:
