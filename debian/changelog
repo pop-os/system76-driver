@@ -1,9 +1,8 @@
-system76-driver (16.04.50~alpha) xenial; urgency=low
+system76-driver (16.04.50) xenial; urgency=low
 
-  * Daily WIP for 16.04.50
   * firmware: Do not notify for firmware updates if the ME was enabled with switch
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 28 Mar 2018 18:06:14 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 28 Mar 2018 18:15:47 -0600
 
 system76-driver (16.04.49) xenial; urgency=low
 
