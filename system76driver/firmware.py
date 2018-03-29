@@ -515,6 +515,22 @@ def error_dialog(message):
 
     return call_gui(user_name, display_name, environment)
 
+def me_enabled_dialog():
+    user_name, display_name, environ = get_user_session()
+
+    environment = [
+        "FIRMWARE_ME_ENABLED=1",
+        "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
+        "DISPLAY=" + display_name
+    ]
+
+    for var in environ.split("\00"):
+        if len(var.split("=", maxsplit=1)) == 2:
+            environment.append(str(var))
+
+    return call_gui(user_name, display_name, environment)
+
+
 def network_dialog():
     user_name, display_name, environ = get_user_session()
 
@@ -616,7 +632,7 @@ def get_data(model, model_data, is_notification):
     }
 
     for entry in changelog:
-        if (entry.get("bios_me") and not get_me_enabled()) or entry.get("me_hap") or entry.get("me_cr"):
+        if entry.get("bios_me") or entry.get("me_hap") or entry.get("me_cr"):
             entry["me"] = "disabled"
         for component in latest.keys():
             if component in entry and not latest[component]:
@@ -693,16 +709,23 @@ def _run_firmware_updater(reinstall, is_notification):
             latest = data["latest"]
 
             needs_update = False
+            me_is_enabled = False
             for component in current.keys():
-                if component == 'me' and current[component] == 'disabled' and 'disabled' in latest[component]:
-                    pass
+                if component == 'me' and 'disabled' in latest[component]:
+                    if current[component] == 'disabled':
+                        pass
+                    else:
+                        me_is_enabled = True
                 elif current[component] and latest[component] and current[component] != latest[component]:
                     needs_update = True
+
 
             #Don't offer the update if its already installed
             if not needs_update:
                 log.info('No new firmware to install.')
                 if not reinstall:
+                    if me_is_enabled:
+                        me_enabled_dialog()
                     return
 
             #Confirm installation with the user.

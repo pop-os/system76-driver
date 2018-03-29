@@ -72,6 +72,44 @@ class ErrorWindow (Gtk.Window):
             Gtk.main_iteration()
         os._exit(1)
 
+class MEEnabledWindow (Gtk.Window):
+    def __init__(self):
+        print("ME ENABLED")
+        Gtk.Window.__init__(self, title="System76 Firmware Updater")
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
+
+        self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
+        self.add(self.box)
+
+        self.head_label = Gtk.Label("<b>Intel ME is currently enabled.</b>",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.head_label, False, False, 6)
+
+        self.body_label = Gtk.Label("<span><b>You can improve security by disabling the ME:</b></span>\n\n"+ \
+            "    1. Reboot, pressing <b>F2</b> to boot into the BIOS settings.\n\n" +
+            "    2. In the BIOS settings, use the arrow keys to go to the <b>Exit</b> tab.\n\n" +
+            "    3. Select and confirm <b>Load Setup Defaults</b>.\n\n" +
+            "    4. Select and confirm <b>Save changes and reset</b>.\n",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.body_label, False, False, 6)
+
+
+        self.button = Gtk.Button("Ok")
+        self.button.connect('clicked', self.acknowledge)
+        self.box.pack_start(self.button, False, False, 6)
+
+        self.connect("delete-event", Gtk.main_quit)
+        self.show_all()
+        Gtk.main()
+
+    def acknowledge(self, e):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(1)
+
 class NetworkWindow (Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="System76 Firmware Updater")
@@ -586,6 +624,10 @@ def send_notification(data):
 
 if 'FIRMWARE_ERROR' in os.environ:
     ErrorWindow(os.environ.get('FIRMWARE_ERROR'))
+    os._exit(1)
+
+if 'FIRMWARE_ME_ENABLED' in os.environ:
+    MEEnabledWindow()
     os._exit(1)
 
 if 'FIRMWARE_NETWORK' in os.environ:
