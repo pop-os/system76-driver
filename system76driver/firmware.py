@@ -665,12 +665,14 @@ def _run_firmware_updater(reinstall, is_notification):
     if not model_data:
         message = model + " not known."
         log.info(message)
-        error_dialog(message)
+        if not is_notification:
+            error_dialog(message)
         return
     if not model_data.get("check"):
         message = "Updates are not available for " + model + " yet."
         log.info(message)
-        error_dialog(message)
+        if not is_notification:
+            error_dialog(message)
         return
 
     # Download the manifest and check that it is signed by the private master key.
