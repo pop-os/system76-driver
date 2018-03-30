@@ -1,9 +1,8 @@
-system76-driver (16.04.51~alpha) xenial; urgency=low
+system76-driver (16.04.51) xenial; urgency=low
 
-  * Daily WIP for 16.04.51
   * Do not show error dialog if running as a service
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 30 Mar 2018 11:08:53 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 30 Mar 2018 11:12:52 -0600
 
 system76-driver (16.04.50) xenial; urgency=low
 
