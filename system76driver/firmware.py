@@ -179,12 +179,6 @@ MODELS = {
         "ec2": True,
         "me": True,
     },
-    'leow8': {
-        "check": True,
-        "ec": False,
-        "ec2": False,
-        "me": True,
-    }
 }
 
 FIRMWARE_URI = 'https://firmware.system76.com/master/'

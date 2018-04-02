@@ -865,8 +865,8 @@ class HiDPIAutoscaling:
                     display_positions[display] = (0, 0)
         
         # Walk adjacent display graph to generate new positions for each display.
-        max_negative_offset_x = 32767
-        max_negative_offset_y = 32767
+        max_negative_offset_x = 32769 # Keep track of leftmost value and offset all displays by it.
+        max_negative_offset_y = 32769 # Keep track of topmost value and  offset all displays by it.
         for adjacent_display in display_graph:
             if len(display_positions) < 1:
                 display_positions[adjacent_display] = (0, 0)
@@ -948,6 +948,12 @@ class HiDPIAutoscaling:
                     # Now add display to list
                     display_positions[display] = (new_current_display_left, new_current_display_top)
         
+        # If we didn't set an offset coordinate (e.g. when there is only one display)
+        # then set offset to zero, to prevent setting bad display modes.
+        if max_negative_offset_x == 32769:
+            max_negative_offset_x = 0
+        if max_negative_offset_y == 32769:
+            max_negative_offset_y = 0
         # Offset display positions so all coordinates are non-negative
         for display in display_positions:
             display_positions[display] = (display_positions[display][0] - max_negative_offset_x, display_positions[display][1] - max_negative_offset_y)
