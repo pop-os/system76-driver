@@ -161,6 +161,12 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
+    'oryp3-jeremy': {
+        "check": True,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
     'serw9': {
         "check": True,
         "ec": True,
@@ -393,6 +399,8 @@ def _run_firmware_updater(reinstall, is_notification):
     if confirm_dialog(data) == 76:
         if path.isdir("/sys/firmware/efi"):
             log.info("Setting up firmware installation.")
+
+            iface.Schedule(digest)
 
             if success_dialog() == 76:
                 log.info("Restarting computer")
