@@ -515,10 +515,18 @@ def error_dialog(message):
 
     return call_gui(user_name, display_name, environment)
 
-def me_enabled_dialog():
+def me_enabled_dialog(data):
     user_name, display_name, environ = get_user_session()
 
+    if "DESKTOP_SESSION=gnome" in environ:
+        data["desktop"] = 'gnome'
+    elif "XDG_CURRENT_DESKTOP=pop:GNOME" in environ:
+        data["desktop"] = 'gnome'
+    elif "XDG_CURRENT_DESKTOP=ubuntu:GNOME" in environ:
+        data["desktop"] = 'gnome'
+
     environment = [
+        "FIRMWARE_DATA=" + json.dumps(data),
         "FIRMWARE_ME_ENABLED=1",
         "XAUTHORITY=/home/" + user_name + "/.Xauthority", #" + "/run/user/1000/gdm/Xauthority",
         "DISPLAY=" + display_name
@@ -725,7 +733,16 @@ def _run_firmware_updater(reinstall, is_notification):
                 log.info('No new firmware to install.')
                 if not reinstall:
                     if me_is_enabled:
-                        me_enabled_dialog()
+                        try:
+                            fp = open('/etc/system76-firmware.conf', 'r')
+                        except FileNotFoundError:
+                            me_return = me_enabled_dialog(data)
+                            if me_return == 17:
+                                try:
+                                    fp = open('/etc/system76-firmware.conf', 'w')
+                                    fp.write('{"me-enabled-notification": "True"}\n')
+                                except FileNotFoundError:
+                                    return
                     return
 
             #Confirm installation with the user.

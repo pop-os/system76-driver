@@ -19,40 +19,670 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-"""
-Update firmware.
-"""
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('Notify', '0.7')
 
-import time
-import argparse
-import os
-import sys
-import logging
+from gi.repository import Gio
+from gi.repository import Gtk
+from gi.repository import GLib
+from gi.repository import Notify
 
-from system76driver.firmware import run_firmware_updater
+import os, sys
+import json
+import subprocess
+
+from system76driver import get_datafile
+
+USES_NOTIFICATIONS = ['gnome', 'pop:gnome']
 
 NOTIFICATION_TIMEOUT = 24*60*60 # 24 hours
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    style='{',
-    format='{asctime}  {levelname}  {message}',
-)
-log = logging.getLogger()
+class ErrorWindow (Gtk.Window):
+    def __init__(self, message):
+        Gtk.Window.__init__(self, title="System76 Firmware Updater")
+        self.set_size_request(400, 100)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--reinstall', action='store_true', help='install latest firmware even if its already installed')
-parser.add_argument('--notification', action='store_true', help='show notification if firmware not up to date')
-args = parser.parse_args()
+        self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
+        self.add(self.box)
 
-if os.getuid() != 0:
-    sys.exit('Error: system76-firmware must be run as root')
+        self.head_label = Gtk.Label("<b>Could not download firmware.</b>",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.head_label, False, False, 6)
 
-start_time = time.time()
-updater = run_firmware_updater(reinstall=args.reinstall, notification=args.notification)
-end_time = time.time()
+        self.body_label = Gtk.Label(message,
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.body_label, False, False, 6)
 
-#Delay exit until notification timeout
-if args.notification and end_time < start_time + NOTIFICATION_TIMEOUT:
-    log.info((start_time + NOTIFICATION_TIMEOUT) - end_time)
-    time.sleep((start_time + NOTIFICATION_TIMEOUT) - end_time)
+
+        self.button = Gtk.Button("Ok")
+        self.button.connect('clicked', self.acknowledge)
+        self.box.pack_start(self.button, False, False, 6)
+
+        self.connect("delete-event", Gtk.main_quit)
+        self.show_all()
+        Gtk.main()
+
+    def acknowledge(self, e):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(1)
+
+class MEEnabledWindow (Gtk.Window):
+    def __init__(self):
+        print("ME ENABLED")
+        Gtk.Window.__init__(self, title="System76 Firmware Updater")
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
+
+        self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
+        self.add(self.box)
+
+        self.head_label = Gtk.Label("<b>Intel ME is currently enabled.</b>",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.head_label, False, False, 6)
+
+        self.body_label = Gtk.Label("<span><b>You can improve security by disabling the ME:</b></span>\n\n"+ \
+            "    1. Reboot, pressing <b>F2</b> to boot into the BIOS settings.\n\n" +
+            "    2. In the BIOS settings, use the arrow keys to go to the <b>Exit</b> tab.\n\n" +
+            "    3. Select and confirm <b>Load Setup Defaults</b>.\n\n" +
+            "    4. Select and confirm <b>Save changes and reset</b>.\n",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.body_label, False, False, 6)
+
+
+        self.button = Gtk.Button("Ok")
+        self.button.connect('clicked', self.acknowledge)
+        self.box.pack_start(self.button, False, False, 6)
+
+        self.connect("delete-event", Gtk.main_quit)
+        self.show_all()
+        Gtk.main()
+
+    def acknowledge(self, e):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(1)
+
+class NetworkWindow (Gtk.Window):
+    def __init__(self):
+        Gtk.Window.__init__(self, title="System76 Firmware Updater")
+        self.set_size_request(400, 100)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
+
+        self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
+        self.add(self.box)
+
+        self.head_label = Gtk.Label("<b>Could not download firmware.</b>",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.head_label, False, False, 6)
+
+        self.body_label = Gtk.Label("<span>Please check your network connection and try again.</span>",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.body_label, False, False, 6)
+
+
+        self.button = Gtk.Button("Network Settings")
+        self.button.connect('clicked', self.open_network_settings)
+        self.box.pack_start(self.button, False, False, 6)
+
+        self.connect("delete-event", Gtk.main_quit)
+        self.show_all()
+        Gtk.main()
+
+    def open_network_settings(self, e):
+        self.hide()
+
+        try:
+            subprocess.Popen(['gnome-control-center', 'network'])
+        except:
+            log.info("Couldn't open network settings.")
+
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(1)
+
+
+class SuccessWindow (Gtk.Window):
+    def __init__(self):
+        Gtk.Window.__init__(self, title="System76 Firmware Updater")
+        self.set_size_request(400, 100)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
+
+        self.grid = Gtk.Grid()
+        self.grid.props.column_spacing = 12
+        self.grid.props.row_spacing = 12
+        self.grid.props.margin = 12
+        self.add(self.grid)
+
+        self.head_label = Gtk.Label(
+            "Firmware will be updated when you restart your device.",
+            max_width_chars=35,
+            use_markup=True,
+            wrap=True
+        )
+        Gtk.StyleContext.add_class(self.head_label.get_style_context(), "h1")
+
+        self.preupdate_header_label = Gtk.Label("<b>Before You Begin</b>",
+            max_width_chars=70,
+            use_markup=True,
+            wrap=True
+        )
+        Gtk.StyleContext.add_class(self.preupdate_header_label.get_style_context(), "h2")
+
+        self.preupdate_label = Gtk.Label("Make sure the laptop is <b>plugged " +
+            "into power</b> for the entire firmware updating process.\n\n" +
+            "<b>Take a picture of these instructions</b> or pull up " +
+            "s76.co/lfw on a phone or other device for reference.\n\nDuring" +
+            " the firmware updating process, <b>the laptop will restart " +
+            "several times</b>. Prompts will occasionally ask for user " +
+            "involvement.\n\n",
+            max_width_chars=70,
+            use_markup=True,
+            wrap=True
+        )
+
+        self.update_header_label = Gtk.Label("<b>Performing the Update</b>",
+            max_width_chars=70,
+            use_markup=True,
+            wrap=True
+        )
+        Gtk.StyleContext.add_class(self.update_header_label.get_style_context(), "h2")
+
+        self.update_label = Gtk.Label(
+            "    1. Select <b>Restart Now</b> to begin.\n\n" +
+            "    2. The System76 Firmware updater will start on reboot. " +
+            "Once it has initialized, you'll be prompted to <b>press " +
+            "Enter</b> to commence flashing.\n\n" +
+            "    3. The firmware update process will begin, then the system will "+
+            "restart back into the System76 Firmware updater. The fans on " +
+            "the laptop will be on full blast.\n\n" +
+            "    4. The firmware update process will finish. When prompted, " +
+            "<b>press any key</b> to shutdown.\n\n" +
+            "    5. After the laptop powers off, <b>press the power button</b>" +
+            " to turn it back on.\n\n" +
+            "    6. Two small blue boxes will appear in succession with a " +
+            "message about the CMOS. <b>Press Enter</b> to dismiss each one.\n\n" +
+            "    7. The machine will then reboot. Repeatedly press the `F2` button" +
+            " to boot into the BIOS settings. Using the " +
+            "arrow keys, go over to the <b>Exit</b> tab.\n\n" +
+            "    8. Select and confirm <b>Load Setup Defaults</b>.\n\n" +
+            "    9. Select and confirm <b>Save changes and reset</b>.\n\n" +
+            "    10. Once the laptop restarts, the firmware will be up to date!",
+            max_width_chars=170,
+            use_markup=True,
+            wrap=True
+        )
+
+        self.button = Gtk.Button("Restart Later")
+        self.button.connect('clicked', self.acknowledge)
+        self.button.props.width_request = 30
+        self.button.props.halign = Gtk.Align.START
+        self.button.props.margin_top = 12
+
+        self.restart_button = Gtk.Button("Restart Now")
+        self.restart_button.connect('clicked', self.restart)
+        self.restart_button.props.width_request = 30
+        self.restart_button.props.halign = Gtk.Align.END
+        self.restart_button.props.margin_top = 12
+        Gtk.StyleContext.add_class(self.restart_button.get_style_context(), "destructive-action")
+
+        self.grid.attach(self.head_label, 0, 0, 2, 1)
+        self.grid.attach(self.preupdate_header_label, 0, 1, 2, 1)
+        self.grid.attach(self.preupdate_label, 0, 2, 2, 1)
+        self.grid.attach(self.update_header_label, 0, 3, 2, 1)
+        self.grid.attach(self.update_label, 0, 4, 2, 1)
+        self.grid.attach(self.button,         0, 5, 1, 1)
+        self.grid.attach(self.restart_button, 1, 5, 1, 1)
+
+        self.connect("delete-event", Gtk.main_quit)
+        self.show_all()
+        Gtk.main()
+
+    def acknowledge(self, e):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(1)
+
+    def restart(self, e):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(76)
+
+
+class FirmwareWindow (Gtk.Window):
+    def __init__(self, data):
+        self.data = data
+        current = data["current"]
+        latest = data["latest"]
+
+        needs_update = False
+        for component in current.keys():
+            if current[component] and latest[component] and current[component] != latest[component]:
+                needs_update = True
+
+        Gtk.Window.__init__(self, title="System76 Firmware Updater")
+        self.set_size_request(480, 200)
+        self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
+        self.add(self.box)
+
+        if data["desktop"] == 'gnome':
+            self.titlebar = Gtk.HeaderBar()
+            self.titlebar.set_show_close_button(True)
+
+            image = Gtk.Image()
+            image.set_from_file(get_datafile('76icon.svg'))
+            image.set_padding(6, 6)
+            self.titlebar.set_custom_title(image)
+            self.set_titlebar(self.titlebar)
+
+        self.create_notification_ui(data)
+        self.create_version_ui(current, latest)
+
+        self.create_update_available_label(needs_update)
+        self.create_changelog_ui(data["changelog"])
+        self.create_buttons(data["notification"], needs_update, data["flash"])
+
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
+
+        self.connect("delete-event", Gtk.main_quit)
+        self.show_all()
+
+        if needs_update == True:
+            self.changelog_expander.set_expanded(True)
+
+        #show simplified UI if launched as notification. User can click for details.
+        if data["notification"] == True and needs_update == True:
+            self.grid.hide()
+            self.note.hide()
+            self.changelog_expander.hide()
+            if data["desktop"] == 'gnome':
+                self.titlebar.set_show_close_button(False)
+        else:
+            self.notification_area.hide()
+
+        Gtk.main()
+
+    def create_notification_ui(self, data):
+        self.notification_area = Gtk.VBox(halign=Gtk.Align.CENTER)
+
+        self.notification_label = Gtk.Label(
+            "New Firmware is available.\n" +
+            "Install on next reboot?",
+            valign=Gtk.Align.START,
+            halign=Gtk.Align.START
+        )
+        self.notification_area.pack_start(self.notification_label, False, False, 0)
+
+        changes = get_changes(data, markup=True)
+        if changes:
+            self.notification_label.set_markup(
+                "<b>New firmware is available with the following features:</b>"
+            )
+            changes_label = Gtk.Label(changes,
+                                      use_markup=True,
+                                      valign=Gtk.Align.START,
+                                      halign=Gtk.Align.START,
+                                      vexpand=False)
+            self.notification_area.pack_start(changes_label, False, False, 6)
+
+        details_button = Gtk.LinkButton("",
+                                        "Show Details",
+                                        has_tooltip=False,
+                                        relief=Gtk.ReliefStyle.NONE,
+                                        halign=Gtk.Align.FILL)
+        details_button.connect('clicked', self.show_details)
+        self.notification_area.pack_start(details_button, False, False, 0)
+
+        self.box.pack_start(self.notification_area, False, False, 6)
+
+    def create_version_ui(self, current, latest):
+        self.grid = Gtk.Grid(column_homogeneous=False,
+                             column_spacing=10,
+                             halign=Gtk.Align.CENTER)
+
+        row = 0
+        col = 0
+        for l in ['Installed', 'Latest']:
+            label = Gtk.Label()
+            label.set_markup('<b>' + l + '</b>')
+            label.set_xalign(0.5)
+            self.grid.attach(label, col+1, row, 1, 1)
+            col = col + 1
+
+        row = 2
+        for key in ['BIOS', 'EC', 'EC2', 'ME']:
+            key_label = Gtk.Label('<b>' + key + '</b>', use_markup=True)
+            key_label.set_xalign(1)
+            self.grid.attach(key_label, 0, row, 1, 1)
+            row = row + 1
+
+        for col in [1,2]:
+            row = 2
+            for component in ["bios", "ec", "ec2", "me"]:
+                if col == 1:
+                    value = current[component]
+                else:
+                    value = latest[component]
+
+                if not value:
+                    value = "N/A"
+
+                value_label = Gtk.Label(value)
+                value_label.set_xalign(0)
+                self.grid.attach(value_label, col, row, 1, 1)
+                row = row + 1
+
+        self.box.pack_start(self.grid, False, False, 3)
+
+    def create_update_available_label(self, needs_update):
+        self.note = Gtk.Label("Your computer's firmware is up-to-date.")
+        if needs_update:
+            self.note.set_markup("<b>Updates are available for your computer.</b>")
+        self.note.set_vexpand(False)
+        self.box.pack_start(self.note, False, False, 3)
+
+    def create_changelog_ui(self, changelog):
+        self.changelog_expander = Gtk.Expander(resize_toplevel=True, expanded=False)
+        self.changelog_expander.set_label('Change History')
+
+        scrollwindow = Gtk.ScrolledWindow(min_content_height=100,
+                                          min_content_width=400,
+                                          max_content_height=150,
+                                          vexpand=True)
+
+        changelog_vbox = Gtk.VBox(valign=Gtk.Align.START)
+
+        row = 0
+        for version in changelog:
+            self.changelog_grid = Gtk.Grid(column_spacing=10)
+            description_label = Gtk.Label(version['description'],
+                                          xalign=0,
+                                          yalign=0)
+            self.changelog_grid.attach(description_label, 3, row, 4, 4)
+
+            for key in ['bios', 'ec', 'ec2', 'me']:
+                if key in version:
+                    value = version[key]
+                else:
+                    value = "N/A"
+
+                key_label = Gtk.Label(key, xalign=0)
+                value_label = Gtk.Label(value, xalign=1)
+                self.changelog_grid.attach(key_label, 0, row, 1, 1)
+                self.changelog_grid.attach(value_label, 1, row, 1, 1)
+                row = row + 1
+
+            changelog_vbox.pack_start(self.changelog_grid, False, False, 3)
+            changelog_vbox.pack_start(Gtk.Separator(), True, False, 3)
+
+        scrollwindow.add(changelog_vbox)
+
+        self.changelog_expander.add(scrollwindow)
+        self.box.pack_start(self.changelog_expander, True, True, 3)
+
+    def create_buttons(self, is_notification, needs_update, can_flash):
+        question_label = Gtk.Label("<b>Install firmware during the next reboot?</b>",
+                                   use_markup=True,
+                                   halign=Gtk.Align.CENTER)
+        self.box.pack_start(question_label, False, False, 0)
+
+        self.buttonbox = Gtk.HBox(halign=Gtk.Align.CENTER)
+        self.box.pack_start(self.buttonbox, False, False, 12)
+        if is_notification == True:
+            self.create_remind_later_button()
+        self.create_install_button(needs_update, can_flash)
+
+    def create_remind_later_button(self):
+        self.remind_later_button = Gtk.Button("Remind Me Later",
+                                              relief=Gtk.ReliefStyle.NONE,
+                                              halign=Gtk.Align.FILL,
+                                              vexpand=True)
+
+        self.remind_later_button.get_style_context().remove_class(Gtk.STYLE_CLASS_FLAT)
+        self.remind_later_button.connect('clicked', self.remind_later)
+        self.buttonbox.pack_start(self.remind_later_button, True, True, 6)
+
+    def create_install_button(self, needs_update, can_flash):
+        image = Gtk.Image()
+        image.set_from_file(get_datafile('download-firmware-icon-48.svg'))
+        image.set_padding(6, 0)
+
+        if can_flash:
+            if needs_update:
+                button_text = "Install Firmware"
+            else:
+                button_text = "Reinstall Firmware"
+        else:
+            button_text = "Visit Firmware Site"
+
+        self.install_button = Gtk.Button(button_text,
+                                         always_show_image=True,
+                                         relief=Gtk.ReliefStyle.NONE,
+                                         halign=Gtk.Align.CENTER,
+                                         image=image,
+                                         image_position=Gtk.PositionType.LEFT,
+                                         width_request=250,
+                                         height_request=0)
+
+        btnlabel = self.install_button.get_child().get_child().get_children()[1]
+        btnlabel.set_valign(Gtk.Align.CENTER)
+
+        self.install_button.get_style_context().add_class(Gtk.STYLE_CLASS_SUGGESTED_ACTION)
+        self.install_button.get_style_context().remove_class(Gtk.STYLE_CLASS_FLAT)
+        if can_flash:
+            self.install_button.connect('clicked', self.run_firmware_updater)
+        else:
+            self.install_button.connect('clicked', self.visit_firmware_site)
+        self.buttonbox.pack_start(self.install_button, True, True, 6)
+
+        self.install_button.grab_focus()
+
+    def show_details(self, e):
+        #hide
+        self.notification_area.hide()
+        #show
+        self.grid.show()
+        self.note.show()
+        self.changelog_expander.show()
+
+    def run_firmware_updater(self, e):
+        self.hide()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(76)
+
+    def visit_firmware_site(self, e):
+        self.hide()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+
+        try:
+            subprocess.Popen([
+                "xdg-open",
+                "https://github.com/system76/firmware-desktop/tree/master/" + self.data["model"]
+            ])
+        except:
+            log.info("Couldn't open firmware site.")
+
+        os._exit(1)
+
+    def remind_later(self, e):
+        self.hide()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        os._exit(1)
+
+class App(Gtk.Application):
+    def __init__(self, data):
+        self.data = data
+        Gtk.Application.__init__(self,
+                         application_id="com.system76.firmware-updater",
+                         flags=Gio.ApplicationFlags.FLAGS_NONE)
+
+    def do_activate(self):
+        self.window = FirmwareWindow(self.data)
+        #If window closes, exit without updating firmware.
+        os._exit(1)
+
+got_action = [False]
+
+def notification_closed(argy):
+    global got_action
+    if got_action[0] == False:
+        os._exit(1)
+    else:
+        try:
+            app = App()
+            app.run(sys.argv)
+        except:
+            return
+
+def me_enabled_notification_action(notification, action=None, data=None):
+    window = MEEnabledWindow()
+    os._exit(1)
+
+def notification_action(notification, action=None, data=None):
+    global got_action
+    got_action[0] = True
+
+    app = App(data)
+    app.run(sys.argv)
+
+def get_changes_list(data):
+    changelog = data['changelog']
+    current = data['current']
+
+    found = {
+        "bios": not current["bios"],
+        "ec": not current["ec"],
+        "ec2": not current["ec2"],
+        "me": not current["me"],
+    }
+
+    changes_list = []
+
+    for entry in changelog:
+        found_all = True
+        for component in found.keys():
+            if component in entry and entry[component] and current[component]:
+                if current[component] == entry[component]:
+                    found[component] = True
+            elif not current[component]:
+                found[component] = True
+
+            if not found[component]:
+                found_all = False
+
+        if not found_all:
+            changes_list.append(entry['description'])
+        else:
+            break
+
+    if changes_list == []:
+        changes_list.append('No Changes')
+
+    return changes_list
+
+def get_changes(data, markup=False):
+    changes_list = get_changes_list(data)
+
+    if markup:
+        changes = "<span>"
+        for change in changes_list:
+            changes = changes + "<span> - " + change + "</span>\n"
+        return changes[:-1] + "</span>"
+    else:
+        changes = ""
+        for change in changes_list:
+            if changes == "":
+                changes = str(change)
+            else:
+                changes = changes  + ", " + str(change)
+        return changes
+
+def send_me_enabled_notification(data):
+    mainloop = GLib.MainLoop()
+    
+    #THIS NEEDS TO HAVE SEPARATE FUNCTIONS FOR EACH KIND OF NOTIFICATION
+    Notify.init("system76-firmware-dialog")
+    notification = Notify.Notification.new("Intel ME is still enabled.", get_changes(data))
+    notification.connect("closed", notification_closed)
+    notification.add_action("default", "Default Action", me_enabled_notification_action, data)
+    notification.add_action("update_firmware", "Install Firmware...", me_enabled_notification_action, data)
+    notification.show()
+
+    # Cancel this notification just before then next one starts.
+    GLib.timeout_add_seconds(NOTIFICATION_TIMEOUT, notification.close)
+    mainloop.run()
+
+def send_notification(data, type="firmware"):
+    mainloop = GLib.MainLoop()
+    
+    Notify.init("system76-firmware-dialog")
+    
+    if type == 'firmware':
+        header = "New firmware available..."
+        message = get_changes(data)
+        default_action = notification_action
+        button_action = notification_action
+        button_message = "Install Firmware..."
+    elif type == "me-enabled":
+        header = "Intel ME is still enabled."
+        message = "Select for instructions to disable the ME and improve security."
+        default_action = me_enabled_notification_action
+        button_action = None
+        button_message = None
+        
+    
+    #THIS NEEDS TO HAVE SEPARATE FUNCTIONS FOR EACH KIND OF NOTIFICATION
+    
+    notification = Notify.Notification.new(header, message)
+    notification.connect("closed", notification_closed)
+    notification.add_action("default", "Default Action", default_action, data)
+    
+    if button_action:
+        notification.add_action("update_firmware", button_message, button_action, data)
+    
+    notification.show()
+
+    # Cancel this notification just before then next one starts.
+    GLib.timeout_add_seconds(NOTIFICATION_TIMEOUT, notification.close)
+    mainloop.run()
+
+if 'FIRMWARE_ERROR' in os.environ:
+    ErrorWindow(os.environ.get('FIRMWARE_ERROR'))
+    os._exit(1)
+
+if 'FIRMWARE_NETWORK' in os.environ:
+    NetworkWindow()
+    os._exit(1)
+
+if 'FIRMWARE_SUCCESS' in os.environ:
+    SuccessWindow()
+    os._exit(1)
+
+data = json.loads(os.environ.get('FIRMWARE_DATA'))
+
+# Show a notification if the desktop environment has the right capabilities
+# Gnome allows the user to interact with the notification and open our dialog.
+# Unity doesn't allow interaction, so we skip straight to the message dialog.
+if data["notification"] and data["desktop"] in USES_NOTIFICATIONS:
+    if 'FIRMWARE_ME_ENABLED' in os.environ:
+        send_notification(data, type='me-enabled')
+        os._exit(1)
+    send_notification(data)
+else:
+    app = App(data)
+    app.run(sys.argv)
