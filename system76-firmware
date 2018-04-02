@@ -25,8 +25,6 @@ Update firmware.
 
 import time
 import argparse
-import os
-import sys
 import logging
 
 from system76driver.firmware import run_firmware_updater
@@ -44,9 +42,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--reinstall', action='store_true', help='install latest firmware even if its already installed')
 parser.add_argument('--notification', action='store_true', help='show notification if firmware not up to date')
 args = parser.parse_args()
-
-if os.getuid() != 0:
-    sys.exit('Error: system76-firmware must be run as root')
 
 start_time = time.time()
 updater = run_firmware_updater(reinstall=args.reinstall, notification=args.notification)
