@@ -1,3 +1,9 @@
+system76-driver (17.10.27~alpha) artful; urgency=low
+
+  * Daily WIP for 17.10.27
+
+ -- David Jordan <david2@system76.com>  Tue, 03 Apr 2018 13:00:18 -0600
+
 system76-driver (17.10.26) artful; urgency=low
 
   * firmware: Do not notify for firmware updates if the ME was enabled with switch
