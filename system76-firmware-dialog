@@ -72,6 +72,53 @@ class ErrorWindow (Gtk.Window):
             Gtk.main_iteration()
         os._exit(1)
 
+class MEEnabledWindow (Gtk.Window):
+    def __init__(self):
+        Gtk.Window.__init__(self, title="System76 Firmware Updater")
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_resizable(False)
+
+        self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
+        self.add(self.box)
+
+        self.head_label = Gtk.Label("<b>Intel ME is currently enabled.</b>",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.head_label, False, False, 6)
+
+        self.body_label = Gtk.Label("<span><b>You can improve security by disabling the ME:</b></span>\n\n"+ \
+            "    1. Reboot, pressing <b>F2</b> to boot into the BIOS settings.\n\n" +
+            "    2. In the BIOS settings, use the arrow keys to go to the <b>Exit</b> tab.\n\n" +
+            "    3. Select and confirm <b>Load Setup Defaults</b>.\n\n" +
+            "    4. Select and confirm <b>Save changes and reset</b>.\n",
+                               use_markup=True,
+                               wrap=True)
+        self.box.pack_start(self.body_label, False, False, 6)
+        
+        self.do_not_show = False
+        self.do_not_show_button = Gtk.CheckButton("Don't show this message again.")
+        self.do_not_show_button.connect('clicked', self.set_do_not_show)
+        self.box.pack_start(self.do_not_show_button, False, False, 6)
+
+
+        self.button = Gtk.Button("Ok")
+        self.button.connect('clicked', self.acknowledge)
+        self.box.pack_start(self.button, False, False, 6)
+
+        self.connect("delete-event", Gtk.main_quit)
+        self.show_all()
+        Gtk.main()
+    
+    def set_do_not_show(self, e):
+        self.do_not_show = True
+    
+    def acknowledge(self, e):
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        if self.do_not_show:
+            os._exit(17)
+        os._exit(1)
+
 class NetworkWindow (Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="System76 Firmware Updater")
@@ -487,14 +534,18 @@ class FirmwareWindow (Gtk.Window):
         os._exit(1)
 
 class App(Gtk.Application):
-    def __init__(self, data):
+    def __init__(self, data, ntype):
         self.data = data
+        self.notification_type = ntype
         Gtk.Application.__init__(self,
                          application_id="com.system76.firmware-updater",
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
 
     def do_activate(self):
-        self.window = FirmwareWindow(self.data)
+        if self.notification_type == 'firmware':
+            self.window = FirmwareWindow(self.data)
+        else:
+            self.window = MEEnabledWindow()
         #If window closes, exit without updating firmware.
         os._exit(1)
 
@@ -514,8 +565,10 @@ def notification_closed(argy):
 def notification_action(notification, action=None, data=None):
     global got_action
     got_action[0] = True
+    
+    global notification_type
 
-    app = App(data)
+    app = App(data, notification_type)
     app.run(sys.argv)
 
 def get_changes_list(data):
@@ -570,14 +623,31 @@ def get_changes(data, markup=False):
                 changes = changes  + ", " + str(change)
         return changes
 
-def send_notification(data):
+def send_notification(data, type="firmware"):
     mainloop = GLib.MainLoop()
-
+    
     Notify.init("system76-firmware-dialog")
-    notification = Notify.Notification.new("New firmware available...", get_changes(data))
+    
+    button_action = None
+    button_message = None
+    if type == 'firmware':
+        header = "New firmware available..."
+        message = get_changes(data)
+        button_action = notification_action
+        button_message = "Install Firmware..."
+        icon = "software-update-urgent"
+    elif type == "me-enabled":
+        header = "Intel ME is still enabled."
+        message = "Select for instructions to disable the ME and improve security."
+        icon = "security-low"
+    
+    notification = Notify.Notification.new(header, message, icon)
     notification.connect("closed", notification_closed)
     notification.add_action("default", "Default Action", notification_action, data)
-    notification.add_action("update_firmware", "Install Firmware...", notification_action, data)
+    
+    if button_action:
+        notification.add_action("update_firmware", button_message, button_action, data)
+    
     notification.show()
 
     # Cancel this notification just before then next one starts.
@@ -598,11 +668,16 @@ if 'FIRMWARE_SUCCESS' in os.environ:
 
 data = json.loads(os.environ.get('FIRMWARE_DATA'))
 
+if 'FIRMWARE_ME_ENABLED' in os.environ:
+    notification_type = 'me-enabled'
+else:
+    notification_type = 'firmware'
+
 # Show a notification if the desktop environment has the right capabilities
 # Gnome allows the user to interact with the notification and open our dialog.
 # Unity doesn't allow interaction, so we skip straight to the message dialog.
 if data["notification"] and data["desktop"] in USES_NOTIFICATIONS:
-    send_notification(data)
+    send_notification(data, type=notification_type)
 else:
-    app = App(data)
+    app = App(data, notification_type)
     app.run(sys.argv)
