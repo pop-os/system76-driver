@@ -1,3 +1,9 @@
+system76-driver (17.10.28~alpha) artful; urgency=low
+
+  * Daily WIP for 17.10.28
+
+ -- David Jordan <david2@system76.com>  Wed, 04 Apr 2018 10:48:20 -0600
+
 system76-driver (17.10.27) artful; urgency=low
 
   * Send notification with instructions to disable if the ME is enabled.
