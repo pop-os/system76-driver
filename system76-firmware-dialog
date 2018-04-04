@@ -668,17 +668,16 @@ if 'FIRMWARE_SUCCESS' in os.environ:
 
 data = json.loads(os.environ.get('FIRMWARE_DATA'))
 
-notification_type = 'firmware'
+if 'FIRMWARE_ME_ENABLED' in os.environ:
+    notification_type = 'me-enabled'
+else:
+    notification_type = 'firmware'
 
 # Show a notification if the desktop environment has the right capabilities
 # Gnome allows the user to interact with the notification and open our dialog.
 # Unity doesn't allow interaction, so we skip straight to the message dialog.
 if data["notification"] and data["desktop"] in USES_NOTIFICATIONS:
-    if 'FIRMWARE_ME_ENABLED' in os.environ:
-        notification_type = 'me-enabled'
-    else: 
-        notification_type = 'firmware'
     send_notification(data, type=notification_type)
 else:
-    app = App(data)
+    app = App(data, notification_type)
     app.run(sys.argv)
