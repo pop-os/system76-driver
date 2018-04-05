@@ -1,9 +1,8 @@
-system76-driver (18.04.6~alpha) bionic; urgency=low
+system76-driver (18.04.6) bionic; urgency=low
 
-  * Daily WIP for 18.04.6
   * Switch to system76-firmware-daemon
 
- -- Jeremy Soller <jeremy@system76.com>  Thu, 05 Apr 2018 11:09:33 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 05 Apr 2018 11:19:47 -0600
 
 system76-driver (18.04.5) bionic; urgency=low
 
