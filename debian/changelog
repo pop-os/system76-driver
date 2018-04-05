@@ -1,6 +1,7 @@
 system76-driver (18.04.9~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.9
+  * Remove hidpi-daemon files
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 05 Apr 2018 16:37:15 -0600
 
