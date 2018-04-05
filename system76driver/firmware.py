@@ -590,7 +590,7 @@ def process_changelog(changelog):
 
         for component in ['bios_me', 'bios_set', 'me_hap', 'me_cr']:
             if component in version.keys():
-                entry[component] = str(version[component])
+                entry[component] = version[component]
         version_entries.append(entry)
     return version_entries
 
