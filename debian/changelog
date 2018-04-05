@@ -1,3 +1,10 @@
+system76-driver (18.04.7) bionic; urgency=medium
+
+  * Use Pop build system
+  * Depend on system76-dkms
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 05 Apr 2018 13:40:49 -0600
+
 system76-driver (18.04.6) bionic; urgency=low
 
   * Switch to system76-firmware-daemon
