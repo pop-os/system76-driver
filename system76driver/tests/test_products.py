@@ -29,7 +29,7 @@ from system76driver import actions, products
 class TestConstants(TestCase):
     def test_PRODUCTS(self):
         self.assertIsInstance(products.PRODUCTS, dict)
-        self.assertEqual(len(products.PRODUCTS), 147)
+        self.assertEqual(len(products.PRODUCTS), 148)
         for (key, value) in products.PRODUCTS.items():
             self.assertIsInstance(key, str)
             self.assertIsInstance(value, dict)
