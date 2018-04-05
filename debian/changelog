@@ -1,6 +1,7 @@
 system76-driver (16.04.52~alpha) xenial; urgency=low
 
   * Daily WIP for 16.04.52
+  * Fix ME field parsing
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 05 Apr 2018 15:15:02 -0600
 
