@@ -182,6 +182,7 @@ TABLES = {
         'oryp3': 'oryp3',
         'oryp3-ess': 'oryp3-ess',
         'oryp3-b': 'oryp3-b',
+        'oryp3-jeremy': 'oryp3-jeremy',
         'ratv6': 'ratv6',
         'ratu1': 'ratu1',
         'ratu2': 'ratu2',

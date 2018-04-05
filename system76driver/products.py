@@ -485,6 +485,10 @@ PRODUCTS = {
             actions.hidpi_scaling,
         ],
     },
+    'oryp3-jeremy': {
+        'name': 'Oryx Pro',
+        'drivers': [],
+    },
 
     # Pangolin:
     'panp4i': {
