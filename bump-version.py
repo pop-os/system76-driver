@@ -35,7 +35,7 @@ from system76driver.tests.helpers import TempDir
 
 
 DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful', 'bionic')
-ALPHA = '~alpha'
+ALPHA = '~~alpha'
 
 TREE = path.dirname(path.abspath(__file__))
 assert TREE == sys.path[0]
