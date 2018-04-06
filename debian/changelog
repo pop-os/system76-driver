@@ -1,9 +1,8 @@
-system76-driver (17.10.31~alpha) artful; urgency=low
+system76-driver (17.10.31) artful; urgency=low
 
-  * Daily WIP for 17.10.31
   * Update control file to nvidia-384
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 06 Apr 2018 09:22:55 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 06 Apr 2018 09:26:59 -0600
 
 system76-driver (17.10.30) artful; urgency=low
 
