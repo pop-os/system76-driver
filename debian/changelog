@@ -1,9 +1,8 @@
-system76-driver (18.04.10~~alpha) bionic; urgency=low
+system76-driver (18.04.10) bionic; urgency=low
 
-  * Daily WIP for 18.04.10
   * Test new maintainer scripts
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 06 Apr 2018 09:42:36 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 06 Apr 2018 09:46:28 -0600
 
 system76-driver (18.04.9) bionic; urgency=low
 
