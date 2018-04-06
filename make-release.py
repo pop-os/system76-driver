@@ -36,7 +36,7 @@ from system76driver.tests.helpers import TempDir
 
 DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful', 'bionic')
 PPA = 'ppa:system76-dev/pre-stable'
-ALPHA = '~alpha'
+ALPHA = '~~alpha'
 
 TREE = path.dirname(path.abspath(__file__))
 assert TREE == sys.path[0]
@@ -44,15 +44,12 @@ assert os.getcwd() == TREE
 
 CHANGELOG = path.join(TREE, 'debian', 'changelog')
 SETUP = path.join(TREE, 'setup.py')
+INIT = path.join(TREE, 'system76driver', '__init__.py')
 DSC_NAME =     'system76-driver_{}.dsc'.format(__version__)
-CHANGES_NAME = 'system76-driver_{}_source.changes'.format(__version__)
-PARENT = path.dirname(TREE)
-DSC = path.join(PARENT, DSC_NAME)
-CHANGES = path.join(PARENT, CHANGES_NAME)
 
 assert path.isfile(CHANGELOG)
 assert path.isfile(SETUP)
-assert path.isfile(path.join(TREE, 'system76driver', '__init__.py'))
+assert path.isfile(INIT)
 
 
 def confirm():
@@ -109,7 +106,7 @@ def parse_version_line(line):
     if ALPHA not in line:
         raise ValueError('Missing {!r} in version:\n{!r}'.format(ALPHA, line))
     m = re.match(
-        '^system76-driver \(([\.0-9]+)~alpha\) ([a-z]+); urgency=low$', line
+        '^system76-driver \(([\.0-9]+)' + ALPHA + '\) ([a-z]+); urgency=low$', line
     )
     if m is None:
         raise ValueError('bad version line[0]:\n{!r}'.format(line))
@@ -126,7 +123,7 @@ def parse_version_line(line):
 
 def build_version_line(line):
     parse_version_line(line)
-    return line.replace('~alpha', '')
+    return line.replace(ALPHA, '')
 
 
 def build_author_line():
@@ -193,26 +190,11 @@ print('Will release {!r} for {!r}'.format(version, distro))
 if not confirm():
     abort()
 
-# Make sure DSC and CHANGES file for this version don't arleady exist:
-for filename in (DSC, CHANGES):
-    if path.isfile(filename):
-        abort('Already exists: {!r}'.format(filename))
-
 # Commit and tag:
 check_call(['git', 'commit', CHANGELOG, '-m', 'Release {}'.format(version)])
 check_call(['git', 'push'])
 check_call(['git', 'tag', version])
 check_call(['git', 'push', 'origin', 'tag', version])
-
-# Build source package:
-check_call(['gbp', 'buildpackage', '--git-ignore-branch', '-S'])
-
-# Confirm before we dput to PPA:
-print('-' * 80)
-print('Changes file is {!r}'.format(CHANGES))
-print('Will upload to {!r}'.format(PPA))
-if confirm():
-    check_call(['dput', PPA, CHANGES])
 
 # We're done:
 print('-' * 80)
