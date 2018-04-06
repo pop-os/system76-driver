@@ -1,9 +1,8 @@
-system76-driver (16.04.53~alpha) xenial; urgency=low
+system76-driver (16.04.53) xenial; urgency=low
 
-  * Daily WIP for 16.04.53
   * Update control file to nvidia-384
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 06 Apr 2018 09:22:16 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 06 Apr 2018 09:27:34 -0600
 
 system76-driver (16.04.52) xenial; urgency=low
 
