@@ -1,9 +1,8 @@
-system76-driver (16.04.54~~alpha) xenial; urgency=low
+system76-driver (16.04.54) xenial; urgency=low
 
-  * Daily WIP for 16.04.54
   * Update message when machine is not supported for firmware updates
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 06 Apr 2018 10:17:40 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 13 Apr 2018 16:22:22 -0600
 
 system76-driver (16.04.53) xenial; urgency=low
 
