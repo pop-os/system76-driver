@@ -662,14 +662,8 @@ def _run_firmware_updater(reinstall, is_notification):
     # For now, whitelist the models that can update firmware
     model = get_model()
     model_data = MODELS.get(model)
-    if not model_data:
-        message = model + " not known."
-        log.info(message)
-        if not is_notification:
-            error_dialog(message)
-        return
-    if not model_data.get("check"):
-        message = "Updates are not available for " + model + " yet."
+    if not model_data or not model_data.get("check"):
+        message = "Updates are currently unavailable for " + model
         log.info(message)
         if not is_notification:
             error_dialog(message)
