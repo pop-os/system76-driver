@@ -71,6 +71,12 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
+    'galp3-b': {
+        "check": True,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
     'gaze10': {
         "check": True,
         "ec": True,
@@ -161,7 +167,7 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
-    'oryp3-jeremy': {
+    'oryp4': {
         "check": True,
         "ec": True,
         "ec2": False,

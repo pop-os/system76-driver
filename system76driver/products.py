@@ -151,6 +151,12 @@ PRODUCTS = {
             actions.hidpi_scaling,
 	    ],
     },
+    'galp3-b': {
+        'name': 'Galago Pro',
+        'drivers': [
+            actions.internal_mic_gain,
+	    ],
+    },
 
     # Gazelle:
     'gazp1': {
@@ -485,9 +491,11 @@ PRODUCTS = {
             actions.hidpi_scaling,
         ],
     },
-    'oryp3-jeremy': {
+    'oryp4': {
         'name': 'Oryx Pro',
-        'drivers': [],
+        'drivers': [
+            actions.hidpi_scaling,
+        ],
     },
 
     # Pangolin:

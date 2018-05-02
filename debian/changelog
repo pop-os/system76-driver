@@ -1,6 +1,7 @@
 system76-driver (18.04.12~~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.12
+  * Add oryp4 and galp3-b
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 02 May 2018 15:39:33 -0600
 
