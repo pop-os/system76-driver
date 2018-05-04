@@ -371,7 +371,7 @@ def _run_firmware_updater(reinstall, is_notification):
     try:
         digest, changelog_json = iface.Download()
         changelog = process_changelog(json.loads(changelog_json))
-    except Exception as e:
+    except Exception:
         message = "Failed to download firmware for " + model
         log.exception(message)
         if not is_notification:
