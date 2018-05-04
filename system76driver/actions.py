@@ -26,6 +26,7 @@ import os
 from os import path
 import stat
 import re
+import json
 from base64 import b32encode
 import datetime
 import logging
@@ -92,6 +93,11 @@ def backup_filename(filename, date=None):
 def update_grub():
     log.info('Calling `update-grub`...')
     SubProcess.check_call(['update-grub'])
+
+
+def update_kernelstub():
+    log.info('Calling `kernelstub`...')
+    SubProcess.check_call(['kernelstub'])
 
 
 def parse_lspci(text):
@@ -243,8 +249,12 @@ class ActionRunner:
                 log.info('Skipping %r as it was already applied', name)
 
         if any(action.update_grub for action in self.needed):
-            yield _('Running `update-grub`')
-            update_grub()
+            if path.isfile(path.join('/', 'usr', 'bin', 'kernelstub')):
+                yield _('Running `kernelstub`')
+                update_kernelstub()
+            else:
+                yield _('Running `update-grub`')
+                update_grub()
 
 
 class FileAction(Action):
@@ -319,7 +329,12 @@ class GrubAction(Action):
     insert_default = False
 
     def __init__(self, etcdir='/etc'):
-        self.filename = path.join(etcdir, 'default', 'grub')
+        if path.isfile(path.join('/', 'usr', 'bin', 'kernelstub')):
+            self.mode = 'kernelstub'
+            self.filename = path.join(etcdir, 'kernelstub', 'configuration')
+        else:
+            self.mode = 'grub'
+            self.filename = path.join(etcdir, 'default', 'grub')
 
     def read(self):
         return open(self.filename, 'r').read()
@@ -341,6 +356,14 @@ class GrubAction(Action):
             else:
                 yield line
           
+    def get_current_kernel_options(self):
+        content = self.read()
+        c = json.loads(content)
+        if 'user' in c:
+            if 'kernel_options' in c['default']:
+                return c['user']['kernel_options']
+        raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
+    
     def get_current_cmdline(self):
         for line in self.read().splitlines():
             match = CMDLINE_RE.match(line)
@@ -363,6 +386,14 @@ class GrubAction(Action):
             else:
                 yield line
 
+    def iter_lines_kernelstub(self, content):
+        c = json.loads(content)
+        if 'user' in c:
+            if 'kernel_options' in c['default']:
+                cmdline = self.build_new_cmdline(c['user']['kernel_options'])
+                c['user']['kernel_options'] = cmdline
+        return c
+
     def get_isneeded_by_set(self, params):
         assert isinstance(params, set)
         if params.intersection(self.remove):
@@ -370,7 +401,10 @@ class GrubAction(Action):
         return not params.issuperset(self.add)
 
     def get_isneeded(self):
-        if self.has_cmdline_default():
+        if self.mode == 'kernelstub':
+            current = self.get_current_kernel_options()
+            params = set(current.split())
+        elif self.has_cmdline_default():
             current = self.get_current_cmdline()
             params = set(current.split())
         else:
@@ -380,10 +414,14 @@ class GrubAction(Action):
 
     def perform(self):
         content = self.read_and_backup()
-        if self.insert_default:
-            content = '\n'.join(self.add_cmdline_default(content))
-        content = '\n'.join(self.iter_lines(content))
-        self.atomic_write(content)
+        if self.mode == 'kernelstub':
+            content = self.iter_lines_kernelstub(content)
+            self.atomic_write(json.dumps(content, indent=2, separators=(',', ': ')))
+        else:
+            if self.insert_default:
+                content = '\n'.join(self.add_cmdline_default(content))
+            content = '\n'.join(self.iter_lines(content))
+            self.atomic_write(content)
 
 
 class wifi_pm_disable(FileAction):
@@ -439,6 +477,17 @@ class remove_backlight_vendor(GrubAction):
 
     def describe(self):
         return _('Remove brightness hot-key fix')
+
+
+class nvreg_enablebacklighthandler(GrubAction):
+    """
+    Add NVreg_EnableBacklightHandler=1 to GRUB_CMDLINE_LINUX_DEFAULT (for serw11).
+    """
+
+    add = ('nvidia.NVreg_EnableBacklightHandler=1',)
+
+    def describe(self):
+        return _('Enable brightness hot keys')
 
 
 class radeon_dpm(GrubAction):
