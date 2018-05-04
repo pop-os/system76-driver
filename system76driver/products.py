@@ -709,6 +709,7 @@ PRODUCTS = {
             actions.dac_fixup,
             actions.pulseaudio_hp_spdif_desc,
             actions.hidpi_scaling,
+            actions.nvreg_enablebacklighthandler,
         ],
     },
 
