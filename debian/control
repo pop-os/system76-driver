@@ -23,7 +23,6 @@ Depends: ${python3:Depends}, ${misc:Depends},
     system76-dkms,
     system76-firmware-daemon,
     system76-wallpapers (>= 16.04.1~bzr26~ubuntu16.04.1),
-    hidpi-daemon,
     python3-dbus,
     python3-evdev,
     python3-gi,
@@ -31,6 +30,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
     gir1.2-notify-0.7,
     pm-utils,
     xbacklight
+Recommends: hidpi-daemon
 Description: Universal driver for System76 computers
  System76 Driver provides drivers, restore, and regression support for System76
  computers running Ubuntu.  Click the Device Menu (power icon at the top right
