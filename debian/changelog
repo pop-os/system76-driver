@@ -1,10 +1,9 @@
-system76-driver (18.04.13~~alpha) bionic; urgency=low
+system76-driver (18.04.13) bionic; urgency=low
 
-  * Daily WIP for 18.04.13
   * GrubActions now edit kernelstub configuration if present
   * Add nvreg_enablebacklighthandler to serw11
 
- -- David Jordan <david2@system76.com>  Fri, 04 May 2018 15:03:07 -0600
+ -- David Jordan <david2@system76.com>  Mon, 07 May 2018 10:48:25 -0600
 
 system76-driver (18.04.12) bionic; urgency=low
 
