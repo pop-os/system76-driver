@@ -131,6 +131,7 @@ NEEDS_BRIGHTNESS = NEEDS_BRIGHTNESS_ACPI + (
 NEEDS_FIRMWARE_ACPI_INTERRUPTS_GPE6F = (
     'oryp2',
     'oryp2-ess',
+    'oryp4',
 )
 
 # These Products need ess dac switch
