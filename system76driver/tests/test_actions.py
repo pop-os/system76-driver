@@ -334,14 +334,22 @@ class TestGrubAction(TestCase):
     def test_init(self):
         inst = actions.GrubAction()
         self.assertIs(inst.update_grub, True)
-        self.assertEqual(inst.filename, '/etc/default/grub')
+        self.assertIn(inst.mode, ['kernelstub', 'grub'])
+        if inst.mode == 'kernelstub':
+            self.assertEqual(inst.filename, '/etc/kernelstub/configuration')
+        elif inst.mode == 'grub':
+            self.assertEqual(inst.filename, '/etc/default/grub')
         self.assertEqual(inst.add, tuple())
         self.assertEqual(inst.remove, tuple())
 
         tmp = TempDir()
         inst = actions.GrubAction(etcdir=tmp.dir)
         self.assertIs(inst.update_grub, True)
-        self.assertEqual(inst.filename, tmp.join('default', 'grub'))
+        self.assertIn(inst.mode, ['kernelstub', 'grub'])
+        if inst.mode == 'kernelstub':
+            self.assertEqual(inst.filename, tmp.join('kernelstub', 'configuration'))
+        elif inst.mode == 'grub':
+            self.assertEqual(inst.filename, tmp.join('default', 'grub'))
         self.assertEqual(inst.add, tuple())
         self.assertEqual(inst.remove, tuple())
 
@@ -352,8 +360,9 @@ class TestGrubAction(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             inst.read()
         self.assertEqual(cm.exception.filename, inst.filename)
-        tmp.write(b'foobar\n', 'default', 'grub')
-        self.assertEqual(inst.read(), 'foobar\n')
+        if inst.mode == 'grub':
+            tmp.write(b'foobar\n', 'default', 'grub')
+            self.assertEqual(inst.read(), 'foobar\n')
 
     def test_get_current_cmdline(self):
         tmp = TempDir()
@@ -365,23 +374,24 @@ class TestGrubAction(TestCase):
             inst.get_current_cmdline()
         self.assertEqual(cm.exception.filename, inst.filename)
 
-        # Bad content:
-        open(inst.filename, 'x').write('wont work\n')
-        with self.assertRaises(Exception) as cm:
-            inst.get_current_cmdline()
-        self.assertEqual(str(cm.exception),
-            'Could not parse GRUB_CMDLINE_LINUX_DEFAULT'
-        )
+        if inst.mode == 'grub':
+            # Bad content:
+            open(inst.filename, 'x').write('wont work\n')
+            with self.assertRaises(Exception) as cm:
+                inst.get_current_cmdline()
+            self.assertEqual(str(cm.exception),
+                'Could not parse GRUB_CMDLINE_LINUX_DEFAULT'
+            )
 
-        # Good content:
-        open(inst.filename, 'w').write(GRUB_ORIG)
-        self.assertEqual(inst.get_current_cmdline(), 'quiet splash')
-        open(inst.filename, 'w').write(
-            GRUB.format('acpi_os_name=Linux acpi_osi=')
-        )
-        self.assertEqual(inst.get_current_cmdline(),
-            'acpi_os_name=Linux acpi_osi='
-        )
+            # Good content:
+            open(inst.filename, 'w').write(GRUB_ORIG)
+            self.assertEqual(inst.get_current_cmdline(), 'quiet splash')
+            open(inst.filename, 'w').write(
+                GRUB.format('acpi_os_name=Linux acpi_osi=')
+            )
+            self.assertEqual(inst.get_current_cmdline(),
+                'acpi_os_name=Linux acpi_osi='
+            )
 
     def test_build_new_cmdline(self):
         inst = actions.GrubAction()
@@ -413,21 +423,22 @@ class TestGrubAction(TestCase):
             list(inst.iter_lines(content))
         self.assertEqual(cm.exception.filename, inst.filename)
 
-        open(inst.filename, 'x').write(GRUB_ORIG)
-        content = inst.read_and_backup()
-        self.assertEqual('\n'.join(inst.iter_lines(content)), GRUB_ORIG)
-        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
-        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+        if inst.mode == 'grub':
+            open(inst.filename, 'x').write(GRUB_ORIG)
+            content = inst.read_and_backup()
+            self.assertEqual('\n'.join(inst.iter_lines(content)), GRUB_ORIG)
+            self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+            self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
 
-        open(inst.filename, 'w').write(
-            GRUB.format('foo bar aye')
-        )
-        content = inst.read_and_backup()
-        self.assertEqual(
-            '\n'.join(inst.iter_lines(content)),
-            GRUB.format('aye bar foo')
-        )
-        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+            open(inst.filename, 'w').write(
+                GRUB.format('foo bar aye')
+            )
+            content = inst.read_and_backup()
+            self.assertEqual(
+                '\n'.join(inst.iter_lines(content)),
+                GRUB.format('aye bar foo')
+            )
+            self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
@@ -441,21 +452,22 @@ class TestGrubAction(TestCase):
             list(inst.iter_lines(content))
         self.assertEqual(cm.exception.filename, inst.filename)
 
-        open(inst.filename, 'x').write(GRUB_ORIG)
-        content = inst.read_and_backup()
-        self.assertEqual(
-            '\n'.join(inst.iter_lines(content)),
-            GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
-        )
-        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
-        self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
+        if inst.mode == 'grub':
+            open(inst.filename, 'x').write(GRUB_ORIG)
+            content = inst.read_and_backup()
+            self.assertEqual(
+                '\n'.join(inst.iter_lines(content)),
+                GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
+            )
+            self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+            self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
 
-        content = inst.read_and_backup()
-        self.assertEqual(
-            '\n'.join(inst.iter_lines(content)),
-            GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
-        )
-        self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
+            content = inst.read_and_backup()
+            self.assertEqual(
+                '\n'.join(inst.iter_lines(content)),
+                GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
+            )
+            self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
     def test_get_isneeded_by_set(self):
         inst = actions.GrubAction()
@@ -510,12 +522,13 @@ class TestGrubAction(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'x').write(GRUB_ORIG)
-        self.assertIs(inst.get_isneeded(), False)
-        open(inst.filename, 'w').write(
-            GRUB.format('acpi_os_name=Linux acpi_osi=')
-        )
-        self.assertIs(inst.get_isneeded(), False)
+        if inst.mode == 'grub':
+            open(inst.filename, 'x').write(GRUB_ORIG)
+            self.assertIs(inst.get_isneeded(), False)
+            open(inst.filename, 'w').write(
+                GRUB.format('acpi_os_name=Linux acpi_osi=')
+            )
+            self.assertIs(inst.get_isneeded(), False)
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
@@ -527,12 +540,13 @@ class TestGrubAction(TestCase):
         with self.assertRaises(FileNotFoundError) as cm:
             inst.get_isneeded()
         self.assertEqual(cm.exception.filename, inst.filename)
-        open(inst.filename, 'x').write(GRUB_ORIG)
-        self.assertIs(inst.get_isneeded(), True)
-        open(inst.filename, 'w').write(
-            GRUB.format('acpi_os_name=Linux acpi_osi=')
-        )
-        self.assertIs(inst.get_isneeded(), False)
+        if inst.mode == 'grub':
+            open(inst.filename, 'x').write(GRUB_ORIG)
+            self.assertIs(inst.get_isneeded(), True)
+            open(inst.filename, 'w').write(
+                GRUB.format('acpi_os_name=Linux acpi_osi=')
+            )
+            self.assertIs(inst.get_isneeded(), False)
 
     def test_perform(self):
         SubProcess.reset(mocking=True)
@@ -545,17 +559,18 @@ class TestGrubAction(TestCase):
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
 
-        with open(inst.filename, 'x') as fp:
-            fp.write(GRUB_ORIG)
-        self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
+        if inst.mode == 'grub':
+            with open(inst.filename, 'x') as fp:
+                fp.write(GRUB_ORIG)
+            self.assertIsNone(inst.perform())
+            self.assertEqual(open(inst.filename, 'r').read(), GRUB_ORIG)
 
-        with open(inst.filename, 'w') as fp:
-            fp.write(GRUB.format('c a b'))
-        self.assertIsNone(inst.perform())
-        self.assertEqual(open(inst.filename, 'r').read(), GRUB.format('a b c'))
+            with open(inst.filename, 'w') as fp:
+                fp.write(GRUB.format('c a b'))
+            self.assertIsNone(inst.perform())
+            self.assertEqual(open(inst.filename, 'r').read(), GRUB.format('a b c'))
 
-        self.assertEqual(SubProcess.calls, [])
+            self.assertEqual(SubProcess.calls, [])
 
         # Test subclass with different GrubAction.cmdline:
         class Example(actions.GrubAction):
@@ -569,21 +584,22 @@ class TestGrubAction(TestCase):
             inst.perform()
         self.assertEqual(cm.exception.filename, inst.filename)
 
-        with open(inst.filename, 'x') as fp:
-            fp.write(GRUB_ORIG)
-        self.assertIsNone(inst.perform())
-        self.assertEqual(
-            open(inst.filename, 'r').read(),
-            GRUB.format('bar foo quiet splash')
-        )
+        if inst.mode == 'grub':
+            with open(inst.filename, 'x') as fp:
+                fp.write(GRUB_ORIG)
+            self.assertIsNone(inst.perform())
+            self.assertEqual(
+                open(inst.filename, 'r').read(),
+                GRUB.format('bar foo quiet splash')
+            )
 
-        self.assertIsNone(inst.perform())
-        self.assertEqual(
-            open(inst.filename, 'r').read(),
-            GRUB.format('bar foo quiet splash')
-        )
+            self.assertIsNone(inst.perform())
+            self.assertEqual(
+                open(inst.filename, 'r').read(),
+                GRUB.format('bar foo quiet splash')
+            )
 
-        self.assertEqual(SubProcess.calls, [])
+            self.assertEqual(SubProcess.calls, [])
 
 
 class Test_wifi_pm_disable(TestCase):
