@@ -1,6 +1,6 @@
 Section "Quirk"
     Identifier "system76-0-bonw11"
-    Handler "nvidia-375"
+    Handler "nvidia-390"
     Match "sys_vendor" "System76, Inc.|System76"
     Match "product_version" "bonw11"
     XorgSnippet

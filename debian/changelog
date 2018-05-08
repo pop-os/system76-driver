@@ -1,6 +1,7 @@
 system76-driver (18.04.15~~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.15
+  * Remove wildcard quirk handler, update quirk handlers to nvidia-390
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 08 May 2018 14:47:09 -0600
 
