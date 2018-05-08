@@ -1,9 +1,8 @@
-system76-driver (18.04.16~~alpha) bionic; urgency=low
+system76-driver (18.04.16) bionic; urgency=low
 
-  * Daily WIP for 18.04.16
   * Add nvreg_enablebacklighthandler for oryp3
 
- -- David Jordan <david2@system76.com>  Tue, 08 May 2018 16:41:25 -0600
+ -- David Jordan <david2@system76.com>  Tue, 08 May 2018 16:50:52 -0600
 
 system76-driver (18.04.15) bionic; urgency=low
 
