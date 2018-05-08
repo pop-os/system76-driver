@@ -473,6 +473,7 @@ PRODUCTS = {
         'drivers': [
             actions.remove_backlight_vendor,
             actions.hidpi_scaling,
+            actions.nvreg_enablebacklighthandler,
         ],
     },
     'oryp3-ess': {
