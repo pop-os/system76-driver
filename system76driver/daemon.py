@@ -489,13 +489,16 @@ def hda_verb(device, nid, verb, param):
 
 class EssDacAutoswitch:
     def set_card_profile(self, card, profile):
-        #TODO: Cleanup and read through /run/user to find pulse servers
-        user_name = subprocess.check_output(
-                "who | awk -v vt=tty$(fgconsole) '$0 ~ vt {print $1}'",
-                shell=True
-        ).decode('utf-8').rstrip('\n')
+        user_id = None
+        user_name = None
+        for id in os.listdir('/run/user/'):
+            name = subprocess.check_output(["id", "-nu",  id]).decode('utf-8').rstrip('\n')
+            if path.exists(path.join('/', 'run', 'user', str(id), 'pulse', 'native')):
+                user_id = id
+                user_name = name
 
-        user_id = int(subprocess.check_output(["id", "-u",  user_name]))
+        if user_id is None or user_name is None:
+            return False
 
         pulse_server = "unix:/run/user/" + str(user_id) + "/pulse/native"
 
