@@ -1,6 +1,7 @@
 system76-driver (17.10.33~~alpha) artful; urgency=low
 
   * Daily WIP for 17.10.33
+  * Make hidpi-daemon a recommends instead of depends
 
  -- David Jordan <david2@system76.com>  Thu, 10 May 2018 15:42:01 -0600
 
