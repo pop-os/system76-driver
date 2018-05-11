@@ -491,23 +491,29 @@ class EssDacAutoswitch:
     def set_card_profile(self, card, profile):
         user_id = None
         user_name = None
+        ret = True
+        found_user = False
         for id in os.listdir('/run/user/'):
             name = subprocess.check_output(["id", "-nu",  id]).decode('utf-8').rstrip('\n')
             if path.exists(path.join('/', 'run', 'user', str(id), 'pulse', 'native')):
                 user_id = id
                 user_name = name
 
-        if user_id is None or user_name is None:
-            return False
+            if user_id is not None and user_name is not None:
+                found_user = True
+                pulse_server = "unix:/run/user/" + str(user_id) + "/pulse/native"
 
-        pulse_server = "unix:/run/user/" + str(user_id) + "/pulse/native"
+                cmd = [
+                    "sudo", "-u", user_name,
+                    "pactl", "--server", pulse_server, "set-card-profile", card, profile
+                ]
 
-        cmd = [
-            "sudo", "-u", user_name,
-            "pactl", "--server", pulse_server, "set-card-profile", card, profile
-        ]
-
-        return subprocess.call(cmd) == 0
+                ret = (subprocess.call(cmd) == 0) and ret
+        
+        if not found_user:
+            ret = False
+        
+        return ret
 
     def find_device(self, name):
         for ev_path in evdev.list_devices():
