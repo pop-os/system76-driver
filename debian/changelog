@@ -1,6 +1,7 @@
 system76-driver (18.04.17~~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.17
+  * Update ESS DAC Autoswitch for bionic
 
  -- David Jordan <david2@system76.com>  Thu, 10 May 2018 16:57:16 -0600
 
