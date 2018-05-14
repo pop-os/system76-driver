@@ -489,22 +489,17 @@ def hda_verb(device, nid, verb, param):
 
 class EssDacAutoswitch:
     def set_card_profile(self, card, profile):
-        user_id = None
-        user_name = None
         ret = True
         found_user = False
         for id in os.listdir('/run/user/'):
-            name = subprocess.check_output(["id", "-nu",  id]).decode('utf-8').rstrip('\n')
-            if path.exists(path.join('/', 'run', 'user', str(id), 'pulse', 'native')):
-                user_id = id
-                user_name = name
-
-            if user_id is not None and user_name is not None:
-                found_user = True
-                pulse_server = "unix:/run/user/" + str(user_id) + "/pulse/native"
+            pulse_path = path.join('/run', 'user', str(id), 'pulse', 'native')
+            if path.exists(pulse_path):
+                found_user = True                
+                name = subprocess.check_output(["id", "-nu",  id]).decode('utf-8').rstrip('\n')
+                pulse_server = "unix:" + pulse_path
 
                 cmd = [
-                    "sudo", "-u", user_name,
+                    "sudo", "-u", name,
                     "pactl", "--server", pulse_server, "set-card-profile", card, profile
                 ]
 
