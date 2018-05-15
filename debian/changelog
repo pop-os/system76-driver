@@ -1,9 +1,8 @@
-system76-driver (18.04.18~~alpha) bionic; urgency=low
+system76-driver (18.04.18) bionic; urgency=low
 
-  * Daily WIP for 18.04.18
   * Add nvreg_enablebacklighthandler for orxp1
 
- -- David Jordan <david2@system76.com>  Tue, 15 May 2018 14:53:43 -0600
+ -- David Jordan <david2@system76.com>  Tue, 15 May 2018 15:15:47 -0600
 
 system76-driver (18.04.17) bionic; urgency=low
 
