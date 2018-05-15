@@ -449,6 +449,7 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.remove_gfxpayload_text,
+            actions.nvreg_enablebacklighthandler,
         ],
     },
     'oryp2': {
