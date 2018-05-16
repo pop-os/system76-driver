@@ -731,6 +731,10 @@ PRODUCTS = {
         'name': 'Silverback WS',
         'drivers': [],
     },
+    'silw3': {
+        'name': 'Silverback WS',
+        'drivers': [],
+    },
 
     # Starling:
     'star1': {
