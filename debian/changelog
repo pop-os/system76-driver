@@ -1,5 +1,11 @@
 system76-driver (18.04.20) bionic; urgency=low
 
+  * Add leow9-b
+
+ -- Benjamin Shpurker <benjamin@system76.com>  Wed, 29 May 2018 11:09:25 -0600
+
+system76-driver (18.04.20) bionic; urgency=low
+
   * Add silw3
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 16 May 2018 17:14:25 -0600

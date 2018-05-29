@@ -401,6 +401,10 @@ PRODUCTS = {
         'name': 'Leopard WS',
         'drivers': [],
     },
+    'leow9-b': {
+        'name': 'Leopard WS',
+        'drivers': [],
+    },
     'leow9-w': {
         'name': 'Leopard WS',
         'drivers': [],
