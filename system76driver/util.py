@@ -50,7 +50,7 @@ def dump_logs(base):
     SubProcess.check_call(['dmesg'], stdout=fp)
 
     fp = open(path.join(base, 'journalctl'), 'xb')
-    SubProcess.check_call(['journalctl'], stdout=fp)
+    SubProcess.check_call(['journalctl', '--since', 'yesterday'], stdout=fp)
 
     for parts in [('Xorg.0.log',), ('syslog',)]:  #, ('apt', 'history.log')]:
         src = path.join('/var/log', *parts)

@@ -1,3 +1,9 @@
+system76-driver (17.10.34) artful; urgency=low
+
+  * Update journalctl to capture only the last day of logs
+
+ -- James Gross <james@system76.com>  Wed, 30 May 2018 14:34:31 -0600
+
 system76-driver (17.10.33) artful; urgency=low
 
   * Make hidpi-daemon a recommends instead of depends
