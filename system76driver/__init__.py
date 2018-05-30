@@ -25,7 +25,7 @@ from os import path
 import logging
 
 
-__version__ = '16.04.54'
+__version__ = '16.04.55'
 
 datadir = path.join(path.dirname(path.abspath(__file__)), 'data')
 log = logging.getLogger(__name__)
@@ -66,4 +66,3 @@ def get_sys_vendor(sysdir='/sys'):
 def get_product_version(sysdir='/sys'):
     if get_sys_vendor(sysdir) is not None:
         return read_dmi_id('product_version', sysdir)
-
