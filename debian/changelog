@@ -1,3 +1,9 @@
+system76-driver (16.04.55) xenail; urgency=low
+
+  * Update journalctl to capture only the last day of logs
+
+ -- James Gross <james@system76.com>  Wed, 30 May 2018 14:34:31 -0600
+
 system76-driver (16.04.54) xenial; urgency=low
 
   * Update message when machine is not supported for firmware updates
