@@ -146,6 +146,11 @@ NEEDS_ESS_DAC_AUTOSWITCH = (
     'serw11',
 )
 
+# These Products need an adjustment of DPCD data to use PWM backlight
+NEEDS_DPCD_PWM = (
+    'oryp4-b',
+)
+
 def load_json_conf(filename):
     try:
         fp = open(filename, 'r')
@@ -358,14 +363,14 @@ class Brightness:
         conf = load_json_conf(self.saved_file)
         conf[self.key] = brightness
         save_json_conf(self.saved_file, conf)
-        
+
     def set_xbacklight(self, brightness):
         xbrightness = int(100 * brightness / self.xbacklight_max_brightness)
         if xbrightness == 0:
             xbrightness = 1
         if xbrightness <= 100:
-            xbrightness_cmd = ['xbacklight', 
-                               '-set', 
+            xbrightness_cmd = ['xbacklight',
+                               '-set',
                                str(xbrightness)
             ]
             try:
@@ -409,7 +414,7 @@ class Brightness:
             if brightness > 0:
                 log.info('saving brightness at %d', brightness)
                 self.save(brightness)
-    
+
     def update_xbacklight(self):
         brightness = self.read_brightness()
         if self.current != brightness:
@@ -495,7 +500,7 @@ class EssDacAutoswitch:
         for id in os.listdir('/run/user/'):
             pulse_path = path.join('/run', 'user', str(id), 'pulse', 'native')
             if path.exists(pulse_path):
-                found_user = True                
+                found_user = True
                 name = subprocess.check_output(["id", "-nu",  id]).decode('utf-8').rstrip('\n')
                 pulse_server = "unix:" + pulse_path
 
@@ -505,10 +510,10 @@ class EssDacAutoswitch:
                 ]
 
                 ret = (subprocess.call(cmd) == 0) and ret
-        
+
         if not found_user:
             ret = False
-        
+
         return ret
 
     def find_device(self, name):
@@ -581,3 +586,29 @@ def run_ess_dac_autoswitch(model):
         return _run_ess_dac_autoswitch(model)
     except Exception:
         log.exception('Error calling _run_ess_dac_autoswitch(%r):', model)
+
+class DpcdPwm:
+    def __init__(self, model, rootdir='/'):
+        self.model = model
+        self.drm_dp_aux_file = path.join(rootdir, 'dev', 'drm_dp_aux0')
+
+
+    def run(self):
+        with open(self.drm_dp_aux_file, 'wb+') as f:
+            f.seek(0x721)
+            f.write(bytes([0]))
+
+def _run_dpcd_pwm(model):
+    if model not in NEEDS_DPCD_PWM:
+        log.info('DPCD PWM fix not needed for %r', model)
+        return None
+    log.info('Switching DPCD backlight to PWM %r', model)
+    dpcd_pwm = DpcdPwm(model)
+    dpcd_pwm.run()
+    return dpcd_pwm
+
+def run_dpcd_pwm(model):
+    try:
+        return _run_dpcd_pwm(model)
+    except Exception:
+        log.exception('Error calling _run_dpcd_pwm for %r', model)

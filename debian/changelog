@@ -1,3 +1,10 @@
+system76-driver (18.04.23~~alpha) bionic; urgency=low
+
+  * Daily WIP for 18.04.23
+  * Add daemon item to fix oryp4-b backlight
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 01 Jun 2018 18:02:53 -0600
+
 system76-driver (18.04.22) bionic; urgency=low
 
   * Update journalctl to capture only the last day of logs

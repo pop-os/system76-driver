@@ -62,6 +62,7 @@ brightness = daemon.run_brightness(args.model)
 airplane = daemon.run_airplane(args.model)
 acpi = daemon.run_firmware_acpi_interrupt(args.model)
 ess_dac_autoswitch = daemon.run_ess_dac_autoswitch(args.model)
+dpcd_pwm = daemon.run_dpcd_pwm(args.model)
 
 mainloop = GLib.MainLoop()
 if args.debug:
@@ -70,4 +71,3 @@ if args.debug:
         print(name)
     print(len(names))
 mainloop.run()
-
