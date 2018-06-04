@@ -23,12 +23,14 @@
 Test Airplane Mode workaround.
 """
 
+import _thread;
 import time
 start_time = time.monotonic()
 import argparse
 import os
 import sys
 import logging
+import subprocess
 
 from gi.repository import GLib
 
@@ -62,7 +64,22 @@ brightness = daemon.run_brightness(args.model)
 airplane = daemon.run_airplane(args.model)
 acpi = daemon.run_firmware_acpi_interrupt(args.model)
 ess_dac_autoswitch = daemon.run_ess_dac_autoswitch(args.model)
-dpcd_pwm = daemon.run_dpcd_pwm(args.model)
+
+def apply_dpcd_pwm_fix(threadName, delay):
+    print ("starting dpcd_pwm_fix thread");
+    while True:
+        output = subprocess.getoutput("systemctl is-active display-manager")
+        if "active" == output:
+            dpcd_pwm = daemon.run_dpcd_pwm(args.model)
+            print ("stopping dpcd_pwm_fix thread");
+            break
+
+        time.sleep(delay)
+
+try:
+   _thread.start_new_thread(apply_dpcd_pwm_fix, ("Thread-1", 1))
+except:
+   print ("Error: unable to start thread")
 
 mainloop = GLib.MainLoop()
 if args.debug:
