@@ -66,13 +66,13 @@ acpi = daemon.run_firmware_acpi_interrupt(args.model)
 ess_dac_autoswitch = daemon.run_ess_dac_autoswitch(args.model)
 
 def apply_dpcd_pwm_fix():
-    print ("starting dpcd_pwm_fix thread");
+    log.info("starting dpcd_pwm_fix thread");
     while True:
         time.sleep(1)
         output = subprocess.getoutput("systemctl is-active display-manager")
         if "active" == output:
             daemon.run_dpcd_pwm(args.model)
-            print ("stopping dpcd_pwm_fix thread");
+            log.info("stopping dpcd_pwm_fix thread");
             break
 
 try:
