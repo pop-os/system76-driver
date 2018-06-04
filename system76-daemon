@@ -71,7 +71,7 @@ def apply_dpcd_pwm_fix():
         time.sleep(1)
         output = subprocess.getoutput("systemctl is-active display-manager")
         if "active" == output:
-            dpcd_pwm = daemon.run_dpcd_pwm(args.model)
+            daemon.run_dpcd_pwm(args.model)
             print ("stopping dpcd_pwm_fix thread");
             break
 
