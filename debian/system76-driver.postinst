@@ -21,7 +21,7 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-lsb_description="$(sed -n -e 4p /etc/lsb-release)"
+lsb_description="$(grep DESCRIPTION /etc/lsb-release)"
 ubuntu="Ubuntu"
 
 case "$lsb_description" in 
