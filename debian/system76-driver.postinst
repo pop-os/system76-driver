@@ -21,6 +21,14 @@
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+lsb_description="$(sed -n -e 4p /etc/lsb-release)"
+ubuntu="Ubuntu"
+
+case "$lsb_description" in 
+    *"$ubuntu"*) gsettings set org.gnome.shell enabled-extensions "['system76-power@system76.com']" ;;
+    *);;
+esac
+
 case $1 in
     configure)
         if [ -e /usr/bin/system76-driver-cli ]; then
