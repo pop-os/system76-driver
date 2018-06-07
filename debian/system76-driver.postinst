@@ -20,6 +20,19 @@
 # You should have received a copy of the GNU General Public License along
 # with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#gsettings set org.gnome.shell enabled-extensions "['system76-power@system76.com']" ;;
+
+POWER_GSETTINGS_OVERRIDE="[org.gnome.shell]\nenabled-extensions = ['system76-power@system76.com']"
+gsetting_dir="/usr/share/glib-2.0/schemas"
+gsetting_power="/50_system76-power.gschema.override"
+
+lsb_description="$(grep DESCRIPTION /etc/lsb-release)"
+ubuntu="Ubuntu"
+
+case "$lsb_description" in 
+    *"$ubuntu"*) touch "$gsetting_dir$gsetting_power" && echo $POWER_GSETTINGS_OVERRIDE > $gsetting_dir$gsetting_power && glib-compile-schemas $gsetting_dir ;;
+    *);;
+esac
 
 lsb_description="$(grep DESCRIPTION /etc/lsb-release)"
 ubuntu="Ubuntu"
