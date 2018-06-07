@@ -25,18 +25,20 @@ Test Airplane Mode workaround.
 
 import threading;
 import time
-start_time = time.monotonic()
 import argparse
 import os
 import sys
 import logging
 import subprocess
+import functools
+from systemd import login
 
 from gi.repository import GLib
 
 import system76driver
 from system76driver import daemon
 
+start_time = time.monotonic()
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -65,15 +67,27 @@ airplane = daemon.run_airplane(args.model)
 acpi = daemon.run_firmware_acpi_interrupt(args.model)
 ess_dac_autoswitch = daemon.run_ess_dac_autoswitch(args.model)
 
+def hash_list(list = [], *args):
+    return functools.reduce(lambda acc, item : hash((acc, item)), list, 0)
+
 def apply_dpcd_pwm_fix():
-    log.info("starting dpcd_pwm_fix thread");
+    log.info("starting dpcd_pwm_fix thread")
     while True:
         time.sleep(1)
         output = subprocess.getoutput("systemctl is-active display-manager")
         if "active" == output:
+            log.info("applying dpcd pwm fix")
             daemon.run_dpcd_pwm(args.model)
-            log.info("stopping dpcd_pwm_fix thread");
             break
+
+    chash = hash_list(login.sessions())
+    while True:
+        time.sleep(1)
+        nhash = hash_list(login.sessions())
+        if nhash != chash:
+            log.info("re-applying dpcd pwm fix")
+            daemon.run_dpcd_pwm(args.model)
+            chash = nhash
 
 try:
    threading.Thread(target=apply_dpcd_pwm_fix, daemon=True).start()
