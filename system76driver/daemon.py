@@ -38,6 +38,7 @@ from os import path
 import struct
 import subprocess
 import _thread
+import threading
 import time
 
 from gi.repository import GLib
@@ -598,17 +599,24 @@ class DpcdPwm:
             f.seek(0x721)
             f.write(bytes([0]))
 
-def _run_dpcd_pwm(model):
-    if model not in NEEDS_DPCD_PWM:
-        log.info('DPCD PWM fix not needed for %r', model)
-        return None
-    log.info('Switching DPCD backlight to PWM %r', model)
+    def is_set(self):
+        with open(self.drm_dp_aux_file, 'r') as f:
+            f.seek(0x721)
+            return f.read(1) == bytes([0]);
+
+def apply_dpcd_pwm_fix(model):
     dpcd_pwm = DpcdPwm(model)
-    dpcd_pwm.run()
-    return dpcd_pwm
+    while True:
+        time.sleep(3)
+        if (dpcd_pwm.is_set () == False):
+            log.info('Switching DPCD backlight to PWM %r', model)
+            dpcd_pwm.run()
 
 def run_dpcd_pwm(model):
     try:
-        return _run_dpcd_pwm(model)
+        if model not in NEEDS_DPCD_PWM:
+            log.info('DPCD PWM fix not needed for %r', model)
+            return
+        threading.Thread(target=apply_dpcd_pwm_fix(model), daemon=True).start()
     except Exception:
-        log.exception('Error calling _run_dpcd_pwm for %r', model)
+        log.exception('Error calling run_dpcd_pwm for %r', model)
