@@ -40,6 +40,8 @@ import subprocess
 import _thread
 import threading
 import time
+import functools
+from systemd import login
 
 from gi.repository import GLib
 
@@ -600,17 +602,37 @@ class DpcdPwm:
             f.write(bytes([0]))
 
     def is_set(self):
-        with open(self.drm_dp_aux_file, 'r') as f:
+        set = False
+        with open(self.drm_dp_aux_file, 'rb') as f:
             f.seek(0x721)
-            return f.read(1) == bytes([0]);
+            set = f.read(1) == bytes([0])
+        return set
+
+def hash_list(list = [], *args):
+    return functools.reduce(lambda acc, item : hash((acc, item)), list, 0)
 
 def apply_dpcd_pwm_fix(model):
     dpcd_pwm = DpcdPwm(model)
     while True:
-        time.sleep(3)
-        if (dpcd_pwm.is_set () == False):
-            log.info('Switching DPCD backlight to PWM %r', model)
+        time.sleep(1)
+        output = subprocess.getoutput("systemctl is-active display-manager")
+        if "active" == output:
+            log.info("applying dpcd pwm fix")
             dpcd_pwm.run()
+            break
+    chash = hash_list(login.sessions())
+    while True:
+        time.sleep(1)
+        nhash = hash_list(login.sessions())
+        if nhash != chash:
+            chash = nhash
+            slept = 0
+            while slept < 60:
+                time.sleep(3)
+                slept += 3
+                if (dpcd_pwm.is_set () == False):
+                    log.info('Switching DPCD backlight to PWM %r', model)
+                    dpcd_pwm.run()
 
 def run_dpcd_pwm(model):
     try:
