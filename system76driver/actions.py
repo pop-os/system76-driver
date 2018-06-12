@@ -778,6 +778,79 @@ class headset_fixup(Action):
         return _('Enable headset microphone')
 
 
+ENERGYSTAR_GSETTINGS_OVERRIDE = """[org.gnome.settings-daemon.plugins.power]
+sleep-inactive-ac-type='suspend'
+sleep-inactive-ac-timeout=1800
+"""
+
+class energystar_gsettings_override(FileAction):
+    relpath = ('usr', 'share', 'glib-2.0', 'schemas',
+        '50_system76-driver-energystar.gschema.override')
+
+    _content = ENERGYSTAR_GSETTINGS_OVERRIDE
+
+    @property
+    def content(self):
+        return self._content
+
+    def describe(self):
+        return _('Apply ENERGY STAR default gsettings overrides')
+
+
+ENERGYSTAR_WAKEONLAN_SCRIPT = """#!/usr/bin/env bash
+
+set -e
+
+for d in /sys/class/net/*/ ; do
+    if [[ $(basename $d) == en* ]]; then
+        ethtool -s $(basename $d) wol $1
+    fi
+done
+"""
+
+ENERGYSTAR_WAKEONLAN_RULE = """# AC PLUGGED-IN
+SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/lib/system76-driver/system76-wakeonlan g"
+
+# ON BATTERY
+SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/lib/system76-driver/system76-wakeonlan d"
+"""
+
+class energystar_wakeonlan(FileAction):
+    relpath1 = ('usr', 'lib', 'system76-driver',
+        'system76-wakeonlan')
+    relpath2 = ('etc', 'udev', 'rules.d',
+        '10-system76-driver-energystar-wakeonlan.rules')
+
+    content1 = ENERGYSTAR_WAKEONLAN_OVERRIDE_SCRIPT
+    content2 = ENERGYSTAR_WAKEONLAN_OVERRIDE_RULE
+
+    def __init__(self, rootdir='/'):
+        self.filename1 = path.join(rootdir, *self.relpath1)
+        self.filename2 = path.join(rootdir, *self.relpath2)
+
+    def read1(self):
+        try:
+            return open(self.filename1, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def read2(self):
+        try:
+            return open(self.filename2, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def get_isneeded(self):
+        return self.read1() != self.content1 or self.read2() != self.content2
+
+    def perform(self):
+        atomic_write(self.filename1, self.content1)
+        atomic_write(self.filename2, self.content2)
+
+    def describe(self):
+        return _('Apply ENERGY STAR default gsettings overrides')
+
+
 DPI_DEFAULT = 96
 
 DPI_LIMIT = 170
