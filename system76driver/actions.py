@@ -823,6 +823,8 @@ class energystar_wakeonlan(FileAction):
 
     content1 = ENERGYSTAR_WAKEONLAN_SCRIPT
     content2 = ENERGYSTAR_WAKEONLAN_RULE
+    
+    mode1 = 0o755
 
     def __init__(self, rootdir='/'):
         self.filename1 = path.join(rootdir, *self.relpath1)
@@ -844,7 +846,7 @@ class energystar_wakeonlan(FileAction):
         return self.read1() != self.content1 or self.read2() != self.content2
 
     def perform(self):
-        atomic_write(self.filename1, self.content1)
+        atomic_write(self.filename1, self.content1, mode=mode1)
         atomic_write(self.filename2, self.content2)
 
     def describe(self):
