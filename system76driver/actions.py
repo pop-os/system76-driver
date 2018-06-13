@@ -821,8 +821,8 @@ class energystar_wakeonlan(FileAction):
     relpath2 = ('etc', 'udev', 'rules.d',
         '10-system76-driver-energystar-wakeonlan.rules')
 
-    content1 = ENERGYSTAR_WAKEONLAN_OVERRIDE_SCRIPT
-    content2 = ENERGYSTAR_WAKEONLAN_OVERRIDE_RULE
+    content1 = ENERGYSTAR_WAKEONLAN_SCRIPT
+    content2 = ENERGYSTAR_WAKEONLAN_RULE
 
     def __init__(self, rootdir='/'):
         self.filename1 = path.join(rootdir, *self.relpath1)
