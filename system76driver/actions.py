@@ -846,7 +846,7 @@ class energystar_wakeonlan(FileAction):
         return self.read1() != self.content1 or self.read2() != self.content2
 
     def perform(self):
-        atomic_write(self.filename1, self.content1, mode=mode1)
+        atomic_write(self.filename1, self.content1, mode=self.mode1)
         atomic_write(self.filename2, self.content2)
 
     def describe(self):
