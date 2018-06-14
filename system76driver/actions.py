@@ -778,6 +778,31 @@ class headset_fixup(Action):
         return _('Enable headset microphone')
 
 
+def get_distribution():
+    try:
+        #path = path.join('/', 'etc', 'lsb-release')
+        #with open(path, 'r') as fp:
+        cmd = ['lsb_release', '-a']
+        content = subprocess.check_output(cmd).decode('utf-8')
+        for line in content.splitlines():
+            pair = line.strip('\n').split(':', 1)
+            if len(pair) != 2:
+                continue
+            key = pair[0]
+            value = pair[1].lstrip()
+            if key == 'Description':
+                print(value)
+                if value.startswith('Ubuntu'):
+                    return 'Ubuntu'
+                elif value.startswith('Pop!_OS'):
+                    return 'Pop'
+                else:
+                    return 'Unknown'
+    except:
+        pass
+    return ''
+
+
 ENERGYSTAR_GSETTINGS_OVERRIDE = """[org.gnome.settings-daemon.plugins.power]
 sleep-inactive-ac-type='suspend'
 sleep-inactive-ac-timeout=1800
@@ -792,6 +817,22 @@ class energystar_gsettings_override(FileAction):
     @property
     def content(self):
         return self._content
+
+    def perform(self):
+        self.atomic_write(self.content, self.mode)
+        gsettings_dir = path.join('/', 'usr', 'share', 'glib-2.0', 'schemas')
+        cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
+        SubProcess.check_call(cmd_compile_schemas)
+
+    def get_isneeded(self):
+        if get_distribution != 'Ubuntu':
+            return False
+        if self.read() != self.content:
+            return True
+        st = os.stat(self.filename)
+        if stat.S_IMODE(st.st_mode) != self.mode:
+            return True
+        return False
 
     def describe(self):
         return _('Apply ENERGY STAR default gsettings overrides')
@@ -843,6 +884,8 @@ class energystar_wakeonlan(FileAction):
             return None
 
     def get_isneeded(self):
+        if get_distribution != 'Ubuntu':
+            return False
         return self.read1() != self.content1 or self.read2() != self.content2
 
     def perform(self):
@@ -850,7 +893,7 @@ class energystar_wakeonlan(FileAction):
         atomic_write(self.filename2, self.content2)
 
     def describe(self):
-        return _('Apply ENERGY STAR default gsettings overrides')
+        return _('Disable Wake-On-LAN on battery power for ENERGY STAR')
 
 
 DPI_DEFAULT = 96
