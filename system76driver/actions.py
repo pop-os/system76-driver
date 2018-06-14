@@ -882,7 +882,7 @@ class energystar_wakeonlan(FileAction):
             return None
 
     def get_isneeded(self):
-        if get_distribution != 'Ubuntu':
+        if get_distribution() != 'Ubuntu':
             return False
         return self.read1() != self.content1 or self.read2() != self.content2
 
