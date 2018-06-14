@@ -156,6 +156,8 @@ PRODUCTS = {
         'name': 'Galago Pro',
         'drivers': [
             actions.internal_mic_gain,
+            actions.energystar_gsettings_override,
+            actions.energystar_wakeonlan,
 	    ],
     },
 

@@ -778,6 +778,122 @@ class headset_fixup(Action):
         return _('Enable headset microphone')
 
 
+def get_distribution():
+    try:
+        cmd = ['lsb_release', '-a']
+        content = SubProcess.check_output(cmd).decode('utf-8')
+        for line in content.splitlines():
+            pair = line.strip('\n').split(':', 1)
+            if len(pair) != 2:
+                continue
+            key = pair[0]
+            value = pair[1].lstrip()
+            if key == 'Description':
+                print(value)
+                if value.startswith('Ubuntu'):
+                    return 'Ubuntu'
+                elif value.startswith('Pop!_OS'):
+                    return 'Pop'
+                else:
+                    return 'Unknown'
+    except:
+        pass
+    return ''
+
+
+ENERGYSTAR_GSETTINGS_OVERRIDE = """[org.gnome.settings-daemon.plugins.power]
+sleep-inactive-ac-type='suspend'
+sleep-inactive-ac-timeout=1800
+"""
+
+class energystar_gsettings_override(FileAction):
+    relpath = ('usr', 'share', 'glib-2.0', 'schemas',
+        '50_system76-driver-energystar.gschema.override')
+
+    _content = ENERGYSTAR_GSETTINGS_OVERRIDE
+
+    @property
+    def content(self):
+        return self._content
+
+    def perform(self):
+        self.atomic_write(self.content, self.mode)
+        gsettings_dir = path.join('/', 'usr', 'share', 'glib-2.0', 'schemas')
+        cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
+        SubProcess.check_call(cmd_compile_schemas)
+
+    def get_isneeded(self):
+        if get_distribution() != 'Ubuntu':
+            return False
+        if self.read() != self.content:
+            return True
+        st = os.stat(self.filename)
+        if stat.S_IMODE(st.st_mode) != self.mode:
+            return True
+        return False
+
+    def describe(self):
+        return _('Apply ENERGY STAR default gsettings overrides')
+
+
+ENERGYSTAR_WAKEONLAN_SCRIPT = """#!/usr/bin/env bash
+
+set -e
+
+for d in /sys/class/net/*/ ; do
+    if [[ $(basename $d) == en* ]]; then
+        ethtool -s $(basename $d) wol $1
+    fi
+done
+"""
+
+ENERGYSTAR_WAKEONLAN_RULE = """# AC PLUGGED-IN
+SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/lib/system76-driver/system76-wakeonlan g"
+
+# ON BATTERY
+SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/lib/system76-driver/system76-wakeonlan d"
+"""
+
+class energystar_wakeonlan(FileAction):
+    relpath1 = ('usr', 'lib', 'system76-driver',
+        'system76-wakeonlan')
+    relpath2 = ('etc', 'udev', 'rules.d',
+        '10-system76-driver-energystar-wakeonlan.rules')
+
+    content1 = ENERGYSTAR_WAKEONLAN_SCRIPT
+    content2 = ENERGYSTAR_WAKEONLAN_RULE
+    
+    mode1 = 0o755
+
+    def __init__(self, rootdir='/'):
+        self.filename1 = path.join(rootdir, *self.relpath1)
+        self.filename2 = path.join(rootdir, *self.relpath2)
+
+    def read1(self):
+        try:
+            return open(self.filename1, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def read2(self):
+        try:
+            return open(self.filename2, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def get_isneeded(self):
+        if get_distribution() != 'Ubuntu':
+            return False
+        return self.read1() != self.content1 or self.read2() != self.content2
+
+    def perform(self):
+        atomic_write(self.filename1, self.content1, mode=self.mode1)
+        atomic_write(self.filename2, self.content2)
+
+    def describe(self):
+        return _('Disable Wake-On-LAN on battery power for ENERGY STAR')
+
+
 DPI_DEFAULT = 96
 
 DPI_LIMIT = 170
