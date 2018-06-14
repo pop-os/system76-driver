@@ -783,7 +783,7 @@ def get_distribution():
         #path = path.join('/', 'etc', 'lsb-release')
         #with open(path, 'r') as fp:
         cmd = ['lsb_release', '-a']
-        content = subprocess.check_output(cmd).decode('utf-8')
+        content = SubProcess.check_output(cmd).decode('utf-8')
         for line in content.splitlines():
             pair = line.strip('\n').split(':', 1)
             if len(pair) != 2:
