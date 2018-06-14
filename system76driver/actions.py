@@ -780,8 +780,6 @@ class headset_fixup(Action):
 
 def get_distribution():
     try:
-        #path = path.join('/', 'etc', 'lsb-release')
-        #with open(path, 'r') as fp:
         cmd = ['lsb_release', '-a']
         content = SubProcess.check_output(cmd).decode('utf-8')
         for line in content.splitlines():
@@ -825,7 +823,7 @@ class energystar_gsettings_override(FileAction):
         SubProcess.check_call(cmd_compile_schemas)
 
     def get_isneeded(self):
-        if get_distribution != 'Ubuntu':
+        if get_distribution() != 'Ubuntu':
             return False
         if self.read() != self.content:
             return True
