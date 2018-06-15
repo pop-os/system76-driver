@@ -1,10 +1,9 @@
-system76-driver (18.04.24~~alpha) bionic; urgency=low
+system76-driver (18.04.24) bionic; urgency=low
 
-  * Daily WIP for 18.04.24
   * Add gaze13 and kudu5
   * Add actions for ENERGY STAR compliance on galp3-b (Ubuntu-only)
 
- -- David Jordan <david2@system76.com>  Thu, 14 Jun 2018 15:21:32 -0600
+ -- David Jordan <david2@system76.com>  Thu, 14 Jun 2018 15:34:53 -0600
 
 system76-driver (18.04.23) bionic; urgency=low
 
