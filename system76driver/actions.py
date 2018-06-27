@@ -778,6 +778,55 @@ class headset_fixup(Action):
         return _('Enable headset microphone')
 
 
+SWITCH_INTERNAL_SPEAKERS_RULE = """SUBSYSTEM!="sound", GOTO="system76_pulseaudio_end"
+ACTION!="change", GOTO="system76_pulseaudio_end"
+KERNEL!="card*", GOTO="system76_pulseaudio_end"
+
+# Switch left and right speakers for some laptops
+ATTRS{{subsystem_vendor}}=="0x{vendor_id:04x}", ATTRS{{subsystem_device}}=="0x{subsystem_id:04x}", ENV{{PULSE_PROFILE_SET}}="system76-switch-internal-speakers.conf"
+
+LABEL="system76_pulseaudio_end\""""
+
+
+class switch_internal_speakers(Action):
+    relpath1 = ('usr', 'share', 'pulseaudio', 'alsa-mixer/profile-sets', 'system76-switch-internal-speakers.conf')
+    relpath2 = ('etc', 'udev', 'rules.d', '89-system76-pulseaudio.rules')
+
+    def __init__(self, rootdir='/'):
+        self.filename1 = path.join(rootdir, *self.relpath1)
+        self.filename2 = path.join(rootdir, *self.relpath2)
+        hda_id = read_hda_id('subsystem_id', rootdir=rootdir)
+        self.vendor_id = (hda_id & 0xffff0000) >> 16
+        self.subsystem_id = (hda_id & 0x0000ffff)
+        self.content1 = open(get_datafile('system76-switch-internal-speakers.conf'), 'r').read()
+        self.content2 = SWITCH_INTERNAL_SPEAKERS_RULE.format(
+            vendor_id=self.vendor_id,
+            subsystem_id=self.subsystem_id
+        )
+
+    def read1(self):
+        try:
+            return open(self.filename1, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def read2(self):
+        try:
+            return open(self.filename2, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def get_isneeded(self):
+        return self.read1() != self.content1 or self.read2() != self.content2
+
+    def perform(self):
+        atomic_write(self.filename1, self.content1)
+        atomic_write(self.filename2, self.content2)
+
+    def describe(self):
+        return _('Switch left/right speaker channels.')
+
+
 def get_distribution():
     try:
         cmd = ['lsb_release', '-a']
