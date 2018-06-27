@@ -1,10 +1,9 @@
-system76-driver (18.04.25~~alpha) bionic; urgency=low
+system76-driver (18.04.25) bionic; urgency=low
 
-  * Daily WIP for 18.04.25
   * Add action to switch left/right internal speaker channels on oryp4-b.
   * Add nvreg_enablebacklighthandler for oryp2
 
- -- David Jordan <david2@system76.com>  Wed, 27 Jun 2018 14:56:32 -0600
+ -- David Jordan <david2@system76.com>  Wed, 27 Jun 2018 16:58:14 -0600
 
 system76-driver (18.04.24) bionic; urgency=low
 
