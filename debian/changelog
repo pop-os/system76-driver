@@ -1,3 +1,9 @@
+system76-driver (18.04.25~~alpha) bionic; urgency=low
+
+  * Daily WIP for 18.04.25
+
+ -- David Jordan <david2@system76.com>  Wed, 27 Jun 2018 14:56:32 -0600
+
 system76-driver (18.04.24) bionic; urgency=low
 
   * Add gaze13 and kudu5
