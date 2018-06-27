@@ -476,6 +476,7 @@ PRODUCTS = {
             actions.remove_backlight_vendor,
             actions.i8042_reset_nomux,
             actions.hidpi_scaling,
+            actions.nvreg_enablebacklighthandler,
         ],
     },
     'oryp2-ess': {
