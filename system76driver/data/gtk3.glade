@@ -31,7 +31,7 @@ Ian Santopietro
 
 Documentation:
 Carl Richell</property>
-    <property name="logo">76icon.svg</property>
+    <property name="logo">76icon_primary.svg</property>
     <property name="license_type">gpl-2-0</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
@@ -692,7 +692,7 @@ log file will be available in your home folder.</property>
             <property name="margin_right">6</property>
             <property name="margin_top">6</property>
             <property name="margin_bottom">6</property>
-            <property name="pixbuf">76icon.svg</property>
+            <property name="pixbuf">76icon_primary.svg</property>
           </object>
         </child>
         <child>
