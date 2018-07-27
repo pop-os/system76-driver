@@ -1,3 +1,10 @@
+system76-driver (18.04.26) bionic; urgency=low
+
+  * Update logo on About page
+  * Update copyright year
+
+ -- Benjamin Shpurker <benjamin@system76.com>  Fri, 27 Jul 2018 15:13:50 -0600
+
 system76-driver (18.04.25) bionic; urgency=low
 
   * Add action to switch left/right internal speaker channels on oryp4-b.
