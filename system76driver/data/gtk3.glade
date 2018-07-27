@@ -31,7 +31,7 @@ Ian Santopietro
 
 Documentation:
 Carl Richell</property>
-    <property name="logo">76icon.svg</property>
+    <property name="logo">76icon_primary.svg</property>
     <property name="license_type">gpl-2-0</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="aboutdialog-vbox1">
