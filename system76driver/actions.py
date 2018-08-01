@@ -403,7 +403,7 @@ class GrubAction(Action):
     def get_isneeded(self):
         if self.mode == 'kernelstub':
             current = self.get_current_kernel_options()
-            params = set(current.split())
+            params = set(current)
         elif self.has_cmdline_default():
             current = self.get_current_cmdline()
             params = set(current.split())
