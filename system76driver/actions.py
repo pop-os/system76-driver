@@ -376,6 +376,11 @@ class GrubAction(Action):
         params.update(self.add)
         return ' '.join(sorted(params))
 
+    def build_new_kernelstub_cmdline(self, current):
+        params = set(current) - set(self.remove)
+        params.update(self.add)
+        return ' '.join(sorted(params))
+
     def iter_lines(self, content):
         for line in content.splitlines():
             match = CMDLINE_RE.match(line)
@@ -390,7 +395,7 @@ class GrubAction(Action):
         c = json.loads(content)
         if 'user' in c:
             if 'kernel_options' in c['default']:
-                cmdline = self.build_new_cmdline(c['user']['kernel_options'])
+                cmdline = self.build_new_kernelstub_cmdline(c['user']['kernel_options'])
                 c['user']['kernel_options'] = cmdline
         return c
 
