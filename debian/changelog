@@ -1,3 +1,9 @@
+system76-driver (18.04.28) bionic; urgency=low
+
+  * Fix other kernelstub action checking
+
+ -- Benjamin Shpurker <benjamin@system76.com>  Tue, 09 Aug 2018 17:01:09 -0600
+
 system76-driver (18.04.27) bionic; urgency=low
 
   * Fix kernelstub action checking
