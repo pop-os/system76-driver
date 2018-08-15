@@ -1,6 +1,6 @@
-system76-driver (18.04.28~~alpha) bionic; urgency=low
+system76-driver (18.10.0~~alpha) cosmic; urgency=low
 
-  * Daily WIP for 18.04.28
+  * Daily WIP for 18.10.0
   * Fix other kernelstub action checking
 
  -- Benjamin Shpurker <benjamin@system76.com>  Fri, 10 Aug 2018 15:13:16 -0600
