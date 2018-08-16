@@ -1,3 +1,9 @@
+system76-driver (18.10.1~~alpha) cosmic; urgency=low
+
+  * Daily WIP for 18.10.1
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 16 Aug 2018 12:03:50 -0600
+
 system76-driver (18.10.0) cosmic; urgency=low
 
   * Fix other kernelstub action checking
