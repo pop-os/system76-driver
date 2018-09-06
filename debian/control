@@ -32,7 +32,8 @@ Depends: ${python3:Depends}, ${misc:Depends},
     gir1.2-notify-0.7,
     pm-utils,
     xbacklight,
-    gnome-shell-extension-system76-power
+    gnome-shell-extension-system76-power,
+    at
 Recommends: hidpi-daemon
 Description: Universal driver for System76 computers
  System76 Driver provides drivers, restore, and regression support for System76

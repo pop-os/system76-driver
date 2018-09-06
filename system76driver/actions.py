@@ -948,6 +948,154 @@ class energystar_wakeonlan(FileAction):
         return _('Disable Wake-On-LAN on battery power for ENERGY STAR')
 
 
+LIMIT_TDP_UDEV_RULE = """SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/lib/system76-driver/system76-adjust-tdp --battery"
+SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/lib/system76-driver/system76-adjust-tdp --ac\""""
+
+LIMIT_TDP_ACPI_EVENT_DOWN = """# /etc/acpi/events/system76-brightness-tdp-down
+# This is called when the user presses brightness hotkeys and sets 
+# processor TDP to keep power just within stable limit on battery
+
+event=video/brightnessdown
+action=/etc/acpi/system76-brightness-tdp.sh"""
+
+LIMIT_TDP_ACPI_EVENT_UP = """# /etc/acpi/events/system76-brightness-tdp-up
+# This is called when the user presses brightness hotkeys and sets 
+# processor TDP to keep power just within stable limit on battery
+
+event=video/brightnessup
+action=/etc/acpi/system76-brightness-tdp.sh"""
+
+LIMIT_TDP_ACPI_ACTION = """#!/bin/sh
+/usr/lib/system76-driver/system76-adjust-tdp"""
+
+LIMIT_TDP_SCRIPT = """#!/bin/sh
+
+adjust_tdp ()
+{
+  ac_state=$(upower -i $(upower -e | grep BAT) | grep -E "state")
+  case "$ac_state" in
+  *discharging*) on_battery=true ;;
+  *charging*) on_battery=false ;;
+  esac
+  
+  if [ "$on_battery" = true ]; then
+    platform_max=96
+    
+    misc_power=19
+    
+    bl_name=$(ls -d /sys/class/backlight/*|head -n 1)
+    bl_dev=$bl_name
+    bl_value=$(cat $bl_dev/brightness)
+    bl_max=$(cat $bl_dev/max_brightness)
+    bl_pct=$((100 * $bl_value / $bl_max))
+    bl_power=$((4 * $bl_pct / 100))
+    
+    kbd_dev=/sys/class/leds/system76\:\:kbd_backlight/
+    kbd_value=$(cat $kbd_dev/brightness)
+    kbd_max=$(cat $kbd_dev/max_brightness)
+    kbd_pct=$((100 * $kbd_value / $kbd_max))
+    kbd_power=$((5 * $kbd_pct / 100))
+    
+    if lsmod | grep "nvidia\|nouveau" > /dev/null ; then
+      gfx_power=41
+    else
+      gfx_power=0
+    fi
+    
+    power_offset=$(($misc_power + $bl_power + $kbd_power + $gfx_power))
+    
+    cpu_power=$(( $platform_max - $power_offset ))
+    if [ "$cpu_power" -gt 45 ] ; then
+      cpu_power=45
+    fi
+    
+    cpu_turbo_power=$cpu_power
+    if [ "$cpu_turbo_power" -gt 68 ] ; then
+      cpu_turbo_power=68
+    fi
+    
+    # Short term limit
+    echo -n $(( $cpu_turbo_power * 1000000 )) > /sys/devices/virtual/powercap/intel-rapl/intel-rapl\:0/constraint_1_power_limit_uw
+    # Long term limit
+    echo -n $(( $cpu_power * 1000000 )) > /sys/devices/virtual/powercap/intel-rapl/intel-rapl\:0/constraint_0_power_limit_uw
+  fi
+}
+
+if [ "$1" = "--battery" ]; then
+  if [ "$2" = "--disowned" ]; then
+    # When unplugged, disable turboboost and extra limit TDP until NVIDIA stabilizes at lower power.
+    
+    echo -n 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+
+    # Short term limit
+    echo -n 15000000 > /sys/devices/virtual/powercap/intel-rapl/intel-rapl\:0/constraint_1_power_limit_uw
+    # Long term limit
+    echo -n 15000000 > /sys/devices/virtual/powercap/intel-rapl/intel-rapl\:0/constraint_0_power_limit_uw
+
+    sleep 15
+
+    # After NVIDIA stabilizes, set TDP to the highest safe value.
+    adjust_tdp
+  else
+    echo /usr/lib/system76-driver/system76-adjust-tdp --battery --disowned | at now
+  fi
+elif [ "$1" = "--ac" ]; then
+  # When plugged into AC power, enable turboboost and set TDP to maximum.
+  
+  # First, kill any instances waiting to restore battery power settings.
+  pkill -f "system76-adjust-tdp --battery"
+  
+  echo -n 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
+  # Short term limit
+  echo -n 68000000 > /sys/devices/virtual/powercap/intel-rapl/intel-rapl\:0/constraint_1_power_limit_uw
+  # Long term limit
+  echo -n 45000000 > /sys/devices/virtual/powercap/intel-rapl/intel-rapl\:0/constraint_0_power_limit_uw
+else
+  adjust_tdp
+fi"""
+
+class limit_tdp(FileAction):
+    relpath_udev_rule = ('etc', 'udev', 'rules.d',
+        '89-system76-driver-limit-tdp.rules')
+    relpath_acpi_event_down = ('etc', 'acpi', 'events',
+        'system76-brightness-tdp-down')
+    relpath_acpi_event_up = ('etc', 'acpi', 'events',
+        'system76-brightness-tdp-up')
+    relpath_acpi_action = ('etc', 'acpi',
+        'system76-brightness-tdp.sh')
+    relpath_adjust_tdp = ('usr', 'lib', 'system76-driver',
+        'system76-adjust-tdp')
+    
+    def __init__(self, rootdir='/'):
+        self.filename_udev_rule = path.join(rootdir, *self.relpath_udev_rule)
+        self.filename_adjust_tdp = path.join(rootdir, *self.relpath_adjust_tdp)
+        self.files = [(path.join(rootdir, *self.relpath_udev_rule), LIMIT_TDP_UDEV_RULE, None),
+                      (path.join(rootdir, *self.relpath_acpi_event_down), LIMIT_TDP_ACPI_EVENT_DOWN, None),
+                      (path.join(rootdir, *self.relpath_acpi_event_up), LIMIT_TDP_ACPI_EVENT_UP, None),
+                      (path.join(rootdir, *self.relpath_acpi_action), LIMIT_TDP_ACPI_ACTION, 0o755),
+                      (path.join(rootdir, *self.relpath_adjust_tdp), LIMIT_TDP_SCRIPT, 0o755)]
+        
+    def read(self, filename):
+        try:
+            return open(filename, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def get_isneeded(self):
+        isneeded = False
+        for filename, content, mode in self.files:
+            if self.read(filename) != content:
+                isneeded = True
+        return isneeded
+
+    def perform(self):
+        for filename, content, mode in self.files:
+            atomic_write(filename, content, mode=mode)
+
+    def describe(self):
+        return _('Control TDP on battery to maintain stability and optimize performance.')
+
+
 DPI_DEFAULT = 96
 
 DPI_LIMIT = 170

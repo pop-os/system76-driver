@@ -63,6 +63,7 @@ airplane = daemon.run_airplane(args.model)
 acpi = daemon.run_firmware_acpi_interrupt(args.model)
 ess_dac_autoswitch = daemon.run_ess_dac_autoswitch(args.model)
 daemon.run_dpcd_pwm(args.model)
+tdp = daemon.run_limit_power_draw(args.model)
 
 mainloop = GLib.MainLoop()
 if args.debug:
