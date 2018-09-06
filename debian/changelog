@@ -1,3 +1,9 @@
+system76-driver (18.04.29~~alpha) bionic; urgency=low
+
+  * Daily WIP for 18.04.29
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 06 Sep 2018 09:33:53 -0600
+
 system76-driver (18.04.28) bionic; urgency=low
 
   * Fix other kernelstub action checking
