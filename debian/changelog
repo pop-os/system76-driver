@@ -1,6 +1,7 @@
 system76-driver (18.04.29~~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.29
+  * oryp4: manage processor TDP to maintain stability and optimize performance
 
  -- Jeremy Soller <jeremy@system76.com>  Thu, 06 Sep 2018 09:33:53 -0600
 
