@@ -517,6 +517,7 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.hidpi_scaling,
+            actions.limit_tdp,
         ],
     },
     'oryp4-b': {
