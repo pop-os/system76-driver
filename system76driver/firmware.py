@@ -35,7 +35,7 @@ import logging
 log = logging.getLogger(__name__)
 
 # Model definitions, by bios product name
-# - check - Products that will check for updates
+# - flash - Products that will automatically install updates
 # - ec - Product has embedded controller firmware
 # - ec2 - Product has second embedded controller firmware
 # - me - Product has management engine firmware
@@ -143,6 +143,30 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
+    'leow8': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'leow9': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'leow9-b': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'leow9-w': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
     'orxp1': {
         "flash": True,
         "ec": True,
@@ -197,6 +221,18 @@ MODELS = {
         "ec2": True,
         "me": True,
     },
+    'ratp5': {
+        "flash": False,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'sabl6': {
+        "flash": False,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
     'serw10': {
         "flash": True,
         "ec": True,
@@ -207,6 +243,24 @@ MODELS = {
         "flash": True,
         "ec": True,
         "ec2": True,
+        "me": True,
+    },
+    'wilp12': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'wilp13': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'wilp14': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
         "me": True,
     },
 }
