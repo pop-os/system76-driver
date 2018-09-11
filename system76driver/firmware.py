@@ -42,169 +42,169 @@ log = logging.getLogger(__name__)
 
 MODELS = {
     'bonw11': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": True,
         "me": True,
     },
     'bonw12': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": True,
         "me": True,
     },
     'bonw13': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": True,
         "me": True,
     },
     'galp2': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'galp3': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'galp3-b': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'gaze10': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'gaze11': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'gaze12': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'gaze13': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'kudu2': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'kudu3': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'kudu4': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'kudu5': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'lemu6': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'lemu7': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'lemu8': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'orxp1': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp2': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp2-ess': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp3': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp3-ess': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp3-b': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp4': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'oryp4-b': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
     'serw9': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": True,
         "me": True,
     },
     'serw10': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": True,
         "me": True,
     },
     'serw11': {
-        "check": True,
+        "flash": True,
         "ec": True,
         "ec2": True,
         "me": True,
@@ -285,8 +285,6 @@ def process_changelog(changelog):
     return version_entries
 
 def get_data(model, model_data, iface, changelog, is_notification):
-    flash = False
-
     latest = {
         "bios": "",
         "ec": "",
@@ -304,7 +302,6 @@ def get_data(model, model_data, iface, changelog, is_notification):
     _model, bios = iface.Bios()
 
     if model_data.get("ec"):
-        flash = True
         _project, ec = iface.EmbeddedController(True)
     else:
         ec = ""
@@ -334,7 +331,7 @@ def get_data(model, model_data, iface, changelog, is_notification):
         'desktop': '',
         'notification': is_notification,
         'model': model,
-        'flash': flash,
+        'flash': model_data.get("flash"),
         'changelog': changelog,
         'current': current,
         'latest': latest
@@ -344,7 +341,7 @@ def _run_firmware_updater(reinstall, is_notification):
     # For now, whitelist the models that can update firmware
     model = get_model()
     model_data = MODELS.get(model)
-    if not model_data or not model_data.get("check"):
+    if not model_data:
         message = "Updates are currently unavailable for " + model
         log.info(message)
         if not is_notification:
