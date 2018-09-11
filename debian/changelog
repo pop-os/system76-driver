@@ -1,6 +1,7 @@
 system76-driver (18.04.30~~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.30
+  * Add support for flashing leow8, leow9, leow9-b, leow9-w, wilp12, wilp13, and wilp14
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 11 Sep 2018 14:42:10 -0600
 
