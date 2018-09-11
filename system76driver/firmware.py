@@ -167,13 +167,13 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
-    'oryp3-ess': {
+    'oryp3-b': {
         "flash": True,
         "ec": True,
         "ec2": False,
         "me": True,
     },
-    'oryp3-b': {
+    'oryp3-ess': {
         "flash": True,
         "ec": True,
         "ec2": False,
