@@ -162,7 +162,7 @@ MODELS = {
         "me": True,
     },
     'leow9-w': {
-        "flash": True,
+        "flash": False,
         "ec": False,
         "ec2": False,
         "me": True,
