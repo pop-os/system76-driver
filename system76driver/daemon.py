@@ -618,6 +618,8 @@ def hash_list(list = [], *args):
 
 def apply_dpcd_pwm_fix(model):
     dpcd_pwm = DpcdPwm(model)
+    # Wait for display-manager to start, then
+    # initialize backlight mode.
     while True:
         time.sleep(1)
         output = subprocess.getoutput("systemctl is-active display-manager")
@@ -625,6 +627,9 @@ def apply_dpcd_pwm_fix(model):
             log.info("applying dpcd pwm fix")
             dpcd_pwm.run()
             break
+    # When the computer sleeps or the screen turns off, the
+    # backlight mode often resets. We'll check for this and fix
+    # it if it happens.
     while True:
         time.sleep(2)
         if (dpcd_pwm.is_set () == False):
