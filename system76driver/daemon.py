@@ -35,6 +35,7 @@ import json
 import logging
 import os
 from os import path
+import socket
 import struct
 import subprocess
 import _thread
@@ -152,6 +153,10 @@ NEEDS_ESS_DAC_AUTOSWITCH = (
 # These Products need an adjustment of DPCD data to use PWM backlight
 NEEDS_DPCD_PWM = (
     'oryp4-b',
+)
+
+NEEDS_POWER_LIMIT = (
+    'oryp4',
 )
 
 def load_json_conf(filename):
@@ -642,3 +647,59 @@ def run_dpcd_pwm(model):
         threading.Thread(target=apply_dpcd_pwm_fix(model), daemon=True).start()
     except Exception:
         log.exception('Error calling run_dpcd_pwm for %r', model)
+
+class LimitPowerDraw:
+    def __init__(self, model, rootdir='/'):
+        self.model = model
+
+    def graphics_load(self):
+        while True:
+            try:
+                output = subprocess.check_output(['nvidia-smi', '--format=csv,noheader,nounits', '--query-gpu=power.draw']).decode('utf-8').split('\n')
+                if open("/sys/class/power_supply/AC/online", "r").read().split("\n")[0] == "1":
+                    if float(output[0]) > 50:
+                        # disabling turboboost due to high utilization
+                        with open("/sys/devices/system/cpu/intel_pstate/no_turbo", "w") as no_turbo:
+                            no_turbo.write("1")
+                    else:
+                        with open("/sys/devices/system/cpu/intel_pstate/no_turbo", "w") as no_turbo:
+                            no_turbo.write("0")
+            except:
+                pass
+            time.sleep(5)
+
+    def keyboard_backlight(self):
+        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        s.connect("/var/run/acpid.socket")
+
+        brightness = 0
+        while True:
+            s.recv(4096)
+            f = open("/sys/class/leds/system76::kbd_backlight/brightness", "r")
+            old_brightness = brightness
+            brightness = int(f.read())
+            if brightness != old_brightness:
+                subprocess.call("/usr/lib/system76-driver/system76-adjust-tdp", shell=True)
+            
+    def run(self):
+        self.gfx_thread = threading.Thread(target=self.graphics_load)
+        self.gfx_thread.start()
+        
+        self.kbd_thread = threading.Thread(target=self.keyboard_backlight)
+        self.kbd_thread.start()
+
+
+def _run_limit_power_draw(model):
+    if model not in NEEDS_POWER_LIMIT:
+        log.info('Limit Power Draw not needed %r', model)
+        return
+    log.info('Limiting power draw for %r', model)
+    tdp = LimitPowerDraw(model)
+    tdp.run()
+    return tdp
+    
+def run_limit_power_draw(model):
+    try:
+        return _run_limit_power_draw(model)
+    except Exception:
+        log.exception('Error calling _run_limit_power_draw(%r):', model)
