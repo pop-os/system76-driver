@@ -1,9 +1,8 @@
-system76-driver (18.10.1~~alpha) cosmic; urgency=low
+system76-driver (18.10.1) cosmic; urgency=low
 
-  * Daily WIP for 18.10.1
   * oryp4: manage processor TDP to maintain stability and optimize performance
 
- -- Jeremy Soller <jeremy@system76.com>  Thu, 16 Aug 2018 12:03:50 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 11 Oct 2018 11:56:54 -0600
 
 system76-driver (18.10.0) cosmic; urgency=low
 
