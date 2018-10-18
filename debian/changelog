@@ -1,9 +1,8 @@
-system76-driver (18.10.2~~alpha) cosmic; urgency=low
+system76-driver (18.10.2) cosmic; urgency=low
 
-  * Daily WIP for 18.10.2
   * oryp4-b: remove action to switch left/right internal speaker channels
 
- -- David Jordan <david2@system76.com>  Thu, 18 Oct 2018 12:48:05 -0600
+ -- David Jordan <david2@system76.com>  Thu, 18 Oct 2018 12:53:25 -0600
 
 system76-driver (18.10.1) cosmic; urgency=low
 
