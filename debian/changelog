@@ -1,9 +1,8 @@
-system76-driver (18.04.30~~alpha) bionic; urgency=low
+system76-driver (18.04.30) bionic; urgency=low
 
-  * Daily WIP for 18.04.30
   * oryp4-b: remove action to switch left/right internal speaker channels
 
- -- David Jordan <david2@system76.com>  Thu, 18 Oct 2018 13:10:52 -0600
+ -- David Jordan <david2@system76.com>  Thu, 18 Oct 2018 13:16:50 -0600
 
 system76-driver (18.04.29) bionic; urgency=low
 
