@@ -832,6 +832,28 @@ class switch_internal_speakers(Action):
         return _('Switch left/right speaker channels.')
 
 
+class remove_switch_internal_speakers(Action):
+    relpath1 = ('usr', 'share', 'pulseaudio', 'alsa-mixer/profile-sets', 'system76-switch-internal-speakers.conf')
+    relpath2 = ('etc', 'udev', 'rules.d', '89-system76-pulseaudio.rules')
+
+    def __init__(self, rootdir='/'):
+        self.filename1 = path.join(rootdir, *self.relpath1)
+        self.filename2 = path.join(rootdir, *self.relpath2)
+
+    def get_isneeded(self):
+        return os.path.exists(self.filename1) or os.path.exists(self.filename2)
+
+    def perform(self):
+        try:
+            os.remove(self.filename2)
+            os.remove(self.filename1)
+        except:
+            pass
+
+    def describe(self):
+        return _('Remove configuration to switch left/right speaker channels.')
+
+
 def get_distribution():
     try:
         cmd = ['lsb_release', '-a']
