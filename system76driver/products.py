@@ -524,7 +524,7 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.hidpi_scaling,
-            actions.switch_internal_speakers,
+            actions.remove_switch_internal_speakers,
         ],
     },
 

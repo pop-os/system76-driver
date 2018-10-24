@@ -1,3 +1,9 @@
+system76-driver (18.04.30) bionic; urgency=low
+
+  * oryp4-b: remove action to switch left/right internal speaker channels
+
+ -- David Jordan <david2@system76.com>  Thu, 18 Oct 2018 13:16:50 -0600
+
 system76-driver (18.04.29) bionic; urgency=low
 
   * oryp4: manage processor TDP to maintain stability and optimize performance
