@@ -42,7 +42,6 @@ import _thread
 import threading
 import time
 import functools
-from systemd import login
 
 from gi.repository import GLib
 
