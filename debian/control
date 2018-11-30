@@ -23,6 +23,8 @@ Suggests: gnome-color-manager
 Depends: ${python3:Depends}, ${misc:Depends},
     system76-dkms,
     system76-firmware-daemon,
+    system76-io-dkms,
+    system76-power,
     system76-wallpapers (>= 16.04.1~bzr26~ubuntu16.04.1),
     python3-dbus,
     python3-evdev,
