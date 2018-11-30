@@ -1,13 +1,12 @@
-system76-driver (18.10.3~~alpha) cosmic; urgency=low
+system76-driver (18.10.3) cosmic; urgency=low
 
-  * Daily WIP for 18.10.3
   * Add thelio-b1
   * Add thelio-r1
   * Add thelio-major-b1
   * Add thelio-major-r1
   * Add thelio-massive-b1
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 30 Nov 2018 08:37:11 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 30 Nov 2018 10:53:16 -0700
 
 system76-driver (18.10.2) cosmic; urgency=low
 
