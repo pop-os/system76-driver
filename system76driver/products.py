@@ -779,6 +779,28 @@ PRODUCTS = {
         'drivers': [],
     },
 
+    #Thelio:
+    'thelio-b1': {
+        'name': 'Thelio',
+        'drivers': [],
+    },
+    'thelio-r1': {
+        'name': 'Thelio',
+        'drivers': [],
+    },
+    'thelio-major-b1': {
+        'name': 'Thelio Major',
+        'drivers': [],
+    },
+    'thelio-major-r1': {
+        'name': 'Thelio Major',
+        'drivers': [],
+    },
+    'thelio-massive-b1': {
+        'name': 'Thelio Massive',
+        'drivers': [],
+    },
+    
     # Wildebeest:
     'wilb1': {
         'name': 'Wildebeest Performance',
