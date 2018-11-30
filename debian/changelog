@@ -1,13 +1,3 @@
-system76-driver (18.04.31) bionic; urgency=low
-
-  * Add thelio-b1
-  * Add thelio-r1
-  * Add thelio-major-b1
-  * Add thelio-major-r1
-  * Add thelio-massive-b1
- 
- -- Benjamin Shpurker <benjamin@system76.com> Thu, 29 Nov 2018 19:08:11 -0700 
-
 system76-driver (18.04.30) bionic; urgency=low
 
   * oryp4-b: remove action to switch left/right internal speaker channels
