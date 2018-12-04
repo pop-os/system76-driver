@@ -176,6 +176,7 @@ TABLES = {
         'meer1': 'meer1',
         'meer2': 'meer2',
         'meer3': 'meer3',
+        'meer4': 'meer4',
         'ment1': 'ment1',
         'ment2': 'ment2',
         'ment3': 'ment3',
