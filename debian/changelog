@@ -1,9 +1,8 @@
-system76-driver (18.10.4~~alpha) cosmic; urgency=low
+system76-driver (18.10.4) cosmic; urgency=low
 
-  * Daily WIP for 18.10.4
   * Add meer4
 
- -- shpurk benjamin@system76.com  Mon, 03 Dec 2018 20:44:25 -0700
+ -- shpurk benjamin@system76.com  Tue, 04 Dec 2018 15:58:21 -0700
 
 system76-driver (18.10.3) cosmic; urgency=low
 
