@@ -1,9 +1,8 @@
-system76-driver (18.04.32~~alpha) bionic; urgency=low
+system76-driver (18.04.32) bionic; urgency=low
 
-  * Daily WIP for 18.10.32
   * Add meer4
 
- -- shpurk benjamin@system76.com  Mon, 03 Dec 2018 20:28:53 -0700
+ -- shpurk benjamin@system76.com  Tue, 04 Dec 2018 16:15:38 -0700
 
 system76-driver (18.04.31) bionic; urgency=low
 
