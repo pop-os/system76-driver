@@ -1,3 +1,9 @@
+system76-driver (18.04.32~~alpha) bionic; urgency=low
+
+  * Add meer4
+
+ -- shpurk benjamin@system76.com  Mon, 03 Dec 2018 20:28:53 -0700
+
 system76-driver (18.04.31) bionic; urgency=low
 
   * Add thelio-b1
