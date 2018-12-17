@@ -162,9 +162,7 @@ PRODUCTS = {
     },
     'galp3-c': {
         'name': 'Galago Pro',
-        'drivers': [
-            actions.internal_mic_gain,
-	    ],
+        'drivers': [],
     },
 
     # Gazelle:
