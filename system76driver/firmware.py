@@ -77,6 +77,12 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
+    'galp3-c': {
+        "check": True,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
     'gaze10': {
         "check": True,
         "ec": True,
