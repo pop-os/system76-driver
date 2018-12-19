@@ -160,6 +160,10 @@ PRODUCTS = {
             actions.energystar_wakeonlan,
 	    ],
     },
+    'galp3-c': {
+        'name': 'Galago Pro',
+        'drivers': [],
+    },
 
     # Gazelle:
     'gazp1': {
