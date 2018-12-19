@@ -1,3 +1,10 @@
+system76-driver (18.10.5~~alpha) cosmic; urgency=low
+
+  * Daily WIP for 18.10.5
+  * Add galp3-c
+
+ -- shpurk benjamin@system76.com  Tue, 11 Dec 2018 11:13:29 -0700
+
 system76-driver (18.10.4) cosmic; urgency=low
 
   * Add meer4
