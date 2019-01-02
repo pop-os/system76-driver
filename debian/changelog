@@ -1,6 +1,7 @@
 system76-driver (18.04.34~~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.34
+  * Add linux hwe
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 02 Jan 2019 15:37:04 -0700
 
