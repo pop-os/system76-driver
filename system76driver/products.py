@@ -128,6 +128,10 @@ PRODUCTS = {
             actions.internal_mic_gain,
         ],
     },
+    'darp5': {
+        'name': 'Darter Pro',
+        'drivers': [],
+    },
 
     # Galago:
     'galu1': {
