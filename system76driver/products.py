@@ -129,7 +129,7 @@ PRODUCTS = {
         ],
     },
     'darp5': {
-        'name': 'Darter Ultra',
+        'name': 'Darter Pro',
         'drivers': [],
     },
 
