@@ -1,6 +1,7 @@
 system76-driver (18.04.35~~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.35
+  * Add darp5
 
  -- shpurk benjamin@system76.com  Thu, 03 Jan 2019 08:19:55 -0700
 

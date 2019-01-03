@@ -59,6 +59,12 @@ MODELS = {
         "ec2": True,
         "me": True,
     },
+    'darp5': {
+        "check": True,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
     'galp2': {
         "check": True,
         "ec": True,
