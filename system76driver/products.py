@@ -754,6 +754,10 @@ PRODUCTS = {
             actions.nvreg_enablebacklighthandler,
         ],
     },
+    'serw12': {
+        'name': 'Serval WS',
+        'drivers': [],
+    },
 
     # Silverback:
     'silw1': {
