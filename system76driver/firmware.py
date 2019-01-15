@@ -227,6 +227,12 @@ MODELS = {
         "ec2": True,
         "me": True,
     },
+    'serw12-b': {
+        "check": True,
+        "ec": True,
+        "ec2": True,
+        "me": True,
+    },
 }
 
 FIRMWARE_URI = 'https://firmware.system76.com/master/'
