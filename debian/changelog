@@ -1,6 +1,7 @@
 system76-driver (18.04.36~~alpha) bionic; urgency=low
 
   * Daily WIP for 18.04.36
+  * Add oryp5
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 30 Jan 2019 13:14:38 -0700
 
