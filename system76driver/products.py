@@ -539,6 +539,10 @@ PRODUCTS = {
             actions.remove_switch_internal_speakers,
         ],
     },
+    'oryp5': {
+        'name': 'Oryx Pro',
+        'drivers': [],
+    },
 
     # Pangolin:
     'panp4i': {
@@ -812,7 +816,7 @@ PRODUCTS = {
         'name': 'Thelio Massive',
         'drivers': [],
     },
-    
+
     # Wildebeest:
     'wilb1': {
         'name': 'Wildebeest Performance',
