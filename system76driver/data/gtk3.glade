@@ -13,7 +13,7 @@
     <property name="skip_pager_hint">True</property>
     <property name="program_name">System76 Driver</property>
     <property name="version">{driver version - you should not see this}</property>
-    <property name="copyright" translatable="yes">Copyright (c) 2006-2018 System76, Inc.</property>
+    <property name="copyright" translatable="yes">Copyright (c) 2006-2019 System76, Inc.</property>
     <property name="comments" translatable="yes">A simple utility for drivers on System76 computers.</property>
     <property name="website">http://www.system76.com/</property>
     <property name="website_label" translatable="yes">www.system76.com</property>

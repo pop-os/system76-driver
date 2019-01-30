@@ -203,6 +203,12 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
+    'oryp5': {
+        "check": True,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
     'serw9': {
         "check": True,
         "ec": True,
