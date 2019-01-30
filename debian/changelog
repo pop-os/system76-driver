@@ -1,6 +1,7 @@
 system76-driver (18.10.7~~alpha) cosmic; urgency=low
 
   * Daily WIP for 18.10.7
+  * Add oryp5
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 09 Jan 2019 11:43:28 -0700
 
