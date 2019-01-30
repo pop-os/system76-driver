@@ -1,6 +1,7 @@
 system76-driver (19.04.2~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.2
+  * Add oryp5
 
  -- Jeremy Soller <jeremy@system76.com>  Wed, 30 Jan 2019 13:37:44 -0700
 
