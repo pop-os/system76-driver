@@ -35,7 +35,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
     system76-firmware-daemon,
     system76-io-dkms,
     system76-power,
-    system76-wallpapers (>= 16.04.1~bzr26~ubuntu16.04.1),
+    system76-wallpapers,
     xbacklight
 Recommends: hidpi-daemon
 Description: Universal driver for System76 computers
