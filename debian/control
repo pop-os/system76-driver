@@ -4,14 +4,14 @@ Priority: extra
 Maintainer: System76, Inc. <dev@system76.com>
 Build-Depends: debhelper (>= 9),
     dh-systemd,
-    python3-all (>= 3.4),
+    gir1.2-gtk-3.0,
+    gir1.2-notify-0.7,
     pyflakes3,
+    python3-all (>= 3.4),
     python3-dbus,
     python3-evdev,
     python3-gi,
     python3-systemd,
-    gir1.2-gtk-3.0,
-    gir1.2-notify-0.7,
     xbacklight
 Standards-Version: 3.9.6
 X-Python3-Version: >= 3.4
@@ -21,21 +21,22 @@ Package: system76-driver
 Architecture: all
 Suggests: gnome-color-manager
 Depends: ${python3:Depends}, ${misc:Depends},
+    at,
+    gir1.2-gtk-3.0,
+    gir1.2-notify-0.7,
+    gnome-shell-extension-system76-power,
+    linux-generic-hwe-18.04,
+    pm-utils,
+    python3-dbus,
+    python3-evdev,
+    python3-gi,
+    python3-systemd,
     system76-dkms,
     system76-firmware-daemon,
     system76-io-dkms,
     system76-power,
     system76-wallpapers (>= 16.04.1~bzr26~ubuntu16.04.1),
-    python3-dbus,
-    python3-evdev,
-    python3-gi,
-    python3-systemd,
-    gir1.2-gtk-3.0,
-    gir1.2-notify-0.7,
-    pm-utils,
-    xbacklight,
-    gnome-shell-extension-system76-power,
-    at
+    xbacklight
 Recommends: hidpi-daemon
 Description: Universal driver for System76 computers
  System76 Driver provides drivers, restore, and regression support for System76
@@ -46,9 +47,9 @@ Description: Universal driver for System76 computers
 Package: system76-driver-nvidia
 Architecture: all
 Depends: ${misc:Depends},
+    nvidia-driver-410,
     system76-driver (>= ${binary:Version}),
     ubuntu-drivers-common,
-    nvidia-driver-390,
 Description: Latest nvidia driver for System76 computers
  This dummy package depends on the latest driver tested with and recommended for
  System76 products with an nvidia GPU.
