@@ -38,7 +38,7 @@ from .mockable import SubProcess
 log = logging.getLogger()
 CMDLINE_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$')
 CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
- 
+
 CMDLINE_CHECK_DEFAULT_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT')
 CMDLINE_ADD_DEFAULT_RE = re.compile('^GRUB_CMDLINE_LINUX="(.*)"$')
 
@@ -345,7 +345,7 @@ class GrubAction(Action):
             if match:
                 return True
         return False
-        
+
     def add_cmdline_default(self, content):
         print(content)
         for line in content.splitlines():
@@ -355,7 +355,7 @@ class GrubAction(Action):
                 yield match.group(0)
             else:
                 yield line
-          
+
     def get_current_kernel_options(self):
         content = self.read()
         c = json.loads(content)
@@ -363,7 +363,7 @@ class GrubAction(Action):
             if 'kernel_options' in c['default']:
                 return c['user']['kernel_options']
         raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
-    
+
     def get_current_cmdline(self):
         for line in self.read().splitlines():
             match = CMDLINE_RE.match(line)
@@ -735,17 +735,17 @@ class dac_fixup(Action):
         return _('Enable high-quality audio DAC')
 
 
-HEADSET_PATCH = """[codec]
+HEADSET_MEER3_PATCH = """[codec]
 0x{vendor_id:08x} 0x{subsystem_id:08x} 0
 
 [pincfg]
 0x19 0x23A11040
 """
 
-HEADSET_MODPROBE = 'options snd-hda-intel patch=system76-audio-patch\n'
+HEADSET_MEER3_MODPROBE = 'options snd-hda-intel patch=system76-audio-patch\n'
 
 
-class headset_fixup(Action):
+class headset_meer3_fixup(Action):
     relpath1 = ('lib', 'firmware', 'system76-audio-patch')
     relpath2 = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
 
@@ -754,11 +754,11 @@ class headset_fixup(Action):
         self.filename2 = path.join(rootdir, *self.relpath2)
         self.vendor_id = read_hda_id('vendor_id', rootdir=rootdir)
         self.subsystem_id = read_hda_id('subsystem_id', rootdir=rootdir)
-        self.content1 = HEADSET_PATCH.format(
+        self.content1 = HEADSET_MEER3_PATCH.format(
             vendor_id=self.vendor_id,
             subsystem_id=self.subsystem_id,
         )
-        self.content2 = HEADSET_MODPROBE
+        self.content2 = HEADSET_MEER3_MODPROBE
 
     def read1(self):
         try:
@@ -782,6 +782,51 @@ class headset_fixup(Action):
     def describe(self):
         return _('Enable headset microphone')
 
+HEADSET_DARP5_PATCH = """[codec]
+0x{vendor_id:08x} 0x{subsystem_id:08x} 0
+
+[pincfg]
+0x1a 0x01a1913c
+"""
+
+HEADSET_DARP5_MODPROBE = 'options snd-hda-intel model=headset-mode-no-hp-mic patch=system76-audio-patch\n'
+
+class headset_darp5_fixup(Action):
+    relpath1 = ('lib', 'firmware', 'system76-audio-patch')
+    relpath2 = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
+
+    def __init__(self, rootdir='/'):
+        self.filename1 = path.join(rootdir, *self.relpath1)
+        self.filename2 = path.join(rootdir, *self.relpath2)
+        self.vendor_id = read_hda_id('vendor_id', rootdir=rootdir)
+        self.subsystem_id = read_hda_id('subsystem_id', rootdir=rootdir)
+        self.content1 = HEADSET_DARP5_PATCH.format(
+            vendor_id=self.vendor_id,
+            subsystem_id=self.subsystem_id,
+        )
+        self.content2 = HEADSET_DARP5_MODPROBE
+
+    def read1(self):
+        try:
+            return open(self.filename1, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def read2(self):
+        try:
+            return open(self.filename2, 'r').read()
+        except FileNotFoundError:
+            return None
+
+    def get_isneeded(self):
+        return self.read1() != self.content1 or self.read2() != self.content2
+
+    def perform(self):
+        atomic_write(self.filename1, self.content1)
+        atomic_write(self.filename2, self.content2)
+
+    def describe(self):
+        return _('Enable headset microphone')
 
 SWITCH_INTERNAL_SPEAKERS_RULE = """SUBSYSTEM!="sound", GOTO="system76_pulseaudio_end"
 ACTION!="change", GOTO="system76_pulseaudio_end"
@@ -938,7 +983,7 @@ class energystar_wakeonlan(FileAction):
 
     content1 = ENERGYSTAR_WAKEONLAN_SCRIPT
     content2 = ENERGYSTAR_WAKEONLAN_RULE
-    
+
     mode1 = 0o755
 
     def __init__(self, rootdir='/'):
@@ -974,14 +1019,14 @@ LIMIT_TDP_UDEV_RULE = """SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/us
 SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/lib/system76-driver/system76-adjust-tdp --ac\""""
 
 LIMIT_TDP_ACPI_EVENT_DOWN = """# /etc/acpi/events/system76-brightness-tdp-down
-# This is called when the user presses brightness hotkeys and sets 
+# This is called when the user presses brightness hotkeys and sets
 # processor TDP to keep power just within stable limit on battery
 
 event=video/brightnessdown
 action=/etc/acpi/system76-brightness-tdp.sh"""
 
 LIMIT_TDP_ACPI_EVENT_UP = """# /etc/acpi/events/system76-brightness-tdp-up
-# This is called when the user presses brightness hotkeys and sets 
+# This is called when the user presses brightness hotkeys and sets
 # processor TDP to keep power just within stable limit on battery
 
 event=video/brightnessup
@@ -999,43 +1044,43 @@ adjust_tdp ()
   *discharging*) on_battery=true ;;
   *charging*) on_battery=false ;;
   esac
-  
+
   if [ "$on_battery" = true ]; then
     platform_max=96
-    
+
     misc_power=19
-    
+
     bl_name=$(ls -d /sys/class/backlight/*|head -n 1)
     bl_dev=$bl_name
     bl_value=$(cat $bl_dev/brightness)
     bl_max=$(cat $bl_dev/max_brightness)
     bl_pct=$((100 * $bl_value / $bl_max))
     bl_power=$((4 * $bl_pct / 100))
-    
+
     kbd_dev=/sys/class/leds/system76\:\:kbd_backlight/
     kbd_value=$(cat $kbd_dev/brightness)
     kbd_max=$(cat $kbd_dev/max_brightness)
     kbd_pct=$((100 * $kbd_value / $kbd_max))
     kbd_power=$((5 * $kbd_pct / 100))
-    
+
     if lsmod | grep "nvidia\|nouveau" > /dev/null ; then
       gfx_power=41
     else
       gfx_power=0
     fi
-    
+
     power_offset=$(($misc_power + $bl_power + $kbd_power + $gfx_power))
-    
+
     cpu_power=$(( $platform_max - $power_offset ))
     if [ "$cpu_power" -gt 45 ] ; then
       cpu_power=45
     fi
-    
+
     cpu_turbo_power=$cpu_power
     if [ "$cpu_turbo_power" -gt 68 ] ; then
       cpu_turbo_power=68
     fi
-    
+
     # Short term limit
     echo -n $(( $cpu_turbo_power * 1000000 )) > /sys/devices/virtual/powercap/intel-rapl/intel-rapl\:0/constraint_1_power_limit_uw
     # Long term limit
@@ -1046,7 +1091,7 @@ adjust_tdp ()
 if [ "$1" = "--battery" ]; then
   if [ "$2" = "--disowned" ]; then
     # When unplugged, disable turboboost and extra limit TDP until NVIDIA stabilizes at lower power.
-    
+
     echo -n 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
 
     # Short term limit
@@ -1063,10 +1108,10 @@ if [ "$1" = "--battery" ]; then
   fi
 elif [ "$1" = "--ac" ]; then
   # When plugged into AC power, enable turboboost and set TDP to maximum.
-  
+
   # First, kill any instances waiting to restore battery power settings.
   pkill -f "system76-adjust-tdp --battery"
-  
+
   echo -n 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
   # Short term limit
   echo -n 68000000 > /sys/devices/virtual/powercap/intel-rapl/intel-rapl\:0/constraint_1_power_limit_uw
@@ -1087,7 +1132,7 @@ class limit_tdp(FileAction):
         'system76-brightness-tdp.sh')
     relpath_adjust_tdp = ('usr', 'lib', 'system76-driver',
         'system76-adjust-tdp')
-    
+
     def __init__(self, rootdir='/'):
         self.filename_udev_rule = path.join(rootdir, *self.relpath_udev_rule)
         self.filename_adjust_tdp = path.join(rootdir, *self.relpath_adjust_tdp)
@@ -1096,7 +1141,7 @@ class limit_tdp(FileAction):
                       (path.join(rootdir, *self.relpath_acpi_event_up), LIMIT_TDP_ACPI_EVENT_UP, None),
                       (path.join(rootdir, *self.relpath_acpi_action), LIMIT_TDP_ACPI_ACTION, 0o755),
                       (path.join(rootdir, *self.relpath_adjust_tdp), LIMIT_TDP_SCRIPT, 0o755)]
-        
+
     def read(self, filename):
         try:
             return open(filename, 'r').read()
@@ -1230,4 +1275,3 @@ class hidpi_scaling(FileAction):
 
     def describe(self):
         return _('Set default HiDPI scaling factor.')
-

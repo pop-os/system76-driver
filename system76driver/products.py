@@ -130,7 +130,9 @@ PRODUCTS = {
     },
     'darp5': {
         'name': 'Darter Pro',
-        'drivers': [],
+        'drivers': [
+            actions.headset_darp5_fixup,
+        ],
     },
 
     # Galago:
@@ -466,7 +468,7 @@ PRODUCTS = {
     'meer3': {
         'name': 'Meerkat',
         'drivers': [
-            actions.headset_fixup,
+            actions.headset_meer3_fixup,
         ],
     },
     'meer4': {
@@ -816,7 +818,7 @@ PRODUCTS = {
         'name': 'Thelio Massive',
         'drivers': [],
     },
-    
+
     # Wildebeest:
     'wilb1': {
         'name': 'Wildebeest Performance',
