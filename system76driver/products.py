@@ -760,6 +760,16 @@ PRODUCTS = {
             actions.nvreg_enablebacklighthandler,
         ],
     },
+    'serw11-b': {
+        'name': 'Serval WS',
+        'drivers': [
+            actions.remove_backlight_vendor,
+            actions.dac_fixup,
+            actions.pulseaudio_hp_spdif_desc,
+            actions.hidpi_scaling,
+            actions.nvreg_enablebacklighthandler,
+        ],
+    },
 
     # Silverback:
     'silw1': {
