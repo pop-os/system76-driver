@@ -228,6 +228,7 @@ TABLES = {
         'serw9': 'serw9',
         'serw10': 'serw10',
         'serw11': 'serw11',
+        'serw11-b': 'serw11-b',
         'silw1': 'silw1',
         'silw2': 'silw2',
         'silw3': 'silw3',
