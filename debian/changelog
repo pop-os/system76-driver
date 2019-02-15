@@ -1,6 +1,7 @@
 system76-driver (19.04.4~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.4
+  * Add thelio-major-b1.1 and thelio-major-b2
 
  -- Jeremy Soller <jeremy@system76.com>  Fri, 15 Feb 2019 15:05:25 -0700
 
