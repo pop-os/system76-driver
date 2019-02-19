@@ -151,18 +151,6 @@ with open(CHANGELOG, 'w') as fp:
 with open(INIT, 'w') as fp:
     fp.writelines(new_init_lines)
 
-# Make sure tests pass in-tree:
-check_call([SETUP, 'test'])
-
-# Make sure package builds okay locally using pbuilder-dist:
-dsc_name = 'system76-driver_{}.dsc'.format(newdeb)
-check_call(['pbuilder-dist', distro, 'update'])
-tmp = TempDir()
-os.mkdir(tmp.join('result'))
-check_call(['dpkg-source', '-b', TREE], cwd=tmp.join('result'))
-check_call(['pbuilder-dist', distro, 'build', tmp.join('result', dsc_name)])
-del tmp
-
 # Confirm before we make the commit:
 print('-' * 80)
 call(['git', 'diff'])
