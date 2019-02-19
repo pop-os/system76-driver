@@ -1,6 +1,7 @@
 system76-driver (19.04.5~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.5
+  * Add serw11-b to ESS DAC autoswitch
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 19 Feb 2019 09:26:51 -0700
 

@@ -147,6 +147,7 @@ NEEDS_ESS_DAC_AUTOSWITCH = (
     'oryp3-ess',
     'serw10',
     'serw11',
+    'serw11-b',
 )
 
 # These Products need an adjustment of DPCD data to use PWM backlight
@@ -676,11 +677,11 @@ class LimitPowerDraw:
             brightness = int(f.read())
             if brightness != old_brightness:
                 subprocess.call("/usr/lib/system76-driver/system76-adjust-tdp", shell=True)
-            
+
     def run(self):
         self.gfx_thread = threading.Thread(target=self.graphics_load)
         self.gfx_thread.start()
-        
+
         self.kbd_thread = threading.Thread(target=self.keyboard_backlight)
         self.kbd_thread.start()
 
@@ -693,7 +694,7 @@ def _run_limit_power_draw(model):
     tdp = LimitPowerDraw(model)
     tdp.run()
     return tdp
-    
+
 def run_limit_power_draw(model):
     try:
         return _run_limit_power_draw(model)
