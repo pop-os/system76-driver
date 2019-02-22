@@ -543,7 +543,9 @@ PRODUCTS = {
     },
     'oryp5': {
         'name': 'Oryx Pro',
-        'drivers': [],
+        'drivers': [
+            actions.hda_probe_mask,
+        ],
     },
 
     # Pangolin:
