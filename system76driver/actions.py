@@ -1275,3 +1275,13 @@ class hidpi_scaling(FileAction):
 
     def describe(self):
         return _('Set default HiDPI scaling factor.')
+
+class hda_probe_mask(GrubAction):
+    """
+    Add `snd_hda_intel.probe_mask=1` to Linux command line.
+    """
+
+    add = ('snd_hda_intel.probe_mask=1',)
+
+    def describe(self):
+        return _('Fixes for probing Intel HDA device')
