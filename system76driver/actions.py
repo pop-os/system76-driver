@@ -301,7 +301,7 @@ class GrubAction(Action):
     ...
     >>> action = add_foo_bar()
     >>> action.build_new_cmdline('quiet splash acpi_enforce_resources=lax')
-    'acpi_enforce_resources=lax bar foo quiet splash'
+    'quiet splash acpi_enforce_resources=lax foo bar'
 
     You can also use GrubAction to remove parameters that we previously used on
     an earlier version of the driver (and likely an earlier version of Ubuntu),
@@ -315,8 +315,8 @@ class GrubAction(Action):
     ...         return _('I remove baz')
     ...
     >>> action = remove_baz()
-    >>> action.build_new_cmdline('quiet baz acpi_enforce_resources=lax splash')
-    'acpi_enforce_resources=lax quiet splash'
+    >>> action.build_new_cmdline('quiet splash baz acpi_enforce_resources=lax')
+    'quiet splash acpi_enforce_resources=lax'
 
     Note that to graciously accommodate customer changes, we should *only*
     remove parameters that we previously used on the exact product and are now
@@ -372,15 +372,25 @@ class GrubAction(Action):
         raise Exception('Could not parse GRUB_CMDLINE_LINUX_DEFAULT')
 
     def build_options(self, current):
-        return [arg for arg in current + self.add if arg not in self.remove]
+        add = list(self.add)
+        options = current + [arg for arg in add if arg not in current]
+        remove = list(self.remove)
+        options = [arg for arg in options if arg not in remove]
+        return options
+
+    def build_new_cmdline(self, current_line):
+        current = current_line.split()
+        new = self.build_options(current)
+        new_line = ' '.join(new)
+        return new_line
 
     def iter_lines(self, content):
         for line in content.splitlines():
             match = CMDLINE_RE.match(line)
             if match:
-                current = match.group(1).split()
-                new = self.build_options(current)
-                yield CMDLINE_TEMPLATE.format(' '.join(new))
+                current = match.group(1)
+                new = self.build_new_cmdline(current)
+                yield CMDLINE_TEMPLATE.format(new)
             else:
                 yield line
 

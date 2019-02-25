@@ -397,7 +397,7 @@ class TestGrubAction(TestCase):
         inst = actions.GrubAction()
         self.assertEqual(
             inst.build_new_cmdline('world hello'),
-            'hello world'
+            'world hello'
         )
 
         class Subclass(actions.GrubAction):
@@ -407,11 +407,11 @@ class TestGrubAction(TestCase):
         inst = Subclass()
         self.assertEqual(
             inst.build_new_cmdline('world hello'),
-            'hello naughty nurse'
+            'hello nurse naughty'
         )
         self.assertEqual(
             inst.build_new_cmdline('naughty nurse hello'),
-            'hello naughty nurse'
+            'naughty nurse hello'
         )
 
     def test_iter_lines(self):
@@ -436,7 +436,7 @@ class TestGrubAction(TestCase):
             content = inst.read_and_backup()
             self.assertEqual(
                 '\n'.join(inst.iter_lines(content)),
-                GRUB.format('aye bar foo')
+                GRUB.format('foo bar aye')
             )
             self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
@@ -457,7 +457,7 @@ class TestGrubAction(TestCase):
             content = inst.read_and_backup()
             self.assertEqual(
                 '\n'.join(inst.iter_lines(content)),
-                GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
+                GRUB.format('quiet splash acpi_os_name=Linux acpi_osi=')
             )
             self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
             self.assertEqual(inst.bak, actions.backup_filename(inst.filename))
@@ -465,7 +465,7 @@ class TestGrubAction(TestCase):
             content = inst.read_and_backup()
             self.assertEqual(
                 '\n'.join(inst.iter_lines(content)),
-                GRUB.format('acpi_os_name=Linux acpi_osi= quiet splash')
+                GRUB.format('quiet splash acpi_os_name=Linux acpi_osi=')
             )
             self.assertEqual(open(inst.bak, 'r').read(), GRUB_ORIG)
 
@@ -568,7 +568,7 @@ class TestGrubAction(TestCase):
             with open(inst.filename, 'w') as fp:
                 fp.write(GRUB.format('c a b'))
             self.assertIsNone(inst.perform())
-            self.assertEqual(open(inst.filename, 'r').read(), GRUB.format('a b c'))
+            self.assertEqual(open(inst.filename, 'r').read(), GRUB.format('c a b'))
 
             self.assertEqual(SubProcess.calls, [])
 
@@ -590,13 +590,13 @@ class TestGrubAction(TestCase):
             self.assertIsNone(inst.perform())
             self.assertEqual(
                 open(inst.filename, 'r').read(),
-                GRUB.format('bar foo quiet splash')
+                GRUB.format('quiet splash foo bar')
             )
 
             self.assertIsNone(inst.perform())
             self.assertEqual(
                 open(inst.filename, 'r').read(),
-                GRUB.format('bar foo quiet splash')
+                GRUB.format('quiet splash foo bar')
             )
 
             self.assertEqual(SubProcess.calls, [])
@@ -880,7 +880,7 @@ class Test_disable_pm_async(TestCase):
 class Test_lemu1(TestCase):
     def test_decribe(self):
         inst = actions.lemu1()
-        self.assertEqual(inst.describe(), 
+        self.assertEqual(inst.describe(),
             'Enable brightness hot keys'
         )
 
@@ -891,14 +891,14 @@ class Test_lemu1(TestCase):
         )
         self.assertEqual(inst.remove, tuple())
         self.assertEqual(inst.build_new_cmdline('quiet splash'),
-            'acpi_os_name=Linux acpi_osi= quiet splash'
+            'quiet splash acpi_os_name=Linux acpi_osi='
         )
 
 
 class Test_backlight_vendor(TestCase):
     def test_decribe(self):
         inst = actions.backlight_vendor()
-        self.assertEqual(inst.describe(), 
+        self.assertEqual(inst.describe(),
             'Enable brightness hot keys'
         )
 
@@ -909,14 +909,14 @@ class Test_backlight_vendor(TestCase):
         )
         self.assertEqual(inst.remove, tuple())
         self.assertEqual(inst.build_new_cmdline('quiet splash'),
-            'acpi_backlight=vendor quiet splash'
+            'quiet splash acpi_backlight=vendor'
         )
 
 
 class Test_remove_backlight_vendor(TestCase):
     def test_decribe(self):
         inst = actions.remove_backlight_vendor()
-        self.assertEqual(inst.describe(), 
+        self.assertEqual(inst.describe(),
             'Remove brightness hot-key fix'
         )
 
@@ -946,7 +946,7 @@ class Test_radeon_dpm(TestCase):
         )
         self.assertEqual(inst.remove, tuple())
         self.assertEqual(inst.build_new_cmdline('quiet splash'),
-            'quiet radeon.dpm=1 splash'
+            'quiet splash radeon.dpm=1'
         )
 
 
@@ -964,7 +964,7 @@ class Test_disable_power_well(TestCase):
         )
         self.assertEqual(inst.remove, tuple())
         self.assertEqual(inst.build_new_cmdline('quiet splash'),
-            'i915.disable_power_well=0 quiet splash'
+            'quiet splash i915.disable_power_well=0'
         )
 
 
@@ -1324,7 +1324,7 @@ class Test_remove_gfxpayload_text(TestCase):
         self.assertIs(inst.get_isneeded(), False)
 
         comment = '# Added by system76-driver:'
-        value = 'GRUB_GFXPAYLOAD_LINUX=text'       
+        value = 'GRUB_GFXPAYLOAD_LINUX=text'
         end = '\n'.join(['', comment, value, ''])
 
         for text in [comment, value, end]:
@@ -1852,4 +1852,3 @@ class Test_dac_fixup(TestCase):
     def test_describe(self):
         inst = actions.dac_fixup()
         self.assertEqual(inst.describe(), 'Enable high-quality audio DAC')
-
