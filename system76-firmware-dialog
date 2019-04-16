@@ -587,6 +587,8 @@ def send_notification(data):
     GLib.timeout_add_seconds(NOTIFICATION_TIMEOUT, notification.close)
     mainloop.run()
 
+Gtk.Window.set_default_icon_name("system76-driver")
+
 if 'FIRMWARE_ERROR' in os.environ:
     ErrorWindow(os.environ.get('FIRMWARE_ERROR'))
     os._exit(1)
