@@ -1289,3 +1289,10 @@ class hda_probe_mask(GrubAction):
 
     def describe(self):
         return _('Fixes for probing Intel HDA device')
+
+class blacklist_nvidia_i2c(FileAction):
+    relpath = ('etc', 'modprobe.d', 'system76-driver_i2c-nvidia-gpu.conf')
+    content = 'blacklist i2c_nvidia_gpu'
+
+    def describe(self):
+        return _('Workaround for delay when loading NVIDIA i2c kernel module')
