@@ -545,6 +545,7 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.hda_probe_mask,
+            actions.blacklist_nvidia_i2c,
         ],
     },
 
