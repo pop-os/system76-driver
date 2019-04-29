@@ -1,3 +1,9 @@
+system76-driver (19.04.8~~alpha) disco; urgency=low
+
+  * Daily WIP for 19.04.8
+
+ -- Benjamin Shpurker <benjamin@system76.com>  Mon, 29 Apr 2019 07:42:12 -0600
+
 system76-driver (19.04.7) disco; urgency=low
 
   * Improvements for kernelstub option modifications
