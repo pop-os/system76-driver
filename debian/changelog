@@ -1,6 +1,7 @@
 system76-driver (19.04.8~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.8
+  * Add gazp14
 
  -- Benjamin Shpurker <benjamin@system76.com>  Mon, 29 Apr 2019 07:42:12 -0600
 

@@ -141,6 +141,7 @@ TABLES = {
         'gaze11': 'gaze11',
         'gaze12': 'gaze12',
         'gaze13': 'gaze13',
+        'gazp14': 'gazp14',
         'daru3': 'daru3',
         'daru4': 'daru4',
         'kudp1': 'kudp1',
