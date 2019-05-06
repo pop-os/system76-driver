@@ -113,7 +113,7 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
-    'gazp14': {
+    'gaze14': {
         "check": True,
         "ec": True,
         "ec2": False,

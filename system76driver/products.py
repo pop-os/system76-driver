@@ -256,7 +256,7 @@ PRODUCTS = {
             actions.internal_mic_gain,
 	],
     },
-    'gazp14': {
+    'gaze14': {
         'name': 'Gazelle Pro',
         'drivers': [],
     },
