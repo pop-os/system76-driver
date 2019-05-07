@@ -1,9 +1,8 @@
-system76-driver (19.04.8~~alpha) disco; urgency=low
+system76-driver (19.04.8) disco; urgency=low
 
-  * Daily WIP for 19.04.8
   * Add gaze14
 
- -- Benjamin Shpurker <benjamin@system76.com>  Mon, 29 Apr 2019 07:42:12 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 07 May 2019 15:04:12 -0600
 
 system76-driver (19.04.7) disco; urgency=low
 
