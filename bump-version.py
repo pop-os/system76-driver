@@ -95,7 +95,9 @@ def bump_version(current):
 
 
 def build_author_line():
-    author = check_output(['bzr', 'whoami']).decode().strip()
+    user = check_output(['git', 'config', '--get', 'user.name']).decode().strip()
+    email = check_output(['git', 'config', '--get', 'user.email']).decode().strip()
+    author = ' '.join((user, email))
     ts = time.strftime('%a, %d %b %Y %H:%M:%S %z', time.localtime())
     return ' -- {}  {}\n'.format(author, ts)
 
