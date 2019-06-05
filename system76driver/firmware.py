@@ -161,6 +161,12 @@ MODELS = {
         "ec2": False,
         "me": True,
     },
+    'meer4': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": False,
+    },
     'orxp1': {
         "flash": True,
         "ec": True,
@@ -238,6 +244,42 @@ MODELS = {
         "ec": True,
         "ec2": True,
         "me": True,
+    },
+    'thelio-b1': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'thelio-major-b1': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'thelio-major-b1.1': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'thelio-major-b2': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": True,
+    },
+    'thelio-major-r1': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": False,
+    },
+    'thelio-r1': {
+        "flash": True,
+        "ec": False,
+        "ec2": False,
+        "me": False,
     },
 }
 
