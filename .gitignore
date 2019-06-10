@@ -1,2 +1,8 @@
+/.pybuild
+/build/
 /debian/files
+/debian/system76-driver/
+/debian/system76-driver-nvidia/
+/debian/*debhelper*
+/debian/*.substvars
 __pycache__
