@@ -289,9 +289,6 @@ def get_model():
     f.close()
     return version
 
-def get_me_enabled():
-    return path.exists("/dev/mei0")
-
 def call_gui(environment):
     args = [
         "env"
@@ -357,20 +354,6 @@ def process_changelog(changelog):
     return version_entries
 
 def get_data(model, model_data, iface, changelog, is_notification):
-    latest = {
-        "bios": "",
-        "ec": "",
-        "ec2": "",
-        "me": ""
-    }
-
-    for entry in changelog:
-        if (entry.get("bios_me") and not get_me_enabled()) or entry.get("me_hap") or entry.get("me_cr"):
-            entry["me"] = "disabled"
-        for component in latest.keys():
-            if component in entry and not latest[component]:
-                latest[component] = entry[component]
-
     _model, bios = iface.Bios()
 
     if model_data.get("ec"):
@@ -383,6 +366,7 @@ def get_data(model, model_data, iface, changelog, is_notification):
     else:
         ec2 = ""
 
+    me_enabled = False
     if model_data.get("me"):
         me_enabled, me_version = iface.ManagementEngine()
         if me_enabled:
@@ -398,6 +382,20 @@ def get_data(model, model_data, iface, changelog, is_notification):
         'ec2': ec2,
         'me': me
     }
+
+    latest = {
+        "bios": "",
+        "ec": "",
+        "ec2": "",
+        "me": ""
+    }
+
+    for entry in changelog:
+        if (entry.get("bios_me") and not me_enabled) or entry.get("me_hap") or entry.get("me_cr"):
+            entry["me"] = "disabled"
+        for component in latest.keys():
+            if component in entry and not latest[component]:
+                latest[component] = entry[component]
 
     return {
         'desktop': '',
