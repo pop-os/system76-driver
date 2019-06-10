@@ -529,6 +529,7 @@ def get_changes_list(data):
     changelog = data['changelog']
     current = data['current']
 
+    found = {}
     for component in current.keys():
         found[component] = not current[component]
 
