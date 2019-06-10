@@ -245,7 +245,8 @@ class FirmwareWindow (Gtk.Window):
 
             image = Gtk.Image()
             image.set_from_file(get_datafile('76icon.svg'))
-            image.set_padding(6, 6)
+            image.set_margin_top(6)
+            image.set_margin_bottom(6)
             self.titlebar.set_custom_title(image)
             self.set_titlebar(self.titlebar)
 
@@ -420,7 +421,8 @@ class FirmwareWindow (Gtk.Window):
     def create_install_button(self, needs_update, can_flash):
         image = Gtk.Image()
         image.set_from_file(get_datafile('download-firmware-icon-48.svg'))
-        image.set_padding(6, 0)
+        image.set_margin_start(6)
+        image.set_margin_end(6)
 
         if can_flash:
             if needs_update:
