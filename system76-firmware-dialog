@@ -36,8 +36,6 @@ from system76driver import get_datafile
 
 USES_NOTIFICATIONS = ['gnome', 'pop:gnome']
 
-NOTIFICATION_TIMEOUT = 24*60*60 # 24 hours
-
 class ErrorWindow (Gtk.Window):
     def __init__(self, message):
         Gtk.Window.__init__(self, title="System76 Firmware Updater")
@@ -583,8 +581,6 @@ def send_notification(data):
     notification.add_action("update_firmware", "Install Firmware...", notification_action, data)
     notification.show()
 
-    # Cancel this notification just before then next one starts.
-    GLib.timeout_add_seconds(NOTIFICATION_TIMEOUT, notification.close)
     mainloop.run()
 
 if 'FIRMWARE_ERROR' in os.environ:
