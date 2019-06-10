@@ -255,8 +255,7 @@ class FirmwareWindow (Gtk.Window):
         self.create_version_ui(current, latest)
 
         self.create_update_available_label(needs_update, thelio_io)
-        if len(data["changelog"]) > 0:
-            self.create_changelog_ui(data["changelog"])
+        self.create_changelog_ui(data["changelog"])
         self.create_buttons(data["notification"], needs_update, data["flash"], thelio_io)
 
         self.set_position(Gtk.WindowPosition.CENTER)
@@ -397,7 +396,9 @@ class FirmwareWindow (Gtk.Window):
         scrollwindow.add(changelog_vbox)
 
         self.changelog_expander.add(scrollwindow)
-        self.box.pack_start(self.changelog_expander, True, True, 3)
+
+        if len(changelog) > 0:
+            self.box.pack_start(self.changelog_expander, True, True, 3)
 
     def create_buttons(self, is_notification, needs_update, can_flash, thelio_io):
         question_time = "now" if thelio_io else "during the next reboot"

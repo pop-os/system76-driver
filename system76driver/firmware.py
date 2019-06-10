@@ -447,6 +447,10 @@ def _run_firmware_updater(reinstall, is_notification, thelio_io):
         for dev in devices:
             dev_name = "Thelio Io #" + str(len(current) + 1)
             current[dev_name] = str(devices[dev])
+            if not current[dev_name]:
+                # Hack to ensure that the UI remains consistent but updates are
+                # always available and applied
+                current[dev_name] = "N/A"
             latest[dev_name] = str(revision)
             if current[dev_name] != latest[dev_name]:
                 needs_update = True
