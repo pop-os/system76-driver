@@ -39,6 +39,7 @@ log = logging.getLogger()
 parser = argparse.ArgumentParser()
 parser.add_argument('--reinstall', action='store_true', help='install latest firmware even if its already installed')
 parser.add_argument('--notification', action='store_true', help='show notification if firmware not up to date')
+parser.add_argument('--thelio_io', action='store_true', help='show Thelio Io firmware')
 args = parser.parse_args()
 
-updater = run_firmware_updater(reinstall=args.reinstall, notification=args.notification)
+updater = run_firmware_updater(reinstall=args.reinstall, notification=args.notification, thelio_io=args.thelio_io)

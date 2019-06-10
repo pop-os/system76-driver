@@ -226,6 +226,7 @@ class SuccessWindow (Gtk.Window):
 class FirmwareWindow (Gtk.Window):
     def __init__(self, data):
         self.data = data
+        thelio_io = data["model"] == "thelio-io"
         current = data["current"]
         latest = data["latest"]
 
@@ -250,12 +251,13 @@ class FirmwareWindow (Gtk.Window):
             self.titlebar.set_custom_title(image)
             self.set_titlebar(self.titlebar)
 
-        self.create_notification_ui(data)
+        self.create_notification_ui(data, thelio_io)
         self.create_version_ui(current, latest)
 
-        self.create_update_available_label(needs_update)
-        self.create_changelog_ui(data["changelog"])
-        self.create_buttons(data["notification"], needs_update, data["flash"])
+        self.create_update_available_label(needs_update, thelio_io)
+        if len(data["changelog"]) > 0:
+            self.create_changelog_ui(data["changelog"])
+        self.create_buttons(data["notification"], needs_update, data["flash"], thelio_io)
 
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
@@ -278,12 +280,12 @@ class FirmwareWindow (Gtk.Window):
 
         Gtk.main()
 
-    def create_notification_ui(self, data):
+    def create_notification_ui(self, data, thelio_io):
         self.notification_area = Gtk.VBox(halign=Gtk.Align.CENTER)
 
         self.notification_label = Gtk.Label(
             label="New Firmware is available.\n" +
-            "Install on next reboot?",
+            "Install now?" if thelio_io else "Install on next reboot?",
             valign=Gtk.Align.START,
             halign=Gtk.Align.START
         )
@@ -326,7 +328,7 @@ class FirmwareWindow (Gtk.Window):
             col = col + 1
 
         row = 2
-        for key in ['BIOS', 'EC', 'EC2', 'ME']:
+        for key in current.keys():
             key_label = Gtk.Label(label='<b>' + key + '</b>', use_markup=True)
             key_label.set_xalign(1)
             self.grid.attach(key_label, 0, row, 1, 1)
@@ -334,7 +336,7 @@ class FirmwareWindow (Gtk.Window):
 
         for col in [1,2]:
             row = 2
-            for component in ["bios", "ec", "ec2", "me"]:
+            for component in current.keys():
                 if col == 1:
                     value = current[component]
                 else:
@@ -350,10 +352,11 @@ class FirmwareWindow (Gtk.Window):
 
         self.box.pack_start(self.grid, False, False, 3)
 
-    def create_update_available_label(self, needs_update):
-        self.note = Gtk.Label(label="Your computer's firmware is up-to-date.")
+    def create_update_available_label(self, needs_update, thelio_io):
+        device = "Thelio Io" if thelio_io else "computer"
+        self.note = Gtk.Label(label="Your " + device + "'s firmware is up-to-date.")
         if needs_update:
-            self.note.set_markup("<b>Updates are available for your computer.</b>")
+            self.note.set_markup("<b>Updates are available for your " + device + ".</b>")
         self.note.set_vexpand(False)
         self.box.pack_start(self.note, False, False, 3)
 
@@ -396,8 +399,9 @@ class FirmwareWindow (Gtk.Window):
         self.changelog_expander.add(scrollwindow)
         self.box.pack_start(self.changelog_expander, True, True, 3)
 
-    def create_buttons(self, is_notification, needs_update, can_flash):
-        question_label = Gtk.Label(label="<b>Install firmware during the next reboot?</b>",
+    def create_buttons(self, is_notification, needs_update, can_flash, thelio_io):
+        question_time = "now" if thelio_io else "during the next reboot"
+        question_label = Gtk.Label(label="<b>Install firmware " + question_time + "?</b>",
                                    use_markup=True,
                                    halign=Gtk.Align.CENTER)
         self.box.pack_start(question_label, False, False, 0)
@@ -525,12 +529,8 @@ def get_changes_list(data):
     changelog = data['changelog']
     current = data['current']
 
-    found = {
-        "bios": not current["bios"],
-        "ec": not current["ec"],
-        "ec2": not current["ec2"],
-        "me": not current["me"],
-    }
+    for component in current.keys():
+        found[component] = not current[component]
 
     changes_list = []
 
