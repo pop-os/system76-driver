@@ -459,6 +459,7 @@ def _run_firmware_updater(reinstall, is_notification, thelio_io):
 
         #Confirm installation with the user.
         data = {
+            'desktop': '',
             'notification': is_notification,
             'model': 'thelio-io',
             'flash': True,
