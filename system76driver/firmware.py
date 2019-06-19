@@ -326,9 +326,9 @@ def network_dialog():
 
     return call_gui(environment)
 
-def success_dialog():
+def success_dialog(thelio_io):
     environment = [
-        "FIRMWARE_SUCCESS=1",
+        "FIRMWARE_SUCCESS=" + "2" if thelio_io else "1",
     ]
 
     return call_gui(environment)
@@ -473,6 +473,8 @@ def _run_firmware_updater(reinstall, is_notification, thelio_io):
         }
         if confirm_dialog(data) == 76:
             iface.ThelioIoUpdate(digest)
+
+            success_dialog(thelio_io)
         else:
             return
 
@@ -513,7 +515,7 @@ def _run_firmware_updater(reinstall, is_notification, thelio_io):
 
                 iface.Schedule(digest)
 
-                if success_dialog() == 76:
+                if success_dialog(thelio_io) == 76:
                     log.info("Restarting computer")
                     subprocess.call(["reboot"])
             else:
