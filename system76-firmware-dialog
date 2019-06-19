@@ -283,8 +283,10 @@ class FirmwareWindow (Gtk.Window):
         self.notification_area = Gtk.VBox(halign=Gtk.Align.CENTER)
 
         self.notification_label = Gtk.Label(
-            label="New Firmware is available.\n" +
-            "Install now?" if thelio_io else "Install on next reboot?",
+            label=
+                "New Thelio Io firmware is available."
+                if thelio_io else
+                "New firmware is available.",
             valign=Gtk.Align.START,
             halign=Gtk.Align.START
         )
@@ -554,7 +556,10 @@ def get_changes_list(data):
             break
 
     if changes_list == []:
-        changes_list.append('No Changes')
+        if data["model"] == "thelio-io":
+            pass
+        else:
+            changes_list.append('No Changes')
 
     return changes_list
 
@@ -562,10 +567,16 @@ def get_changes(data, markup=False):
     changes_list = get_changes_list(data)
 
     if markup:
-        changes = "<span>"
+        changes = ""
         for change in changes_list:
-            changes = changes + "<span> - " + change + "</span>\n"
-        return changes[:-1] + "</span>"
+            if changes == "":
+                changes += "<span>"
+            else:
+                changes += "\n"
+            changes += "<span> - " + change + "</span>"
+        if changes != "":
+            changes += "</span>"
+        return changes
     else:
         changes = ""
         for change in changes_list:
