@@ -1,6 +1,7 @@
 system76-driver (19.04.9~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.9
+  * Add addp1
 
  -- Jeremy Soller jeremy@system76.com  Thu, 20 Jun 2019 11:29:39 -0600
 
