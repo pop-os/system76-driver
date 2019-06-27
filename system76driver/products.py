@@ -26,8 +26,8 @@ from . import actions
 
 PRODUCTS = {
     # Adder
-    'addp1': {
-        'name': 'Adder Pro',
+    'addw1': {
+        'name': 'Adder WS',
         'drivers': [],
     },
 

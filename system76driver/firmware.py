@@ -41,7 +41,7 @@ log = logging.getLogger(__name__)
 # - me - Product has management engine firmware
 
 MODELS = {
-    'addp1': {
+    'addw1': {
         "check": True,
         "ec": True,
         "ec2": False,
