@@ -472,7 +472,13 @@ def _run_firmware_updater(reinstall, is_notification, thelio_io):
             'latest': latest,
         }
         if confirm_dialog(data) == 76:
-            iface.ThelioIoUpdate(digest)
+            try:
+                iface.ThelioIoUpdate(digest)
+            except Exception:
+                message = "Failed to install Thelio Io firmware"
+                log.exception(message)
+                error_dialog(message)
+                return
 
             success_dialog(thelio_io)
         else:
