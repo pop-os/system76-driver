@@ -450,7 +450,7 @@ def _run_firmware_updater(reinstall, is_notification, thelio_io):
             if not current[dev_name]:
                 # Hack to ensure that the UI remains consistent but updates are
                 # always available and applied
-                current[dev_name] = "N/A"
+                current[dev_name] = "0.0.0"
             latest[dev_name] = str(revision)
             if current[dev_name] != latest[dev_name]:
                 needs_update = True
