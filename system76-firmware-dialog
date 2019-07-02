@@ -46,7 +46,7 @@ class ErrorWindow (Gtk.Window):
         self.box = Gtk.VBox(margin_top=6, margin_left=9, margin_right=9)
         self.add(self.box)
 
-        self.head_label = Gtk.Label(label="<b>Could not download firmware.</b>",
+        self.head_label = Gtk.Label(label="<b>Could not update firmware.</b>",
                                use_markup=True,
                                wrap=True)
         self.box.pack_start(self.head_label, False, False, 6)
