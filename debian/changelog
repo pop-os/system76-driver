@@ -2,6 +2,7 @@ system76-driver (19.04.9~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.9
   * Add addw1
+  * Use Linux 5.0 or newer to support Ryzen 3xxx
 
  -- Jeremy Soller jeremy@system76.com  Thu, 20 Jun 2019 11:29:39 -0600
 
