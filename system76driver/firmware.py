@@ -326,9 +326,9 @@ def network_dialog():
 
     return call_gui(environment)
 
-def success_dialog():
+def success_dialog(thelio_io):
     environment = [
-        "FIRMWARE_SUCCESS=1",
+        "FIRMWARE_SUCCESS=" + "2" if thelio_io else "1",
     ]
 
     return call_gui(environment)
@@ -407,7 +407,7 @@ def get_data(model, model_data, iface, changelog, is_notification):
         'latest': latest
     }
 
-def _run_firmware_updater(reinstall, is_notification):
+def _run_firmware_updater(reinstall, is_notification, thelio_io):
     # For now, whitelist the models that can update firmware
     model = get_model()
     model_data = MODELS.get(model)
@@ -422,57 +422,121 @@ def _run_firmware_updater(reinstall, is_notification):
     proxy = bus.get_object('com.system76.FirmwareDaemon', '/com/system76/FirmwareDaemon')
     iface = dbus.Interface(proxy, dbus_interface='com.system76.FirmwareDaemon')
 
-    try:
-        digest, changelog_json = iface.Download()
-        changelog = process_changelog(json.loads(changelog_json))
-    except Exception:
-        message = "Failed to download firmware for " + model
-        log.exception(message)
-        if not is_notification:
-            network_dialog()
-        return
-
-    data = get_data(model, model_data, iface, changelog, is_notification)
-
-    current = data["current"]
-    latest = data["latest"]
-
-    needs_update = False
-    for component in current.keys():
-        if component == 'me' and current[component] == 'disabled' and 'disabled' in latest[component]:
-            pass
-        elif current[component] and latest[component] and current[component] != latest[component]:
-            needs_update = True
-
-    #Don't offer the update if its already installed
-    if not needs_update:
-        log.info('No new firmware to install.')
-        if not reinstall:
+    if thelio_io:
+        try:
+            digest, revision = iface.ThelioIoDownload()
+        except Exception:
+            message = "Failed to download firmware for Thelio Io"
+            log.exception(message)
+            if not is_notification:
+                network_dialog()
             return
 
-    #Confirm installation with the user.
-    if confirm_dialog(data) == 76:
-        if path.isdir("/sys/firmware/efi"):
-            log.info("Setting up firmware installation.")
+        try:
+            devices = iface.ThelioIoList()
+        except Exception:
+            message = "Failed to list Thelio Io devices"
+            log.exception(message)
+            if not is_notification:
+                error_dialog(message)
+            return
 
-            iface.Schedule(digest)
+        needs_update = False
+        current = {}
+        latest = {}
+        for dev in devices:
+            dev_name = "Thelio Io #" + str(len(current) + 1)
+            current[dev_name] = str(devices[dev])
+            if not current[dev_name]:
+                # Hack to ensure that the UI remains consistent but updates are
+                # always available and applied
+                current[dev_name] = "0.0.0"
+            latest[dev_name] = str(revision)
+            if current[dev_name] != latest[dev_name]:
+                needs_update = True
 
-            if success_dialog() == 76:
-                log.info("Restarting computer")
-                subprocess.call(["reboot"])
+        #Don't offer the update if its already installed
+        if not needs_update:
+            log.info('No new firmware to install.')
+            if not reinstall:
+                return
+
+        #Confirm installation with the user.
+        data = {
+            'desktop': '',
+            'notification': is_notification,
+            'model': 'thelio-io',
+            'flash': True,
+            'changelog': {},
+            'current': current,
+            'latest': latest,
+        }
+        if confirm_dialog(data) == 76:
+            try:
+                iface.ThelioIoUpdate(digest)
+            except Exception:
+                message = "Failed to install Thelio Io firmware"
+                log.exception(message)
+                error_dialog(message)
+                return
+
+            success_dialog(thelio_io)
         else:
-            message = "Not running in EFI mode, aborting firmware installation"
-            log.info(message)
-            error_dialog(message)
             return
+
+        log.info("Updated Thelio Io firmware.")
     else:
-        return
+        try:
+            digest, changelog_json = iface.Download()
+            changelog = process_changelog(json.loads(changelog_json))
+        except Exception:
+            message = "Failed to download firmware for " + model
+            log.exception(message)
+            if not is_notification:
+                network_dialog()
+            return
 
-    log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
+        data = get_data(model, model_data, iface, changelog, is_notification)
 
-def run_firmware_updater(reinstall=None, notification=False):
+        current = data["current"]
+        latest = data["latest"]
+
+        needs_update = False
+        for component in current.keys():
+            if component == 'me' and current[component] == 'disabled' and 'disabled' in latest[component]:
+                pass
+            elif current[component] and latest[component] and current[component] != latest[component]:
+                needs_update = True
+
+        #Don't offer the update if its already installed
+        if not needs_update:
+            log.info('No new firmware to install.')
+            if not reinstall:
+                return
+
+        #Confirm installation with the user.
+        if confirm_dialog(data) == 76:
+            if path.isdir("/sys/firmware/efi"):
+                log.info("Setting up firmware installation.")
+
+                iface.Schedule(digest)
+
+                if success_dialog(thelio_io) == 76:
+                    log.info("Restarting computer")
+                    subprocess.call(["reboot"])
+            else:
+                message = "Not running in EFI mode, aborting firmware installation"
+                log.info(message)
+                error_dialog(message)
+                return
+        else:
+            return
+
+        log.info("Installed firmware updater to boot partition. Firmware update will run on next boot.")
+
+def run_firmware_updater(reinstall=None, notification=False, thelio_io=False):
     try:
-        ret = _run_firmware_updater(reinstall, notification)
+        ret = _run_firmware_updater(reinstall, notification, thelio_io)
         return ret
     except Exception:
         log.exception('Error calling _run_firmware_updater()')
