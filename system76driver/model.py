@@ -112,6 +112,7 @@ TABLES = {
         'M860TU': 'serp5',
     },
     'system-version': {
+        'addw1': 'addw1',
         'bonp2': 'bonp2',
         'bonp3': 'bonp3',
         'bonp4': 'bonp4',

@@ -41,6 +41,12 @@ log = logging.getLogger(__name__)
 # - me - Product has management engine firmware
 
 MODELS = {
+    'addw1': {
+        "flash": True,
+        "ec": True,
+        "ec2": False,
+        "me": True,
+    },
     'bonw11': {
         "flash": True,
         "ec": True,

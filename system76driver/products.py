@@ -25,6 +25,12 @@ from . import actions
 
 
 PRODUCTS = {
+    # Adder
+    'addw1': {
+        'name': 'Adder WS',
+        'drivers': [],
+    },
+
     # Bonobo:
     'bonp1': {
         'name': 'Bonobo Performance',

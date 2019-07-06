@@ -1,6 +1,7 @@
 system76-driver (19.04.9~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.9
+  * Add addw1
   * Enable firmware updates for meer4 and thelio
   * Enable firmware updates for Thelio Io
 
