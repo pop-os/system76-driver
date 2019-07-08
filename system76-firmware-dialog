@@ -137,6 +137,38 @@ class SuccessWindow (Gtk.Window):
             self.button = Gtk.Button(label="Ok")
             self.button.connect('clicked', self.acknowledge)
             self.box.pack_start(self.button, False, False, 6)
+        elif kind == "3":
+            self.grid = Gtk.Grid()
+            self.grid.props.column_spacing = 12
+            self.grid.props.row_spacing = 12
+            self.grid.props.margin = 12
+            self.add(self.grid)
+
+            self.head_label = Gtk.Label(
+                label="<b>Firmware will be updated when you restart your device.</b>",
+                use_markup=True,
+                wrap=True
+            )
+            self.head_label.props.halign = Gtk.Align.CENTER
+            self.head_label.props.hexpand = True
+            self.head_label.props.vexpand = True
+
+            self.button = Gtk.Button(label="Restart Later")
+            self.button.connect('clicked', self.acknowledge)
+            self.button.props.width_request = 30
+            self.button.props.halign = Gtk.Align.START
+            self.button.props.margin_top = 12
+
+            self.restart_button = Gtk.Button(label="Restart Now")
+            self.restart_button.connect('clicked', self.restart)
+            self.restart_button.props.width_request = 30
+            self.restart_button.props.halign = Gtk.Align.END
+            self.restart_button.props.margin_top = 12
+            Gtk.StyleContext.add_class(self.restart_button.get_style_context(), "destructive-action")
+
+            self.grid.attach(self.head_label, 0, 0, 2, 1)
+            self.grid.attach(self.button,         0, 1, 1, 1)
+            self.grid.attach(self.restart_button, 1, 1, 1, 1)
         else:
             self.grid = Gtk.Grid()
             self.grid.props.column_spacing = 12
