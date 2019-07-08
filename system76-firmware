@@ -29,8 +29,6 @@ import logging
 
 from system76driver.firmware import run_firmware_updater
 
-NOTIFICATION_TIMEOUT = 24*60*60 # 24 hours
-
 logging.basicConfig(
     level=logging.DEBUG,
     style='{',
@@ -41,13 +39,7 @@ log = logging.getLogger()
 parser = argparse.ArgumentParser()
 parser.add_argument('--reinstall', action='store_true', help='install latest firmware even if its already installed')
 parser.add_argument('--notification', action='store_true', help='show notification if firmware not up to date')
+parser.add_argument('--thelio_io', action='store_true', help='show Thelio Io firmware')
 args = parser.parse_args()
 
-start_time = time.time()
-updater = run_firmware_updater(reinstall=args.reinstall, notification=args.notification)
-end_time = time.time()
-
-#Delay exit until notification timeout
-if args.notification and end_time < start_time + NOTIFICATION_TIMEOUT:
-    log.info((start_time + NOTIFICATION_TIMEOUT) - end_time)
-    time.sleep((start_time + NOTIFICATION_TIMEOUT) - end_time)
+updater = run_firmware_updater(reinstall=args.reinstall, notification=args.notification, thelio_io=args.thelio_io)
