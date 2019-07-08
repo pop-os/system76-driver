@@ -334,7 +334,7 @@ def network_dialog():
 
 def success_dialog(thelio_io):
     environment = [
-        "FIRMWARE_SUCCESS=" + "2" if thelio_io else "1",
+        "FIRMWARE_SUCCESS=2" if thelio_io else "FIRMWARE_SUCCESS=1",
     ]
 
     return call_gui(environment)
