@@ -337,7 +337,7 @@ def success_dialog(data):
         success_dialog = "2"
     elif "meer" in data["model"] or "thelio" in data["model"]:
         success_dialog = "3"
-    else
+    else:
         success_dialog = "1"
 
     environment = [
