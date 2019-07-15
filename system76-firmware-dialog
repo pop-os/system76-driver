@@ -225,7 +225,7 @@ class SuccessWindow (Gtk.Window):
                 "<b>press any key</b> to shutdown.\n\n" +
                 "    5. After the laptop powers off, <b>press the power button</b>" +
                 " to turn it back on.\n\n" +
-                "    6. Two small blue boxes will appear in succession with a " +
+                "    6. Two small blue boxes may appear in succession with a " +
                 "message about the CMOS. <b>Press Enter</b> to dismiss each one.\n\n" +
                 "    7. The machine will then reboot. Repeatedly press the `F2` button" +
                 " to boot into the BIOS settings. Using the " +
