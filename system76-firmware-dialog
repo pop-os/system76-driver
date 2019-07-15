@@ -230,8 +230,8 @@ class SuccessWindow (Gtk.Window):
                 "    7. The machine will then reboot. Repeatedly press the `F2` button" +
                 " to boot into the BIOS settings. Using the " +
                 "arrow keys, go over to the <b>Exit</b> tab.\n\n" +
-                "    8. Select and confirm <b>Load Setup Defaults</b>.\n\n" +
-                "    9. Select and confirm <b>Save changes and reset</b>.\n\n" +
+                "    8. Once in the BIOS move to the Exit tab and select then confirm <b>Load Setup Defaults</b>.\n\n" +
+                "    9. Select and confirm <b>Save changes and reset</b> in that same tab.\n\n" +
                 "    10. Once the laptop restarts, the firmware will be up to date!",
                 max_width_chars=170,
                 use_markup=True,
