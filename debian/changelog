@@ -1,6 +1,7 @@
 system76-driver (19.04.11~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.11
+  * Enable NVIDIA modesetting to remove screen tearing on Optimus systems
 
  -- Jeremy Soller <jeremy@system76.com>  Fri, 26 Jul 2019 08:02:59 -0600
 

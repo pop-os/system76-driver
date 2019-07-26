@@ -1296,3 +1296,13 @@ class blacklist_nvidia_i2c(FileAction):
 
     def describe(self):
         return _('Workaround for delay when loading NVIDIA i2c kernel module')
+
+class nvidia_modeset(GrubAction):
+    """
+    Add `nvidia_drm.modeset=1` to Linux command line.
+    """
+
+    add = ('nvidia_drm.modeset=1',)
+
+    def describe(self):
+        return _('Enable NVIDIA modesetting to remove screen tearing on Optimus systems')

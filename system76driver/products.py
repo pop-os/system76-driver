@@ -28,7 +28,9 @@ PRODUCTS = {
     # Adder
     'addw1': {
         'name': 'Adder WS',
-        'drivers': [],
+        'drivers': [
+            actions.nvidia_modeset,
+        ],
     },
 
     # Bonobo:
@@ -264,7 +266,9 @@ PRODUCTS = {
     },
     'gaze14': {
         'name': 'Gazelle Pro',
-        'drivers': [],
+        'drivers': [
+            actions.nvidia_modeset,
+        ],
     },
     'gazu1': {
         'name': 'Gazelle Ultra',
@@ -542,6 +546,7 @@ PRODUCTS = {
         'drivers': [
             actions.hidpi_scaling,
             actions.limit_tdp,
+            actions.nvidia_modeset,
         ],
     },
     'oryp4-b': {
@@ -549,6 +554,7 @@ PRODUCTS = {
         'drivers': [
             actions.hidpi_scaling,
             actions.remove_switch_internal_speakers,
+            actions.nvidia_modeset,
         ],
     },
     'oryp5': {
@@ -556,6 +562,7 @@ PRODUCTS = {
         'drivers': [
             actions.hda_probe_mask,
             actions.blacklist_nvidia_i2c,
+            actions.nvidia_modeset,
         ],
     },
 
