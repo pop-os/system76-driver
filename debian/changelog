@@ -1,3 +1,9 @@
+system76-driver (19.04.11~~alpha) disco; urgency=low
+
+  * Daily WIP for 19.04.11
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 26 Jul 2019 08:02:59 -0600
+
 system76-driver (19.04.10) disco; urgency=low
 
   * Improve instructions for firmware updates
