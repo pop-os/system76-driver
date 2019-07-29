@@ -187,8 +187,11 @@ def save_json_conf(filename, obj):
 
 
 def open_ec(sysdir='/sys'):
-    SubProcess.check_call(['modprobe', 'ec_sys', 'write_support'])
     name = path.join(sysdir, 'kernel', 'debug', 'ec', 'ec0', 'io')
+    if not os.path.exists(name):
+        SubProcess.check_call(['modprobe', 'ec_sys', 'write_support'])
+    if not os.access(name, os.W_OK):
+        log.exception("'%s' is not writable. Maybe kernel cmdline needs 'ec_sys.write_support=1'?")
     fp = open(name, 'rb+', 0)
     return fp
 
