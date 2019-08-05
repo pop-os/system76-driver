@@ -34,6 +34,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
     system76-dkms,
     system76-firmware-daemon,
     system76-io-dkms,
+    system76-oled,
     system76-power,
     system76-wallpapers,
     xbacklight
