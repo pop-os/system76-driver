@@ -516,7 +516,7 @@ def _run_firmware_updater(reinstall, is_notification, thelio_io):
 
         needs_update = False
         for component in current.keys():
-            if component == 'me' and current[component] == 'disabled' and 'disabled' in latest[component]:
+            if component == 'me':
                 pass
             elif current[component] and latest[component] and current[component] != latest[component]:
                 needs_update = True
