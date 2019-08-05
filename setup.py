@@ -84,9 +84,11 @@ setup(
     name='system76driver',
     version=system76driver.__version__,
     description='hardware-specific enhancements for System76 products',
-    url='https://launchpad.net/system76-driver',
+    url='https://copr.fedorainfracloud.org/coprs/szydell/system76/',
     author='System76, Inc.',
     author_email='dev@system76.com',
+    maintainer='Marcin Szydelski',
+    maintainer_email='marcin@szydelscy.pl',
     license='GPLv2+',
     cmdclass={'test': Test},
     packages=[
