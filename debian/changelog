@@ -1,9 +1,8 @@
-system76-driver (19.04.11~~alpha) disco; urgency=low
+system76-driver (19.04.11) disco; urgency=low
 
-  * Daily WIP for 19.04.11
   * Depend on system76-oled for brightness support on addw1
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 05 Aug 2019 09:00:36 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 05 Aug 2019 09:01:03 -0600
 
 system76-driver (19.04.10) disco; urgency=low
 
