@@ -28,7 +28,9 @@ PRODUCTS = {
     # Adder
     'addw1': {
         'name': 'Adder WS',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
     },
 
     # Bonobo:
