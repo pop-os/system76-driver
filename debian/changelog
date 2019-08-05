@@ -1,6 +1,7 @@
 system76-driver (19.04.13~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.13
+  * Remove firmware GUI, now handled by firmware-manager
 
  -- Jeremy Soller <jeremy@system76.com>  Mon, 05 Aug 2019 14:10:53 -0600
 
