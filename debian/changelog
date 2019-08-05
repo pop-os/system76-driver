@@ -1,9 +1,8 @@
-system76-driver (19.04.12~~alpha) disco; urgency=low
+system76-driver (19.04.12) disco; urgency=low
 
-  * Daily WIP for 19.04.12
   * Blacklist i2c_nvidia_gpu on addw1
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 05 Aug 2019 13:44:18 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 05 Aug 2019 13:45:00 -0600
 
 system76-driver (19.04.11) disco; urgency=low
 
