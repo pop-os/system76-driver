@@ -1,3 +1,10 @@
+system76-driver (19.04.14~~alpha) disco; urgency=low
+
+  * Daily WIP for 19.04.14
+  * Add APT preferences to prevent overriding
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Aug 2019 13:14:45 -0600
+
 system76-driver (19.04.13) disco; urgency=low
 
   * Blacklist i2c_nvidia_gpu on gaze14
