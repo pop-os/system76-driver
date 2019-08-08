@@ -266,7 +266,9 @@ PRODUCTS = {
     },
     'gaze14': {
         'name': 'Gazelle Pro',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
     },
     'gazu1': {
         'name': 'Gazelle Ultra',
