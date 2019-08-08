@@ -2,6 +2,7 @@ com.system76.pkexec.system76-driver.policy usr/share/polkit-1/actions/
 com.system76.pkexec.system76-firmware.policy usr/share/polkit-1/actions/
 system76-firmware.desktop usr/share/applications/
 system76-nm-restart /lib/systemd/system-sleep/
+system76-apt-preferences /etc/apt/preferences.d/
 system76-third-party-mirrors.cfg /etc/update-manager/release-upgrades.d/
 system76-driver-pkexec usr/bin/
 system76-firmware usr/bin/
