@@ -22,7 +22,7 @@ Architecture: all
 Suggests: gnome-color-manager
 Depends: ${python3:Depends}, ${misc:Depends},
     at,
-    firmware-manager,
+    firmware-manager-virtual,
     gir1.2-gtk-3.0,
     gir1.2-notify-0.7,
     gnome-shell-extension-system76-power,
