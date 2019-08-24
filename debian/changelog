@@ -1,9 +1,8 @@
-system76-driver (19.04.16~~alpha) disco; urgency=low
+system76-driver (19.04.16) disco; urgency=low
 
-  * Daily WIP for 19.04.16
   * Update make-release script to not rely on bzr
 
- -- shpurk <benpack101@gmail.com>  Fri, 23 Aug 2019 18:07:40 -0600
+ -- shpurk <benpack101@gmail.com>  Fri, 23 Aug 2019 18:32:10 -0600
 
 system76-driver (19.04.15) disco; urgency=low
 
