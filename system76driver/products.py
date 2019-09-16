@@ -139,7 +139,13 @@ PRODUCTS = {
     'darp5': {
         'name': 'Darter Pro',
         'drivers': [
-            actions.headset_darp5_fixup,
+            actions.headset_darp_fixup,
+        ],
+    },
+    'darp6': {
+        'name': 'Darter Pro',
+        'drivers': [
+            actions.headset_darp_fixup,
         ],
     },
 
@@ -175,6 +181,10 @@ PRODUCTS = {
 	    ],
     },
     'galp3-c': {
+        'name': 'Galago Pro',
+        'drivers': [],
+    },
+    'galp4': {
         'name': 'Galago Pro',
         'drivers': [],
     },

@@ -786,16 +786,16 @@ class headset_meer3_fixup(Action):
     def describe(self):
         return _('Enable headset microphone')
 
-HEADSET_DARP5_PATCH = """[codec]
+HEADSET_DARP_PATCH = """[codec]
 0x{vendor_id:08x} 0x{subsystem_id:08x} 0
 
 [pincfg]
 0x1a 0x01a1913c
 """
 
-HEADSET_DARP5_MODPROBE = 'options snd-hda-intel model=headset-mode-no-hp-mic patch=system76-audio-patch\n'
+HEADSET_DARP_MODPROBE = 'options snd-hda-intel model=headset-mode-no-hp-mic patch=system76-audio-patch\n'
 
-class headset_darp5_fixup(Action):
+class headset_darp_fixup(Action):
     relpath1 = ('lib', 'firmware', 'system76-audio-patch')
     relpath2 = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
 
@@ -804,11 +804,11 @@ class headset_darp5_fixup(Action):
         self.filename2 = path.join(rootdir, *self.relpath2)
         self.vendor_id = read_hda_id('vendor_id', rootdir=rootdir)
         self.subsystem_id = read_hda_id('subsystem_id', rootdir=rootdir)
-        self.content1 = HEADSET_DARP5_PATCH.format(
+        self.content1 = HEADSET_DARP_PATCH.format(
             vendor_id=self.vendor_id,
             subsystem_id=self.subsystem_id,
         )
-        self.content2 = HEADSET_DARP5_MODPROBE
+        self.content2 = HEADSET_DARP_MODPROBE
 
     def read1(self):
         try:

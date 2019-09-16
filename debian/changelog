@@ -1,3 +1,10 @@
+system76-driver (19.04.17~~alpha) disco; urgency=low
+
+  * Daily WIP for 19.04.17
+  * Add darp6 and galp4
+
+ -- shpurk <benjamin@system76.com>  Tue, 10 Sep 2019 15:32:00 -0600
+
 system76-driver (19.04.16) disco; urgency=low
 
   * Update make-release script to not rely on bzr
