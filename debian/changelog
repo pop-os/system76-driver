@@ -1,9 +1,8 @@
-system76-driver (19.04.18~~alpha) disco; urgency=low
+system76-driver (19.04.18) disco; urgency=low
 
-  * Daily WIP for 19.04.18
   * Use HWE instead of HWE edge kernel on 18.04
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 20 Sep 2019 10:22:11 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 20 Sep 2019 10:23:14 -0600
 
 system76-driver (19.04.17) disco; urgency=low
 
