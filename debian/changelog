@@ -1,6 +1,7 @@
 system76-driver (19.04.20~~alpha) disco; urgency=low
 
   * Daily WIP for 19.04.20
+  * system76-thunderbolt-reload: reload thunderbolt device to avoid hangs
 
  -- Jeremy Soller <jeremy@system76.com>  Sun, 27 Oct 2019 18:58:54 -0600
 
