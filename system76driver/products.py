@@ -28,7 +28,9 @@ PRODUCTS = {
     # Adder
     'addw1': {
         'name': 'Adder WS',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
     },
 
     # Bonobo:
@@ -137,7 +139,13 @@ PRODUCTS = {
     'darp5': {
         'name': 'Darter Pro',
         'drivers': [
-            actions.headset_darp5_fixup,
+            actions.headset_darp_fixup,
+        ],
+    },
+    'darp6': {
+        'name': 'Darter Pro',
+        'drivers': [
+            actions.headset_darp_fixup,
         ],
     },
 
@@ -173,6 +181,10 @@ PRODUCTS = {
 	    ],
     },
     'galp3-c': {
+        'name': 'Galago Pro',
+        'drivers': [],
+    },
+    'galp4': {
         'name': 'Galago Pro',
         'drivers': [],
     },
@@ -264,7 +276,9 @@ PRODUCTS = {
     },
     'gaze14': {
         'name': 'Gazelle Pro',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
     },
     'gazu1': {
         'name': 'Gazelle Ultra',

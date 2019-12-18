@@ -1,3 +1,70 @@
+system76-driver (19.04.21~~alpha) disco; urgency=low
+
+  * Daily WIP for 19.04.21
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 18 Dec 2019 08:35:00 -0700
+
+system76-driver (19.04.20) disco; urgency=low
+
+  * system76-thunderbolt-reload: reload thunderbolt device to avoid hangs
+  * Depend on linux-system76
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 28 Oct 2019 21:01:09 -0600
+
+system76-driver (19.04.19) disco; urgency=low
+
+  * Depend on system76-acpi-dkms
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 11 Oct 2019 12:08:01 -0600
+
+system76-driver (19.04.18) disco; urgency=low
+
+  * Use HWE instead of HWE edge kernel on 18.04
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 20 Sep 2019 10:23:14 -0600
+
+system76-driver (19.04.17) disco; urgency=low
+
+  * Add darp6 and galp4
+
+ -- shpurk <benpack101@gmail.com>  Mon, 16 Sep 2019 21:02:49 -0600
+
+system76-driver (19.04.16) disco; urgency=low
+
+  * Update make-release script to not rely on bzr
+
+ -- shpurk <benpack101@gmail.com>  Fri, 23 Aug 2019 18:32:10 -0600
+
+system76-driver (19.04.15) disco; urgency=low
+
+  * Remove firmware GUI, now handled by firmware-manager
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 16 Aug 2019 17:38:22 -0600
+
+system76-driver (19.04.14) disco; urgency=low
+
+  * Add APT preferences to prevent overriding
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Aug 2019 14:21:48 -0600
+
+system76-driver (19.04.13) disco; urgency=low
+
+  * Blacklist i2c_nvidia_gpu on gaze14
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 08 Aug 2019 11:03:41 -0600
+
+system76-driver (19.04.12) disco; urgency=low
+
+  * Blacklist i2c_nvidia_gpu on addw1
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 05 Aug 2019 13:45:00 -0600
+
+system76-driver (19.04.11) disco; urgency=low
+
+  * Depend on system76-oled for brightness support on addw1
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 05 Aug 2019 09:01:03 -0600
+
 system76-driver (19.04.10) disco; urgency=low
 
   * Improve instructions for firmware updates

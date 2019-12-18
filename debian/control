@@ -22,18 +22,21 @@ Architecture: all
 Suggests: gnome-color-manager
 Depends: ${python3:Depends}, ${misc:Depends},
     at,
+    firmware-manager-virtual,
     gir1.2-gtk-3.0,
     gir1.2-notify-0.7,
     gnome-shell-extension-system76-power,
-    linux-generic (>= 5.0) | linux-generic-hwe-18.04-edge,
+    linux-system76,
     pm-utils,
     python3-dbus,
     python3-evdev,
     python3-gi,
     python3-systemd,
+    system76-acpi-dkms,
     system76-dkms,
     system76-firmware-daemon,
     system76-io-dkms,
+    system76-oled,
     system76-power,
     xbacklight
 Recommends: hidpi-daemon
@@ -46,7 +49,7 @@ Description: Universal driver for System76 computers
 Package: system76-driver-nvidia
 Architecture: all
 Depends: ${misc:Depends},
-    nvidia-driver-418,
+    nvidia-driver-435,
     system76-driver (>= ${binary:Version}),
     ubuntu-drivers-common,
 Description: Latest nvidia driver for System76 computers

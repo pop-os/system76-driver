@@ -29,3 +29,7 @@ override_dh_auto_install:
 
 override_dh_installgsettings:
 	dh_installgsettings --priority=40
+
+override_dh_installdeb:
+	dh_installdeb
+	cp debian/conffiles debian/system76-driver/DEBIAN/conffiles
