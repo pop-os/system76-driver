@@ -861,7 +861,10 @@ PRODUCTS = {
     },
     'thelio-major-r2': {
         'name': 'Thelio Major',
-        'drivers': [],
+        'drivers': [
+            actions.usb_audio_ignore_ctl_error,
+            actions.usb_audio_load_microphone,
+        ],
     },
     'thelio-massive-b1': {
         'name': 'Thelio Massive',
