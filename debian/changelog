@@ -1,9 +1,8 @@
-system76-driver (19.04.21~~alpha) disco; urgency=low
+system76-driver (19.04.21) disco; urgency=low
 
-  * Daily WIP for 19.04.21
   * Add thelio-major-r2
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 18 Dec 2019 08:35:00 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 10 Jan 2020 08:59:12 -0700
 
 system76-driver (19.04.20) disco; urgency=low
 
