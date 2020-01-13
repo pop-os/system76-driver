@@ -876,7 +876,10 @@ PRODUCTS = {
     },
     'thelio-mega-r1': {
         'name': 'Thelio Mega',
-        'drivers': [],
+        'drivers': [
+            actions.usb_audio_ignore_ctl_error,
+            actions.usb_audio_load_microphone,
+        ],
     },
 
     # Wildebeest:
