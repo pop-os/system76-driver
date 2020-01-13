@@ -870,6 +870,14 @@ PRODUCTS = {
         'name': 'Thelio Massive',
         'drivers': [],
     },
+    'thelio-mega-b1': {
+        'name': 'Thelio Mega',
+        'drivers': [],
+    },
+    'thelio-mega-r1': {
+        'name': 'Thelio Mega',
+        'drivers': [],
+    },
 
     # Wildebeest:
     'wilb1': {
