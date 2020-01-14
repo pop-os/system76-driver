@@ -62,6 +62,7 @@ brightness = daemon.run_brightness(args.model)
 airplane = daemon.run_airplane(args.model)
 acpi = daemon.run_firmware_acpi_interrupt(args.model)
 ess_dac_autoswitch = daemon.run_ess_dac_autoswitch(args.model)
+daemon.run_headphone_volume_adjust(args.model)
 daemon.run_dpcd_pwm(args.model)
 tdp = daemon.run_limit_power_draw(args.model)
 

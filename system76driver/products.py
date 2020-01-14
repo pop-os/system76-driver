@@ -870,6 +870,17 @@ PRODUCTS = {
         'name': 'Thelio Massive',
         'drivers': [],
     },
+    'thelio-mega-b1': {
+        'name': 'Thelio Mega',
+        'drivers': [],
+    },
+    'thelio-mega-r1': {
+        'name': 'Thelio Mega',
+        'drivers': [
+            actions.usb_audio_ignore_ctl_error,
+            actions.usb_audio_load_microphone,
+        ],
+    },
 
     # Wildebeest:
     'wilb1': {
