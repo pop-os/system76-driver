@@ -1308,7 +1308,7 @@ class usb_audio_ignore_ctl_error(GrubAction):
         return _('Fixes for probing USB audio device')
 
 class usb_audio_load_microphone(Action):
-    value = 'load-module module-alsa-source device=hw:2,1 source_properties=device.description=Microphone'
+    value = 'load-module module-alsa-source device=hw:CARD=Audio,DEV=1 source_properties=device.description=Microphone'
 
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'pulse', 'default.pa')
