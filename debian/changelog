@@ -1,11 +1,10 @@
-system76-driver (19.04.22~~alpha) disco; urgency=low
+system76-driver (19.04.22) disco; urgency=low
 
-  * Daily WIP for 19.04.22
   * Add thelio-mega-b1
   * Add thelio-mega-r1
   * Fix for Threadripper 3 USB audio microphone
 
- -- shpurk <benpack101@gmail.com>  Mon, 13 Jan 2020 10:24:58 -0700
+ -- shpurk <benpack101@gmail.com>  Tue, 14 Jan 2020 16:36:13 -0700
 
 system76-driver (19.04.21) disco; urgency=low
 
