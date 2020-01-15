@@ -1,6 +1,7 @@
-system76-driver (19.04.23~~alpha) disco; urgency=low
+system76-driver (19.10.1~~alpha) eoan; urgency=low
 
-  * Daily WIP for 19.04.23
+  * Daily WIP for 19.10.1
+  * Eoan release
 
  -- shpurk <benpack101@gmail.com>  Wed, 15 Jan 2020 07:17:26 -0700
 
