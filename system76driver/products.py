@@ -864,6 +864,7 @@ PRODUCTS = {
         'drivers': [
             actions.usb_audio_ignore_ctl_error,
             actions.usb_audio_load_microphone,
+            actions.usb_audio_load_spdif,
         ],
     },
     'thelio-massive-b1': {
@@ -879,6 +880,7 @@ PRODUCTS = {
         'drivers': [
             actions.usb_audio_ignore_ctl_error,
             actions.usb_audio_load_microphone,
+            actions.usb_audio_load_spdif,
         ],
     },
 
