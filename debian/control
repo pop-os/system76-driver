@@ -12,6 +12,7 @@ Build-Depends: debhelper (>= 9),
     python3-evdev,
     python3-gi,
     python3-systemd,
+    python3-distro,
     xbacklight
 Standards-Version: 3.9.6
 X-Python3-Version: >= 3.4
@@ -32,6 +33,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
     python3-evdev,
     python3-gi,
     python3-systemd,
+    python3-distro,
     system76-acpi-dkms,
     system76-dkms,
     system76-firmware-daemon,
