@@ -1296,3 +1296,39 @@ class blacklist_nvidia_i2c(FileAction):
 
     def describe(self):
         return _('Workaround for delay when loading NVIDIA i2c kernel module')
+
+class usb_audio_ignore_ctl_error(GrubAction):
+    """
+    Add `snd_usb_audio.ignore_ctl_error=1` to Linux command line.
+    """
+
+    add = ('snd_usb_audio.ignore_ctl_error=1',)
+
+    def describe(self):
+        return _('Fixes for probing USB audio device')
+
+class usb_audio_load_microphone(Action):
+    value = 'load-module module-alsa-source device=hw:CARD=Audio,DEV=1 source_properties=device.description=Microphone'
+
+    def __init__(self, etcdir='/etc'):
+        self.filename = path.join(etcdir, 'pulse', 'default.pa')
+
+    def read(self):
+        return open(self.filename, 'r').read()
+
+    def describe(self):
+        return _('Load USB audio microphone device')
+
+    def get_isneeded(self):
+        return self.read().splitlines()[-1] != self.value
+
+    def iter_lines(self):
+        content = self.read_and_backup()
+        for line in content.splitlines():
+            if line != self.value:
+                yield line
+        yield self.value
+
+    def perform(self):
+        content = '\n'.join(self.iter_lines())
+        self.atomic_write(content)

@@ -1,8 +1,22 @@
-system76-driver (19.04.21~~alpha) disco; urgency=low
+system76-driver (19.10.1) eoan; urgency=low
 
-  * Daily WIP for 19.04.21
+  * Eoan release
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 18 Dec 2019 08:35:00 -0700
+ -- shpurk <benjamin@system76.com>  Wed, 15 Jan 2020 08:48:11 -0700
+
+system76-driver (19.04.22) disco; urgency=low
+
+  * Add thelio-mega-b1
+  * Add thelio-mega-r1
+  * Fix for Threadripper 3 USB audio microphone
+
+ -- shpurk <benpack101@gmail.com>  Tue, 14 Jan 2020 16:36:13 -0700
+
+system76-driver (19.04.21) disco; urgency=low
+
+  * Add thelio-major-r2
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 10 Jan 2020 08:59:12 -0700
 
 system76-driver (19.04.20) disco; urgency=low
 
