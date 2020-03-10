@@ -1338,7 +1338,7 @@ class usb_audio_load_spdif(Action):
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'pulse', 'default.pa')
 
-        sink = '''load-module module-alsa-sink device=hw:CARD=Audio,DEV={} sink_properties="device.description='S/PDIF'"\n'''
+        sink = 'load-module module-alsa-sink device=hw:CARD=Audio,DEV={} sink_properties="device.description=\'S/PDIF\'"'
         if determine_model_new() == 'thelio-major-r2':
             self.value = sink.format('3')
         else:
