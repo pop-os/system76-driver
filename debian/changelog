@@ -1,4 +1,4 @@
-system76-driver (20.04ubuntu1) UNRELEASED; urgency=medium
+system76-driver (20.04.1) focal; urgency=medium
 
   * Update the bump and make file versions to include focal
   * Replace platform with disto
