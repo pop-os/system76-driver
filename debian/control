@@ -4,6 +4,7 @@ Priority: extra
 Maintainer: System76, Inc. <dev@system76.com>
 Build-Depends: debhelper (>= 9),
     dh-systemd,
+    dh-python,
     gir1.2-gtk-3.0,
     gir1.2-notify-0.7,
     pyflakes3,
@@ -11,6 +12,7 @@ Build-Depends: debhelper (>= 9),
     python3-dbus,
     python3-evdev,
     python3-gi,
+    python3-distro,
     python3-systemd,
     xbacklight
 Standards-Version: 3.9.6
@@ -31,6 +33,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
     python3-dbus,
     python3-evdev,
     python3-gi,
+    python3-distro,
     python3-systemd,
     system76-acpi-dkms,
     system76-dkms,
