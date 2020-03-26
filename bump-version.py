@@ -71,7 +71,7 @@ def parse_version_line(line):
     if ALPHA in line:
         raise ValueError('{!r} in current version:\n{!r}'.format(ALPHA, line))
     m = re.match(
-        '^system76-driver \(([\.0-9]+)\) ([a-z]+); urgency=low$', line
+        '^system76-driver \(([\.0-9]+)\) ([a-z]+); urgency=(low|medium|high|emergency|critical)$', line
     )
     if m is None:
         raise ValueError('bad version line[0]:\n{!r}'.format(line))
