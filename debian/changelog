@@ -1,9 +1,8 @@
-system76-driver (20.04.2~~alpha) focal; urgency=low
+system76-driver (20.04.2) focal; urgency=low
 
-  * Daily WIP for 20.04.2
   * Fix test for USB audio S/PDIF
 
- -- Tim Crawford <tcrawford@system76.com>  Thu, 12 Mar 2020 12:03:35 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 26 Mar 2020 11:40:13 -0600
 
 system76-driver (20.04.1) focal; urgency=medium
 
