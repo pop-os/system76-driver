@@ -38,7 +38,7 @@ OUTPUTS = (
 class TestConstants(TestCase):
     def test_PRODUCTS(self):
         self.assertIsInstance(products.PRODUCTS, dict)
-        self.assertEqual(len(products.PRODUCTS), 174)
+        self.assertEqual(len(products.PRODUCTS), 175)
         for (key, value) in products.PRODUCTS.items():
             SubProcess.reset(True, OUTPUTS)
 
