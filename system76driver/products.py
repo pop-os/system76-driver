@@ -411,6 +411,10 @@ PRODUCTS = {
             actions.internal_mic_gain,
         ],
     },
+    'lemp9': {
+        'name': 'Lemur Pro',
+        'drivers': [],
+    },
 
     # Leopard:
     'leo1': {
