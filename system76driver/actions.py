@@ -833,6 +833,13 @@ class headset_darp_fixup(Action):
     def describe(self):
         return _('Enable headset microphone')
 
+class headset_meer5_fixup(FileAction):
+    relpath = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
+    content = 'options snd-hda-intel model=alc256-asus-mic\n'
+
+    def describe(self):
+        return _('Enable headset microphone')
+
 SWITCH_INTERNAL_SPEAKERS_RULE = """SUBSYSTEM!="sound", GOTO="system76_pulseaudio_end"
 ACTION!="change", GOTO="system76_pulseaudio_end"
 KERNEL!="card*", GOTO="system76_pulseaudio_end"

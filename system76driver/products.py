@@ -499,6 +499,12 @@ PRODUCTS = {
         'name': 'Meerkat',
         'drivers': [],
     },
+    'meer5': {
+        'name': 'Meerkat',
+        'drivers': [
+            actions.headset_meer5_fixup,
+        ],
+    },
 
     # Oryx:
     'orxp1': {
