@@ -1,9 +1,8 @@
-system76-driver (20.04.4~~alpha) focal; urgency=low
+system76-driver (20.04.4) focal; urgency=low
 
-  * Daily WIP for 20.04.4
   * Update to nvidia-driver-440
 
- -- Jeremy Soller <jeremy@system76.com>  Thu, 02 Apr 2020 15:35:22 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 07 Apr 2020 11:48:32 -0600
 
 system76-driver (20.04.3) focal; urgency=low
 
