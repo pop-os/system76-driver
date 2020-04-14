@@ -2,6 +2,7 @@ system76-driver (20.04.5~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.5
   * Add serw12
+  * Add thelio-r2
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 14 Apr 2020 08:52:16 -0600
 
