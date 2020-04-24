@@ -113,6 +113,7 @@ TABLES = {
     },
     'system-version': {
         'addw1': 'addw1',
+        'addw2': 'addw2',
         'bonp2': 'bonp2',
         'bonp3': 'bonp3',
         'bonp4': 'bonp4',
@@ -145,6 +146,7 @@ TABLES = {
         'gaze12': 'gaze12',
         'gaze13': 'gaze13',
         'gaze14': 'gaze14',
+        'gaze15': 'gaze15',
         'daru3': 'daru3',
         'daru4': 'daru4',
         'kudp1': 'kudp1',
