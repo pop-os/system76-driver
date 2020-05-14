@@ -21,7 +21,7 @@
 Gtk UI.
 """
 
-import platform
+import distro
 import threading
 from gettext import gettext as _
 
@@ -54,7 +54,7 @@ class UI:
         self.details = self.builder.get_object('detailsText')
         self.builder.get_object('sysModel').set_text(model)
         self.builder.get_object('ubuntuVersion').set_text(
-            '{} {} ({})'.format(*platform.dist())
+            '{} {} ({})'.format(*distro.linux_distribution())
         )
         self.builder.get_object('driverVersion').set_text(__version__)
 

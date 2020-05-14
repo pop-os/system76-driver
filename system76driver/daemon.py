@@ -150,6 +150,11 @@ NEEDS_ESS_DAC_AUTOSWITCH = (
     'serw11-b',
 )
 
+# These Produces need headphone volume adjusted on plugin events
+NEEDS_HEADPHONE_VOLUME_ADJUST = (
+    'thelio-mega-b1',
+)
+
 # These Products need an adjustment of DPCD data to use PWM backlight
 NEEDS_DPCD_PWM = (
     'oryp4-b',
@@ -594,6 +599,59 @@ def run_ess_dac_autoswitch(model):
         return _run_ess_dac_autoswitch(model)
     except Exception:
         log.exception('Error calling _run_ess_dac_autoswitch(%r):', model)
+
+class HeadphoneVolumeAdjust:
+    def set_headphone_volume(self, card, volume):
+        time.sleep(1)  # Wait for Headphone to be muted after plug in
+        cmd = ["amixer", "-c", card, "set", "Headphone", volume, "unmute"]
+        return subprocess.call(cmd) == 0
+
+    def find_device(self, name):
+        for ev_path in evdev.list_devices():
+            device = evdev.InputDevice(ev_path)
+            if device.name == name:
+                return device
+        return None
+
+    def run(self):
+        name = "HDA Intel PCH Line Out Front"
+        device = False
+        while not device:
+            device = self.find_device(name)
+            if not device:
+                log.info("ERROR: " + name + " not found")
+                time.sleep(1)
+
+        log.info("Listening for events on %r: %r", device.name, device.fn)
+        for event in device.read_loop():
+            if event.type == 5:
+                # Switch event
+                if event.code == 6:
+                    # Line out switch
+                    if event.value != 0:
+                        log.info("Headphones plugged in")
+                        if not self.set_headphone_volume("0", "100%"):
+                            log.info("Failed to set card profile to digital")
+
+def thread_headphone_volume_adjust(model):
+    try:
+        hva = HeadphoneVolumeAdjust()
+        hva.run()
+    except Exception:
+        log.exception('Error running HeadphoneVolumeAdjust for %r', model)
+
+def _run_headphone_volume_adjust(model):
+    if model not in NEEDS_HEADPHONE_VOLUME_ADJUST:
+        log.info('Headphone volume adjustment not needed for %r', model)
+        return
+    log.info('Headphone volume adjustment for %r', model)
+    return _thread.start_new_thread(thread_headphone_volume_adjust, (model,))
+
+def run_headphone_volume_adjust(model):
+    try:
+        return _run_headphone_volume_adjust(model)
+    except Exception:
+        log.exception('Error calling _run_headphone_volume_adjust(%r):', model)
 
 class DpcdPwm:
     def __init__(self, model, rootdir='/'):

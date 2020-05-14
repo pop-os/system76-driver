@@ -1,8 +1,68 @@
-system76-driver (19.04.21~~alpha) disco; urgency=low
+system76-driver (20.04.6) focal; urgency=low
 
-  * Daily WIP for 19.04.21
+  * Add addw2 and gaze14
 
- -- Jeremy Soller <jeremy@system76.com>  Wed, 18 Dec 2019 08:35:00 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 24 Apr 2020 13:36:12 -0600
+
+system76-driver (20.04.5) focal; urgency=low
+
+  * Add serw12
+  * Add thelio-r2
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 14 Apr 2020 14:27:22 -0600
+
+system76-driver (20.04.4) focal; urgency=low
+
+  * Update to nvidia-driver-440
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 07 Apr 2020 11:48:32 -0600
+
+system76-driver (20.04.3) focal; urgency=low
+
+  * Add meer5
+  * Add lemp9
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 31 Mar 2020 13:03:57 -0600
+
+system76-driver (20.04.2) focal; urgency=low
+
+  * Fix test for USB audio S/PDIF
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 26 Mar 2020 11:40:13 -0600
+
+system76-driver (20.04.1) focal; urgency=medium
+
+  * Update the bump and make file versions to include focal
+  * Replace platform with disto
+  * Add dh-python and disto to import
+
+ -- Aaron Honeycutt <aaron@system76.com>  Wed, 11 Mar 2020 09:54:33 -0600
+
+system76-driver (19.10.2) eoan; urgency=low
+
+  * Fix for Threadripper 3 USB audio SPDIF
+
+ -- shpurk <benjamin@system76.com>  Fri, 24 Jan 2020 10:17:37 -0700
+
+system76-driver (19.10.1) eoan; urgency=low
+
+  * Eoan release
+
+ -- shpurk <benjamin@system76.com>  Wed, 15 Jan 2020 08:48:11 -0700
+
+system76-driver (19.04.22) disco; urgency=low
+
+  * Add thelio-mega-b1
+  * Add thelio-mega-r1
+  * Fix for Threadripper 3 USB audio microphone
+
+ -- shpurk <benpack101@gmail.com>  Tue, 14 Jan 2020 16:36:13 -0700
+
+system76-driver (19.04.21) disco; urgency=low
+
+  * Add thelio-major-r2
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 10 Jan 2020 08:59:12 -0700
 
 system76-driver (19.04.20) disco; urgency=low
 

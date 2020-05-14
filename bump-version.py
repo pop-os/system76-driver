@@ -34,7 +34,7 @@ from system76driver import __version__
 from system76driver.tests.helpers import TempDir
 
 
-DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful', 'bionic', 'cosmic', 'disco')
+DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful', 'bionic', 'cosmic', 'disco', 'eoan', 'focal')
 ALPHA = '~~alpha'
 
 TREE = path.dirname(path.abspath(__file__))
@@ -71,7 +71,7 @@ def parse_version_line(line):
     if ALPHA in line:
         raise ValueError('{!r} in current version:\n{!r}'.format(ALPHA, line))
     m = re.match(
-        '^system76-driver \(([\.0-9]+)\) ([a-z]+); urgency=low$', line
+        '^system76-driver \(([\.0-9]+)\) ([a-z]+); urgency=(low|medium|high|emergency|critical)$', line
     )
     if m is None:
         raise ValueError('bad version line[0]:\n{!r}'.format(line))

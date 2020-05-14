@@ -34,7 +34,7 @@ from system76driver import __version__
 from system76driver.tests.helpers import TempDir
 
 
-DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful', 'bionic', 'cosmic', 'disco')
+DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful', 'bionic', 'cosmic', 'disco', 'eoan', 'focal')
 PPA = 'ppa:system76-dev/pre-stable'
 ALPHA = '~~alpha'
 
@@ -106,7 +106,7 @@ def parse_version_line(line):
     if ALPHA not in line:
         raise ValueError('Missing {!r} in version:\n{!r}'.format(ALPHA, line))
     m = re.match(
-        '^system76-driver \(([\.0-9]+)' + ALPHA + '\) ([a-z]+); urgency=low$', line
+        '^system76-driver \(([\.0-9]+)' + ALPHA + '\) ([a-z]+); urgency=(low|medium|high|emergency|critical)$', line
     )
     if m is None:
         raise ValueError('bad version line[0]:\n{!r}'.format(line))

@@ -23,14 +23,24 @@ Unit tests for `system76driver.products` module.
 
 from unittest import TestCase
 
+from system76driver.mockable import SubProcess
 from system76driver import actions, products
+
+
+OUTPUTS = (
+    b'CCF59000-5FBA-0000-0000-000000000000\n',
+    b'Gazelle Professional\n',
+    b'Gazelle Professional\n',
+    b'gazp7\n',
+)
 
 
 class TestConstants(TestCase):
     def test_PRODUCTS(self):
         self.assertIsInstance(products.PRODUCTS, dict)
-        self.assertEqual(len(products.PRODUCTS), 170)
         for (key, value) in products.PRODUCTS.items():
+            SubProcess.reset(True, OUTPUTS)
+
             self.assertIsInstance(key, str)
             self.assertIsInstance(value, dict)
             self.assertIn('name', value)

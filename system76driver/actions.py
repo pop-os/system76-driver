@@ -33,6 +33,7 @@ import logging
 
 from . import get_datafile
 from .mockable import SubProcess
+from .model import determine_model_new
 
 
 log = logging.getLogger()
@@ -832,6 +833,13 @@ class headset_darp_fixup(Action):
     def describe(self):
         return _('Enable headset microphone')
 
+class headset_meer5_fixup(FileAction):
+    relpath = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
+    content = 'options snd-hda-intel model=alc256-asus-mic\n'
+
+    def describe(self):
+        return _('Enable headset microphone')
+
 SWITCH_INTERNAL_SPEAKERS_RULE = """SUBSYSTEM!="sound", GOTO="system76_pulseaudio_end"
 ACTION!="change", GOTO="system76_pulseaudio_end"
 KERNEL!="card*", GOTO="system76_pulseaudio_end"
@@ -1296,3 +1304,69 @@ class blacklist_nvidia_i2c(FileAction):
 
     def describe(self):
         return _('Workaround for delay when loading NVIDIA i2c kernel module')
+
+class usb_audio_ignore_ctl_error(GrubAction):
+    """
+    Add `snd_usb_audio.ignore_ctl_error=1` to Linux command line.
+    """
+
+    add = ('snd_usb_audio.ignore_ctl_error=1',)
+
+    def describe(self):
+        return _('Fixes for probing USB audio device')
+
+class usb_audio_load_microphone(Action):
+    value = 'load-module module-alsa-source device=hw:CARD=Audio,DEV=1 source_properties=device.description=Microphone'
+
+    def __init__(self, etcdir='/etc'):
+        self.filename = path.join(etcdir, 'pulse', 'default.pa')
+
+    def read(self):
+        return open(self.filename, 'r').read()
+
+    def describe(self):
+        return _('Load USB audio microphone device')
+
+    def get_isneeded(self):
+        return self.value not in self.read().splitlines()
+
+    def iter_lines(self):
+        content = self.read_and_backup()
+        for line in content.splitlines():
+            if line != self.value:
+                yield line
+        yield self.value
+
+    def perform(self):
+        content = '\n'.join(self.iter_lines())
+        self.atomic_write(content)
+
+class usb_audio_load_spdif(Action):
+    def __init__(self, etcdir='/etc'):
+        self.filename = path.join(etcdir, 'pulse', 'default.pa')
+
+        sink = 'load-module module-alsa-sink device=hw:CARD=Audio,DEV={} sink_properties="device.description=\'S/PDIF\'"'
+        if determine_model_new() == 'thelio-major-r2':
+            self.value = sink.format('3')
+        else:
+            self.value = sink.format('1')
+
+    def read(self):
+        return open(self.filename, 'r').read()
+
+    def describe(self):
+        return _('Load USB audio S/PDIF device')
+
+    def get_isneeded(self):
+        return self.value not in self.read().splitlines()
+
+    def iter_lines(self):
+        content = self.read_and_backup()
+        for line in content.splitlines():
+            if line != self.value:
+                yield line
+        yield self.value
+
+    def perform(self):
+        content = '\n'.join(self.iter_lines())
+        self.atomic_write(content)

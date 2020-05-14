@@ -24,7 +24,7 @@ import os
 import sys
 import time
 import logging
-import platform
+import distro
 
 import system76driver
 from system76driver.model import determine_model_new
@@ -59,8 +59,8 @@ product = PRODUCTS.get(args.model)
 
 log.info('** Process start at monotonic time %r', time.monotonic())
 log.info('system76driver.__version__: %r', system76driver.__version__)
-log.info('OS: %r', platform.dist())
-log.info('kernel: %r', platform.uname().release)
+log.info('OS: %r', distro.name())
+log.info('kernel: %r', distro.os.uname().release)
 log.info('model: %r', args.model)
 
 ui = UI(args.model, product, args)
