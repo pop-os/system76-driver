@@ -1,3 +1,9 @@
+system76-driver (20.04.7~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.7
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 18 May 2020 08:23:30 -0600
+
 system76-driver (20.04.6) focal; urgency=low
 
   * Add addw2 and gaze14
