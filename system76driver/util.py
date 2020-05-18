@@ -30,6 +30,21 @@ import distro
 from .model import determine_model
 from .mockable import SubProcess
 
+def dump_command(base, name, args):
+    fp = open(path.join(base, name), 'xb')
+    SubProcess.check_call(args, stdout=fp)
+
+def dump_path(base, name, src):
+    if path.exists(src):
+        dst = path.join(base, name)
+        dst_dir = path.dirname(dst)
+        if not path.isdir(dst_dir):
+            os.makedirs(dst_dir)
+        assert not path.exists(dst)
+        if path.isdir(src):
+            shutil.copytree(src, dst)
+        else:
+            shutil.copy(src, dst)
 
 def dump_logs(base):
     fp = open(path.join(base, 'systeminfo.txt'), 'x')
@@ -37,30 +52,16 @@ def dump_logs(base):
     fp.write('OS Version: {}\n'.format(distro.name(pretty=True), distro.version(pretty=True)))
     fp.write('Kernel Version: {}\n'.format(distro.os.uname().release))
 
-    fp = open(path.join(base, 'dmidecode'), 'xb')
-    SubProcess.check_call(['dmidecode'], stdout=fp)
-
-    fp = open(path.join(base, 'lspci'), 'xb')
-    SubProcess.check_call(['lspci', '-vv'], stdout=fp)
-
-    fp = open(path.join(base, 'lsusb'), 'xb')
-    SubProcess.check_call(['lsusb', '-vv'], stdout=fp)
-
-    fp = open(path.join(base, 'dmesg'), 'xb')
-    SubProcess.check_call(['dmesg'], stdout=fp)
-
-    fp = open(path.join(base, 'journalctl'), 'xb')
-    SubProcess.check_call(['journalctl', '--since', 'yesterday'], stdout=fp)
-
-    for parts in [('Xorg.0.log',), ('syslog',)]:  #, ('apt', 'history.log')]:
-        src = path.join('/var/log', *parts)
-        if path.isfile(src):
-            dst = path.join(base, *parts)
-            dst_dir = path.dirname(dst)
-            if not path.isdir(dst_dir):
-                os.makedirs(dst_dir)
-            assert not path.exists(dst)
-            shutil.copy(src, dst)
+    dump_command(base, "dmesg", ["dmesg"])
+    dump_command(base, "dmidecode", ["dmidecode"])
+    dump_command(base, "lspci", ["lspci", "-vv"])
+    dump_command(base, "lsusb", ["lsusb", "-vv"])
+    dump_command(base, "journalctl", ["journalctl", "--since", "yesterday"])
+    dump_path(base, "fstab", "/etc/fstab")
+    dump_path(base, "apt/sources.list", "/etc/apt/sources.list")
+    dump_path(base, "apt/sources.list.d", "/etc/apt/sources.list.d")
+    dump_path(base, "syslog", "/var/log/syslog")
+    dump_path(base, "Xorg.log", "/var/log/Xorg.0.log")
 
 
 def create_tmp_logs(func=dump_logs):

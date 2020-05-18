@@ -281,13 +281,13 @@ PRODUCTS = {
 	],
     },
     'gaze14': {
-        'name': 'Gazelle Pro',
+        'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
         ],
     },
     'gaze15': {
-        'name': 'Gazelle Pro',
+        'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
         ],
