@@ -1,10 +1,9 @@
-system76-driver (20.04.7~~alpha) focal; urgency=low
+system76-driver (20.04.7) focal; urgency=low
 
-  * Daily WIP for 20.04.7
   * Add logging of the fstab file to assist with OS upgrades
   * Add logging of the sources.list file and the sources.list.d directory
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 18 May 2020 08:23:30 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 18 May 2020 10:21:14 -0600
 
 system76-driver (20.04.6) focal; urgency=low
 
