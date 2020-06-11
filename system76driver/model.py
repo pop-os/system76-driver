@@ -200,6 +200,7 @@ TABLES = {
         'oryp4': 'oryp4',
         'oryp4-b': 'oryp4-b',
         'oryp5': 'oryp5',
+        'oryp6': 'oryp6',
         'ratv6': 'ratv6',
         'ratu1': 'ratu1',
         'ratu2': 'ratu2',
