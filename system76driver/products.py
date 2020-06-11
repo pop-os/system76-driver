@@ -594,6 +594,12 @@ PRODUCTS = {
             actions.blacklist_nvidia_i2c,
         ],
     },
+    'oryp6': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
 
     # Pangolin:
     'panp4i': {
