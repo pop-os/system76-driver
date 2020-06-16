@@ -34,7 +34,7 @@ from gi.repository import GLib
 from gi.repository import GObject
 
 import system76driver
-from system76driver import backlightdaemon
+from system76driver import userdaemon
 from system76driver.daemon import load_json_conf
 
 
@@ -65,4 +65,4 @@ log.info('model: %r', args.model)
 
 GObject.threads_init()
 if disable != "True":
-    backlight = backlightdaemon.run_backlight(args.model)
+    backlight = userdaemon.run_backlight(args.model)
