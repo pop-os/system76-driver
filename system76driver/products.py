@@ -903,8 +903,8 @@ PRODUCTS = {
         'name': 'Thelio Major',
         'drivers': [
             actions.usb_audio_ignore_ctl_error,
-            actions.usb_audio_load_microphone,
-            actions.usb_audio_load_spdif,
+            actions.remove_usb_audio_load_microphone,
+            actions.remove_usb_audio_load_spdif,
         ],
     },
     'thelio-massive-b1': {
@@ -919,8 +919,8 @@ PRODUCTS = {
         'name': 'Thelio Mega',
         'drivers': [
             actions.usb_audio_ignore_ctl_error,
-            actions.usb_audio_load_microphone,
-            actions.usb_audio_load_spdif,
+            actions.remove_usb_audio_load_microphone,
+            actions.remove_usb_audio_load_spdif,
         ],
     },
 
