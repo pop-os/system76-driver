@@ -1,10 +1,9 @@
-system76-driver (20.04.10~~alpha) focal; urgency=low
+system76-driver (20.04.10) focal; urgency=low
 
-  * Daily WIP for 20.04.10
   * Add oryp6
   * USB audio fixup in user daemon instead of pulseaudio config
 
- -- Tim Crawford <tcrawford@system76.com>  Thu, 11 Jun 2020 09:48:00 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 17 Jun 2020 11:50:04 -0600
 
 system76-driver (20.04.9) focal; urgency=low
 
