@@ -569,6 +569,19 @@ class plymouth1080(Action):
         self.atomic_write(content)
 
 
+class i8042_nomux(GrubAction):
+    """
+    Add i8042.nomux to GRUB_CMDLINE_LINUX_DEFAULT
+
+    This prevents keyboard issues after suspend/resume on gaze14.
+    """
+
+    add = ('i8042.nomux',)
+
+    def describe(self):
+        return _('Fix keyboard after suspend/resume')
+
+
 class i8042_reset_nomux(GrubAction):
     """
     Add i8042.reset and i8042.nomux to GRUB_CMDLINE_LINUX_DEFAULT
