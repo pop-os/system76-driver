@@ -284,6 +284,7 @@ PRODUCTS = {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.i8042_nomux,
         ],
     },
     'gaze15': {
