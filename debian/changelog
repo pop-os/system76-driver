@@ -1,9 +1,8 @@
-system76-driver (20.04.11~~alpha) focal; urgency=low
+system76-driver (20.04.11) focal; urgency=low
 
-  * Daily WIP for 20.04.11
   * Add i8042.nomux to kernel boot parameters on gaze14 to prevent keyboard issue after suspend/resume
 
- -- Jacob Kauffmann <jacob@system76.com>  Mon, 22 Jun 2020 07:53:12 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 22 Jun 2020 15:47:38 -0600
 
 system76-driver (20.04.10) focal; urgency=low
 
