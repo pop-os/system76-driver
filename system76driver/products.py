@@ -32,6 +32,12 @@ PRODUCTS = {
             actions.blacklist_nvidia_i2c,
         ],
     },
+    'addw2': {
+        'name': 'Adder WS',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
 
     # Bonobo:
     'bonp1': {
@@ -275,7 +281,14 @@ PRODUCTS = {
 	],
     },
     'gaze14': {
-        'name': 'Gazelle Pro',
+        'name': 'Gazelle',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+            actions.i8042_nomux,
+        ],
+    },
+    'gaze15': {
+        'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
         ],
@@ -411,6 +424,10 @@ PRODUCTS = {
             actions.internal_mic_gain,
         ],
     },
+    'lemp9': {
+        'name': 'Lemur Pro',
+        'drivers': [],
+    },
 
     # Leopard:
     'leo1': {
@@ -499,6 +516,12 @@ PRODUCTS = {
         'name': 'Meerkat',
         'drivers': [],
     },
+    'meer5': {
+        'name': 'Meerkat',
+        'drivers': [
+            actions.headset_meer5_fixup,
+        ],
+    },
 
     # Oryx:
     'orxp1': {
@@ -569,6 +592,12 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.hda_probe_mask,
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
+    'oryp6': {
+        'name': 'Oryx Pro',
+        'drivers': [
             actions.blacklist_nvidia_i2c,
         ],
     },
@@ -797,6 +826,10 @@ PRODUCTS = {
             actions.nvreg_enablebacklighthandler,
         ],
     },
+    'serw12': {
+        'name': 'Serval WS',
+        'drivers': [],
+    },
 
     # Silverback:
     'silw1': {
@@ -839,7 +872,15 @@ PRODUCTS = {
         'name': 'Thelio',
         'drivers': [],
     },
+    'thelio-b2': {
+        'name': 'Thelio',
+        'drivers': [],
+    },
     'thelio-r1': {
+        'name': 'Thelio',
+        'drivers': [],
+    },
+    'thelio-r2': {
         'name': 'Thelio',
         'drivers': [],
     },
@@ -863,8 +904,8 @@ PRODUCTS = {
         'name': 'Thelio Major',
         'drivers': [
             actions.usb_audio_ignore_ctl_error,
-            actions.usb_audio_load_microphone,
-            actions.usb_audio_load_spdif,
+            actions.remove_usb_audio_load_microphone,
+            actions.remove_usb_audio_load_spdif,
         ],
     },
     'thelio-massive-b1': {
@@ -879,8 +920,8 @@ PRODUCTS = {
         'name': 'Thelio Mega',
         'drivers': [
             actions.usb_audio_ignore_ctl_error,
-            actions.usb_audio_load_microphone,
-            actions.usb_audio_load_spdif,
+            actions.remove_usb_audio_load_microphone,
+            actions.remove_usb_audio_load_spdif,
         ],
     },
 

@@ -1,3 +1,67 @@
+system76-driver (20.04.11) focal; urgency=low
+
+  * Add i8042.nomux to kernel boot parameters on gaze14 to prevent keyboard issue after suspend/resume
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 22 Jun 2020 15:47:38 -0600
+
+system76-driver (20.04.10) focal; urgency=low
+
+  * Add oryp6
+  * USB audio fixup in user daemon instead of pulseaudio config
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 17 Jun 2020 11:50:04 -0600
+
+system76-driver (20.04.9) focal; urgency=low
+
+  * Recommend amd-ppt-bin in system76-driver-nvidia
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 09 Jun 2020 10:22:39 -0600
+
+system76-driver (20.04.8) focal; urgency=low
+
+  * Add thelio-b2
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 20 May 2020 08:26:21 -0600
+
+system76-driver (20.04.7) focal; urgency=low
+
+  * Add logging of the fstab file to assist with OS upgrades
+  * Add logging of the sources.list file and the sources.list.d directory
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 18 May 2020 10:21:14 -0600
+
+system76-driver (20.04.6) focal; urgency=low
+
+  * Add addw2 and gaze14
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 24 Apr 2020 13:36:12 -0600
+
+system76-driver (20.04.5) focal; urgency=low
+
+  * Add serw12
+  * Add thelio-r2
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 14 Apr 2020 14:27:22 -0600
+
+system76-driver (20.04.4) focal; urgency=low
+
+  * Update to nvidia-driver-440
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 07 Apr 2020 11:48:32 -0600
+
+system76-driver (20.04.3) focal; urgency=low
+
+  * Add meer5
+  * Add lemp9
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 31 Mar 2020 13:03:57 -0600
+
+system76-driver (20.04.2) focal; urgency=low
+
+  * Fix test for USB audio S/PDIF
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 26 Mar 2020 11:40:13 -0600
+
 system76-driver (20.04.1) focal; urgency=medium
 
   * Update the bump and make file versions to include focal

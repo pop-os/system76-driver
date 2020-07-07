@@ -569,6 +569,19 @@ class plymouth1080(Action):
         self.atomic_write(content)
 
 
+class i8042_nomux(GrubAction):
+    """
+    Add i8042.nomux to GRUB_CMDLINE_LINUX_DEFAULT
+
+    This prevents keyboard issues after suspend/resume on gaze14.
+    """
+
+    add = ('i8042.nomux',)
+
+    def describe(self):
+        return _('Fix keyboard after suspend/resume')
+
+
 class i8042_reset_nomux(GrubAction):
     """
     Add i8042.reset and i8042.nomux to GRUB_CMDLINE_LINUX_DEFAULT
@@ -829,6 +842,13 @@ class headset_darp_fixup(Action):
     def perform(self):
         atomic_write(self.filename1, self.content1)
         atomic_write(self.filename2, self.content2)
+
+    def describe(self):
+        return _('Enable headset microphone')
+
+class headset_meer5_fixup(FileAction):
+    relpath = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
+    content = 'options snd-hda-intel model=alc256-asus-mic\n'
 
     def describe(self):
         return _('Enable headset microphone')
@@ -1308,7 +1328,8 @@ class usb_audio_ignore_ctl_error(GrubAction):
     def describe(self):
         return _('Fixes for probing USB audio device')
 
-class usb_audio_load_microphone(Action):
+# Moved to userdaemon
+class remove_usb_audio_load_microphone(Action):
     value = 'load-module module-alsa-source device=hw:CARD=Audio,DEV=1 source_properties=device.description=Microphone'
 
     def __init__(self, etcdir='/etc'):
@@ -1321,24 +1342,24 @@ class usb_audio_load_microphone(Action):
         return _('Load USB audio microphone device')
 
     def get_isneeded(self):
-        return self.value not in self.read().splitlines()
+        return self.value in self.read().splitlines()
 
     def iter_lines(self):
         content = self.read_and_backup()
         for line in content.splitlines():
             if line != self.value:
                 yield line
-        yield self.value
 
     def perform(self):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
 
-class usb_audio_load_spdif(Action):
+# Moved to userdaemon
+class remove_usb_audio_load_spdif(Action):
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'pulse', 'default.pa')
 
-        sink = '''load-module module-alsa-sink device=hw:CARD=Audio,DEV={} sink_properties="device.description='S/PDIF'"\n'''
+        sink = 'load-module module-alsa-sink device=hw:CARD=Audio,DEV={} sink_properties="device.description=\'S/PDIF\'"'
         if determine_model_new() == 'thelio-major-r2':
             self.value = sink.format('3')
         else:
@@ -1351,14 +1372,13 @@ class usb_audio_load_spdif(Action):
         return _('Load USB audio S/PDIF device')
 
     def get_isneeded(self):
-        return self.value not in self.read().splitlines()
+        return self.value in self.read().splitlines()
 
     def iter_lines(self):
         content = self.read_and_backup()
         for line in content.splitlines():
             if line != self.value:
                 yield line
-        yield self.value
 
     def perform(self):
         content = '\n'.join(self.iter_lines())

@@ -50,6 +50,10 @@ NEEDS_BACKLIGHT = (
     'orxp1',
 )
 
+NEEDS_USB_AUDIO = (
+    'thelio-major-r2',
+    'thelio-mega-r1',
+)
 
 class Backlight:
     def __init__(self, model, name, rootdir='/'):
@@ -77,8 +81,8 @@ class Backlight:
         if xbrightness == 0:
             xbrightness = 1
         if xbrightness <= 100:
-            xbrightness_cmd = ['xbacklight', 
-                               '-set', 
+            xbrightness_cmd = ['xbacklight',
+                               '-set',
                                str(xbrightness)
             ]
             try:
@@ -97,7 +101,7 @@ class Backlight:
         except Exception:
             log.exception('Error calling Backlight.update():')
             return False
-    
+
     def update(self):
         brightness = self.read_brightness()
         if self.current != brightness:
@@ -105,7 +109,6 @@ class Backlight:
             if brightness >= 0:
                 self.set_xbacklight(brightness)
         return True
-
 
 def _run_backlight(model):
     if model not in NEEDS_BACKLIGHT:
@@ -115,10 +118,7 @@ def _run_backlight(model):
     name = 'acpi_video0'
     backlight = Backlight(model, name)
     backlight.run()
-    mainloop = GLib.MainLoop()
-    mainloop.run()
     return backlight
-
 
 def run_backlight(model):
     try:
@@ -126,3 +126,76 @@ def run_backlight(model):
     except Exception:
         log.exception('Error calling _run_brightness(%r):', model)
 
+class UsbAudio:
+    def __init__(self, model, rootdir='/'):
+        self.model = model
+        self.name = "ALC1220VBDT"
+        self.mic_dev = 1
+        if self.model == "thelio-major-r2":
+            self.spdif_dev = 3
+        else:
+            self.spdif_dev = 1
+        self.dir = path.join(rootdir,
+            'proc', 'asound', self.name
+        )
+
+    def run(self):
+        self.timeout_id = GLib.timeout_add(1000, self.on_timeout)
+
+    def on_timeout(self):
+        try:
+            return self.update()
+        except Exception:
+            log.exception('Error calling UsbAudio.update():')
+            return False
+
+    def update(self):
+        if not path.isdir(self.dir):
+            return True
+
+        log.info('USB audio fixup for %r found %r', self.model, self.dir)
+
+        subprocess.check_output([
+            "pacmd",
+            "unload-module",
+            "module-alsa-sink"
+        ])
+
+        subprocess.check_output([
+            "pacmd",
+            "unload-module",
+            "module-alsa-source"
+        ])
+
+        subprocess.check_output([
+            "pacmd",
+            "load-module",
+            "module-alsa-sink",
+            "device=hw:CARD={},DEV={}".format(self.name, self.spdif_dev),
+            "sink_properties=device.description='S/PDIF'"
+        ])
+
+        subprocess.check_output([
+            "pacmd",
+            "load-module",
+            "module-alsa-source",
+            "device=hw:CARD={},DEV={}".format(self.name, self.mic_dev),
+            "source_properties=device.description='Microphone'"
+        ])
+
+        return False
+
+def _run_usb_audio(model):
+    if model not in NEEDS_USB_AUDIO:
+        log.info('USB audio fixup not needed for %r', model)
+        return
+    log.info('Enabling USB audio fixup for %r', model)
+    usb_audio = UsbAudio(model)
+    usb_audio.run()
+    return usb_audio
+
+def run_usb_audio(model):
+    try:
+        return _run_usb_audio(model)
+    except Exception:
+        log.exception('Error calling _run_usb_audio(%r):', model)

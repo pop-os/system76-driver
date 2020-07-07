@@ -34,7 +34,7 @@ from gi.repository import GLib
 from gi.repository import GObject
 
 import system76driver
-from system76driver import backlightdaemon
+from system76driver import daemon, userdaemon
 from system76driver.daemon import load_json_conf
 
 
@@ -56,13 +56,17 @@ if os.getuid() == 0:
     sys.exit('Error: system76-daemon must be run as user')
 log.info('**** Process start at monotonic time %r', start_time)
 
-disable = load_json_conf('/etc/system76-daemon.json').get('disable-backlight')
-log.info(disable)
-
 if not args.model:
-    args.model = (system76driver.get_product_version())
+    model = daemon.load_json_conf('/etc/system76-daemon.json').get('model')
+    args.model = (model or system76driver.get_product_version())
 log.info('model: %r', args.model)
+userdaemon.run_backlight(args.model)
+userdaemon.run_usb_audio(args.model)
 
-GObject.threads_init()
-if disable != "True":
-    backlight = backlightdaemon.run_backlight(args.model)
+mainloop = GLib.MainLoop()
+if args.debug:
+    names = sorted(sys.modules)
+    for name in names:
+        print(name)
+    print(len(names))
+mainloop.run()

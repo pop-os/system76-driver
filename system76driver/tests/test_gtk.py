@@ -22,7 +22,7 @@ Unit tests for `system76driver.gtk` module.
 """
 
 from unittest import TestCase
-import platform
+import distro
 from collections import namedtuple
 
 from gi.repository import Gtk
@@ -60,7 +60,7 @@ class TestUI(TestCase):
         )
         self.assertEqual(
             ui.builder.get_object('ubuntuVersion').get_text(),
-            '{} {} ({})'.format(*platform.dist())
+            '{} {} ({})'.format(*distro.linux_distribution())
         )
         self.assertEqual(
             ui.builder.get_object('driverVersion').get_text(),
@@ -82,7 +82,7 @@ class TestUI(TestCase):
         self.assertEqual(ui.builder.get_object('sysModel').get_text(), model)
         self.assertEqual(
             ui.builder.get_object('ubuntuVersion').get_text(),
-            '{} {} ({})'.format(*platform.dist())
+            '{} {} ({})'.format(*distro.linux_distribution())
         )
         self.assertEqual(
             ui.builder.get_object('driverVersion').get_text(),

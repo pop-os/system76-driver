@@ -5,7 +5,6 @@ system76-apt-preferences /etc/apt/preferences.d/
 system76-third-party-mirrors.cfg /etc/update-manager/release-upgrades.d/
 system76-driver-pkexec usr/bin/
 system76-daemon usr/lib/system76-driver/
-system76-backlight-daemon usr/lib/system76-driver/
-debian/system76-driver-backlight.service usr/lib/systemd/user/
-system76-driver-backlight.desktop etc/xdg/autostart/
+system76-user-daemon usr/lib/system76-driver/
+system76-user-daemon.desktop etc/xdg/autostart/
 debian/source_system76-driver.py usr/share/apport/package-hooks/
