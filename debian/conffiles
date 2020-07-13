@@ -1,0 +1,4 @@
+/etc/apt/preferences.d/system76-apt-preferences
+/etc/init/system76-driver.conf
+/etc/update-manager/release-upgrades.d/system76-third-party-mirrors.cfg
+/etc/xdg/autostart/system76-user-daemon.desktop
