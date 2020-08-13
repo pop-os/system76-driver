@@ -119,6 +119,10 @@ PRODUCTS = {
             actions.nvreg_enablebacklighthandler,
         ],
     },
+    'bonw14': {
+        'name': 'Bonobo WS',
+        'drivers': [],
+    },
 
     # Darter:
     'daru1': {
