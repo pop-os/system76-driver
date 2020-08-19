@@ -49,7 +49,7 @@ def dump_path(base, name, src):
 def dump_logs(base):
     fp = open(path.join(base, 'systeminfo.txt'), 'x')
     fp.write('System76 Model: {}\n'.format(determine_model()))
-    fp.write('OS Version: {}\n'.format(distro.name(pretty=True), distro.version(pretty=True)))
+    fp.write('OS Version: {}\n'.format(distro.name(pretty=True)))
     fp.write('Kernel Version: {}\n'.format(distro.os.uname().release))
 
     dump_command(base, "dmesg", ["dmesg"])
