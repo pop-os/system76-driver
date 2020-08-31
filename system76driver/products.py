@@ -912,6 +912,14 @@ PRODUCTS = {
             actions.remove_usb_audio_load_spdif,
         ],
     },
+    'thelio-major-r2.1': {
+        'name': 'Thelio Major',
+        'drivers': [
+            actions.usb_audio_ignore_ctl_error,
+            actions.remove_usb_audio_load_microphone,
+            actions.remove_usb_audio_load_spdif,
+        ],
+    },
     'thelio-massive-b1': {
         'name': 'Thelio Massive',
         'drivers': [],
@@ -921,6 +929,14 @@ PRODUCTS = {
         'drivers': [],
     },
     'thelio-mega-r1': {
+        'name': 'Thelio Mega',
+        'drivers': [
+            actions.usb_audio_ignore_ctl_error,
+            actions.remove_usb_audio_load_microphone,
+            actions.remove_usb_audio_load_spdif,
+        ],
+    },
+    'thelio-mega-r1.1': {
         'name': 'Thelio Mega',
         'drivers': [
             actions.usb_audio_ignore_ctl_error,
