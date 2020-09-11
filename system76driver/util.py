@@ -57,6 +57,7 @@ def dump_logs(base):
     dump_command(base, "lspci", ["lspci", "-vv"])
     dump_command(base, "lsusb", ["lsusb", "-vv"])
     dump_command(base, "lsblk", ["lsblk", "-f"])
+    dump_command(base, "df", ["df", "-h"])
     dump_command(base, "journalctl", ["journalctl", "--since", "yesterday"])
     dump_path(base, "fstab", "/etc/fstab")
     dump_path(base, "apt/sources.list", "/etc/apt/sources.list")
