@@ -56,12 +56,14 @@ def dump_logs(base):
     dump_command(base, "dmidecode", ["dmidecode"])
     dump_command(base, "lspci", ["lspci", "-vv"])
     dump_command(base, "lsusb", ["lsusb", "-vv"])
+    dump_command(base, "lsblk", ["lsblk", "-f"])
     dump_command(base, "journalctl", ["journalctl", "--since", "yesterday"])
     dump_path(base, "fstab", "/etc/fstab")
     dump_path(base, "apt/sources.list", "/etc/apt/sources.list")
     dump_path(base, "apt/sources.list.d", "/etc/apt/sources.list.d")
     dump_path(base, "syslog", "/var/log/syslog")
     dump_path(base, "Xorg.log", "/var/log/Xorg.0.log")
+
 
 
 def create_tmp_logs(func=dump_logs):
