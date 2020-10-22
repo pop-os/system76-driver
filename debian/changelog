@@ -1,9 +1,8 @@
-system76-driver (20.04.15~~alpha) focal; urgency=low
+system76-driver (20.04.15) focal; urgency=low
 
-  * Daily WIP for 20.04.15
   * Update NVIDIA driver to 455
 
- -- Jeremy Soller <jeremy@system76.com>  Thu, 22 Oct 2020 09:15:07 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 22 Oct 2020 09:16:13 -0600
 
 system76-driver (20.04.14) focal; urgency=low
 
