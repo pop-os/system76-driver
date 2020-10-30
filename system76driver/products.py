@@ -832,7 +832,9 @@ PRODUCTS = {
     },
     'serw12': {
         'name': 'Serval WS',
-        'drivers': [],
+        'drivers': [
+            actions.firefox_enablewebrender144,
+        ],
     },
 
     # Silverback:
