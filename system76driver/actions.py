@@ -1383,3 +1383,11 @@ class remove_usb_audio_load_spdif(Action):
     def perform(self):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
+
+class firefox_enablewebrender144(FileAction):
+    relpath = ('usr', 'lib', 'firefox', 'defaults', 'pref', 's76-webrender.js')
+    content = 'pref("gfx.webrender.all", true);\n'
+    content += 'pref("layout.frame_rate", 144);\n'
+
+    def describe(self):
+        return _('Enable WebRender in Firefox by default')
