@@ -198,6 +198,10 @@ PRODUCTS = {
         'name': 'Galago Pro',
         'drivers': [],
     },
+    'galp5': {
+        'name': 'Galago Pro',
+        'drivers': [],
+    },
 
     # Gazelle:
     'gazp1': {
@@ -432,6 +436,10 @@ PRODUCTS = {
         'name': 'Lemur Pro',
         'drivers': [],
     },
+    'lemp10': {
+        'name': 'Lemur Pro',
+        'drivers': [],
+    },
 
     # Leopard:
     'leo1': {
@@ -639,6 +647,10 @@ PRODUCTS = {
             actions.wifi_pm_disable,
             actions.lemu1,
         ],
+    },
+    'pang10': {
+        'name': 'Pangolin',
+        'drivers': [],
     },
     #'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
     'panv2': {
@@ -945,6 +957,10 @@ PRODUCTS = {
             actions.remove_usb_audio_load_microphone,
             actions.remove_usb_audio_load_spdif,
         ],
+    },
+    'thelio-mira-r1': {
+        'name': 'Thelio Mira',
+        'drivers': [],
     },
 
     # Wildebeest:
