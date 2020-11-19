@@ -131,7 +131,10 @@ def run_backlight(model):
 class UsbAudio:
     def __init__(self, model, rootdir='/'):
         self.model = model
-        self.name = "ALC1220VBDT"
+        if self.model == "thelio-mega-r1":
+            self.name = "Audio"
+        else:
+            self.name = "ALC1220VBDT"
         self.mic_dev = 1
         if self.model.startswith("thelio-major-r2"):
             self.spdif_dev = 3
