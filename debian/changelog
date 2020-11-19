@@ -1,9 +1,8 @@
-system76-driver (20.04.16~~alpha) focal; urgency=low
+system76-driver (20.04.16) focal; urgency=low
 
-  * Daily WIP for 20.04.16
   * Add galp5, lemp10, pang10, and thelio-mira-r1
 
- -- Jeremy Soller <jeremy@system76.com>  Tue, 10 Nov 2020 20:12:31 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 19 Nov 2020 10:14:51 -0700
 
 system76-driver (20.04.15) focal; urgency=low
 
