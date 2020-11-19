@@ -53,6 +53,7 @@ NEEDS_BACKLIGHT = (
 NEEDS_USB_AUDIO = (
     'thelio-major-r2',
     'thelio-major-r2.1',
+    'thelio-mega-b1',
     'thelio-mega-r1',
     'thelio-mega-r1.1',
 )
@@ -131,7 +132,11 @@ def run_backlight(model):
 class UsbAudio:
     def __init__(self, model, rootdir='/'):
         self.model = model
-        self.name = "ALC1220VBDT"
+        if self.mode.startswith("thelio-mega-b1"):
+            self.name = "Audio"
+        else:
+            self.name = "ALC1220VBDT"
+
         self.mic_dev = 1
         if self.model.startswith("thelio-major-r2"):
             self.spdif_dev = 3

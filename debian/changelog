@@ -1,6 +1,7 @@
 system76-driver (20.04.17~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.17
+  * USB audio fix for thelio-mega-b1
 
  -- Tim Crawford <tcrawford@system76.com>  Thu, 19 Nov 2020 12:45:45 -0700
 
