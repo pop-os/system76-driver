@@ -641,7 +641,7 @@ log file will be available in your home folder.</property>
                   <object class="GtkImage" id="notifyImage">
                     <property name="can_focus">False</property>
                     <property name="xpad">3</property>
-                    <property name="stock">gtk-info</property>
+                    <property name="stock">help-info-symbolic</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
