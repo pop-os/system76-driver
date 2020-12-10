@@ -1394,9 +1394,9 @@ class firefox_enablewebrender144(FileAction):
         
 class nvidia_forcefullcompositionpipeline(FileAction):
     relpath = ('etc', 'profile')
-    content = '# Added by system76-driver.\n')
-    content += '# Force a full composition pipeline to prevent stuttering.\n')
-    content += 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"')
+    content = '# Added by system76-driver.\n'
+    content += '# Force a full composition pipeline to prevent stuttering.\n'
+    content += 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"'
     
     def describe(self):
         return _('Enable ForceFullCompositionPipeline in the NVIDIA driver')
