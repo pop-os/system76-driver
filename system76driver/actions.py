@@ -1410,6 +1410,9 @@ class firefox_unsetwebrender(FileAction):
             pass
 
 class nvidia_forcefullcompositionpipeline(FileAction):
+    def describe(self):
+        return _('Enable ForceFullCompositionPipeline in the NVIDIA driver')
+
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'profile')
 
@@ -1429,6 +1432,3 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         content += '# Force a full composition pipeline to prevent stuttering.\n'
         content += 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"\n'
         self.atomic_write(content)
-
-    def describe(self):
-        return _('Enable ForceFullCompositionPipeline in the NVIDIA driver')
