@@ -845,7 +845,8 @@ PRODUCTS = {
     'serw12': {
         'name': 'Serval WS',
         'drivers': [
-            actions.firefox_enablewebrender144,
+            actions.firefox_framerate144,
+            actions.firefox_unsetwebrender,
             actions.nvidia_forcefullcompositionpipeline,
         ],
     },

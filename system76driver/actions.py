@@ -1384,20 +1384,51 @@ class remove_usb_audio_load_spdif(Action):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
 
-class firefox_enablewebrender144(FileAction):
-    relpath = ('usr', 'lib', 'firefox', 'defaults', 'pref', 's76-webrender.js')
-    content = 'pref("gfx.webrender.all", true);\n'
-    content += 'pref("layout.frame_rate", 144);\n'
+class firefox_framerate144(FileAction):
+    relpath = ('usr', 'lib', 'firefox', 'defaults', 'pref', 's76-framerate.js')
+    content = 'pref("layout.frame_rate", 144);\n'
 
     def describe(self):
-        return _('Enable WebRender in Firefox by default')
-        
+        return _('Set Firefox framerate to 144fps (for 144Hz display)')
+
+class firefox_unsetwebrender(FileAction):
+    relpath = ('usr', 'lib', 'firefox', 'defaults', 'pref', 's76-webrender.js')
+
+    def describe(self):
+        return _('Remove unnecessary WebRender override for Firefox')
+
+    def __init__(self, rootdir='/'):
+        self.filename = path.join(rootdir, *self.relpath)
+
+    def get_isneeded(self):
+        return os.path.exists(self.filename)
+
+    def perform(self):
+        try:
+            os.remove(self.filename)
+        except:
+            pass
+
 class nvidia_forcefullcompositionpipeline(FileAction):
-    relpath = ('etc', 'profile')
-    content += '\n'
-    content += '# Added by system76-driver.\n'
-    content += '# Force a full composition pipeline to prevent stuttering.\n'
-    content += 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"\n'
-    
+    def __init__(self, etcdir='/etc'):
+        self.filename = path.join(etcdir, 'profile')
+
+    def read(self):
+        return open(self.filename, 'r').read()
+
+    def get_isneeded(self):
+        if "ForceFullCompositionPipeline" in self.read():
+            return False
+        else:
+            return True
+
+    def perform(self):
+        content = self.read_and_backup()
+        content += '\n'
+        content += '# Added by system76-driver.\n'
+        content += '# Force a full composition pipeline to prevent stuttering.\n'
+        content += 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"\n'
+        self.atomic_write(content)
+
     def describe(self):
         return _('Enable ForceFullCompositionPipeline in the NVIDIA driver')
