@@ -846,6 +846,7 @@ PRODUCTS = {
         'name': 'Serval WS',
         'drivers': [
             actions.firefox_enablewebrender144,
+            actions.nvidia_forcefullcompositionpipeline,
         ],
     },
 
