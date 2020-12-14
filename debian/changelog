@@ -1,6 +1,7 @@
 system76-driver (20.04.18~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.18
+  * serw12: set NVIDIA ForceFullCompositionPipeline (and unset Firefox WebRender)
 
  -- Jacob Kauffmann <jacob@system76.com>  Mon, 14 Dec 2020 11:56:45 -0700
 
