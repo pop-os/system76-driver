@@ -1414,21 +1414,13 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         return _('Enable ForceFullCompositionPipeline in the NVIDIA driver')
 
     def __init__(self, etcdir='/etc'):
-        self.filename = path.join(etcdir, 'profile')
-
-    def read(self):
-        return open(self.filename, 'r').read()
+        self.filename = path.join(etcdir, 'profile.d', 's76-nvidia-fullcomp.sh')
 
     def get_isneeded(self):
-        if "ForceFullCompositionPipeline" in self.read():
-            return False
-        else:
-            return True
+        return not os.path.exists(self.filename)
 
     def perform(self):
-        content = self.read_and_backup()
-        content += '\n'
-        content += '# Added by system76-driver.\n'
+        content = '# Added by system76-driver.\n'
         content += '# Force a full composition pipeline to prevent stuttering.\n'
         content += 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"\n'
         self.atomic_write(content)
