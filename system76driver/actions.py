@@ -1424,3 +1424,10 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         content += '# Force a full composition pipeline to prevent stuttering.\n'
         content += 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"\n'
         self.atomic_write(content)
+
+class nvidia_dynamic_power_one(FileAction):
+    relpath = ('etc', 'modprobe.d', 'zzz-s76-nvidia-dynpwr.conf')
+    content = 'options nvidia NVreg_DynamicPowerManagement=0x01\n'
+
+    def describe(self):
+        return _('Set NVIDIA dynamic power to recommended value')
