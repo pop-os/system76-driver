@@ -1,8 +1,9 @@
 system76-driver (20.04.20~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.20
+  * gaze15 & serw12: Add i8042.nomux option to prevent keyboard issues after suspend.
 
- -- Jeremy Soller <jeremy@system76.com>  Fri, 18 Dec 2020 12:40:05 -0700
+ -- Jacob Kauffmann <jacob@system76.com>  Tue, 15 Dec 2020 11:41:25 -0700
 
 system76-driver (20.04.19) focal; urgency=low
 

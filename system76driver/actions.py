@@ -573,7 +573,7 @@ class i8042_nomux(GrubAction):
     """
     Add i8042.nomux to GRUB_CMDLINE_LINUX_DEFAULT
 
-    This prevents keyboard issues after suspend/resume on gaze14.
+    This prevents keyboard issues after suspend/resume on some products.
     """
 
     add = ('i8042.nomux',)
