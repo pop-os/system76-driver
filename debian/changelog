@@ -1,6 +1,7 @@
 system76-driver (20.04.19~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.19
+  * galp5: Set NVIDIA dynamic power to recommended value
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 15 Dec 2020 15:27:08 -0700
 
