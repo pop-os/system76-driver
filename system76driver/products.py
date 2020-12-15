@@ -301,6 +301,7 @@ PRODUCTS = {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.i8042_nomux,
         ],
     },
     'gazu1': {
@@ -850,6 +851,7 @@ PRODUCTS = {
             actions.firefox_framerate144,
             actions.firefox_unsetwebrender,
             actions.nvidia_forcefullcompositionpipeline,
+            actions.i8042_nomux,
         ],
     },
 
