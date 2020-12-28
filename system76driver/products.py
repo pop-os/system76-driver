@@ -158,6 +158,10 @@ PRODUCTS = {
             actions.headset_darp_fixup,
         ],
     },
+    'darp7': {
+        'name': 'Darter Pro',
+        'drivers': [],
+    },
 
     # Galago:
     'galu1': {
