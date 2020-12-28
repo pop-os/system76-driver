@@ -101,6 +101,11 @@ def update_kernelstub():
     SubProcess.check_call(['kernelstub'])
 
 
+def update_initramfs():
+    log.info('Calling `update-initramfs`...')
+    SubProcess.check_call(['update-initramfs', '-u'])
+
+
 def parse_lspci(text):
     """
     Parse output of `lspci -vmnn`.
@@ -155,6 +160,7 @@ class Action:
     _isneeded = None
     _description = None
     update_grub = False
+    update_initramfs = False
 
     @property
     def isneeded(self):
@@ -256,6 +262,10 @@ class ActionRunner:
             else:
                 yield _('Running `update-grub`')
                 update_grub()
+
+        if any(action.update_initramfs for action in self.needed):
+            yield _('Running `update-initramfs`')
+            update_initramfs()
 
 
 class FileAction(Action):
@@ -1431,3 +1441,11 @@ class nvidia_dynamic_power_one(FileAction):
 
     def describe(self):
         return _('Set NVIDIA dynamic power to recommended value')
+
+class i915_initramfs(FileAction):
+    update_initramfs = True
+    relpath = ('usr', 'share', 'initramfs-tools', 'modules.d', 's76-i915-initramfs.conf')
+    content = '# Added by system76-driver\ni915\n'
+
+    def describe(self):
+        return _('Add i915 driver to initramfs')

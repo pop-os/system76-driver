@@ -614,6 +614,7 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.i915_initramfs,
         ],
     },
 
