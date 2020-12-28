@@ -1,6 +1,7 @@
 system76-driver (20.04.22~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.22
+  * Add darp7
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 29 Dec 2020 08:08:57 -0700
 
@@ -249,7 +250,7 @@ system76-driver (19.04.7) disco; urgency=low
   * Improvements for kernelstub option modifications
 
  -- shpurk <benjamin@system76.com>  Mon, 25 Feb 2019 14:45:53 -0700
- 
+
 system76-driver (19.04.6) disco; urgency=low
 
   * Add snd_hda_intel.probe_mask=1 for oryp5
@@ -305,7 +306,7 @@ system76-driver (18.10.4) cosmic; urgency=low
   * Add meer4
 
  -- shpurk <benjamin@system76.com>  Tue, 04 Dec 2018 15:58:21 -0700
- 
+
 system76-driver (18.10.3) cosmic; urgency=low
 
   * Add thelio-b1
