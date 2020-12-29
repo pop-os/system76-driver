@@ -1,9 +1,8 @@
-system76-driver (20.04.21~~alpha) focal; urgency=low
+system76-driver (20.04.21) focal; urgency=low
 
-  * Daily WIP for 20.04.21
   * oryp6: Add i915 driver to initramfs
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 28 Dec 2020 15:44:37 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 29 Dec 2020 08:05:53 -0700
 
 system76-driver (20.04.20) focal; urgency=low
 
