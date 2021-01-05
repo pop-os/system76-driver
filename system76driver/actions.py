@@ -1432,13 +1432,13 @@ class nvidia_forcefullcompositionpipeline(FileAction):
 
     def get_isneeded(self):
         if os.path.exists(self.oldfilename):
-            return true
+            return True
         elif not os.path.exists(self.filename):
-            return true
+            return True
         elif not "ForceFullCompositionPipeline" in self.read():
-            return true
+            return True
         else:
-            return false
+            return False
 
     def perform(self):
         if os.path.exists(self.oldfilename):
