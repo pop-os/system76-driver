@@ -1441,7 +1441,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
             return false
 
     def perform(self):
-        if os.path.exists(self.oldfilename)
+        if os.path.exists(self.oldfilename):
             try:
                 os.remove(self.oldfilename)
             except:
