@@ -1447,8 +1447,11 @@ class nvidia_forcefullcompositionpipeline(FileAction):
             except:
                 pass
         if os.path.exists(self.filename):
-            content = self.read_and_backup()
-            content += '# Added by system76-driver.\n'
+            if "ForceFullCompositionPipeline" in self.read():
+                return
+            else:
+                content = self.read_and_backup()
+                content += '# Added by system76-driver.\n'
         else:
             content = '# Added by system76-driver.\n'
         content += '# Force a full composition pipeline to prevent stuttering.\n\n'
