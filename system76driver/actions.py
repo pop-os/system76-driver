@@ -1424,15 +1424,45 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         return _('Enable ForceFullCompositionPipeline in the NVIDIA driver')
 
     def __init__(self, etcdir='/etc'):
-        self.filename = path.join(etcdir, 'profile.d', 's76-nvidia-fullcomp.sh')
+        self.oldfilename = path.join(etcdir, 'profile.d', 's76-nvidia-fullcomp.sh')
+        self.filename = path.join(etcdir, 'xprofile')
+    
+    def read(self):
+        return open(self.filename, 'r').read()
 
     def get_isneeded(self):
-        return not os.path.exists(self.filename)
+        if os.path.exists(self.oldfilename):
+            return true
+        elif not os.path.exists(self.filename):
+            return true
+        elif not "ForceFullCompositionPipeline" in self.read():
+            return true
+        else:
+            return false
 
     def perform(self):
-        content = '# Added by system76-driver.\n'
-        content += '# Force a full composition pipeline to prevent stuttering.\n'
-        content += 'nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"\n'
+        if os.path.exists(self.oldfilename)
+            try:
+                os.remove(self.oldfilename)
+            except:
+                pass
+        if os.path.exists(self.filename):
+            content = self.read_and_backup()
+            content += '# Added by system76-driver.\n'
+        else:
+            content = '# Added by system76-driver.\n'
+        content += '# Force a full composition pipeline to prevent stuttering.\n\n'
+        content += '# Get the current display settings.\n'
+        content += 'oldmode=$(echo $(nvidia-settings -q CurrentMetaMode) | sed -e \'s/.*:: //g\')\n\n'
+        content += '# If there were no old settings, then apply a default setting;\n'
+        content += '# otherwise, add ForceFullCompositionPipeline to the old settings.\n'
+        content += 'if [ -z "$oldmode" ]\n'
+        content += 'then\n'
+        content += '    newmode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On}"\n'
+        content += 'else\n'
+        content += '    newmode=$(echo $oldmode | sed \'s/}/, ForceFullCompositionPipeline=On}/g\')\nfi\n\n'
+        content += '# Apply the new display settings.\n'
+        content += 'nvidia-settings --assign CurrentMetaMode="$newmode"\n'
         self.atomic_write(content)
 
 class nvidia_dynamic_power_one(FileAction):
