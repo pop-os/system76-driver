@@ -1462,7 +1462,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         content += 'then\n'
         content += '    newmode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On}"\n'
         content += 'else\n'
-        content += '    newmode=${oldmode/\}/, ForceFullCompositionPipeline=On\}}\nfi\n\n'
+        content += '    newmode=${oldmode//\}/, ForceFullCompositionPipeline=On\}}\nfi\n\n'
         content += '# Apply the new display settings.\n'
         content += 'nvidia-settings --assign CurrentMetaMode="$newmode"\n'
         self.atomic_write(content)
