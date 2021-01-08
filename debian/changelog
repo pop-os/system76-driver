@@ -1,7 +1,7 @@
 system76-driver (20.04.23~~alpha) focal; urgency=low
 
-  * Move serw12 ForceFullCompositionPipeline from profile to xprofile
   * Daily WIP for 20.04.23
+  * Move serw12 ForceFullCompositionPipeline from profile to xprofile
 
  -- Jacob Kauffmann <jacob@system76.com>  Tue, 05 Jan 2021 15:18:59 -0700
 
