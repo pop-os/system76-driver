@@ -1,9 +1,8 @@
-system76-driver (20.04.24~~alpha) focal; urgency=low
+system76-driver (20.04.24) focal; urgency=low
 
-  * Daily WIP for 20.04.24
   * Set card name to 'Audio' on mega-r1*
 
- -- leviport <levi@system76.com>  Fri, 15 Jan 2021 14:36:32 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 15 Jan 2021 15:43:05 -0700
 
 system76-driver (20.04.23) focal; urgency=low
 
