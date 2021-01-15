@@ -1,6 +1,7 @@
 system76-driver (20.04.24~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.24
+  * Set card name to 'Audio' on mega-r1*
 
  -- leviport <levi@system76.com>  Fri, 15 Jan 2021 14:36:32 -0700
 

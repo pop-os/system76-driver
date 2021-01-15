@@ -131,7 +131,7 @@ def run_backlight(model):
 class UsbAudio:
     def __init__(self, model, rootdir='/'):
         self.model = model
-        if self.model == "thelio-mega-r1":
+        if self.model.startswith("thelio-mega-r1"):
             self.name = "Audio"
         else:
             self.name = "ALC1220VBDT"
