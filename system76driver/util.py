@@ -64,8 +64,10 @@ def dump_logs(base):
     dump_path(base, "apt/sources.list.d", "/etc/apt/sources.list.d")
     dump_path(base, "syslog", "/var/log/syslog")
     dump_path(base, "Xorg.log", "/var/log/Xorg.0.log")
-
-
+    dump_path(base, "apt/history", "/var/log/apt/history.log")
+    dump_path(base, "apt/history-rotated", "/var/log/apt/history.log.1.gz")
+    dump_path(base, "apt/term", "/var/log/apt/term.log")
+    dump_path(base, "apt/term-rotated", "/var/log/apt/term.log.1.gz")
 
 def create_tmp_logs(func=dump_logs):
     tmp = tempfile.mkdtemp(prefix='logs.')
@@ -82,7 +84,6 @@ def create_tmp_logs(func=dump_logs):
     ]
     SubProcess.check_call(cmd)
     return (tmp, tgz)
-
 
 def create_logs(homedir, func=dump_logs):
     (tmp, src) = create_tmp_logs(func)
