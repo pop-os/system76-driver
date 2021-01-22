@@ -9,9 +9,6 @@ display-line-numbers = true
 display-right-margin = true
 highlight-current-line = true
 
-[org.gnome.desktop.background]
-picture-uri = 'file:///usr/share/backgrounds/System76-Fractal_Mountains-by_Kate_Hazen_of_System76.png'
-
 [com.canonical.Unity.Lenses]
 remote-content-search = 'none'
 
