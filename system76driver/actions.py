@@ -1426,7 +1426,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
     def __init__(self, etcdir='/etc'):
         self.oldfilename = path.join(etcdir, 'profile.d', 's76-nvidia-fullcomp.sh')
         self.filename = path.join(etcdir, 'xprofile')
-    
+
     def read(self):
         return open(self.filename, 'r').read()
 
@@ -1467,12 +1467,20 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         content += 'nvidia-settings --assign CurrentMetaMode="$newmode"\n'
         self.atomic_write(content)
 
-class nvidia_dynamic_power_one(FileAction):
+class remove_nvidia_dynamic_power_one(FileAction):
     relpath = ('etc', 'modprobe.d', 'zzz-s76-nvidia-dynpwr.conf')
-    content = 'options nvidia NVreg_DynamicPowerManagement=0x01\n'
+
+    def get_isneeded(self):
+        return os.path.exists(self.filename)
+
+    def perform(self):
+        try:
+            os.remove(self.filename)
+        except:
+            pass
 
     def describe(self):
-        return _('Set NVIDIA dynamic power to recommended value')
+        return _('Remove NVIDIA dynamic power override')
 
 class i915_initramfs(FileAction):
     update_initramfs = True

@@ -205,7 +205,7 @@ PRODUCTS = {
     'galp5': {
         'name': 'Galago Pro',
         'drivers': [
-            actions.nvidia_dynamic_power_one,
+            actions.remove_nvidia_dynamic_power_one,
         ],
     },
 
