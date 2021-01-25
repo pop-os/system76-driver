@@ -1,10 +1,9 @@
-system76-driver (20.04.26~~alpha) focal; urgency=low
+system76-driver (20.04.26) focal; urgency=low
 
-  * Daily WIP for 20.04.26
   * Update to NVIDIA driver 460
   * Remove NVIDIA dynamic power override
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 25 Jan 2021 09:31:42 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 25 Jan 2021 12:54:59 -0700
 
 system76-driver (20.04.25) focal; urgency=low
 
