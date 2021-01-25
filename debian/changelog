@@ -1,6 +1,8 @@
 system76-driver (20.04.25~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.25
+  * Move wallpapers to recommends and remove gsettings override
+  * Add apt/history logs
 
  -- Aaron Honeycutt <aaron@system76.com>  Wed, 20 Jan 2021 11:15:51 -0700
 
