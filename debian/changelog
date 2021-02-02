@@ -1,9 +1,8 @@
-system76-driver (20.04.27~~alpha) focal; urgency=low
+system76-driver (20.04.27) focal; urgency=low
 
-  * Daily WIP for 20.04.27
   * Add thelio-major-b3
 
- -- Jeremy Soller <jeremy@system76.com>  Tue, 02 Feb 2021 09:17:50 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 02 Feb 2021 11:41:43 -0700
 
 system76-driver (20.04.26) focal; urgency=low
 
