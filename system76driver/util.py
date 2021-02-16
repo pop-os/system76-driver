@@ -26,13 +26,14 @@ from os import path
 import shutil
 import tempfile
 import distro
+import subprocess
 
 from .model import determine_model
-from .mockable import SubProcess
 
 def dump_command(base, name, args):
-    fp = open(path.join(base, name), 'xb')
-    SubProcess.check_call(args, stdout=fp)
+    fp = open(path.join(base, name), 'xt')
+    output = subprocess.run(" ".join(args), capture_output=True, shell=True, text=True)
+    fp.write(output.stdout + "\n" + output.stderr)
 
 def dump_path(base, name, src):
     if path.exists(src):
@@ -59,6 +60,7 @@ def dump_logs(base):
     dump_command(base, "lsblk", ["lsblk", "-f"])
     dump_command(base, "df", ["df", "-h"])
     dump_command(base, "journalctl", ["journalctl", "--since", "yesterday"])
+    dump_command(base, "sensors", ["sensors"])
     dump_path(base, "fstab", "/etc/fstab")
     dump_path(base, "apt/sources.list", "/etc/apt/sources.list")
     dump_path(base, "apt/sources.list.d", "/etc/apt/sources.list.d")
@@ -82,7 +84,7 @@ def create_tmp_logs(func=dump_logs):
         '-C', tmp,
         'system76-logs',
     ]
-    SubProcess.check_call(cmd)
+    subprocess.run(cmd)
     return (tmp, tgz)
 
 def create_logs(homedir, func=dump_logs):

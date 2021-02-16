@@ -43,6 +43,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
     system76-power,
     xbacklight
 Recommends: hidpi-daemon,
+            lm-sensors,
             system76-wallpapers
 Description: Universal driver for System76 computers
  System76 Driver provides drivers, restore, and regression support for System76

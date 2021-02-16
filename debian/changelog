@@ -1,6 +1,8 @@
 system76-driver (20.04.30~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.30
+  * Add sensors command to log output
+  * Handle cases where commands are missing
 
  -- Aaron Honeycutt <aaronhoneycutt@pm.me>  Tue, 16 Feb 2021 08:58:20 -0700
 
