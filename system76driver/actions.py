@@ -1321,6 +1321,16 @@ class hda_probe_mask(GrubAction):
     def describe(self):
         return _('Fixes for probing Intel HDA device')
 
+class hda_disable_power_save(GrubAction):
+    """
+    Add `snd_hda_intel.power_save=0` to Linux command line.
+    """
+
+    add = ('snd_hda_intel.power_save=0',)
+
+    def describe(self):
+        return _('Disable buggy Intel HDA power saving')
+
 class blacklist_nvidia_i2c(FileAction):
     relpath = ('etc', 'modprobe.d', 'system76-driver_i2c-nvidia-gpu.conf')
     content = 'blacklist i2c_nvidia_gpu'

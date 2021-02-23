@@ -1,6 +1,7 @@
 system76-driver (20.04.28~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.28
+  * Disable buggy Intel HDA power saving for thelio-r2
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 23 Feb 2021 08:38:29 -0700
 
