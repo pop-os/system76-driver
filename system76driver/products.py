@@ -911,7 +911,9 @@ PRODUCTS = {
     },
     'thelio-r2': {
         'name': 'Thelio',
-        'drivers': [],
+        'drivers': [
+            actions.hda_disable_power_save,
+        ],
     },
     'thelio-major-b1': {
         'name': 'Thelio Major',
