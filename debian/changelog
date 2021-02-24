@@ -1,9 +1,8 @@
-system76-driver (20.04.29~~alpha) focal; urgency=low
+system76-driver (20.04.29) focal; urgency=low
 
-  * Daily WIP for 20.04.29
   * Add oryp7
 
- -- Jeremy Soller <jeremy@system76.com>  Tue, 23 Feb 2021 12:14:54 -0700
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 24 Feb 2021 12:29:22 -0700
 
 system76-driver (20.04.28) focal; urgency=low
 
