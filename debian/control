@@ -2,8 +2,7 @@ Source: system76-driver
 Section: utils
 Priority: extra
 Maintainer: System76, Inc. <dev@system76.com>
-Build-Depends: debhelper (>= 9),
-    dh-systemd,
+Build-Depends: debhelper (>= 9.20160709),
     dh-python,
     gir1.2-gtk-3.0,
     gir1.2-notify-0.7,
