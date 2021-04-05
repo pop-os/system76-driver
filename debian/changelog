@@ -1,6 +1,7 @@
 system76-driver (20.04.31~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.31
+  * Add pang10 WD Blue drive fix
 
  -- leviport <levi@system76.com>  Mon, 05 Apr 2021 10:47:49 -0600
 
