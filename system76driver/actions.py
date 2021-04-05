@@ -604,6 +604,17 @@ class i8042_reset_nomux(GrubAction):
     def describe(self):
         return _('Enable Touchpad')
 
+class pang10_nvme_fix(GrubAction):
+    """
+    Add nvme_core.default_ps_max_latency_us=10000 to GRUB_CMDLINE_LINUX_DEFAULT
+
+    This fixes pang10 crashes with WD Blue NVMe drives.
+    """
+
+    add = ('nvme_core.default_ps_max_latency_us=10000',)
+
+    def describe(self):
+        return _('Change WD Blue drive pstate latency, fixing crashes on pang10')
 
 class gfxpayload_text(Action):
     update_grub = True
