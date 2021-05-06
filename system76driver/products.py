@@ -541,6 +541,12 @@ PRODUCTS = {
             actions.headset_meer5_fixup,
         ],
     },
+    'meer6': {
+        'name': 'Meerkat',
+        'drivers': [
+            actions.hda_disable_power_save,
+        ],
+    },
 
     # Oryx:
     'orxp1': {
