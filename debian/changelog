@@ -1,6 +1,7 @@
 system76-driver (20.04.32~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.32
+  * Add meer6
 
  -- Jacob Kauffmann <jacob@system76.com>  Wed, 12 May 2021 14:03:45 -0600
 
