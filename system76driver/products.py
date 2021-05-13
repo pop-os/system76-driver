@@ -544,7 +544,7 @@ PRODUCTS = {
     'meer6': {
         'name': 'Meerkat',
         'drivers': [
-            actions.hda_disable_power_save,
+            actions.hda_force_enable_audio,
         ],
     },
 
