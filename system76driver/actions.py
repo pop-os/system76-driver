@@ -1535,6 +1535,6 @@ class hda_force_enable_audio(FileAction):
             content += '\n# Added by system76-driver.\n'
         else:
             content = '# Added by system76-driver.\n'
-        content += '# Force audio output from DP-1 (physical HDMI 1 port.)\n\n'
-        content += 'xrandr --output DP-1 --set audio on'
+        content += '# Force audio output from DP-1 (physical HDMI 1 port.)\n'
+        content += 'xrandr --output DP-1 --set audio on\n'
         self.atomic_write(content)
