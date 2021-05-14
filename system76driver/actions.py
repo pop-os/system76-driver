@@ -1511,9 +1511,9 @@ class i915_initramfs(FileAction):
     def describe(self):
         return _('Add i915 driver to initramfs')
 
-class hda_force_enable_audio(FileAction):
+class displayport1_force_enable_audio(FileAction):
     def describe(self):
-        return _('Force enable audio via HDMI/DP for Intel HDA')
+        return _('Force enable audio output from DP-1 (physical HDMI 1 port.)')
 
     def __init__(self, etcdir='/etc'):
         self.filename = path.join(etcdir, 'xprofile')
@@ -1535,6 +1535,6 @@ class hda_force_enable_audio(FileAction):
             content += '\n# Added by system76-driver.\n'
         else:
             content = '# Added by system76-driver.\n'
-        content += '# Force audio output from DP-1 (physical HDMI 1 port.)\n'
+        content += '# Force enable audio output from DP-1 (physical HDMI 1 port.)\n'
         content += 'xrandr --output DP-1 --set audio on\n'
         self.atomic_write(content)
