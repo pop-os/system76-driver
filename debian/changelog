@@ -1,7 +1,7 @@
 system76-driver (20.04.33~~alpha) focal; urgency=low
 
-  * Apply meer6 audio fix
   * Daily WIP for 20.04.33
+  * Apply meer6 audio fix
 
  -- Jacob Kauffmann <jacob@system76.com>  Thu, 13 May 2021 11:20:22 -0600
 
