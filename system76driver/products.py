@@ -539,6 +539,7 @@ PRODUCTS = {
         'name': 'Meerkat',
         'drivers': [
             actions.headset_meer5_fixup,
+            actions.meer5_audio_hdajackretask,
         ],
     },
     'meer6': {
