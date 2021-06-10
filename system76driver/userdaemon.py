@@ -164,11 +164,12 @@ class UsbAudio:
 
         log.info('USB audio fixup for %r found %r', self.model, self.dir)
 
-        subprocess.check_output([
-            "pacmd",
-            "unload-module",
-            "module-alsa-sink"
-        ])
+        if self.model != "thelio-mira-b1": # do not try to fix s/pdif on mira-b1
+            subprocess.check_output([
+                "pacmd",
+                "unload-module",
+                "module-alsa-sink"
+            ])
 
         subprocess.check_output([
             "pacmd",
@@ -176,13 +177,14 @@ class UsbAudio:
             "module-alsa-source"
         ])
 
-        subprocess.check_output([
-            "pacmd",
-            "load-module",
-            "module-alsa-sink",
-            "device=hw:CARD={},DEV={}".format(self.name, self.spdif_dev),
-            "sink_properties=device.description='S/PDIF'"
-        ])
+        if self.model != "thelio-mira-b1": # do not try to fix s/pdif on mira-b1
+            subprocess.check_output([
+                "pacmd",
+                "load-module",
+                "module-alsa-sink",
+                "device=hw:CARD={},DEV={}".format(self.name, self.spdif_dev),
+                "sink_properties=device.description='S/PDIF'"
+            ])
 
         subprocess.check_output([
             "pacmd",
