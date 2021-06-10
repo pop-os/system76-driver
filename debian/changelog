@@ -1,3 +1,9 @@
+system76-driver (20.04.34) focal; urgency=low
+
+  * meer5: Fix audio on revision without headphone jack
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 10 Jun 2021 09:40:06 -0600
+
 system76-driver (20.04.33) focal; urgency=low
 
   * Apply meer6 audio fix
