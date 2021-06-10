@@ -1,9 +1,8 @@
-system76-driver (20.04.34~~alpha) focal; urgency=low
+system76-driver (20.04.34) focal; urgency=low
 
-  * Daily WIP for 20.04.34
   * meer5: Fix audio on revision without headphone jack
 
- -- Jacob Kauffmann <jacob@system76.com>  Thu, 10 Jun 2021 06:59:02 -0600
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 10 Jun 2021 09:40:06 -0600
 
 system76-driver (20.04.33) focal; urgency=low
 
