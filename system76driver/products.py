@@ -991,6 +991,12 @@ PRODUCTS = {
             actions.remove_usb_audio_load_spdif,
         ],
     },
+    'thelio-mira-b1': {
+        'name': 'Thelio Mira',
+        'drivers': [
+            actions.mira_b1_11th_gen_intel_fix,
+        ],
+    },
     'thelio-mira-r1': {
         'name': 'Thelio Mira',
         'drivers': [],
