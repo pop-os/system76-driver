@@ -626,7 +626,7 @@ class mira_b1_11th_gen_intel_fix(GrubAction):
     add = ('i915.force_probe=4c8a',)
 
     def describe(self):
-        return_('Force i915 driver to load on 11th gen Intel integrated graphics')
+        return _('Force i915 driver to load on 11th gen Intel integrated graphics')
 
 class gfxpayload_text(Action):
     update_grub = True
