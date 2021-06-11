@@ -994,7 +994,7 @@ PRODUCTS = {
     'thelio-mira-b1': {
         'name': 'Thelio Mira',
         'drivers': [
-            actions.mira_b1_11th_gen_intel_fix,
+            actions.integrated_11th_gen_intel_fix,
         ],
     },
     'thelio-mira-r1': {
