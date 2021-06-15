@@ -1,3 +1,10 @@
+system76-driver (20.04.35~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.35
+  * Add thelio-mira-b1 and its required audio and graphics fixes
+
+ -- leviport <levi@system76.com>  Thu, 10 Jun 2021 14:03:06 -0600
+
 system76-driver (20.04.34) focal; urgency=low
 
   * meer5: Fix audio on revision without headphone jack

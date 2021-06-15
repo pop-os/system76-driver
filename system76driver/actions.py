@@ -616,6 +616,19 @@ class pang10_nvme_fix(GrubAction):
     def describe(self):
         return _('Change WD Blue drive pstate latency, fixing crashes on pang10')
 
+class integrated_11th_gen_intel_fix(GrubAction):
+    """
+    Add i915.force_probe=4c8a to GRUB_CMDLINE_LINUX_DEFAULT
+
+    This fixes the i915 driver on 11th gen Intel integrated graphics.
+    It was implemented for mira-b1 and thelio-b2.
+    """
+
+    add = ('i915.force_probe=4c8a',)
+
+    def describe(self):
+        return _('Force i915 driver to load on 11th gen Intel integrated graphics')
+
 class gfxpayload_text(Action):
     update_grub = True
     comment = '# Added by system76-driver:'

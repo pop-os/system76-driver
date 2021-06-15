@@ -55,6 +55,7 @@ NEEDS_USB_AUDIO = (
     'thelio-major-r2.1',
     'thelio-mega-r1',
     'thelio-mega-r1.1',
+    'thelio-mira-b1',
 )
 
 class Backlight:
@@ -131,11 +132,14 @@ def run_backlight(model):
 class UsbAudio:
     def __init__(self, model, rootdir='/'):
         self.model = model
-        if self.model.startswith("thelio-mega-r1"):
+        if self.model.startswith("thelio-mega-r1") or self.model == "thelio-mira-b1":
             self.name = "Audio"
         else:
             self.name = "ALC1220VBDT"
-        self.mic_dev = 1
+        if self.model == "thelio-mira-b1":
+            self.mic_dev = 3
+        else:
+            self.mic_dev = 1
         if self.model.startswith("thelio-major-r2"):
             self.spdif_dev = 3
         else:
@@ -160,11 +164,12 @@ class UsbAudio:
 
         log.info('USB audio fixup for %r found %r', self.model, self.dir)
 
-        subprocess.check_output([
-            "pacmd",
-            "unload-module",
-            "module-alsa-sink"
-        ])
+        if self.model != "thelio-mira-b1": # do not try to fix s/pdif on mira-b1
+            subprocess.check_output([
+                "pacmd",
+                "unload-module",
+                "module-alsa-sink"
+            ])
 
         subprocess.check_output([
             "pacmd",
@@ -172,13 +177,14 @@ class UsbAudio:
             "module-alsa-source"
         ])
 
-        subprocess.check_output([
-            "pacmd",
-            "load-module",
-            "module-alsa-sink",
-            "device=hw:CARD={},DEV={}".format(self.name, self.spdif_dev),
-            "sink_properties=device.description='S/PDIF'"
-        ])
+        if self.model != "thelio-mira-b1": # do not try to fix s/pdif on mira-b1
+            subprocess.check_output([
+                "pacmd",
+                "load-module",
+                "module-alsa-sink",
+                "device=hw:CARD={},DEV={}".format(self.name, self.spdif_dev),
+                "sink_properties=device.description='S/PDIF'"
+            ])
 
         subprocess.check_output([
             "pacmd",
