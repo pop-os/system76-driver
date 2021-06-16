@@ -23,8 +23,8 @@
 
 case $1 in
     configure)
-        if [ -e /usr/bin/quirks-handler ]; then
-            /usr/bin/quirks-handler -e nvidia-375
+        if [ -x /usr/bin/quirks-handler -a -d /sys/module/nvidia ]; then
+            /usr/bin/quirks-handler -e system76-driver-nvidia
         fi
 esac
 
