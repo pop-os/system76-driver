@@ -1,0 +1,12 @@
+Section "Quirk"
+    Identifier "system76-0-thelio-massive-b1"
+    Handler "system76-driver-nvidia"
+    Match "sys_vendor" "System76"
+    Match "product_version" "thelio-massive-b1"
+    XorgSnippet
+        Section "Device"
+            Identifier "Device0"
+            Driver "nvidia"
+        EndSection
+    EndXorgSnippet
+EndSection

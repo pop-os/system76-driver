@@ -1,8 +1,12 @@
 system76-driver (20.04.36~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.36
+  * Thelio-mira-b1: Added quirk for Nvidia GPUs for drivers 460 and 465
+  * General: Amended quirk-handler command in the system76-driver-nvidia
+    postinstall script to use system76-driver-nvidia if the NVIDIA driver is
+    loaded.
 
- -- Jeremy Soller <jeremy@system76.com>  Mon, 21 Jun 2021 13:17:42 -0600
+ -- Benjamin Flanagin <bflanagin@gmail.com>  Fri, 18 Jun 2021 08:54:12 -0600
 
 system76-driver (20.04.35) focal; urgency=low
 
