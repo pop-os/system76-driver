@@ -919,7 +919,9 @@ PRODUCTS = {
     },
     'thelio-b2': {
         'name': 'Thelio',
-        'drivers': [],
+        'drivers': [
+            actions.integrated_11th_gen_intel_fix,
+        ],
     },
     'thelio-r1': {
         'name': 'Thelio',

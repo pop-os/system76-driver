@@ -1,6 +1,7 @@
 system76-driver (20.04.37~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.37
+  * Apply 11th gen Intel fix to thelio-b2
 
  -- leviport <levi@system76.com>  Fri, 25 Jun 2021 10:32:54 -0600
 
