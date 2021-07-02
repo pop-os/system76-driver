@@ -1,6 +1,6 @@
 system76-driver (20.04.37~~alpha) focal; urgency=low
 
-  * Daily WIP for 20.04.37
+  * Adds an uptime output file for support
 
  -- Aaron Honeycutt <aaron@system76.com>  Thu, 01 Jul 2021 14:40:30 -0600
 
