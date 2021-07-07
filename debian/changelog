@@ -1,9 +1,15 @@
-system76-driver (20.04.37~~alpha) focal; urgency=low
+system76-driver (20.04.38~~alpha) focal; urgency=low
 
-  * Daily WIP for 20.04.37
+  * Daily WIP for 20.04.38
   * Apply 11th gen Intel fix to thelio-b2
 
- -- leviport <levi@system76.com>  Fri, 25 Jun 2021 10:32:54 -0600
+ -- leviport <levi@system76.com>  Fri, 07 Jul 2021 07:46:54 -0600
+ 
+ system76-driver (20.04.37~~alpha) focal; urgency=low
+ 
+  * Adds an uptime output file for support
+
+ -- Aaron Honeycutt <aaron@system76.com>  Thu, 01 Jul 2021 14:40:30 -0600
 
 system76-driver (20.04.36) focal; urgency=low
 

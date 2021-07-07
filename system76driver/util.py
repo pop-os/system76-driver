@@ -61,6 +61,7 @@ def dump_logs(base):
     dump_command(base, "df", ["df", "-h"])
     dump_command(base, "journalctl", ["journalctl", "--since", "yesterday"])
     dump_command(base, "sensors", ["sensors"])
+    dump_command(base, "uptime", ["uptime"])
     dump_path(base, "fstab", "/etc/fstab")
     dump_path(base, "apt/sources.list", "/etc/apt/sources.list")
     dump_path(base, "apt/sources.list.d", "/etc/apt/sources.list.d")
