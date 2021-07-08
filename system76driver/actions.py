@@ -275,6 +275,7 @@ class FileAction(Action):
 
     def __init__(self, rootdir='/'):
         self.filename = path.join(rootdir, *self.relpath)
+        self.parentdir = path.join(rootdir, *self.relpath[:-1])
 
     def read(self):
         try:
@@ -291,6 +292,8 @@ class FileAction(Action):
         return False
 
     def perform(self):
+        if not os.path.isdir(self.parentdir):
+            os.makedirs(self.parentdir)
         self.atomic_write(self.content, self.mode)
 
 
