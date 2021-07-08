@@ -300,12 +300,11 @@ class TestFileAction(TestCase):
         inst = Example(rootdir=tmp.dir)
 
         # Missing parentdir:
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.perform()
-        self.assertEqual(cm.exception.filename, inst.tmp)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
 
         # Missing file:
-        tmp.mkdir('some')
+        tmp.remove(inst.filename)
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
@@ -666,14 +665,11 @@ class Test_wifi_pm_disable(TestCase):
         inst = actions.wifi_pm_disable(rootdir=tmp.dir)
 
         # Missing directories
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.perform()
-        self.assertEqual(cm.exception.filename, inst.tmp)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
 
         # Missing file
-        tmp.mkdir('etc')
-        tmp.mkdir('etc', 'pm')
-        tmp.mkdir('etc', 'pm', 'power.d')
+        tmp.remove(inst.filename)
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
@@ -761,14 +757,11 @@ class Test_hdmi_hotplug_fix(TestCase):
         inst = actions.hdmi_hotplug_fix(rootdir=tmp.dir)
 
         # Missing directories
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.perform()
-        self.assertEqual(cm.exception.filename, inst.tmp)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
 
         # Missing file
-        tmp.mkdir('etc')
-        tmp.mkdir('etc', 'pm')
-        tmp.mkdir('etc', 'pm', 'power.d')
+        tmp.remove(inst.filename)
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
@@ -848,13 +841,10 @@ class Test_disable_pm_async(TestCase):
         inst = actions.disable_pm_async(rootdir=tmp.dir)
 
         # Missing directories
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.perform()
-        self.assertEqual(cm.exception.filename, inst.tmp)
+        self.assertIsNone(inst.perform())
 
         # Missing file
-        tmp.mkdir('etc')
-        tmp.mkdir('etc', 'tmpfiles.d')
+        tmp.remove(inst.filename)
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
@@ -1620,13 +1610,11 @@ class Test_uvcquirks(TestCase):
         inst = actions.uvcquirks(rootdir=tmp.dir)
 
         # Missing directories
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.perform()
-        self.assertEqual(cm.exception.filename, inst.tmp)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
 
         # Missing file
-        tmp.mkdir('etc')
-        tmp.mkdir('etc', 'modprobe.d')
+        tmp.remove(inst.filename)
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
@@ -1710,12 +1698,11 @@ class Test_internal_mic_gain(TestCase):
         inst = actions.internal_mic_gain(rootdir=tmp.dir)
 
         # Missing directories
-        with self.assertRaises(FileNotFoundError) as cm:
-            inst.perform()
-        self.assertEqual(cm.exception.filename, inst.tmp)
+        self.assertIsNone(inst.perform())
+        self._check_file(inst)
 
         # Missing file
-        tmp.makedirs('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths')
+        tmp.remove(inst.filename)
         self.assertIsNone(inst.perform())
         self._check_file(inst)
 
