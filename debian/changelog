@@ -1,3 +1,9 @@
+system76-driver (20.04.39~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.39
+
+ -- Tim Crawford <tcrawford@system76.com>  Tue, 13 Jul 2021 09:07:16 -0600
+
 system76-driver (20.04.38) focal; urgency=low
 
   * FileAction: Create parent directories if necessary
