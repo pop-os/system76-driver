@@ -308,6 +308,18 @@ PRODUCTS = {
             actions.i8042_nomux,
         ],
     },
+    'gaze16-3050': {
+        'name': 'Gazelle',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
+    'gaze16-3060': {
+        'name': 'Gazelle',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
     'gazu1': {
         'name': 'Gazelle Ultra',
         'drivers': [
