@@ -1,3 +1,9 @@
+system76-driver (20.04.40~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.40
+
+ -- leviport <levi@system76.com>  Wed, 14 Jul 2021 11:26:53 -0600
+
 system76-driver (20.04.39) focal; urgency=low
 
   * Add gaze16-3050, gaze16-3060
