@@ -138,6 +138,7 @@ class UsbAudio:
             self.name = "ALC1220VBDT"
         if self.model == "thelio-mira-b1":
             self.mic_dev = 3
+            self.line_in_dev = 2
         else:
             self.mic_dev = 1
         if self.model.startswith("thelio-major-r2"):
@@ -177,7 +178,16 @@ class UsbAudio:
             "module-alsa-source"
         ])
 
-        if self.model != "thelio-mira-b1": # do not try to fix s/pdif on mira-b1
+        if self.model == "thelio-mira-b1": # fix line-in
+            subprocess.check_output([
+                "pacmd",
+                "load-module",
+                "module-alsa-source",
+                "device=hw:CARD={},DEV={}".format(self.name, self.line_in_dev),
+                "source_properties=device.description='Line-in'"
+            ])
+
+        else: # do not try to fix s/pdif on mira-b1
             subprocess.check_output([
                 "pacmd",
                 "load-module",
