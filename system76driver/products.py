@@ -688,6 +688,10 @@ PRODUCTS = {
             actions.pang10_nvme_fix,
         ],
     },
+    'pang11': {
+        'name': 'Pangolin',
+        'drivers': [],
+    },
     #'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
     'panv2': {
         'name': 'Pangolin Value',
