@@ -690,7 +690,9 @@ PRODUCTS = {
     },
     'pang11': {
         'name': 'Pangolin',
-        'drivers': [],
+        'drivers': [
+            actions.i8042_nomux,
+        ],
     },
     #'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
     'panv2': {
