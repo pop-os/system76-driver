@@ -1,3 +1,10 @@
+system76-driver (20.04.41~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.41
+  * Add pang11
+
+ -- Tim Crawford <tcrawford@system76.com>  Fri, 06 Aug 2021 07:15:19 -0600
+
 system76-driver (20.04.40) focal; urgency=low
 
   * Fix line-in on mira-b1
