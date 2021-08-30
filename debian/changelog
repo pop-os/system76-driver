@@ -1,9 +1,8 @@
-system76-driver (20.04.41~~alpha) focal; urgency=low
+system76-driver (20.04.41) focal; urgency=low
 
-  * Daily WIP for 20.04.41
   * Add pang11
 
- -- Tim Crawford <tcrawford@system76.com>  Fri, 06 Aug 2021 07:15:19 -0600
+ -- leviport <levi@system76.com>  Mon, 30 Aug 2021 10:58:01 -0600
 
 system76-driver (20.04.40) focal; urgency=low
 
