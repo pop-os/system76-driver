@@ -453,7 +453,9 @@ PRODUCTS = {
     },
     'lemp9': {
         'name': 'Lemur Pro',
-        'drivers': [],
+        'drivers': [
+            actions.intel_idle_max_cstate_4
+        ],
     },
     'lemp10': {
         'name': 'Lemur Pro',

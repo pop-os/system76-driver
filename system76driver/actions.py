@@ -1558,20 +1558,30 @@ class displayport1_force_enable_audio(FileAction):
 class meer5_audio_hdajackretask(FileAction):
     def describe(self):
         return _('Fix pins for meer5 HDMI/DP audio output.')
-    
+
     def __init__(self):
         self.modprobefile = '/etc/modprobe.d/system76-meer5-audio.conf'
         self.patchfile = '/lib/firmware/system76-meer5-audio.fw'
-    
+
     def get_isneeded(self):
         if not (os.path.exists(self.modprobefile) and os.path.exists(self.patchfile)):
             return True
         else:
             return False
-    
+
     def perform(self):
         modprobecontent = 'options snd-hda-intel patch=system76-meer5-audio.fw'
         atomic_write(self.modprobefile, modprobecontent)
         patchcontent = '[codec]\n0x8086280b 0x80860101 2\n\n'
         patchcontent += '[pincfg]\n0x05 0x18560070\n0x06 0x18560070\n0x07 0x18560070\n'
         atomic_write(self.patchfile, patchcontent)
+
+class intel_idle_max_cstate_4(GrubAction):
+    """
+    Add `intel_idle.max_cstate=4` to Linux command line.
+    """
+
+    add = ('intel_idle.max_cstate=4',)
+
+    def describe(self):
+        return _('Fix for freezes on some CML-U processors')
