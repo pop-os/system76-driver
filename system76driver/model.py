@@ -152,6 +152,7 @@ TABLES = {
         'gaze15': 'gaze15',
         'gaze16-3050': 'gaze16-3050',
         'gaze16-3060': 'gaze16-3060',
+        'gaze16-3060-b': 'gaze16-3060-b',
         'daru3': 'daru3',
         'daru4': 'daru4',
         'kudp1': 'kudp1',
