@@ -320,6 +320,12 @@ PRODUCTS = {
             actions.blacklist_nvidia_i2c,
         ],
     },
+    'gaze16-3060-b': {
+        'name': 'Gazelle',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
     'gazu1': {
         'name': 'Gazelle Ultra',
         'drivers': [
