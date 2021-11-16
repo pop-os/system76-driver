@@ -40,7 +40,8 @@ Depends: ${python3:Depends}, ${misc:Depends},
     system76-io-dkms,
     system76-oled,
     system76-power,
-    xbacklight
+    xbacklight,
+    usbutils,
 Recommends: hidpi-daemon,
             lm-sensors,
             system76-wallpapers
