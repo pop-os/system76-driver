@@ -1,6 +1,7 @@
 system76-driver (20.04.45~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.45
+  * Set microphone device for thelio-major-r2.2
 
  -- Jeremy Soller <jeremy@system76.com>  Tue, 16 Nov 2021 14:41:49 -0700
 

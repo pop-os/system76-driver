@@ -139,6 +139,10 @@ class UsbAudio:
         if self.model == "thelio-mira-b1":
             self.mic_dev = 3
             self.line_in_dev = 2
+        elif subprocess.call(["lsusb", "-d", "0414:a00d"]) == 0:
+            # thelio-major-r2 revision 1.2 has a different USB audio codec
+            self.name = "Audio"
+            self.mic_dev = 2
         else:
             self.mic_dev = 1
         if self.model.startswith("thelio-major-r2"):
