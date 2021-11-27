@@ -74,4 +74,3 @@ try:
 except Exception:
     log.exception('Error running actions:')
     sys.exit(exitcode)
-

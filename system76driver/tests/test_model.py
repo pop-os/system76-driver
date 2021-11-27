@@ -121,7 +121,7 @@ class TestConstants(TestCase):
             'serp5': set([
                 ('system-product-name', 'M860TU'),
                 ('system-version', 'serp5'),
-            ]), 
+            ]),
         }
         self.assertEqual(set(multi), set(expected))
         for key in sorted(multi):
@@ -249,4 +249,3 @@ class TestFunctions(TestCase):
             ('check_output', ['dmidecode', '-s', 'system-version'], {}),
         ])
         self.assertEqual(SubProcess.outputs, [])
-

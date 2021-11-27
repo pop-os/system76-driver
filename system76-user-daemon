@@ -31,11 +31,9 @@ import sys
 import logging
 
 from gi.repository import GLib
-from gi.repository import GObject
 
 import system76driver
 from system76driver import daemon, userdaemon
-from system76driver.daemon import load_json_conf
 
 
 logging.basicConfig(

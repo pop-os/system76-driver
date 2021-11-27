@@ -30,10 +30,12 @@ import subprocess
 
 from .model import determine_model
 
+
 def dump_command(base, name, args):
     fp = open(path.join(base, name), 'xt')
     output = subprocess.run(" ".join(args), capture_output=True, shell=True, text=True)
     fp.write(output.stdout + "\n" + output.stderr)
+
 
 def dump_path(base, name, src):
     if path.exists(src):
@@ -46,6 +48,7 @@ def dump_path(base, name, src):
             shutil.copytree(src, dst)
         else:
             shutil.copy(src, dst)
+
 
 def dump_logs(base):
     fp = open(path.join(base, 'systeminfo.txt'), 'x')
@@ -72,6 +75,7 @@ def dump_logs(base):
     dump_path(base, "apt/term", "/var/log/apt/term.log")
     dump_path(base, "apt/term-rotated", "/var/log/apt/term.log.1.gz")
 
+
 def create_tmp_logs(func=dump_logs):
     tmp = tempfile.mkdtemp(prefix='logs.')
     base = path.join(tmp, 'system76-logs')
@@ -87,6 +91,7 @@ def create_tmp_logs(func=dump_logs):
     ]
     subprocess.run(cmd)
     return (tmp, tgz)
+
 
 def create_logs(homedir, func=dump_logs):
     (tmp, src) = create_tmp_logs(func)

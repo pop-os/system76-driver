@@ -65,4 +65,3 @@ log.info('model: %r', args.model)
 
 ui = UI(args.model, product, args)
 ui.run()
-

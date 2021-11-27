@@ -70,7 +70,7 @@ PRODUCTS = {
     'bonx7': {
         'name': 'Bonobo Extreme',
         'drivers': [
-            #actions.plymouth1080,  # Causes problems with nvidia-313-updates
+            # actions.plymouth1080,  # Causes problems with nvidia-313-updates
             actions.wifi_pm_disable,
         ],
     },
@@ -709,7 +709,7 @@ PRODUCTS = {
             actions.i8042_nomux,
         ],
     },
-    #'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
+    # 'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
     'panv2': {
         'name': 'Pangolin Value',
         'drivers': [],
@@ -945,7 +945,7 @@ PRODUCTS = {
         'drivers': [],
     },
 
-    #Thelio:
+    # Thelio:
     'thelio-b1': {
         'name': 'Thelio',
         'drivers': [],

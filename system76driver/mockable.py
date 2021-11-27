@@ -57,4 +57,3 @@ class SubProcess:
             return cls.outputs.pop(0)
         else:
             return subprocess.check_output(cmd, **kw)
-

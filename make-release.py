@@ -45,7 +45,7 @@ assert os.getcwd() == TREE
 CHANGELOG = path.join(TREE, 'debian', 'changelog')
 SETUP = path.join(TREE, 'setup.py')
 INIT = path.join(TREE, 'system76driver', '__init__.py')
-DSC_NAME =     'system76-driver_{}.dsc'.format(__version__)
+DSC_NAME = 'system76-driver_{}.dsc'.format(__version__)
 
 assert path.isfile(CHANGELOG)
 assert path.isfile(SETUP)
@@ -173,6 +173,7 @@ check_call(['dpkg-source', '-b', TREE], cwd=tmp.join('result'))
 check_call(['pbuilder-dist', distro, 'build', tmp.join('result', DSC_NAME)])
 del tmp
 
+
 def abort(msg=None):
     if msg is not None:
         print('\nERROR: ' + msg)
@@ -182,6 +183,7 @@ def abort(msg=None):
     print('Goodbye.')
     status = (0 if msg is None else 2)
     sys.exit(status)
+
 
 # Confirm before we make the commit:
 print('-' * 80)

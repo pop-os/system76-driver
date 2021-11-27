@@ -62,4 +62,3 @@ class TempDir:
 
     def remove(self, *parts):
         os.remove(self.join(*parts))
-

@@ -208,6 +208,7 @@ class NeededAction(actions.Action):
     def get_isneeded(self):
         return True
 
+
 class UnneededAction(actions.Action):
     def get_isneeded(self):
         return False
@@ -1648,7 +1649,14 @@ class Test_internal_mic_gain(TestCase):
         tmp = TempDir()
         inst = actions.internal_mic_gain(rootdir=tmp.dir)
         self.assertEqual(inst.filename,
-            tmp.join('usr', 'share', 'pulseaudio', 'alsa-mixer', 'paths', 'analog-input-internal-mic.conf')
+            tmp.join(
+                'usr',
+                'share',
+                'pulseaudio',
+                'alsa-mixer',
+                'paths',
+                'analog-input-internal-mic.conf'
+            )
         )
 
     def test_read(self):
@@ -1732,6 +1740,7 @@ PATCH_CONTENT = """[codec]
 [verb]
 0x1b 0x707 0x0004
 """
+
 
 class Test_dac_fixup(TestCase):
     def setUp(self):

@@ -162,8 +162,8 @@ class TestFunctions(TestCase):
         self.assertEqual(fp.read(), data2)
 
     def test_bit6_is_set(self):
-        self.assertTrue( daemon.bit6_is_set(0b01000000))
-        self.assertTrue( daemon.bit6_is_set(0b11111111))
+        self.assertTrue(daemon.bit6_is_set(0b01000000))
+        self.assertTrue(daemon.bit6_is_set(0b11111111))
         self.assertFalse(daemon.bit6_is_set(0b10111111))
         self.assertFalse(daemon.bit6_is_set(0b00000000))
 
@@ -339,7 +339,7 @@ class TestBrightness(TestCase):
 
         # Existing file:
         self.assertIsNone(inst.write_brightness(76))
-        self.assertEqual(open(inst.brightness_file, 'r').read(), '76')        
+        self.assertEqual(open(inst.brightness_file, 'r').read(), '76')
         self.assertEqual(inst.read_brightness(), 76)
 
     def test_load(self):
@@ -494,4 +494,3 @@ class TestBrightness(TestCase):
         self.assertIsNone(inst.restore())
         self.assertEqual(inst.current, 790)
         self.assertEqual(open(inst.brightness_file, 'rb').read(), b'790')
-

@@ -31,7 +31,6 @@ import time
 from subprocess import check_call, check_output, call
 
 from system76driver import __version__
-from system76driver.tests.helpers import TempDir
 
 
 DISTROS = ('trusty', 'xenial', 'yakkety', 'zesty', 'artful', 'bionic', 'cosmic', 'disco', 'eoan', 'focal')

@@ -52,4 +52,3 @@ class TestFunctions(TestCase):
         tgz = util.create_logs(tmp.dir, func=None)
         self.assertEqual(tgz, tmp.join('system76-logs.tgz'))
         self.assertTrue(path.isfile(tgz))
-

@@ -164,6 +164,7 @@ NEEDS_POWER_LIMIT = (
     'oryp4',
 )
 
+
 def load_json_conf(filename):
     try:
         fp = open(filename, 'r')
@@ -184,7 +185,7 @@ def save_json_conf(filename, obj):
     assert isinstance(obj, dict)
     tmp = filename + '.tmp'
     fp = open(tmp, 'w')
-    json.dump(obj, fp, sort_keys=True, separators=(',',': '), indent=4)
+    json.dump(obj, fp, sort_keys=True, separators=(',', ': '), indent=4)
     fp.flush()
     os.fsync(fp.fileno())
     os.rename(tmp, filename)
@@ -388,7 +389,7 @@ class Brightness:
             ]
             try:
                 subprocess.check_output(xbrightness_cmd)
-            except:
+            except subprocess.CalledProcessError:
                 time.sleep(1)
 
     def restore(self):
@@ -466,10 +467,9 @@ class FirmwareACPIInterrupt:
         )
         self.acpi_interrupt_file = path.join(self.acpi_interrupt_dir, interrupt)
 
-
     def run(self):
         with open(self.acpi_interrupt_file, 'w') as f:
-            print('disable', file = f)
+            print('disable', file=f)
 
 
 def _run_firmware_acpi_interrupt(model, interrupt):
@@ -491,6 +491,7 @@ def run_firmware_acpi_interrupt(model):
             log.exception('Error calling _run_firmware_acpi_interrupt for %r', model)
     return ret
 
+
 def hda_verb(device, nid, verb, param):
     ret = False
     try:
@@ -505,6 +506,7 @@ def hda_verb(device, nid, verb, param):
     except Exception as err:
         print("%r calling open in hda_verb(%r, %r, %r, %r)", err, device, nid, verb, param)
     return ret
+
 
 class EssDacAutoswitch:
     def set_card_profile(self, card, profile):
@@ -562,6 +564,7 @@ class EssDacAutoswitch:
                         if not hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
                             log.info("Failed to set headphone vref on plugin")
 
+
 def ess_dac_autoswitch_sleep(sleeping):
     if sleeping:
         log.info("Sleeping")
@@ -570,12 +573,14 @@ def ess_dac_autoswitch_sleep(sleeping):
         if not hda_verb("/dev/snd/hwC0D0", 0x1b, 0x707, 4):
             log.info("Failed to set headphone vref on resume")
 
+
 def thread_ess_dac_autoswitch(model):
     try:
         eda = EssDacAutoswitch()
         eda.run()
     except Exception:
         log.exception('Error running EssDacAutoswitch for %r', model)
+
 
 def _run_ess_dac_autoswitch(model):
     if model not in NEEDS_ESS_DAC_AUTOSWITCH:
@@ -594,11 +599,13 @@ def _run_ess_dac_autoswitch(model):
     )
     return _thread.start_new_thread(thread_ess_dac_autoswitch, (model,))
 
+
 def run_ess_dac_autoswitch(model):
     try:
         return _run_ess_dac_autoswitch(model)
     except Exception:
         log.exception('Error calling _run_ess_dac_autoswitch(%r):', model)
+
 
 class HeadphoneVolumeAdjust:
     def set_headphone_volume(self, card, volume):
@@ -633,12 +640,14 @@ class HeadphoneVolumeAdjust:
                         if not self.set_headphone_volume("0", "100%"):
                             log.info("Failed to set card profile to digital")
 
+
 def thread_headphone_volume_adjust(model):
     try:
         hva = HeadphoneVolumeAdjust()
         hva.run()
     except Exception:
         log.exception('Error running HeadphoneVolumeAdjust for %r', model)
+
 
 def _run_headphone_volume_adjust(model):
     if model not in NEEDS_HEADPHONE_VOLUME_ADJUST:
@@ -647,17 +656,18 @@ def _run_headphone_volume_adjust(model):
     log.info('Headphone volume adjustment for %r', model)
     return _thread.start_new_thread(thread_headphone_volume_adjust, (model,))
 
+
 def run_headphone_volume_adjust(model):
     try:
         return _run_headphone_volume_adjust(model)
     except Exception:
         log.exception('Error calling _run_headphone_volume_adjust(%r):', model)
 
+
 class DpcdPwm:
     def __init__(self, model, rootdir='/'):
         self.model = model
         self.drm_dp_aux_file = path.join(rootdir, 'dev', 'drm_dp_aux0')
-
 
     def run(self):
         with open(self.drm_dp_aux_file, 'wb+') as f:
@@ -671,8 +681,10 @@ class DpcdPwm:
             set = f.read(1) == bytes([0])
         return set
 
-def hash_list(list = [], *args):
-    return functools.reduce(lambda acc, item : hash((acc, item)), list, 0)
+
+def hash_list(list=[], *args):
+    return functools.reduce(lambda acc, item: hash((acc, item)), list, 0)
+
 
 def apply_dpcd_pwm_fix(model):
     dpcd_pwm = DpcdPwm(model)
@@ -690,9 +702,10 @@ def apply_dpcd_pwm_fix(model):
     # it if it happens.
     while True:
         time.sleep(2)
-        if (dpcd_pwm.is_set () == False):
+        if not dpcd_pwm.is_set():
             log.info('Switching DPCD backlight to PWM %r', model)
             dpcd_pwm.run()
+
 
 def run_dpcd_pwm(model):
     try:
@@ -702,6 +715,7 @@ def run_dpcd_pwm(model):
         threading.Thread(target=apply_dpcd_pwm_fix(model), daemon=True).start()
     except Exception:
         log.exception('Error calling run_dpcd_pwm for %r', model)
+
 
 class LimitPowerDraw:
     def __init__(self, model, rootdir='/'):
@@ -752,6 +766,7 @@ def _run_limit_power_draw(model):
     tdp = LimitPowerDraw(model)
     tdp.run()
     return tdp
+
 
 def run_limit_power_draw(model):
     try:

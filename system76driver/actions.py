@@ -30,6 +30,8 @@ import json
 from base64 import b32encode
 import datetime
 import logging
+from contextlib import suppress
+from subprocess import CalledProcessError
 
 from . import get_datafile
 from .mockable import SubProcess
@@ -111,7 +113,7 @@ def parse_lspci(text):
     Parse output of `lspci -vmnn`.
     """
     pci = {}
-    bdf =  None  # BDF: bus/device/function
+    bdf = None  # BDF: bus/device/function
     for line in text.splitlines():
         if line == '':
             bdf = None
@@ -607,6 +609,7 @@ class i8042_reset_nomux(GrubAction):
     def describe(self):
         return _('Enable Touchpad')
 
+
 class pang10_nvme_fix(GrubAction):
     """
     Add nvme_core.default_ps_max_latency_us=10000 to GRUB_CMDLINE_LINUX_DEFAULT
@@ -618,6 +621,7 @@ class pang10_nvme_fix(GrubAction):
 
     def describe(self):
         return _('Change WD Blue drive pstate latency, fixing crashes on pang10')
+
 
 class integrated_11th_gen_intel_fix(GrubAction):
     """
@@ -631,6 +635,7 @@ class integrated_11th_gen_intel_fix(GrubAction):
 
     def describe(self):
         return _('Force i915 driver to load on 11th gen Intel integrated graphics')
+
 
 class gfxpayload_text(Action):
     update_grub = True
@@ -837,6 +842,7 @@ class headset_meer3_fixup(Action):
     def describe(self):
         return _('Enable headset microphone')
 
+
 HEADSET_DARP_PATCH = """[codec]
 0x{vendor_id:08x} 0x{subsystem_id:08x} 0
 
@@ -845,6 +851,7 @@ HEADSET_DARP_PATCH = """[codec]
 """
 
 HEADSET_DARP_MODPROBE = 'options snd-hda-intel model=headset-mode-no-hp-mic patch=system76-audio-patch\n'
+
 
 class headset_darp_fixup(Action):
     relpath1 = ('lib', 'firmware', 'system76-audio-patch')
@@ -883,12 +890,14 @@ class headset_darp_fixup(Action):
     def describe(self):
         return _('Enable headset microphone')
 
+
 class headset_meer5_fixup(FileAction):
     relpath = ('etc', 'modprobe.d', 'system76-alsa-base.conf')
     content = 'options snd-hda-intel model=alc256-asus-mic\n'
 
     def describe(self):
         return _('Enable headset microphone')
+
 
 SWITCH_INTERNAL_SPEAKERS_RULE = """SUBSYSTEM!="sound", GOTO="system76_pulseaudio_end"
 ACTION!="change", GOTO="system76_pulseaudio_end"
@@ -951,11 +960,9 @@ class remove_switch_internal_speakers(Action):
         return os.path.exists(self.filename1) or os.path.exists(self.filename2)
 
     def perform(self):
-        try:
+        with suppress(Exception):
             os.remove(self.filename2)
             os.remove(self.filename1)
-        except:
-            pass
 
     def describe(self):
         return _('Remove configuration to switch left/right speaker channels.')
@@ -988,6 +995,7 @@ ENERGYSTAR_GSETTINGS_OVERRIDE = """[org.gnome.settings-daemon.plugins.power]
 sleep-inactive-ac-type='suspend'
 sleep-inactive-ac-timeout=1800
 """
+
 
 class energystar_gsettings_override(FileAction):
     relpath = ('usr', 'share', 'glib-2.0', 'schemas',
@@ -1036,6 +1044,7 @@ SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/lib/system76-driver/sys
 # ON BATTERY
 SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/lib/system76-driver/system76-wakeonlan d"
 """
+
 
 class energystar_wakeonlan(FileAction):
     relpath1 = ('usr', 'lib', 'system76-driver',
@@ -1183,6 +1192,7 @@ else
   adjust_tdp
 fi"""
 
+
 class limit_tdp(FileAction):
     relpath_udev_rule = ('etc', 'udev', 'rules.d',
         '89-system76-driver-limit-tdp.rules')
@@ -1250,6 +1260,7 @@ VIDEOMODE=
 # The following is an example how to use a braille font
 # FONT='lat9w-08.psf.gz brl-8x8.psf'"""
 
+
 class hidpi_scaling(FileAction):
     relpath = ('usr', 'share', 'glib-2.0', 'schemas',
         '90_system76-driver-hidpi.gschema.override')
@@ -1267,7 +1278,7 @@ class hidpi_scaling(FileAction):
         try:
             xrandr_output = SubProcess.check_output(cmd)
             xrandr_string = xrandr_output.decode("utf-8")
-        except:
+        except CalledProcessError:
             log.info('failed to call xrandr: Please run system76-driver-cli while X is running')
             return False
 
@@ -1334,9 +1345,9 @@ class hidpi_scaling(FileAction):
             self.console_setup_mode
         )
 
-
     def describe(self):
         return _('Set default HiDPI scaling factor.')
+
 
 class hda_probe_mask(GrubAction):
     """
@@ -1348,6 +1359,7 @@ class hda_probe_mask(GrubAction):
     def describe(self):
         return _('Fixes for probing Intel HDA device')
 
+
 class hda_disable_power_save(GrubAction):
     """
     Add `snd_hda_intel.power_save=0` to Linux command line.
@@ -1358,12 +1370,14 @@ class hda_disable_power_save(GrubAction):
     def describe(self):
         return _('Disable buggy Intel HDA power saving')
 
+
 class blacklist_nvidia_i2c(FileAction):
     relpath = ('etc', 'modprobe.d', 'system76-driver_i2c-nvidia-gpu.conf')
     content = 'blacklist i2c_nvidia_gpu'
 
     def describe(self):
         return _('Workaround for delay when loading NVIDIA i2c kernel module')
+
 
 class usb_audio_ignore_ctl_error(GrubAction):
     """
@@ -1374,6 +1388,7 @@ class usb_audio_ignore_ctl_error(GrubAction):
 
     def describe(self):
         return _('Fixes for probing USB audio device')
+
 
 # Moved to userdaemon
 class remove_usb_audio_load_microphone(Action):
@@ -1400,6 +1415,7 @@ class remove_usb_audio_load_microphone(Action):
     def perform(self):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
+
 
 # Moved to userdaemon
 class remove_usb_audio_load_spdif(Action):
@@ -1431,12 +1447,14 @@ class remove_usb_audio_load_spdif(Action):
         content = '\n'.join(self.iter_lines())
         self.atomic_write(content)
 
+
 class firefox_framerate144(FileAction):
     relpath = ('usr', 'lib', 'firefox', 'defaults', 'pref', 's76-framerate.js')
     content = 'pref("layout.frame_rate", 144);\n'
 
     def describe(self):
         return _('Set Firefox framerate to 144fps (for 144Hz display)')
+
 
 class firefox_unsetwebrender(FileAction):
     relpath = ('usr', 'lib', 'firefox', 'defaults', 'pref', 's76-webrender.js')
@@ -1451,10 +1469,9 @@ class firefox_unsetwebrender(FileAction):
         return os.path.exists(self.filename)
 
     def perform(self):
-        try:
+        with suppress(Exception):
             os.remove(self.filename)
-        except:
-            pass
+
 
 class nvidia_forcefullcompositionpipeline(FileAction):
     def describe(self):
@@ -1472,17 +1489,15 @@ class nvidia_forcefullcompositionpipeline(FileAction):
             return True
         elif not os.path.exists(self.filename):
             return True
-        elif not "ForceFullCompositionPipeline" in self.read():
+        elif "ForceFullCompositionPipeline" not in self.read():
             return True
         else:
             return False
 
     def perform(self):
         if os.path.exists(self.oldfilename):
-            try:
+            with suppress(Exception):
                 os.remove(self.oldfilename)
-            except:
-                pass
         if os.path.exists(self.filename):
             if "ForceFullCompositionPipeline" in self.read():
                 return
@@ -1504,6 +1519,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         content += 'nvidia-settings --assign CurrentMetaMode="$newmode"\n'
         self.atomic_write(content)
 
+
 class remove_nvidia_dynamic_power_one(FileAction):
     relpath = ('etc', 'modprobe.d', 'zzz-s76-nvidia-dynpwr.conf')
 
@@ -1511,13 +1527,12 @@ class remove_nvidia_dynamic_power_one(FileAction):
         return os.path.exists(self.filename)
 
     def perform(self):
-        try:
+        with suppress(Exception):
             os.remove(self.filename)
-        except:
-            pass
 
     def describe(self):
         return _('Remove NVIDIA dynamic power override')
+
 
 class i915_initramfs(FileAction):
     update_initramfs = True
@@ -1526,6 +1541,7 @@ class i915_initramfs(FileAction):
 
     def describe(self):
         return _('Add i915 driver to initramfs')
+
 
 class displayport1_force_enable_audio(FileAction):
     def describe(self):
@@ -1540,7 +1556,7 @@ class displayport1_force_enable_audio(FileAction):
     def get_isneeded(self):
         if not os.path.exists(self.filename):
             return True
-        elif not "xrandr --output DP-1 --set audio on" in self.read():
+        elif "xrandr --output DP-1 --set audio on" not in self.read():
             return True
         else:
             return False
@@ -1554,6 +1570,7 @@ class displayport1_force_enable_audio(FileAction):
         content += '# Force enable audio output from DP-1 (physical HDMI 1 port.)\n'
         content += 'xrandr --output DP-1 --set audio on\n'
         self.atomic_write(content)
+
 
 class meer5_audio_hdajackretask(FileAction):
     def describe(self):
@@ -1575,6 +1592,7 @@ class meer5_audio_hdajackretask(FileAction):
         patchcontent = '[codec]\n0x8086280b 0x80860101 2\n\n'
         patchcontent += '[pincfg]\n0x05 0x18560070\n0x06 0x18560070\n0x07 0x18560070\n'
         atomic_write(self.patchfile, patchcontent)
+
 
 class intel_idle_max_cstate_4(GrubAction):
     """

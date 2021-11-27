@@ -96,4 +96,3 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if not run_tests(args.skip_gtk):
         raise SystemExit('2')
-

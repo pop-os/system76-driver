@@ -43,7 +43,7 @@ class TestConstants(TestCase):
         self.assertGreaterEqual(int(year), 13)
         self.assertIn(month, ['04', '10'])
         self.assertEqual(rev, str(int(rev)))
-        self.assertGreaterEqual(int(rev), 0) 
+        self.assertGreaterEqual(int(rev), 0)
 
     def test_VALID_SYS_VENDOR(self):
         self.assertIsInstance(system76driver.VALID_SYS_VENDOR, tuple)
@@ -250,4 +250,3 @@ class TestFunctions(TestCase):
         self.assertIsInstance(value, (type(None), str))
         if isinstance(value, str):
             self.assertEqual(value.strip(), value)
-

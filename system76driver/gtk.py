@@ -111,7 +111,7 @@ class UI:
     def set_sensitive(self, sensitive):
         for (key, button) in self.buttons.items():
             button.set_sensitive(sensitive and self.enabled[key])
- 
+
     def set_notify(self, icon, text):
         self.notify_text.show()
         self.notify_icon.show()

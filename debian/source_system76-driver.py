@@ -11,8 +11,8 @@ LOGS = (
     ('DaemonLog', '/var/log/upstart/system76-driver.log'),
 )
 
+
 def add_info(report):
     report['CrashDB'] = "{'impl': 'launchpad', 'project': 'system76-driver'}"
     for (key, filename) in LOGS:
         attach_file_if_exists(report, filename, key)
-

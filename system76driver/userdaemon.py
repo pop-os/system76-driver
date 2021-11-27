@@ -58,6 +58,7 @@ NEEDS_USB_AUDIO = (
     'thelio-mira-b1',
 )
 
+
 class Backlight:
     def __init__(self, model, name, rootdir='/'):
         assert name in ('acpi_video0')
@@ -90,7 +91,7 @@ class Backlight:
             ]
             try:
                 subprocess.check_output(xbrightness_cmd)
-            except:
+            except subprocess.CalledProcessError:
                 time.sleep(1)
 
     def run(self):
@@ -113,6 +114,7 @@ class Backlight:
                 self.set_xbacklight(brightness)
         return True
 
+
 def _run_backlight(model):
     if model not in NEEDS_BACKLIGHT:
         log.info('Backlight hack not needed for %r', model)
@@ -123,11 +125,13 @@ def _run_backlight(model):
     backlight.run()
     return backlight
 
+
 def run_backlight(model):
     try:
         return _run_backlight(model)
     except Exception:
         log.exception('Error calling _run_brightness(%r):', model)
+
 
 class UsbAudio:
     def __init__(self, model, rootdir='/'):
@@ -169,7 +173,7 @@ class UsbAudio:
 
         log.info('USB audio fixup for %r found %r', self.model, self.dir)
 
-        if self.model != "thelio-mira-b1": # do not try to fix s/pdif on mira-b1
+        if self.model != "thelio-mira-b1":  # do not try to fix s/pdif on mira-b1
             subprocess.check_output([
                 "pacmd",
                 "unload-module",
@@ -182,7 +186,7 @@ class UsbAudio:
             "module-alsa-source"
         ])
 
-        if self.model == "thelio-mira-b1": # fix line-in
+        if self.model == "thelio-mira-b1":  # fix line-in
             subprocess.check_output([
                 "pacmd",
                 "load-module",
@@ -191,7 +195,7 @@ class UsbAudio:
                 "source_properties=device.description='Line-in'"
             ])
 
-        else: # do not try to fix s/pdif on mira-b1
+        else:  # do not try to fix s/pdif on mira-b1
             subprocess.check_output([
                 "pacmd",
                 "load-module",
@@ -210,6 +214,7 @@ class UsbAudio:
 
         return False
 
+
 def _run_usb_audio(model):
     if model not in NEEDS_USB_AUDIO:
         log.info('USB audio fixup not needed for %r', model)
@@ -218,6 +223,7 @@ def _run_usb_audio(model):
     usb_audio = UsbAudio(model)
     usb_audio.run()
     return usb_audio
+
 
 def run_usb_audio(model):
     try:
