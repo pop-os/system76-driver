@@ -139,10 +139,13 @@ class UsbAudio:
         if self.model == "thelio-mira-b1":
             self.mic_dev = 3
             self.line_in_dev = 2
+            self.needs_line_in_fix = True
         elif subprocess.call(["lsusb", "-d", "0414:a00d"]) == 0:
             # thelio-major-r2 revision 1.2 has a different USB audio codec
             self.name = "Audio"
             self.mic_dev = 2
+            self.line_in_dev = 1
+            self.needs_line_in_fix = True
         else:
             self.mic_dev = 1
         if self.model.startswith("thelio-major-r2"):
@@ -175,6 +178,13 @@ class UsbAudio:
                 "unload-module",
                 "module-alsa-sink"
             ])
+            subprocess.check_output([
+                "pacmd",
+                "load-module",
+                "module-alsa-sink",
+                "device=hw:CARD={},DEV={}".format(self.name, self.spdif_dev),
+                "sink_properties=device.description='S/PDIF'"
+            ])
 
         subprocess.check_output([
             "pacmd",
@@ -182,22 +192,13 @@ class UsbAudio:
             "module-alsa-source"
         ])
 
-        if self.model == "thelio-mira-b1": # fix line-in
+        if self.needs_line_in_fix:
             subprocess.check_output([
                 "pacmd",
                 "load-module",
                 "module-alsa-source",
                 "device=hw:CARD={},DEV={}".format(self.name, self.line_in_dev),
                 "source_properties=device.description='Line-in'"
-            ])
-
-        else: # do not try to fix s/pdif on mira-b1
-            subprocess.check_output([
-                "pacmd",
-                "load-module",
-                "module-alsa-sink",
-                "device=hw:CARD={},DEV={}".format(self.name, self.spdif_dev),
-                "sink_properties=device.description='S/PDIF'"
             ])
 
         subprocess.check_output([
