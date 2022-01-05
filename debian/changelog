@@ -1,3 +1,9 @@
+system76-driver (20.04.47~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.47
+
+ -- 13r0ck <bnr@tuta.io>  Wed, 05 Jan 2022 16:17:56 -0700
+
 system76-driver (20.04.46) focal; urgency=low
 
   * Fix line-in on major-r2.1 with rev1.2 motherboards
