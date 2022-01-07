@@ -31,14 +31,16 @@
 set -e
 
 restart_network() {
+    sudo systemctl restart NetworkManager
+    
+    sleep 2
+    
     ip -br link list | awk -F' ' '{if ($2 == "UP") {print $1}}' |
         while IFS="\n" read -r link
         do
             sudo ip link set $link down
             sudo ip link set $link up
         done
-
-    sudo systemctl restart NetworkManager
 }
 
 if [ "$2" = "suspend" ] || [ "$2" = "hybrid-sleep" ]; then
