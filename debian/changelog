@@ -1,6 +1,7 @@
 system76-driver (20.04.47~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.47
+  * Fix mic-in on major-r2.2
 
  -- 13r0ck <bnr@tuta.io>  Wed, 05 Jan 2022 16:17:56 -0700
 
