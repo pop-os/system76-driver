@@ -162,6 +162,7 @@ TABLES = {
         'kudu3': 'kudu3',
         'kudu4': 'kudu4',
         'kudu5': 'kudu5',
+        'kudu6': 'kudu6',
         'panp4n': 'panp4n',
         'panp5': 'panp5',
         'panp6': 'panp6',

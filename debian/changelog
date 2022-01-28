@@ -1,3 +1,10 @@
+system76-driver (20.04.48~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.48
+  * Add kudu6
+
+ -- Tim Crawford <tcrawford@system76.com>  Wed, 26 Jan 2022 10:30:29 -0700
+
 system76-driver (20.04.47) focal; urgency=low
 
   * Fix mic-in on major-r2.2
