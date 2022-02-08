@@ -401,13 +401,17 @@ PRODUCTS = {
         'name': 'Kudu',
         'drivers': [
             actions.internal_mic_gain,
-	],
+        ],
     },
     'kudu5': {
         'name': 'Kudu',
         'drivers': [
             actions.internal_mic_gain,
-	],
+        ],
+    },
+    'kudu6': {
+        'name': 'Kudu',
+        'drivers': [],
     },
 
     # Lemur:

@@ -1,8 +1,14 @@
-system76-driver (20.04.47~~alpha) focal; urgency=low
+system76-driver (20.04.48) focal; urgency=low
 
-  * Daily WIP for 20.04.47
+  * Add kudu6
 
- -- 13r0ck <bnr@tuta.io>  Wed, 05 Jan 2022 16:17:56 -0700
+ -- Jeremy Soller <jackpot51@gmail.com>  Tue, 01 Feb 2022 14:43:07 -0700
+
+system76-driver (20.04.47) focal; urgency=low
+
+  * Fix mic-in on major-r2.2
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 10 Jan 2022 08:51:08 -0700
 
 system76-driver (20.04.46) focal; urgency=low
 
