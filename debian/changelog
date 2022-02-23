@@ -1,6 +1,7 @@
 system76-driver (20.04.49~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.49
+  * Allow either nvidia-driver-510 or nvidia-driver-470 to be installed
 
  -- Jeremy Soller <jackpot51@gmail.com>  Wed, 23 Feb 2022 07:59:13 -0700
 
