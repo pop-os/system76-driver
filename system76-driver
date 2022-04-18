@@ -60,7 +60,7 @@ product = PRODUCTS.get(args.model)
 log.info('** Process start at monotonic time %r', time.monotonic())
 log.info('system76driver.__version__: %r', system76driver.__version__)
 log.info('OS: %r', distro.name())
-log.info('kernel: %r', distro.os.uname().release)
+log.info('kernel: %r', os.uname().release)
 log.info('model: %r', args.model)
 
 ui = UI(args.model, product, args)

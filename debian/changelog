@@ -1,6 +1,7 @@
 system76-driver (20.04.50~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.50
+  * Use uname function from os instead of distro
 
  -- Jeremy Soller <jackpot51@gmail.com>  Mon, 18 Apr 2022 09:22:28 -0600
 
