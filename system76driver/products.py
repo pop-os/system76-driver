@@ -958,6 +958,10 @@ PRODUCTS = {
         'name': 'Thelio',
         'drivers': [],
     },
+    'thelio-b3': {
+        'name': 'Thelio',
+        'drivers': [],
+    },
     'thelio-r1': {
         'name': 'Thelio',
         'drivers': [],

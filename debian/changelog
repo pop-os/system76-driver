@@ -1,3 +1,10 @@
+system76-driver (20.04.51~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.51
+  * Add thelio-b3
+
+ -- leviport <levi@system76.com>  Fri, 08 Apr 2022 17:02:13 -0600
+
 system76-driver (20.04.50) focal; urgency=low
 
   * Use uname function from os instead of distro
