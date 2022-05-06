@@ -1038,6 +1038,10 @@ PRODUCTS = {
             actions.integrated_11th_gen_intel_fix,
         ],
     },
+    'thelio-mira-b2': {
+        'name': 'Thelio Mira',
+        'drivers': [],
+    },
     'thelio-mira-r1': {
         'name': 'Thelio Mira',
         'drivers': [],
