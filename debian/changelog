@@ -1,8 +1,15 @@
-system76-driver (20.04.51~~alpha) focal; urgency=low
+system76-driver (20.04.52~~alpha) focal; urgency=low
 
-  * Daily WIP for 20.04.51
+  * Daily WIP for 20.04.52
+  * Add thelio-mira-b3
 
  -- leviport <levi@system76.com>  Tue, 26 Apr 2022 10:45:52 -0600
+
+system76-driver (20.04.51) focal; urgency=low
+
+  * Add thelio-b3
+
+ -- Jeremy Soller <jackpot51@gmail.com>  Fri, 06 May 2022 14:00:12 -0600
 
 system76-driver (20.04.50) focal; urgency=low
 
