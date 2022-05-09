@@ -2,6 +2,7 @@ system76-driver (20.04.52~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.52
   * Add thelio-mira-b2
+  * Add thelio-mira-b3
 
  -- leviport <levi@system76.com>  Fri, 06 May 2022 15:07:32 -0600
 
