@@ -1,9 +1,8 @@
-system76-driver (20.04.55~~alpha) focal; urgency=low
+system76-driver (20.04.55) focal; urgency=low
 
-  * Daily WIP for 20.04.55
   * Add thelio-mira-r2
 
- -- Jeremy Soller <jackpot51@gmail.com>  Mon, 23 May 2022 09:51:53 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Mon, 23 May 2022 09:53:00 -0600
 
 system76-driver (20.04.54) focal; urgency=low
 
