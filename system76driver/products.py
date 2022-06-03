@@ -162,6 +162,10 @@ PRODUCTS = {
         'name': 'Darter Pro',
         'drivers': [],
     },
+    'darp8': {
+        'name': 'Darter Pro',
+        'drivers': [],
+    },
 
     # Galago:
     'galu1': {
