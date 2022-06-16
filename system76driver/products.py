@@ -678,6 +678,13 @@ PRODUCTS = {
             actions.i915_initramfs,
         ],
     },
+    'oryp9': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+            actions.i915_initramfs,
+        ],
+    },
 
     # Pangolin:
     'panp4i': {
