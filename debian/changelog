@@ -1,6 +1,7 @@
 system76-driver (20.04.56~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.56
+  * Add lemp11
 
  -- Tim Crawford <tcrawford@system76.com>  Fri, 17 Jun 2022 07:47:00 -0600
 

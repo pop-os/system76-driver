@@ -483,6 +483,10 @@ PRODUCTS = {
         'name': 'Lemur Pro',
         'drivers': [],
     },
+    'lemp11': {
+        'name': 'Lemur Pro',
+        'drivers': [],
+    },
 
     # Leopard:
     'leo1': {
