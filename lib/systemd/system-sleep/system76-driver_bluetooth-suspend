@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+# Do not run if pop-default-settings patch is present
+if [ -x /lib/systemd/system-sleep/pop-default-settings_bluetooth-suspend ]
+then
+    exit 0
+fi
+
+#TODO: save rfkill state?
+case "$2" in
+    suspend | hybrid-sleep)
+        case "$1" in
+            pre)
+				rfkill block bluetooth
+                ;;
+            post)
+				rfkill unblock bluetooth
+                ;;
+        esac
+        ;;
+esac
