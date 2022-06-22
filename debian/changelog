@@ -1,9 +1,8 @@
-system76-driver (20.04.59~~alpha) focal; urgency=low
+system76-driver (20.04.59) focal; urgency=low
 
-  * Daily WIP for 20.04.59
   * Add lemp11 and oryp9
 
- -- Jeremy Soller <jackpot51@gmail.com>  Wed, 22 Jun 2022 10:07:32 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Wed, 22 Jun 2022 10:09:26 -0600
 
 system76-driver (20.04.58) focal; urgency=low
 
