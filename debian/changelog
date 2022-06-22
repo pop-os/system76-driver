@@ -1,9 +1,8 @@
-system76-driver (20.04.58~~alpha) focal; urgency=low
+system76-driver (20.04.58) focal; urgency=low
 
-  * Daily WIP for 20.04.58
   * Add darp8
 
- -- Jeremy Soller <jackpot51@gmail.com>  Wed, 22 Jun 2022 09:21:41 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Wed, 22 Jun 2022 09:22:30 -0600
 
 system76-driver (20.04.57) focal; urgency=low
 
