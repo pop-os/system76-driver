@@ -86,43 +86,7 @@ Carl Richell</property>
             <property name="halign">center</property>
             <property name="row_spacing">6</property>
             <property name="column_spacing">12</property>
-            <child>
-              <object class="GtkLabel" id="sysManufacturer">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">{Manufacturer name - you should not see this}</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="sysName">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">{model name - you should not see this}</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="sysModel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">{model number - you should not see this}</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">2</property>
-              </packing>
-            </child>
-            <child>
+             <child>
               <object class="GtkLabel" id="sysManufacturerLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -138,6 +102,18 @@ Carl Richell</property>
               </packing>
             </child>
             <child>
+              <object class="GtkLabel" id="sysManufacturer">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">{Manufacturer name - you should not see this}</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+             <child>
               <object class="GtkLabel" id="sysNameLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -153,6 +129,18 @@ Carl Richell</property>
               </packing>
             </child>
             <child>
+              <object class="GtkLabel" id="sysName">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">{model name - you should not see this}</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+             <child>
               <object class="GtkLabel" id="sysModelLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -169,33 +157,19 @@ Carl Richell</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label6">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
-                <property name="label" translatable="yes">Driver Version</property>
-                <property name="justify">right</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="driverVersion">
+              <object class="GtkLabel" id="sysModel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label">{driver version - you should not see this}</property>
+                <property name="label" translatable="yes">{model number - you should not see this}</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
-                <property name="top_attach">4</property>
+                <property name="top_attach">2</property>
               </packing>
             </child>
+
+            
             <child>
               <object class="GtkLabel" id="osVersionLabel">
                 <property name="visible">True</property>
@@ -224,6 +198,37 @@ Carl Richell</property>
                 <property name="top_attach">3</property>
               </packing>
             </child>
+           
+           
+            <child>
+              <object class="GtkLabel" id="label6">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">end</property>
+                <property name="label" translatable="yes">Driver Version</property>
+                <property name="justify">right</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="driverVersion">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label">{driver version - you should not see this}</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">4</property>
+              </packing>
+            </child>
+           
           </object>
           <packing>
             <property name="expand">True</property>
