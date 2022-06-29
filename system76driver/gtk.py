@@ -52,6 +52,7 @@ class UI:
         self.notify_icon = self.builder.get_object('notifyImage')
         self.notify_text = self.builder.get_object('notifyLabel')
         self.details = self.builder.get_object('detailsText')
+        self.builder.get_object('sysManufacturer').set_text("System76")
         self.builder.get_object('sysModel').set_text(model)
         self.builder.get_object('ubuntuVersion').set_text(
             '{} {} ({})'.format(*distro.linux_distribution())
