@@ -8,15 +8,26 @@ then
     exit 0
 fi
 
-#TODO: save rfkill state?
+BT_BLOCK_PATH=/run/bluetooth.blocked
+BT_STATES_PATH=/var/lib/systemd/rfkill/
+BT_TMP_PATH=/tmp/
+
 case "$2" in
     suspend | hybrid-sleep)
         case "$1" in
             pre)
-				rfkill block bluetooth
+                if rfkill -o ID,TYPE,SOFT | grep -q -E 'bluetooth\s+unblocked'; then
+                    cp "$BT_STATES_PATH"*bluetooth "$BT_TMP_PATH"
+                    rfkill block bluetooth
+                else
+                    > "$BT_BLOCK_PATH"
+                fi
                 ;;
             post)
-				rfkill unblock bluetooth
+                cp -f "$BT_TMP_PATH"*bluetooth "$BT_STATES_PATH" 2> /dev/null
+                [ ! -f "$BT_BLOCK_PATH" ] && rfkill unblock bluetooth
+                rm -f "$BT_BLOCK_PATH" 2> /dev/null
+                rm -f "$BT_TMP_PATH"*bluetooth 2> /dev/null
                 ;;
         esac
         ;;
