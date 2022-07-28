@@ -1,6 +1,8 @@
 system76-driver (20.04.60~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.60
+  * Add galp6
+  * Fix Bluetooth suspend workaround
 
  -- Tim Crawford <tcrawford@system76.com>  Thu, 28 Jul 2022 08:54:13 -0600
 

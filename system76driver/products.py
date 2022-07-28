@@ -212,6 +212,10 @@ PRODUCTS = {
             actions.remove_nvidia_dynamic_power_one,
         ],
     },
+    'galp6': {
+        'name': 'Galago Pro',
+        'drivers': [],
+    },
 
     # Gazelle:
     'gazp1': {
