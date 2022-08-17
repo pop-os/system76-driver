@@ -23,6 +23,7 @@ Architecture: all
 Suggests: gnome-color-manager
 Depends: ${python3:Depends}, ${misc:Depends},
     at,
+    dbus-x11,
     firmware-manager-virtual,
     gir1.2-gtk-3.0,
     gir1.2-notify-0.7,

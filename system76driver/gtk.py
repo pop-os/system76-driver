@@ -30,7 +30,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk
 
 from . import __version__, get_datafile
-from .util import create_logs
+from .util import create_logs, reset_power
 from .actions import ActionRunner
 
 
@@ -65,16 +65,18 @@ class UI:
             'onRestoreClicked': self.onRestoreClicked,
             'onCreateClicked': self.onCreateClicked,
             'onAboutClicked': self.onAboutClicked,
+            'onPowerClicked': self.onPowerClicked,
         })
 
         self.buttons = dict(
             (key, self.builder.get_object(key))
-            for key in ['driverInstall', 'driverRestore', 'driverCreate']
+            for key in ['driverInstall', 'driverRestore', 'driverCreate', 'driverPower']
         )
         self.enabled = {
             'driverInstall': False,
             'driverRestore': False,
             'driverCreate': False,
+            'driverPower': True,
         }
         self.set_sensitive(False)
 
@@ -162,12 +164,24 @@ class UI:
         tgz = create_logs(self.args.home)
         GLib.idle_add(self.on_create_complete, tgz)
 
-    def on_create_complete(self, tgz):
+    def create_power_worker(self):
+        tgz = reset_power()
+        GLib.idle_add(self.on_power_complete, tgz)
+
+    def on_create_complete(self, tgx):
         self.thread.join()
         self.thread = None
         self.set_sensitive(True)
         self.set_notify('gtk-ok',
             _('A log file (system76-logs.tgz) was created in your home folder.\nPlease send it to support via www.system76.com/support')
+        )
+
+    def on_power_complete(self, tgz):
+        self.thread.join()
+        self.thread = None
+        self.set_sensitive(True)
+        self.set_notify('gtk-ok',
+            _('Auto-suspend enabled and set at 30 minutes. Screen blank also set to 5 minutes.')
         )
 
     def onCreateClicked(self, button):
@@ -176,6 +190,16 @@ class UI:
             self.set_notify('gtk-execute', _('Creating logs...'))
             self.thread = threading.Thread(
                 target=self.create_worker,
+                daemon=True,
+            )
+            self.thread.start()
+
+    def onPowerClicked(self, button):
+        if self.thread is None:
+            self.set_sensitive(False)
+            self.set_notify('gtk-execute', _('Resetting Screen Blank/Suspend settings...'))
+            self.thread = threading.Thread(
+                target=self.create_power_worker,
                 daemon=True,
             )
             self.thread.start()
