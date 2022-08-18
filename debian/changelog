@@ -1,7 +1,7 @@
 system76-driver (20.04.62~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.62
-  * Remove the Display off ans Suspend reset button.
+  * Remove the Display off and Suspend reset button.
 
  -- Brock Szuszczewicz <brock@szu.email>  Thu, 18 Aug 2022 12:40:43 -0600
 
