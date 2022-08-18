@@ -1,9 +1,8 @@
-system76-driver (20.04.61~~alpha) focal; urgency=low
+system76-driver (20.04.61) focal; urgency=low
 
-  * Daily WIP for 20.04.61
   * Add a Display off and Suspend reset button.
 
- -- 13r0ck <brock@szu.email>  Tue, 16 Aug 2022 20:05:32 -0600
+ -- leviport <levi@system76.com>  Thu, 18 Aug 2022 08:20:57 -0600
 
 system76-driver (20.04.60) focal; urgency=low
 
