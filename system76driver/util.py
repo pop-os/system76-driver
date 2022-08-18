@@ -103,19 +103,3 @@ def create_logs(homedir, func=dump_logs):
     shutil.copy(src, dst)
     shutil.rmtree(tmp)
     return dst
-
-def reset_power():
-    # Set suspend on ac and battery to 30 minutes via gnome-settings-daemon for all active users
-    output = subprocess.run("users", capture_output=True, shell=True, text=True)
-    for user in output.stdout.replace("\n","").split(" "):
-        as_user = ['sudo', '-Hu', user, 'dbus-launch']
-        gsettings = as_user + ['gsettings', 'set']
-        daemon = gsettings + ['org.gnome.settings-daemon.plugins.power']
-        session = gsettings + ['org.gnome.desktop.session']
-
-        subprocess.run(session + ['idle-delay', '300'])
-        subprocess.run(daemon + ['sleep-inactive-ac-type', 'suspend'])
-        subprocess.run(daemon + ['sleep-inactive-ac-timeout', '1800'])
-        subprocess.run(daemon + ['sleep-inactive-battery-type', 'suspend'])
-        subprocess.run(daemon + ['sleep-inactive-battery-timeout', '1800'])
-    return
