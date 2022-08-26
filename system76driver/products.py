@@ -1093,7 +1093,9 @@ PRODUCTS = {
     },
     'thelio-mira-b3': {
         'name': 'Thelio Mira',
-        'drivers': [],
+        'drivers': [
+            actions.nvidia_drm_initramfs,
+        ],
     },
     'thelio-mira-r1': {
         'name': 'Thelio Mira',
