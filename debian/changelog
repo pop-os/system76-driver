@@ -1,10 +1,9 @@
-system76-driver (20.04.63~~alpha) focal; urgency=low
+system76-driver (20.04.63) focal; urgency=low
 
-  * Daily WIP for 20.04.63
   * Add oryp10
   * Add thelio-b4
 
- -- Tim Crawford <tcrawford@system76.com>  Fri, 26 Aug 2022 11:43:04 -0600
+ -- Levi Portenier <levi@system76.com>  Tue, 30 Aug 2022 12:00:34 -0600
 
 system76-driver (20.04.62) focal; urgency=low
 
