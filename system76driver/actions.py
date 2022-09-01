@@ -1585,3 +1585,11 @@ class intel_idle_max_cstate_4(GrubAction):
 
     def describe(self):
         return _('Fix for freezes on some CML-U processors')
+
+class nvidia_drm_initramfs(FileAction):
+    update_initramfs = True
+    relpath = ('usr', 'share', 'initramfs-tools', 'modules.d', 's76-nvidia-initramfs.conf')
+    content = '# Added by system76-driver\nnvidia-drm\n'
+
+    def describe(self):
+        return _('Add nvidia-drm driver to initramfs')
