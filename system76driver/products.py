@@ -674,6 +674,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
+            actions.nvidia_drm_initramfs,
         ],
     },
     'oryp7': {
@@ -695,6 +696,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
+            actions.nvidia_drm_initramfs,
         ],
     },
     'oryp10': {
@@ -702,6 +704,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
+            actions.nvidia_drm_initramfs,
         ],
     },
 

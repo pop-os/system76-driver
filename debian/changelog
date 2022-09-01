@@ -1,6 +1,8 @@
 system76-driver (20.04.64~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.64
+  * Add action to add NVIDIA DRM driver to initramfs
+  * Add nvidia-drm to initramfs for oryp6, oryp9, oryp10
 
  -- Tim Crawford <tcrawford@system76.com>  Thu, 01 Sep 2022 10:18:06 -0600
 
