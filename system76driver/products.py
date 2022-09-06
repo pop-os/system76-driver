@@ -1074,6 +1074,10 @@ PRODUCTS = {
             actions.remove_usb_audio_load_spdif,
         ],
     },
+    'thelio-mega-r2': {
+        'name': 'Thelio Mega',
+        'drivers': [],
+    },
     'thelio-mira-b1': {
         'name': 'Thelio Mira',
         'drivers': [
