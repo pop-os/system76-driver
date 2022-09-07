@@ -1079,7 +1079,9 @@ PRODUCTS = {
     },
     'thelio-mega-r2': {
         'name': 'Thelio Mega',
-        'drivers': [],
+        'drivers': [
+            actions.nvidia_drm_initramfs,
+        ],
     },
     'thelio-mira-b1': {
         'name': 'Thelio Mira',
