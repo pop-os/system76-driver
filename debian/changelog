@@ -1,9 +1,8 @@
-system76-driver (20.04.66~~alpha) focal; urgency=low
+system76-driver (20.04.66) focal; urgency=low
 
-  * Daily WIP for 20.04.66
   * Remove nvidia-driver-510 dependency option
 
- -- leviport <levi@system76.com>  Mon, 24 Oct 2022 10:31:52 -0600
+ -- leviport <levi@system76.com>  Tue, 25 Oct 2022 08:26:25 -0600
 
 system76-driver (20.04.65) focal; urgency=low
 
