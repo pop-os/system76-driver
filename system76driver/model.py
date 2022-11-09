@@ -242,6 +242,7 @@ TABLES = {
         'thelio-major-b1.1': 'thelio-major-b1.1',
         'thelio-major-b2': 'thelio-major-b2',
         'thelio-major-b3': 'thelio-major-b3',
+        'thelio-major-b4': 'thelio-major-b4',
         'thelio-major-r1': 'thelio-major-r1',
         'thelio-major-r2': 'thelio-major-r2',
         'thelio-major-r2.1': 'thelio-major-r2.1',
