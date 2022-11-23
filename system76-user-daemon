@@ -61,7 +61,6 @@ if not args.model:
     args.model = (model or system76driver.get_product_version())
 log.info('model: %r', args.model)
 userdaemon.run_backlight(args.model)
-userdaemon.run_usb_audio(args.model)
 
 mainloop = GLib.MainLoop()
 if args.debug:
