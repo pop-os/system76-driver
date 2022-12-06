@@ -1054,6 +1054,10 @@ PRODUCTS = {
             actions.remove_usb_audio_load_spdif,
         ],
     },
+    'thelio-major-r3': {
+        'name': 'Thelio Major',
+        'drivers': [],
+    },
     'thelio-massive-b1': {
         'name': 'Thelio Massive',
         'drivers': [],
