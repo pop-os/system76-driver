@@ -1,9 +1,8 @@
-system76-driver (20.04.69~~alpha) focal; urgency=low
+system76-driver (20.04.69) focal; urgency=low
 
-  * Daily WIP for 20.04.69
   * Use nvidia-driver-525 for NVIDIA ISO
 
- -- leviport <levi@system76.com>  Tue, 06 Dec 2022 16:42:48 -0700
+ -- leviport <levi@system76.com>  Wed, 07 Dec 2022 08:50:50 -0700
 
 system76-driver (20.04.68) focal; urgency=low
 
