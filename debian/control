@@ -54,7 +54,7 @@ Description: Universal driver for System76 computers
 Package: system76-driver-nvidia
 Architecture: all
 Depends: ${misc:Depends},
-    nvidia-driver-515 | nvidia-driver-470,
+    nvidia-driver-525 | nvidia-driver-515 | nvidia-driver-470,
     system76-driver (>= ${binary:Version}),
     ubuntu-drivers-common,
 Recommends: amd-ppt-bin
