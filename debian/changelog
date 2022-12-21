@@ -1,6 +1,7 @@
 system76-driver (20.04.71~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.71
+  * Add /sys/kernel/debug/pmc_core/slp_s0_residency_usec output to logs
 
  -- leviport <levi@system76.com>  Wed, 21 Dec 2022 15:14:39 -0700
 

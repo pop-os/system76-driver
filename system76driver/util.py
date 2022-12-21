@@ -79,6 +79,7 @@ def dump_logs(base):
     dump_path(base, "apt/history-rotated.gz", "/var/log/apt/history.log.1.gz")
     dump_path(base, "apt/term", "/var/log/apt/term.log")
     dump_path(base, "apt/term-rotated.gz", "/var/log/apt/term.log.1.gz")
+    dump_path(base, "slp_s0_residency_usec", "/sys/kernel/debug/pmc_core/slp_s0_residency_usec")
 
 def create_tmp_logs(func=dump_logs):
     tmp = tempfile.mkdtemp(prefix='logs.')
