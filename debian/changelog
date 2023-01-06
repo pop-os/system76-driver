@@ -1,14 +1,9 @@
-system76-driver (20.04.71~~alphaubuntu1) UNRELEASED; urgency=medium
+system76-driver (20.04.71~~alpha) UNRELEASED; urgency=medium
 
   * Daily WIP for 20.04.71
   * Add Pang 12
+  * Add thelio-mira-b4
   * Add `touchpad_use_areas` action
-
- -- system76 <system76@pop-os.localdomain>  Wed, 11 Jan 2023 14:13:14 -0700
-
-system76-driver (20.04.71~~alpha) focal; urgency=low
-
-  * Daily WIP for 20.04.71
 
  -- 13r0ck <brock@szu.email>  Wed, 11 Jan 2023 13:28:14 -0700
 
