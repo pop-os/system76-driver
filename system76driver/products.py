@@ -1104,6 +1104,10 @@ PRODUCTS = {
         'name': 'Thelio Mira',
         'drivers': [],
     },
+        'thelio-mira-b4': {
+        'name': 'Thelio Mira',
+        'drivers': [],
+    },
     'thelio-mira-r1': {
         'name': 'Thelio Mira',
         'drivers': [],
