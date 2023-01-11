@@ -175,6 +175,7 @@ TABLES = {
         'panp9': 'panp9',
         'pang10': 'pang10',
         'pang11': 'pang11',
+        'pang12': 'pang12',
         'lemu1': 'lemu1',
         'lemu2': 'lemu2',
         'lemu3': 'lemu3',
