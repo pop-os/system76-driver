@@ -1077,6 +1077,38 @@ class energystar_wakeonlan(FileAction):
         return _('Disable Wake-On-LAN on battery power for ENERGY STAR')
 
 
+TOUCHPAD_USE_AREAS_GSETTINGS_OVERRIDE = """[org.gnome.desktop.peripherals.touchpad]
+click-method='areas'
+"""
+
+class touchpad_use_areas(FileAction):
+    relpath = ('usr', 'share', 'glib-2.0', 'schemas',
+        '60_system76-driver-touchpad-use-areas.gschema.override')
+
+    _content = TOUCHPAD_USE_AREAS_GSETTINGS_OVERRIDE
+
+    @property
+    def content(self):
+        return self._content
+
+    def perform(self):
+        self.atomic_write(self.content, self.mode)
+        gsettings_dir = path.join('/', 'usr', 'share', 'glib-2.0', 'schemas')
+        cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
+        SubProcess.check_call(cmd_compile_schemas)
+
+    def get_isneeded(self):
+        if self.read() != self.content:
+            return True
+        st = os.stat(self.filename)
+        if stat.S_IMODE(st.st_mode) != self.mode:
+            return True
+        return False
+
+    def describe(self):
+        return _('Apply touchpad click-method default gsettings overrides')
+
+
 LIMIT_TDP_UDEV_RULE = """SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/lib/system76-driver/system76-adjust-tdp --battery"
 SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/lib/system76-driver/system76-adjust-tdp --ac\""""
 

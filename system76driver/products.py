@@ -751,6 +751,12 @@ PRODUCTS = {
             actions.i8042_nomux,
         ],
     },
+    'pang12': {
+        'name': 'Pangolin',
+        'drivers': [
+            actions.touchpad_use_areas,
+        ],
+    },
     #'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
     'panv2': {
         'name': 'Pangolin Value',
@@ -1101,6 +1107,10 @@ PRODUCTS = {
         'drivers': [],
     },
     'thelio-mira-b3': {
+        'name': 'Thelio Mira',
+        'drivers': [],
+    },
+        'thelio-mira-b4': {
         'name': 'Thelio Mira',
         'drivers': [],
     },
