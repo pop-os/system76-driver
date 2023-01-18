@@ -1,6 +1,7 @@
 system76-driver (20.04.72~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.72
+  * Blacklist psmouse on TGL and ADL
 
  -- Tim Crawford <tcrawford@system76.com>  Wed, 18 Jan 2023 11:15:06 -0700
 

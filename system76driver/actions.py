@@ -1617,3 +1617,10 @@ class intel_idle_max_cstate_4(GrubAction):
 
     def describe(self):
         return _('Fix for freezes on some CML-U processors')
+
+class blacklist_psmouse(FileAction):
+    relpath = ('etc', 'modprobe.d', 'blacklist-psmouse.conf')
+    content = 'blacklist psmouse'
+
+    def describe(self):
+        return _('Avoid touchpad issues caused by PS/2 interface')
