@@ -160,11 +160,15 @@ PRODUCTS = {
     },
     'darp7': {
         'name': 'Darter Pro',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
     },
     'darp8': {
         'name': 'Darter Pro',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
     },
 
     # Galago:
@@ -181,14 +185,14 @@ PRODUCTS = {
         'drivers': [
             actions.internal_mic_gain,
             actions.hidpi_scaling,
-	    ],
+        ],
     },
     'galp3': {
         'name': 'Galago Pro',
         'drivers': [
             actions.internal_mic_gain,
             actions.hidpi_scaling,
-	    ],
+        ],
     },
     'galp3-b': {
         'name': 'Galago Pro',
@@ -196,7 +200,7 @@ PRODUCTS = {
             actions.internal_mic_gain,
             actions.energystar_gsettings_override,
             actions.energystar_wakeonlan,
-	    ],
+        ],
     },
     'galp3-c': {
         'name': 'Galago Pro',
@@ -209,12 +213,15 @@ PRODUCTS = {
     'galp5': {
         'name': 'Galago Pro',
         'drivers': [
+            actions.blacklist_psmouse,
             actions.remove_nvidia_dynamic_power_one,
         ],
     },
     'galp6': {
         'name': 'Galago Pro',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
     },
 
     # Gazelle:
@@ -294,13 +301,13 @@ PRODUCTS = {
         'name': 'Gazelle',
         'drivers': [
             actions.internal_mic_gain,
-	],
+        ],
     },
     'gaze13': {
         'name': 'Gazelle',
         'drivers': [
             actions.internal_mic_gain,
-	],
+        ],
     },
     'gaze14': {
         'name': 'Gazelle',
@@ -320,30 +327,35 @@ PRODUCTS = {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
         ],
     },
     'gaze16-3060': {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
         ],
     },
     'gaze16-3060-b': {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
         ],
     },
     'gaze17-3050': {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
         ],
     },
     'gaze17-3060-b': {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
         ],
     },
     'gazu1': {
@@ -489,11 +501,15 @@ PRODUCTS = {
     },
     'lemp10': {
         'name': 'Lemur Pro',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
     },
     'lemp11': {
         'name': 'Lemur Pro',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
     },
 
     # Leopard:
@@ -687,6 +703,7 @@ PRODUCTS = {
         'name': 'Oryx Pro',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
             actions.i915_initramfs,
         ],
     },
@@ -695,6 +712,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
+            actions.blacklist_psmouse,
         ],
     },
     'oryp10': {
@@ -702,6 +720,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
+            actions.blacklist_psmouse,
         ],
     },
 
