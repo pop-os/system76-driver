@@ -1,9 +1,8 @@
-system76-driver (20.04.73~~alpha) focal; urgency=low
+system76-driver (20.04.73) focal; urgency=low
 
-  * Daily WIP for 20.04.73
   * Remove user audio daemon. Upstreamed into ALSA.
 
- -- 13r0ck <brock@szu.email>  Fri, 03 Feb 2023 12:19:52 -0700
+ -- leviport <levi@system76.com>  Fri, 03 Feb 2023 12:31:33 -0700
 
 system76-driver (20.04.72) focal; urgency=low
 
