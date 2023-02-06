@@ -237,6 +237,7 @@ TABLES = {
         'thelio-b2': 'thelio-b2',
         'thelio-b3': 'thelio-b3',
         'thelio-b4': 'thelio-b4',
+        'thelio-b5': 'thelio-b5',
         'thelio-r1': 'thelio-r1',
         'thelio-r2': 'thelio-r2',
         'thelio-r3': 'thelio-r3',
