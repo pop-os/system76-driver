@@ -1,9 +1,8 @@
-system76-driver (20.04.75~~alpha) focal; urgency=low
+system76-driver (20.04.75) focal; urgency=low
 
-  * Daily WIP for 20.04.75
   * Add thelio-major-r4
 
- -- leviport <levi@system76.com>  Thu, 16 Feb 2023 12:50:44 -0700
+ -- leviport <levi@system76.com>  Thu, 16 Feb 2023 15:17:18 -0700
 
 system76-driver (20.04.74) focal; urgency=low
 
