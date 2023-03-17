@@ -204,6 +204,7 @@ TABLES = {
         'meer4': 'meer4',
         'meer5': 'meer5',
         'meer6': 'meer6',
+        'meer7': 'meer7',
         'ment1': 'ment1',
         'ment2': 'ment2',
         'ment3': 'ment3',
