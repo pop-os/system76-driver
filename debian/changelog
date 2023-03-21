@@ -1,6 +1,11 @@
 system76-driver (20.04.77~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.77
+  * Add addw3
+  * Add bonw15
+  * Add gaze18
+  * Add oryp11
+  * Add serw13
 
  -- Tim Crawford <tcrawford@system76.com>  Tue, 21 Mar 2023 13:27:28 -0600
 
