@@ -38,6 +38,13 @@ PRODUCTS = {
             actions.blacklist_nvidia_i2c,
         ],
     },
+    'addw3': {
+        'name': 'Adder WS',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
+        ],
+    },
 
     # Bonobo:
     'bonp1': {
@@ -120,6 +127,10 @@ PRODUCTS = {
         ],
     },
     'bonw14': {
+        'name': 'Bonobo WS',
+        'drivers': [],
+    },
+    'bonw15': {
         'name': 'Bonobo WS',
         'drivers': [],
     },
@@ -352,6 +363,13 @@ PRODUCTS = {
         ],
     },
     'gaze17-3060-b': {
+        'name': 'Gazelle',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
+        ],
+    },
+    'gaze18': {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
@@ -727,6 +745,14 @@ PRODUCTS = {
             actions.blacklist_psmouse,
         ],
     },
+    'oryp11': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+            actions.i915_initramfs,
+            actions.blacklist_psmouse,
+        ],
+    },
 
     # Pangolin:
     'panp4i': {
@@ -977,6 +1003,14 @@ PRODUCTS = {
             actions.firefox_unsetwebrender,
             actions.nvidia_forcefullcompositionpipeline,
             actions.i8042_nomux,
+        ],
+    },
+    'serw13': {
+        'name': 'Serval WS',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+            actions.i915_initramfs,
+            actions.blacklist_psmouse,
         ],
     },
 
