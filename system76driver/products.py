@@ -612,6 +612,10 @@ PRODUCTS = {
             actions.displayport1_force_enable_audio,
         ],
     },
+    'meer7': {
+        'name': 'Meerkat',
+        'drivers': [],
+    },
 
     # Oryx:
     'orxp1': {
