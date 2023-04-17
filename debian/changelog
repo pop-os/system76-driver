@@ -1,6 +1,7 @@
 system76-driver (20.04.79~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.79
+  * Add addw3, bonw15, and serw13 to thunderbolt reload
 
  -- Jeremy Soller <jackpot51@gmail.com>  Mon, 17 Apr 2023 08:08:33 -0600
 

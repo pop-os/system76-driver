@@ -24,19 +24,35 @@
 
 set -e
 
-case "$(cat /sys/class/dmi/id/product_version)" in
-    darp6 | galp4)
-        case "$2" in
-            suspend | hybrid-sleep)
-                case "$1" in
-                    pre)
-                        echo 1 > '/sys/devices/pci0000:00/0000:00:1c.0/remove'
-                        ;;
-                    post)
-                        echo 1 > '/sys/devices/pci0000:00/0000:00:00.0/rescan'
-                        ;;
-                esac
+dev=""
+case "$(cat /sys/class/dmi/id/sys_vendor)" in
+    System76)
+        case "$(cat /sys/class/dmi/id/product_version)" in
+            serw13)
+                dev="1a.0"
+                ;;
+            addw3)
+                dev="1b.0"
+                ;;
+            bonw15 | darp6 | galp4)
+                dev="1c.0"
                 ;;
         esac
         ;;
 esac
+
+if [ -n "${dev}" ]
+then
+    case "$2" in
+        suspend | hybrid-sleep)
+            case "$1" in
+                pre)
+                    echo 1 > "/sys/devices/pci0000:00/0000:00:${dev}/remove"
+                    ;;
+                post)
+                    echo 1 > "/sys/devices/pci0000:00/0000:00:00.0/rescan"
+                    ;;
+            esac
+            ;;
+    esac
+fi
