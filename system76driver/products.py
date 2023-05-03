@@ -234,6 +234,12 @@ PRODUCTS = {
             actions.blacklist_psmouse,
         ],
     },
+    'galp7': {
+        'name': 'Galago Pro',
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
+    },
 
     # Gazelle:
     'gazp1': {

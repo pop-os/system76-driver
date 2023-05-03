@@ -141,6 +141,7 @@ TABLES = {
         'galp4': 'galp4',
         'galp5': 'galp5',
         'galp6': 'galp6',
+        'galp7': 'galp7',
         'gazu1': 'gazu1',
         'gazp6': 'gazp6',
         'gazp7': 'gazp7',
