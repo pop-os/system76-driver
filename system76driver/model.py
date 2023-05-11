@@ -192,6 +192,7 @@ TABLES = {
         'lemp9': 'lemp9',
         'lemp10': 'lemp10',
         'lemp11': 'lemp11',
+        'lemp12': 'lemp12',
         'leo1': 'leo1',
         'leox2': 'leox2',
         'leox3': 'leox3',
