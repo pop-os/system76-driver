@@ -824,6 +824,12 @@ PRODUCTS = {
             actions.touchpad_use_areas,
         ],
     },
+    'pang13': {
+        'name': 'Pangolin',
+        'drivers': [
+            actions.touchpad_use_areas,
+        ],
+    },
     #'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
     'panv2': {
         'name': 'Pangolin Value',
