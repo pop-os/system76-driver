@@ -1,9 +1,8 @@
-system76-driver (20.04.81~~alpha) focal; urgency=low
+system76-driver (20.04.81) focal; urgency=low
 
-  * Daily WIP for 20.04.81
   * Add thelio-spark-b1
 
- -- leviport <levi@system76.com>  Wed, 20 Sep 2023 09:37:41 -0600
+ -- leviport <levi@system76.com>  Wed, 20 Sep 2023 13:46:12 -0600
 
 system76-driver (20.04.80) focal; urgency=low
 
