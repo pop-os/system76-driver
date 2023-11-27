@@ -182,6 +182,7 @@ TABLES = {
         'pang11': 'pang11',
         'pang12': 'pang12',
         'pang13': 'pang13',
+        'pang14': 'pang14',
         'lemu1': 'lemu1',
         'lemu2': 'lemu2',
         'lemu3': 'lemu3',
