@@ -1,9 +1,8 @@
-system76-driver (20.04.85~~alpha) focal; urgency=low
+system76-driver (20.04.85) focal; urgency=low
 
-  * Daily WIP for 20.04.85
   * system76-atlantic-reload: reload atlantic 10G ethernet pci bridge to avoid hangs
 
- -- Jacob Kaulike <jacob.k.tm@gmail.com>  Tue, 02 Jan 2024 07:01:32 -0700
+ -- leviport <levi@system76.com>  Tue, 02 Jan 2024 09:38:04 -0700
 
 system76-driver (20.04.84) focal; urgency=low
 
