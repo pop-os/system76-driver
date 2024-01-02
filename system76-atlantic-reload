@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# system76-driver: Universal driver for System76 computers
+# Copyright (C) 2005-2019 System76, Inc.
+#
+# This file is part of `system76-driver`.
+#
+# `system76-driver` is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# `system76-driver` is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+# This script removes the atlantic 10G ethernet PCI bridge on suspend and
+# rescans it on resume in order to prevent hangs.
+# Bugzilla report: https://bugzilla.kernel.org/show_bug.cgi?id=217260
+
+set -e
+
+case "$(cat /sys/class/dmi/id/product_version)" in
+    thelio-major-r5)
+        case "$2" in
+            suspend | hybrid-sleep)
+                case "$1" in
+                    pre)
+                        echo 1 > '/sys/bus/pci/devices/0000:42:00.0/remove'
+                        ;;
+                    post)
+                        echo 1 > '/sys/devices/pci0000:40/0000:40:03.3/0000:41:00.0/rescan'
+                        ;;
+                esac
+                ;;
+        esac
+        ;;
+esac
