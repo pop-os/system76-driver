@@ -1,8 +1,11 @@
 system76-driver (20.04.86~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.86
+  * Add addw4
+  * Add lemp13
+  * Add oryp12
 
- -- Tim Crawford <tcrawford@system76.com>  Mon, 29 Jan 2024 10:30:27 -0700
+ -- Tim Crawford <tcrawford@system76.com>  Wed, 28 Feb 2024 10:05:07 -0700
 
 system76-driver (20.04.85) focal; urgency=low
 
