@@ -49,6 +49,7 @@ PRODUCTS = {
         'name': 'Adder WS',
         'drivers': [
             actions.blacklist_nvidia_i2c,
+            actions.blacklist_psmouse,
         ],
     },
 
@@ -555,7 +556,9 @@ PRODUCTS = {
     },
     'lemp13': {
         'name': 'Lemur Pro',
-        'drivers': [],
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
     },
 
     # Leopard:
@@ -790,6 +793,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
+            actions.blacklist_psmouse,
         ],
     },
 
