@@ -1,11 +1,10 @@
-system76-driver (20.04.87~~alpha) focal; urgency=low
+system76-driver (20.04.87) focal; urgency=low
 
-  * Daily WIP for 20.04.87
   * addw4: Blacklist psmouse
   * lemp13: Blacklist psmouse
   * oryp12: Blacklist psmouse
 
- -- Tim Crawford <tcrawford@system76.com>  Thu, 07 Mar 2024 12:59:55 -0700
+ -- leviport <levi@system76.com>  Mon, 11 Mar 2024 11:54:57 -0600
 
 system76-driver (20.04.86) focal; urgency=low
 
