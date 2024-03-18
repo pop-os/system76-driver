@@ -1,9 +1,8 @@
-system76-driver (20.04.88~~alpha) focal; urgency=low
+system76-driver (20.04.88) focal; urgency=low
 
-  * Daily WIP for 20.04.88
   * Add thelio-r4
 
- -- leviport <levi@system76.com>  Thu, 07 Mar 2024 12:37:45 -0700
+ -- Jeremy Soller <jackpot51@gmail.com>  Mon, 18 Mar 2024 14:19:29 -0600
 
 system76-driver (20.04.87) focal; urgency=low
 
