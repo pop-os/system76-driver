@@ -1,3 +1,10 @@
+system76-driver (20.04.88~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.88
+  * Add thelio-r4
+
+ -- leviport <levi@system76.com>  Thu, 07 Mar 2024 12:37:45 -0700
+
 system76-driver (20.04.87) focal; urgency=low
 
   * addw4: Blacklist psmouse

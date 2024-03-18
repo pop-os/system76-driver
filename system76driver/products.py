@@ -1140,6 +1140,10 @@ PRODUCTS = {
         'name': 'Thelio',
         'drivers': [],
     },
+        'thelio-r4': {
+        'name': 'Thelio',
+        'drivers': [],
+    },
     'thelio-major-b1': {
         'name': 'Thelio Major',
         'drivers': [],
