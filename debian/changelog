@@ -1,3 +1,10 @@
+system76-driver (20.04.89~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.89
+  * Add gaze19
+
+ -- Tim Crawford <tcrawford@system76.com>  Mon, 25 Mar 2024 13:41:22 -0600
+
 system76-driver (20.04.88) focal; urgency=low
 
   * Add thelio-r4
