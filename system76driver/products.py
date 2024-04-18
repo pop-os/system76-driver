@@ -194,6 +194,18 @@ PRODUCTS = {
             actions.blacklist_psmouse,
         ],
     },
+    'darp10': {
+        'name': 'Darter Pro',
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
+    },
+    'darp10-b': {
+        'name': 'Darter Pro',
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
+    },
 
     # Galago:
     'galu1': {
