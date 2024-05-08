@@ -135,6 +135,8 @@ TABLES = {
         'darp7': 'darp7',
         'darp8': 'darp8',
         'darp9': 'darp9',
+        'darp10': 'darp10',
+        'darp10-b': 'darp10-b',
         'galu1': 'galu1',
         'galp2': 'galp2',
         'galp3': 'galp3',
