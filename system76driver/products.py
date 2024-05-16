@@ -572,6 +572,12 @@ PRODUCTS = {
             actions.blacklist_psmouse,
         ],
     },
+    'lemp13-b': {
+        'name': 'Lemur Pro',
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
+    },
 
     # Leopard:
     'leo1': {

@@ -1,6 +1,7 @@
 system76-driver (20.04.91~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.91
+  * Add lemp13-b
 
  -- leviport <levi@system76.com>  Thu, 16 May 2024 13:51:00 -0600
 
