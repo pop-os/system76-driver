@@ -1,9 +1,8 @@
-system76-driver (20.04.91~~alpha) focal; urgency=low
+system76-driver (20.04.91) focal; urgency=low
 
-  * Daily WIP for 20.04.91
   * Add lemp13-b
 
- -- leviport <levi@system76.com>  Thu, 16 May 2024 13:51:00 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Fri, 17 May 2024 11:02:09 -0600
 
 system76-driver (20.04.90) focal; urgency=low
 
