@@ -407,6 +407,12 @@ PRODUCTS = {
             actions.blacklist_psmouse,
         ],
     },
+    'gaze19': {
+        'name': 'Gazelle',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
     'gazu1': {
         'name': 'Gazelle Ultra',
         'drivers': [
