@@ -490,7 +490,16 @@ class backlight_vendor(GrubAction):
     def describe(self):
         return _('Enable brightness hot keys')
 
+class backlight_native(GrubAction):
+    """
+    Add acpi_backlight=native to GRUB_CMDLINE_LINUX_DEFAULT (for gazp10/11).
+    """
 
+    add = ('acpi_backlight=native',)
+
+    def describe(self):
+        return _('Enable brightness hot keys')
+        
 class remove_backlight_vendor(GrubAction):
     """
     Remove acpi_backlight=vendor to GRUB_CMDLINE_LINUX_DEFAULT (for gazp9).

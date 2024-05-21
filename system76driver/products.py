@@ -329,14 +329,14 @@ PRODUCTS = {
         'name': 'Gazelle',
         'drivers': [
             actions.internal_mic_gain,
-            actions.backlight_vendor,
+            actions.backlight_native,
         ],
     },
     'gaze11': {
         'name': 'Gazelle',
         'drivers': [
             actions.internal_mic_gain,
-            actions.backlight_vendor,
+            actions.backlight_native,
         ],
     },
     'gaze12': {
