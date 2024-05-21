@@ -165,6 +165,7 @@ TABLES = {
         'gaze17-3050': 'gaze17-3050',
         'gaze17-3060-b': 'gaze17-3060-b',
         'gaze18': 'gaze18',
+        'gaze19': 'gaze19',
         'daru3': 'daru3',
         'daru4': 'daru4',
         'kudp1': 'kudp1',
