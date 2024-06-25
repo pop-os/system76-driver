@@ -30,7 +30,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk
 
 from . import __version__, get_datafile
-from .util import create_logs
+from .mockable import SubProcess
 from .actions import ActionRunner
 
 
@@ -124,9 +124,8 @@ class UI:
             GLib.idle_add(self.prepare_action_runner)
         Gtk.main()
 
-    def worker_thread(self, actions):
-        for msg in self.action_runner.run_iter():
-            print(msg)
+    def worker_thread(self):
+        SubProcess.check_call(['pkexec', 'system76-driver-cli', '--model', self.model])
         GLib.idle_add(self.on_worker_complete)
 
     def on_worker_complete(self):
@@ -145,7 +144,7 @@ class UI:
             )
             self.thread = threading.Thread(
                 target=self.worker_thread,
-                args=(self.product['drivers'],),
+                args=(),
                 daemon=True,
             )
             self.thread.start()
@@ -159,10 +158,10 @@ class UI:
         self.start_worker()
 
     def create_worker(self):
-        tgz = create_logs(self.args.home)
-        GLib.idle_add(self.on_create_complete, tgz)
+        SubProcess.check_call(['pkexec', 'system76-driver-cli', '--logs', self.args.home])
+        GLib.idle_add(self.on_create_complete)
 
-    def on_create_complete(self, tgx):
+    def on_create_complete(self):
         self.thread.join()
         self.thread = None
         self.set_sensitive(True)

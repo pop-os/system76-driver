@@ -21,7 +21,6 @@
 
 import argparse
 import os
-import sys
 import time
 import logging
 import distro
@@ -40,11 +39,7 @@ parser.add_argument('--dry', action='store_true', default=False,
 )
 args = parser.parse_args()
 
-if os.getuid() != 0:
-    sys.exit('Error: must be run as root')
-
 logging.basicConfig(
-    filename='/var/log/system76-driver.log',
     level=logging.DEBUG,
     style='{',
     format='{asctime}  {levelname}  {message}',

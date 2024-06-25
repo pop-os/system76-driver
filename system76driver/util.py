@@ -28,7 +28,7 @@ import tempfile
 import distro
 import subprocess
 
-from .model import determine_model
+from .model import determine_model_new
 
 def dump_command(base, name, args):
     fp = open(path.join(base, name), 'xt')
@@ -49,7 +49,7 @@ def dump_path(base, name, src):
 
 def dump_logs(base):
     fp = open(path.join(base, 'systeminfo.txt'), 'x')
-    fp.write('System76 Model: {}\n'.format(determine_model()))
+    fp.write('System76 Model: {}\n'.format(determine_model_new()))
     fp.write('OS Version: {}\n'.format(distro.name(pretty=True)))
     fp.write('Kernel Version: {}\n'.format(os.uname().release))
 

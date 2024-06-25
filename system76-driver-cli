@@ -29,13 +29,14 @@ import logging
 import system76driver
 from system76driver.products import PRODUCTS
 from system76driver.actions import ActionRunner
-
+from system76driver.util import create_logs
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--strict', action='store_true', default=False,
     help='Exit with a non-zero status if not a valid system76 product',
 )
 parser.add_argument('--model', help='force model rather than detecting it')
+parser.add_argument('--logs', help='Store logs to specified home directory')
 args = parser.parse_args()
 exitcode = (2 if args.strict else 0)
 
@@ -68,9 +69,13 @@ if os.getuid() != 0:
     sys.exit(exitcode)
 
 try:
-    action_runner = ActionRunner(product['drivers'])
-    for msg in action_runner.run_iter():
-        log.info('* %s', msg)
+    if args.logs is not None:
+        tgz = create_logs(args.logs)
+        log.info('logs stored in %s', tgz)
+    else:
+        action_runner = ActionRunner(product['drivers'])
+        for msg in action_runner.run_iter():
+            log.info('* %s', msg)
 except Exception:
     log.exception('Error running actions:')
     sys.exit(exitcode)
