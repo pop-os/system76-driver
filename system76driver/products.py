@@ -1246,6 +1246,10 @@ PRODUCTS = {
         'name': 'Thelio Mega',
         'drivers': [],
     },
+    'thelio-mega-r3': {
+        'name': 'Thelio Mega',
+        'drivers': [],
+    },
     'thelio-mira-b1': {
         'name': 'Thelio Mira',
         'drivers': [
