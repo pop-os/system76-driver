@@ -276,6 +276,7 @@ TABLES = {
         'thelio-mega-r1': 'thelio-mega-r1',
         'thelio-mega-r1.1': 'thelio-mega-r1.1',
         'thelio-mega-r2': 'thelio-mega-r2',
+        'thelio-mega-r3': 'thelio-mega-r3',
         'thelio-mira-b1': 'thelio-mira-b1',
         'thelio-mira-b2': 'thelio-mira-b2',
         'thelio-mira-b3': 'thelio-mira-b3',
