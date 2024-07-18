@@ -1,6 +1,7 @@
 system76-driver (20.04.93~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.93
+  * Add bonw15-b
 
  -- Tim Crawford <tcrawford@system76.com>  Thu, 18 Jul 2024 10:00:55 -0600
 
