@@ -49,4 +49,8 @@ case $1 in
         fi
 esac
 
+if [ -f /lib/systemd/system-sleep/system76-atlantic-reload ]; then
+    rm -f /lib/systemd/system-sleep/system76-atlantic-reload
+fi
+
 #DEBHELPER#
