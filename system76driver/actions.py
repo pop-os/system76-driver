@@ -43,7 +43,7 @@ CMDLINE_TEMPLATE = 'GRUB_CMDLINE_LINUX_DEFAULT="{}"'
 CMDLINE_CHECK_DEFAULT_RE = re.compile('^GRUB_CMDLINE_LINUX_DEFAULT')
 CMDLINE_ADD_DEFAULT_RE = re.compile('^GRUB_CMDLINE_LINUX="(.*)"$')
 
-LSPCI_RE = re.compile('^(.+) \[(.+)\]$')
+LSPCI_RE = re.compile(r'^(.+) \[(.+)\]$')
 
 WIFI_PM_DISABLE = """#!/bin/sh
 # Installed by system76-driver
@@ -1129,7 +1129,7 @@ action=/etc/acpi/system76-brightness-tdp.sh"""
 LIMIT_TDP_ACPI_ACTION = """#!/bin/sh
 /usr/lib/system76-driver/system76-adjust-tdp"""
 
-LIMIT_TDP_SCRIPT = """#!/bin/sh
+LIMIT_TDP_SCRIPT = r"""#!/bin/sh
 
 adjust_tdp ()
 {
