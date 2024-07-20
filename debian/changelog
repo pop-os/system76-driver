@@ -1,9 +1,17 @@
-system76-driver (20.04.92~~alpha) focal; urgency=low
+system76-driver (20.04.93~~alpha) focal; urgency=low
 
-  * Daily WIP for 20.04.92
+  * Daily WIP for 20.04.93
+  * Remove system76-atlantic-reload suspend hook
+  * Add bonw15-b
   * Support running GUI as non-root
 
- -- Jeremy Soller <jackpot51@gmail.com>  Tue, 25 Jun 2024 09:16:14 -0600
+ -- Jacob Kaulike <jacob.k.tm@gmail.com>  Fri, 19 Jul 2024 14:41:35 -0600
+
+system76-driver (20.04.92) focal; urgency=low
+
+  * Add thelio-mega-r3
+
+ -- leviport <levi@system76.com>  Mon, 01 Jul 2024 16:02:16 -0600
 
 system76-driver (20.04.91) focal; urgency=low
 

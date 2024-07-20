@@ -141,6 +141,10 @@ PRODUCTS = {
         'name': 'Bonobo WS',
         'drivers': [],
     },
+    'bonw15-b': {
+        'name': 'Bonobo WS',
+        'drivers': [],
+    },
 
     # Darter:
     'daru1': {
@@ -1243,6 +1247,10 @@ PRODUCTS = {
         ],
     },
     'thelio-mega-r2': {
+        'name': 'Thelio Mega',
+        'drivers': [],
+    },
+    'thelio-mega-r3': {
         'name': 'Thelio Mega',
         'drivers': [],
     },

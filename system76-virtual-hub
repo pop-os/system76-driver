@@ -1,0 +1,81 @@
+#!/bin/sh
+
+# system76-driver: Universal driver for System76 computers
+# Copyright (C) 2005-2019 System76, Inc.
+#
+# This file is part of `system76-driver`.
+#
+# `system76-driver` is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# `system76-driver` is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with `system76-driver`; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+# This script removes some USB virtual devices on suspend and rescans
+# them on resume in order to prevent the system from spontaneously
+# waking from suspend after a few seconds.
+
+set -e
+
+vendor_id="046b"
+device_id="ffb0"
+bus_number=""
+remove_file=""
+
+case "$(cat /sys/class/dmi/id/product_version)" in
+    thelio-mega-r3)
+        case "$2" in
+            suspend | hybrid-sleep)
+                case "$1" in
+                    pre)
+                        if [ -f /tmp/system76-virtual-hub ]; then
+                            rm /tmp/system76-virtual-hub
+                        fi
+
+                        device_info=$(lsusb | grep "$vendor_id" | grep "$device_id")
+                        bus_number=$(echo "$device_info" | awk '{print $2}' | sed 's/^0*//')
+
+                        # Exit if bus_number is empty
+                        if [ -z "$bus_number" ]; then
+                            exit
+                        fi
+
+                        # Iterate through idVendor paths and directories
+                        for path in /sys/bus/usb/devices/usb${bus_number}/${bus_number}-*/idVendor; do
+                            dir=$(dirname "$path")
+                            id_vendor=$(cat "$path")
+                            if [ "$id_vendor" = "$vendor_id" ]; then
+                                remove_file="${dir}/remove"
+                                break
+                            fi
+                        done
+
+                        # Check if a matching directory was found
+                        if [ ! -z "$remove_file" ]; then
+                            echo "$bus_number" > /tmp/system76-virtual-hub
+                            if [ -e "$remove_file" ]; then
+                                echo 1 > "$remove_file"
+                            fi
+                        fi
+                        ;;
+                    post)
+                        if [ -f /tmp/system76-virtual-hub ]; then
+                            bus_number=$(cat /tmp/system76-virtual-hub)
+                            rm /tmp/system76-virtual-hub
+                        fi
+                        cd $(readlink -f /sys/bus/usb/devices/usb${bus_number})
+                        echo 1 > ../rescan
+                        ;;
+                esac
+                ;;
+        esac
+        ;;
+esac
