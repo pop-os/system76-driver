@@ -1,9 +1,10 @@
 system76-driver (20.04.93~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.93
+  * Remove system76-atlantic-reload suspend hook
   * Add bonw15-b
 
- -- Tim Crawford <tcrawford@system76.com>  Thu, 18 Jul 2024 10:00:55 -0600
+ -- Jacob Kaulike <jacob.k.tm@gmail.com>  Fri, 19 Jul 2024 14:41:35 -0600
 
 system76-driver (20.04.92) focal; urgency=low
 
