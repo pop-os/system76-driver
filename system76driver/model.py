@@ -327,6 +327,7 @@ TABLES = {
 
 
 def dmidecode(keyword):
+    #TODO: will fail if used by GUI when not running as root
     cmd = ['dmidecode', '-s', keyword]
     return SubProcess.check_output(cmd).decode('utf-8').strip()
 
