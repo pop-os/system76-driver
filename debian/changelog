@@ -1,3 +1,9 @@
+system76-driver (20.04.94~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.94
+
+ -- Jeremy Soller <jackpot51@gmail.com>  Fri, 16 Aug 2024 14:03:07 -0600
+
 system76-driver (20.04.93) focal; urgency=low
 
   * Remove system76-atlantic-reload suspend hook
