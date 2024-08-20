@@ -1,6 +1,7 @@
 system76-driver (20.04.95~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.95
+  * Only require some dependencies on amd64
 
  -- Jeremy Soller <jackpot51@gmail.com>  Tue, 20 Aug 2024 15:59:43 -0600
 
