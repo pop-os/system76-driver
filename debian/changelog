@@ -1,3 +1,10 @@
+system76-driver (20.04.96~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.96
+  * rpl,mtl: Remove psmouse blacklist
+
+ -- Tim Crawford <tcrawford@system76.com>  Fri, 27 Sep 2024 09:33:12 -0600
+
 system76-driver (20.04.95) focal; urgency=low
 
   * Only require some dependencies on amd64
