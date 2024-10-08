@@ -1,3 +1,10 @@
+system76-driver (20.04.96~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.96
+  * Add thelio-astra-a1
+
+ -- Tim Crawford <tcrawford@system76.com>  Tue, 08 Oct 2024 11:54:19 -0600
+
 system76-driver (20.04.95) focal; urgency=low
 
   * Only require some dependencies on amd64
