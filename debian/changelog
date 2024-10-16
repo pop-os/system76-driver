@@ -1,3 +1,10 @@
+system76-driver (20.04.98~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.98
+  * Depend on virtual package for system76-power applet
+
+ -- Jeremy Soller <jackpot51@gmail.com>  Wed, 16 Oct 2024 11:24:29 -0600
+
 system76-driver (20.04.97) focal; urgency=low
 
   * Add thelio-spark-r1
