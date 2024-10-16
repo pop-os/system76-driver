@@ -1296,6 +1296,10 @@ PRODUCTS = {
         'name': 'Thelio Spark',
         'drivers': [],
     },
+    'thelio-spark-r1': {
+        'name': 'Thelio Spark',
+        'drivers': [],
+    },
 
     # Wildebeest:
     'wilb1': {
