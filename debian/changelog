@@ -1,9 +1,8 @@
-system76-driver (20.04.99~~alpha) focal; urgency=low
+system76-driver (20.04.99) focal; urgency=low
 
-  * Daily WIP for 20.04.99
   * Bump nvidia-driver to 550
 
- -- Jeremy Soller <jackpot51@gmail.com>  Wed, 23 Oct 2024 08:41:56 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Wed, 23 Oct 2024 11:08:35 -0600
 
 system76-driver (20.04.98) focal; urgency=low
 
