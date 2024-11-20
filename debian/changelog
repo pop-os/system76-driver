@@ -1,6 +1,7 @@
 system76-driver (20.04.100~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.100
+  * Add thelio-mega-r4
 
  -- leviport <levi@system76.com>  Wed, 20 Nov 2024 14:31:35 -0700
 
