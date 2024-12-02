@@ -1140,7 +1140,9 @@ PRODUCTS = {
     #Thelio:
     'thelio-astra-a1': {
         'name': 'Thelio Astra',
-        'drivers': [],
+        'drivers': [
+            actions.mask_suspend,
+        ],
     },
     'thelio-b1': {
         'name': 'Thelio',
