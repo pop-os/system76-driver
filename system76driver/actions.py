@@ -1624,3 +1624,29 @@ class blacklist_psmouse(FileAction):
 
     def describe(self):
         return _('Avoid touchpad issues caused by PS/2 interface')
+
+class mask_suspend(Action):
+    target_names = ['hibernate.target', 'hybrid-sleep.target', 'sleep.target', 'suspend.target']
+
+    def __init__(self, rootdir='/'):
+        systemd_dir = path.join(rootdir, 'etc', 'systemd', 'system')
+        self.target_paths = []
+        for target_name in self.target_names:
+            self.target_paths.append(path.join(systemd_dir, target_name))
+
+    def describe(self):
+        return _('Mask systemd suspend targets')
+
+    def get_isneeded(self):
+        for target_path in self.target_paths:
+            if not path.exists(target_path):
+                return True
+            if os.readlink(target_path) != '/dev/null':
+                return True
+        return False
+
+    def perform(self):
+        command = ['systemctl', 'mask']
+        for target_name in self.target_names:
+            command.append(target_name)
+        SubProcess.check_call(command)
