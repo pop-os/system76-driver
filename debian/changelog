@@ -1,9 +1,8 @@
-system76-driver (20.04.102~~alpha) focal; urgency=low
+system76-driver (20.04.102) focal; urgency=low
 
-  * Daily WIP for 20.04.102
   * Add meer9
 
- -- leviport <levi@system76.com>  Mon, 09 Dec 2024 15:48:24 -0700
+ -- leviport <levi@system76.com>  Tue, 10 Dec 2024 14:57:44 -0700
 
 system76-driver (20.04.101) focal; urgency=low
 
