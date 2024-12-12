@@ -1,9 +1,8 @@
-system76-driver (20.04.103~~alpha) focal; urgency=low
+system76-driver (20.04.103) focal; urgency=low
 
-  * Daily WIP for 20.04.103
   * thelio-astra-a1: mask suspend
 
- -- Jeremy Soller <jackpot51@gmail.com>  Wed, 11 Dec 2024 21:11:12 -0700
+ -- leviport <levi@system76.com>  Thu, 12 Dec 2024 08:58:02 -0700
 
 system76-driver (20.04.102) focal; urgency=low
 
