@@ -22,6 +22,7 @@ Base class for system changes the driver can perform.
 """
 
 from gettext import gettext as _
+import glob
 import os
 from os import path
 import stat
@@ -1650,3 +1651,19 @@ class mask_suspend(Action):
         for target_name in self.target_names:
             command.append(target_name)
         SubProcess.check_call(command)
+
+class bmc_usb_ethernet(FileAction):
+    relpath = ('etc', 'network', 'interfaces.d', 'system76-driver_bmc-usb-ethernet')
+    _content = None
+    
+    @property
+    def content(self):
+        if self._content is None:
+            self._content = "# This file was created by system76-driver\n"
+            for net_sys in glob.glob("/sys/bus/usb/drivers/cdc_ether/*/net/*"):
+                net_name = path.basename(net_sys)
+                self._content += "iface " + net_name + " inet manual\n"
+        return self._content
+
+    def describe(self):
+        return _('Manual configuration of BMC USB ethernet')
