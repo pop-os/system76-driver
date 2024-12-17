@@ -1145,6 +1145,7 @@ PRODUCTS = {
     'thelio-astra-a1': {
         'name': 'Thelio Astra',
         'drivers': [
+            actions.bmc_usb_ethernet,
             actions.mask_suspend,
         ],
     },
