@@ -1,3 +1,10 @@
+system76-driver (20.04.106~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.106
+  * rpl,mtl: Remove psmouse blacklist
+
+ -- Tim Crawford <tcrawford@system76.com>  Wed, 18 Dec 2024 09:28:43 -0700
+
 system76-driver (20.04.105) focal; urgency=low
 
   * Add thelio-spark-r2
