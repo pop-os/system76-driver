@@ -2,6 +2,7 @@ system76-driver (20.04.106~~alpha) focal; urgency=low
 
   * Daily WIP for 20.04.106
   * thelio-astra-a1: Manual configuration of BMC USB ethernet
+  * Add ifupdown as dependency for use in actions
 
  -- Jeremy Soller <jackpot51@gmail.com>  Tue, 17 Dec 2024 13:00:17 -0700
 
