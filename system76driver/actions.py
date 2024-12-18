@@ -1626,6 +1626,21 @@ class blacklist_psmouse(FileAction):
     def describe(self):
         return _('Avoid touchpad issues caused by PS/2 interface')
 
+class remove_blacklist_psmouse(FileAction):
+    relpath = ('etc', 'modprobe.d', 'blacklist-psmouse.conf')
+
+    def describe(self):
+        return _('Remove PS/2 blacklist for models with touchpad fix')
+
+    def get_isneeded(self):
+        return os.path.exists(self.filename)
+
+    def perform(self):
+        try:
+            os.remove(self.filename)
+        except:
+            pass
+
 class mask_suspend(Action):
     target_names = ['hibernate.target', 'hybrid-sleep.target', 'sleep.target', 'suspend.target']
 

@@ -42,14 +42,14 @@ PRODUCTS = {
         'name': 'Adder WS',
         'drivers': [
             actions.blacklist_nvidia_i2c,
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
     'addw4': {
         'name': 'Adder WS',
         'drivers': [
             actions.blacklist_nvidia_i2c,
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
 
@@ -195,19 +195,19 @@ PRODUCTS = {
     'darp9': {
         'name': 'Darter Pro',
         'drivers': [
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
     'darp10': {
         'name': 'Darter Pro',
         'drivers': [
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
     'darp10-b': {
         'name': 'Darter Pro',
         'drivers': [
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
 
@@ -266,7 +266,7 @@ PRODUCTS = {
     'galp7': {
         'name': 'Galago Pro',
         'drivers': [
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
 
@@ -408,7 +408,7 @@ PRODUCTS = {
         'name': 'Gazelle',
         'drivers': [
             actions.blacklist_nvidia_i2c,
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
     'gazu1': {
@@ -567,19 +567,19 @@ PRODUCTS = {
     'lemp12': {
         'name': 'Lemur Pro',
         'drivers': [
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
     'lemp13': {
         'name': 'Lemur Pro',
         'drivers': [
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
     'lemp13-b': {
         'name': 'Lemur Pro',
         'drivers': [
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
 
@@ -815,7 +815,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
     'oryp12': {
@@ -823,7 +823,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
 
@@ -1101,7 +1101,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.i915_initramfs,
-            actions.blacklist_psmouse,
+            actions.remove_blacklist_psmouse,
         ],
     },
 
