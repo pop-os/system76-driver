@@ -1,3 +1,9 @@
+system76-driver (20.04.107~~alpha) focal; urgency=low
+
+  * Daily WIP for 20.04.107
+
+ -- Tim Crawford <tcrawford@system76.com>  Thu, 19 Dec 2024 07:35:39 -0700
+
 system76-driver (20.04.106) focal; urgency=low
 
   * thelio-astra-a1: Manual configuration of BMC USB ethernet
