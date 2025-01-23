@@ -52,6 +52,7 @@ def dump_logs(base):
     fp.write('System76 Model: {}\n'.format(determine_model_new()))
     fp.write('OS Version: {}\n'.format(distro.name(pretty=True)))
     fp.write('Kernel Version: {}\n'.format(os.uname().release))
+    fp.write('Kernel Revision: {}\n'.format(os.uname().version))
 
     dump_command(base, "boot-process-times", ["systemd-analyze", "blame"])
     dump_command(base, "free-disk-space", ["df", "-h"])
