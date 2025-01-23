@@ -1,9 +1,8 @@
-system76-driver (20.04.108~~alpha) focal; urgency=low
+system76-driver (20.04.108) focal; urgency=low
 
-  * Daily WIP for 20.04.108
   * Adds kernel revision to systeminfo.txt file
 
- -- Aaron Honeycutt <aaronhoneycutt@proton.me>  Thu, 23 Jan 2025 11:49:21 -0700
+ -- Jeremy Soller <jackpot51@gmail.com>  Thu, 23 Jan 2025 13:39:26 -0700
 
 system76-driver (20.04.107) focal; urgency=low
 
