@@ -1,9 +1,8 @@
-system76-driver (20.04.109~~alpha) focal; urgency=low
+system76-driver (20.04.109) focal; urgency=low
 
-  * Daily WIP for 20.04.109
   * Add linux-system76 dependency for arm64 on Noble
 
- -- leviport <levi@system76.com>  Tue, 04 Feb 2025 11:48:05 -0700
+ -- leviport <levi@system76.com>  Tue, 04 Feb 2025 16:07:06 -0700
 
 system76-driver (20.04.108) focal; urgency=low
 
