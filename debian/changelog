@@ -1,3 +1,9 @@
+system76-driver (24.04.0) noble; urgency=medium
+
+  * Update version to 24.04.0
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 12 Feb 2025 09:04:31 -0700
+
 system76-driver (20.04.110) focal; urgency=low
 
   * Add thelio-r5
