@@ -1,3 +1,9 @@
+system76-driver (24.04.1~~alpha) noble; urgency=low
+
+  * Daily WIP for 24.04.1
+
+ -- Jeremy Soller <jackpot51@gmail.com>  Wed, 19 Feb 2025 14:49:25 -0700
+
 system76-driver (24.04.0) noble; urgency=medium
 
   * Update version to 24.04.0
