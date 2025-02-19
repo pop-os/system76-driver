@@ -255,6 +255,7 @@ TABLES = {
         'star4': 'star4',
         'star5': 'star5',
         'thelio-astra-a1': 'thelio-astra-a1',
+        'thelio-astra-a1.1': 'thelio-astra-a1.1',
         'thelio-b1': 'thelio-b1',
         'thelio-b2': 'thelio-b2',
         'thelio-b3': 'thelio-b3',
