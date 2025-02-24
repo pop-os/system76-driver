@@ -1,6 +1,7 @@
 system76-driver (22.04.1~~alpha) jammy; urgency=low
 
   * Daily WIP for 22.04.1
+  * Support NVIDIA 570 driver
 
  -- Jeremy Soller <jackpot51@gmail.com>  Mon, 24 Feb 2025 11:44:09 -0700
 
