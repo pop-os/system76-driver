@@ -1,9 +1,8 @@
-system76-driver (24.04.2~~alpha) noble; urgency=low
+system76-driver (24.04.2) noble; urgency=low
 
-  * Daily WIP for 24.04.2
   * Support NVIDIA 570 driver
 
- -- Jeremy Soller <jackpot51@gmail.com>  Mon, 24 Feb 2025 11:41:11 -0700
+ -- Jeremy Soller <jackpot51@gmail.com>  Wed, 26 Feb 2025 14:13:12 -0700
 
 system76-driver (24.04.1) noble; urgency=low
 
