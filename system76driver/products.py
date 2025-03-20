@@ -210,6 +210,14 @@ PRODUCTS = {
             actions.remove_blacklist_psmouse,
         ],
     },
+    'darp11': {
+        'name': 'Darter Pro',
+        'drivers': [],
+    },
+    'darp11-b': {
+        'name': 'Darter Pro',
+        'drivers': [],
+    },
 
     # Galago:
     'galu1': {
@@ -1143,6 +1151,13 @@ PRODUCTS = {
 
     #Thelio:
     'thelio-astra-a1': {
+        'name': 'Thelio Astra',
+        'drivers': [
+            actions.bmc_usb_ethernet,
+            actions.mask_suspend,
+        ],
+    },
+    'thelio-astra-a1.1': {
         'name': 'Thelio Astra',
         'drivers': [
             actions.bmc_usb_ethernet,
