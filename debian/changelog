@@ -1,9 +1,8 @@
-system76-driver (22.04.2~~alpha) jammy; urgency=low
+system76-driver (22.04.2) jammy; urgency=low
 
-  * Daily WIP for 22.04.2
   * Add darp11, darp11-b, thelio-astra-a1.1
 
- -- Jeremy Soller <jackpot51@gmail.com>  Thu, 20 Mar 2025 15:06:50 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Thu, 20 Mar 2025 15:08:01 -0600
 
 system76-driver (22.04.1) jammy; urgency=low
 
