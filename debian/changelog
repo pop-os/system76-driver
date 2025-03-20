@@ -1,9 +1,8 @@
-system76-driver (24.04.3~~alpha) noble; urgency=low
+system76-driver (24.04.3) noble; urgency=low
 
-  * Daily WIP for 24.04.3
   * Add darp11, darp11-b
 
- -- Tim Crawford <tcrawford@system76.com>  Fri, 14 Mar 2025 11:29:54 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Thu, 20 Mar 2025 14:52:08 -0600
 
 system76-driver (24.04.2) noble; urgency=low
 
