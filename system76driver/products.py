@@ -145,6 +145,10 @@ PRODUCTS = {
         'name': 'Bonobo WS',
         'drivers': [],
     },
+    'bonw16': {
+        'name': 'Bonobo WS',
+        'drivers': [],
+    },
 
     # Darter:
     'daru1': {

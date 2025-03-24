@@ -131,6 +131,7 @@ TABLES = {
         'bonw14': 'bonw14',
         'bonw15': 'bonw15',
         'bonw15-b': 'bonw15-b',
+        'bonw16': 'bonw16',
         'darp5': 'darp5',
         'darp6': 'darp6',
         'darp7': 'darp7',
