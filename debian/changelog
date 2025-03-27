@@ -1,9 +1,8 @@
-system76-driver (24.04.4~~alpha) noble; urgency=low
+system76-driver (24.04.4) noble; urgency=low
 
-  * Daily WIP for 24.04.4
   * Add bonw16
 
- -- Tim Crawford <tcrawford@system76.com>  Mon, 24 Mar 2025 13:51:35 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Thu, 27 Mar 2025 15:04:04 -0600
 
 system76-driver (24.04.3) noble; urgency=low
 
