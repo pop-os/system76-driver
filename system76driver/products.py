@@ -1116,6 +1116,10 @@ PRODUCTS = {
             actions.remove_blacklist_psmouse,
         ],
     },
+    'serw14': {
+        'name': 'Serval WS',
+        'drivers': [],
+    },
 
     # Silverback:
     'silw1': {
