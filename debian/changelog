@@ -1,9 +1,8 @@
-system76-driver (24.04.5~~alpha) noble; urgency=low
+system76-driver (24.04.5) noble; urgency=low
 
-  * Daily WIP for 24.04.5
   * Add serw14
 
- -- Tim Crawford <tcrawford@system76.com>  Wed, 30 Apr 2025 10:10:39 -0600
+ -- leviport <levi@system76.com>  Fri, 06 Jun 2025 11:21:42 -0600
 
 system76-driver (24.04.4) noble; urgency=low
 
