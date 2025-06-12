@@ -116,6 +116,7 @@ TABLES = {
         'addw2': 'addw2',
         'addw3': 'addw3',
         'addw4': 'addw4',
+        'addw5': 'addw5',
         'bonp2': 'bonp2',
         'bonp3': 'bonp3',
         'bonp4': 'bonp4',

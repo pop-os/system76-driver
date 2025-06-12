@@ -52,6 +52,12 @@ PRODUCTS = {
             actions.remove_blacklist_psmouse,
         ],
     },
+    'addw5': {
+        'name': 'Adder WS',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
 
     # Bonobo:
     'bonp1': {
