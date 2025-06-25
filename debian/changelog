@@ -2,6 +2,7 @@ system76-driver (24.04.6~~alpha) noble; urgency=low
 
   * Daily WIP for 24.04.6
   * Add meer10
+  * Add meer10-b
 
  -- Garrett Wilke <garrett@system76.com>  Mon, 09 Jun 2025 13:30:26 -0600
 

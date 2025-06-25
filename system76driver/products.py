@@ -715,6 +715,10 @@ PRODUCTS = {
         'name': 'Meerkat',
         'drivers': [],
     },
+    'meer10-b': {
+        'name': 'Meerkat',
+        'drivers': [],
+    },
 
     # Oryx:
     'orxp1': {

@@ -227,6 +227,7 @@ TABLES = {
         'meer8-b': 'meer8-b',
         'meer9': 'meer9',
         'meer10': 'meer10',
+        'meer10-b': 'meer10-b',
         'ment1': 'ment1',
         'ment2': 'ment2',
         'ment3': 'ment3',
