@@ -1,9 +1,8 @@
-system76-driver (24.04.8~~alpha) noble; urgency=low
+system76-driver (24.04.8) noble; urgency=low
 
-  * Daily WIP for 24.04.8
   * Add gaze20
 
- -- Jeremy Soller <jackpot51@gmail.com>  Tue, 01 Jul 2025 11:58:20 -0600
+ -- leviport <levi@system76.com>  Mon, 07 Jul 2025 07:07:17 -0600
 
 system76-driver (24.04.7) noble; urgency=low
 
