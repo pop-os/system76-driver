@@ -1,3 +1,9 @@
+system76-driver (24.04.9~~alpha) noble; urgency=low
+
+  * Daily WIP for 24.04.9
+
+ -- Tim Crawford <tcrawford@system76.com>  Thu, 17 Jul 2025 13:31:57 -0600
+
 system76-driver (24.04.8) noble; urgency=low
 
   * Add gaze20
