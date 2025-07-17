@@ -42,14 +42,14 @@ PRODUCTS = {
         'name': 'Adder WS',
         'drivers': [
             actions.blacklist_nvidia_i2c,
-            actions.remove_blacklist_psmouse,
+            actions.blacklist_psmouse,
         ],
     },
     'addw4': {
         'name': 'Adder WS',
         'drivers': [
             actions.blacklist_nvidia_i2c,
-            actions.remove_blacklist_psmouse,
+            actions.blacklist_psmouse,
         ],
     },
     'addw5': {
