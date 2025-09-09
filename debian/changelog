@@ -1,9 +1,8 @@
-system76-driver (24.04.10~~alpha) noble; urgency=low
+system76-driver (24.04.10) noble; urgency=low
 
-  * Daily WIP for 24.04.10
   * Add thelio-spark-r3
 
- -- leviport <levi@system76.com>  Tue, 02 Sep 2025 12:40:47 -0600
+ -- leviport <levi@system76.com>  Tue, 09 Sep 2025 14:19:55 -0600
 
 system76-driver (24.04.9) noble; urgency=low
 
