@@ -50,6 +50,7 @@ PRODUCTS = {
         'drivers': [
             actions.blacklist_nvidia_i2c,
             actions.blacklist_psmouse,
+            actions.nvidia_coarse_power_management,
         ],
     },
     'addw5': {
@@ -145,11 +146,15 @@ PRODUCTS = {
     },
     'bonw15': {
         'name': 'Bonobo WS',
-        'drivers': [],
+        'drivers': [
+            actions.nvidia_coarse_power_management,
+        ],
     },
     'bonw15-b': {
         'name': 'Bonobo WS',
-        'drivers': [],
+        'drivers': [
+            actions.nvidia_coarse_power_management,
+        ],
     },
     'bonw16': {
         'name': 'Bonobo WS',
