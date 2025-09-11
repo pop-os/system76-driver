@@ -1,3 +1,9 @@
+system76-driver (24.04.11~~alpha) noble; urgency=low
+
+  * Daily WIP for 24.04.11
+
+ -- Tim Crawford <tcrawford@system76.com>  Thu, 11 Sep 2025 11:19:12 -0600
+
 system76-driver (24.04.10) noble; urgency=low
 
   * Add thelio-spark-r3
