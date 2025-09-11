@@ -1670,7 +1670,7 @@ class mask_suspend(Action):
 class bmc_usb_ethernet(FileAction):
     relpath = ('etc', 'network', 'interfaces.d', 'system76-driver_bmc-usb-ethernet')
     _content = None
-    
+
     @property
     def content(self):
         if self._content is None:
@@ -1682,3 +1682,25 @@ class bmc_usb_ethernet(FileAction):
 
     def describe(self):
         return _('Manual configuration of BMC USB ethernet')
+
+class nvidia_coarse_power_management(FileAction):
+    relpath = ('etc', 'modprobe.d', 'nvidia-runtimepm.conf')
+    content = 'options nvidia NVreg_DynamicPowerManagement=0x01'
+
+    def describe(self):
+        return _("Use coarse-grained power control for NVIDIA driver")
+
+class remove_nvidia_coarse_power_management(FileAction):
+    relpath = ('etc', 'modprobe.d', 'nvidia-runtimepm.conf')
+
+    def describe(self):
+        return _("Remove power control override for NVIDIA driver")
+
+    def get_isneeded(self):
+        return os.path.exists(self.filename)
+
+    def perform(self):
+        try:
+            os.remove(self.filename)
+        except:
+            pass
