@@ -858,6 +858,12 @@ PRODUCTS = {
             actions.remove_blacklist_psmouse,
         ],
     },
+    'oryp13': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
 
     # Pangolin:
     'panp4i': {
