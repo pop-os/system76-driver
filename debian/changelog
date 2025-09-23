@@ -1,9 +1,8 @@
-system76-driver (24.04.12~~alpha) noble; urgency=low
+system76-driver (24.04.12) noble; urgency=low
 
-  * Daily WIP for 24.04.12
   * Add oryp13
 
- -- Tim Crawford <tcrawford@system76.com>  Tue, 23 Sep 2025 09:03:22 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Tue, 23 Sep 2025 09:21:13 -0600
 
 system76-driver (24.04.11) noble; urgency=low
 
