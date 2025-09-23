@@ -1,7 +1,7 @@
 system76-driver (24.04.11~~alpha) noble; urgency=low
 
-  * Support NVIDIA 580 driver
   * Daily WIP for 24.04.11
+  * Support NVIDIA 580 driver
 
  -- Jacob Kauffmann <jacob@system76.com>  Mon, 22 Sep 2025 15:07:41 -0600
 
