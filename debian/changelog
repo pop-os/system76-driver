@@ -1,9 +1,8 @@
-system76-driver (24.04.13~~alpha) noble; urgency=low
+system76-driver (24.04.13) noble; urgency=low
 
-  * Daily WIP for 24.04.13
   * Set NVreg_DynamicPowerManagement on affected models
 
- -- Tim Crawford <tcrawford@system76.com>  Tue, 23 Sep 2025 09:28:34 -0600
+ -- Jeremy Soller <jackpot51@gmail.com>  Tue, 23 Sep 2025 10:08:19 -0600
 
 system76-driver (24.04.12) noble; urgency=low
 
