@@ -10,12 +10,23 @@ application.
 ## Making changes
 
 1. Checkout new branch
-2. Push new branch
-3. Bump the version (`./bump-version.py`)
-4. Make changes
-5. Make pull request
-6. Get PR approved and merged
-7. Make a release from master branch (`./make-release.py`)
+2. Make changes
+3. Bump the version in `system76driver/__init__.py`
+4. Update `debian/changelog` using debchange
+5. Make a pull request
+
+## Making a release
+
+1. Pull the latest changes for `master`
+2. Create a sign tagged using the version as the name
+3. Push the tag
+
+```
+git checkout master
+git pull
+git tag -s <VERSION>
+git push origin tag <VERSION>
+```
 
 ## License
 
