@@ -8,7 +8,6 @@ from apport.hookutils import attach_file_if_exists
 
 LOGS = (
     ('DriverLog', '/var/log/system76-driver.log'),
-    ('DaemonLog', '/var/log/upstart/system76-driver.log'),
 )
 
 def add_info(report):

@@ -32,7 +32,6 @@ import system76driver
 
 
 TREE = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
-IN_TREE = path.isfile(path.join(TREE, 'setup.py'))
 
 
 class TestConstants(TestCase):
@@ -53,10 +52,6 @@ class TestConstants(TestCase):
 
 
 class TestScripts(TestCase):
-    def setUp(self):
-        if not IN_TREE:
-            self.skipTest('not running tests in-tree')
-
     def check_script(self, name):
         script = path.join(TREE, name)
         self.assertTrue(path.isfile(script))
