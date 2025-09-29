@@ -17,13 +17,21 @@ jobs:
         sudo apt-get install --no-install-recommends --assume-yes \
           gir1.2-gtk-3.0 \
           gir1.2-notify-0.7 \
-          pyflakes3 \
           python3 \
-          python3-distutils \
           python3-dbus \
           python3-distro \
           python3-evdev \
           python3-gi \
+          python3-pyflakes \
+          python3-pytest \
+          python3-setuptools \
           python3-systemd
 
-    - run: python3 setup.py test --skip-gtk
+    - name: pytest
+      run: python3 -m pytest --verbose
+    - name: pyflakes
+      run: |
+        python3 -m pyflakes system76driver/ \
+          system76-daemon \
+          system76-driver \
+          system76-driver-cli
