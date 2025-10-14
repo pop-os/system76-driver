@@ -18,7 +18,7 @@ application.
 ## Making a release
 
 1. Pull the latest changes for `master`
-2. Create a sign tagged using the version as the name
+2. Create a signed tag using the version as the name
 3. Push the tag
 
 ```
