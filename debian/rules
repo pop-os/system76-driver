@@ -1,31 +1,11 @@
 #!/usr/bin/make -f
 
+#export DH_VERBOSE = 1
+export PYBUILD_NAME = system76driver
+export PYBUILD_TEST_PYTEST = 1
+
 %:
-	dh $@ --with=python3,systemd --buildsystem=pybuild
-
-override_dh_auto_clean:
-	set -ex; for python in $(shell py3versions -r); do \
-		$$python setup.py clean; \
-	done
-
-override_dh_auto_build:
-	set -ex; for python in $(shell py3versions -r); do \
-		$$python setup.py build \
-				--executable=/usr/bin/python3; \
-	done
-
-override_dh_auto_test:
-	set -ex; for python in $(shell py3versions -r); do \
-	    LC_ALL=C.UTF-8 $$python setup.py test --skip-gtk; \
-	done
-
-override_dh_auto_install:
-	set -ex; for python in $(shell py3versions -r); do \
-		$$python setup.py install \
-				--install-layout=deb \
-				--root=$(CURDIR)/debian/system76-driver; \
-	done
-	mkdir -p $(CURDIR)/debian/system76-driver/var/lib/system76-driver
+	dh $@ --with python3 --buildsystem=pybuild
 
 override_dh_installgsettings:
 	dh_installgsettings --priority=40

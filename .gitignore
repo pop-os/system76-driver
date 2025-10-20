@@ -1,8 +1,11 @@
 /.pybuild
 /build/
 /debian/files
+/debian/python3-system76driver/
 /debian/system76-driver/
 /debian/system76-driver-nvidia/
 /debian/*debhelper*
 /debian/*.substvars
+/dist/
 __pycache__
+*.egg-info/

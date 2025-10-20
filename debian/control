@@ -1,22 +1,24 @@
 Source: system76-driver
 Section: utils
-Priority: extra
+Priority: optional
 Maintainer: System76, Inc. <dev@system76.com>
-Build-Depends: debhelper (>= 9.20160709),
+Build-Depends: debhelper (>= 12),
     dh-python,
     gir1.2-gtk-3.0,
     gir1.2-notify-0.7,
-    pyflakes3,
-    python3-all (>= 3.6),
+    python3-all,
     python3-dbus,
+    python3-distro,
     python3-evdev,
     python3-gi,
-    python3-distro,
+    python3-pyflakes,
+    python3-pytest,
+    python3-setuptools,
     python3-systemd,
     xbacklight
 Standards-Version: 4.5.0
-X-Python3-Version: >= 3.6
-Homepage: https://launchpad.net/system76-driver
+X-Python3-Version: >= 3.8
+Homepage: https://github.com/pop-os/system76-driver
 
 Package: system76-driver
 Architecture: amd64 arm64
@@ -30,9 +32,9 @@ Depends: ${python3:Depends}, ${misc:Depends},
     linux-system76,
     pm-utils,
     python3-dbus,
+    python3-distro,
     python3-evdev,
     python3-gi,
-    python3-distro,
     python3-systemd,
     system76-acpi-dkms [amd64],
     system76-dkms [amd64],

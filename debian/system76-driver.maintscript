@@ -1,0 +1,1 @@
+rm_conffile /etc/init/system76-driver.conf 24.04.13
