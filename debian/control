@@ -12,6 +12,7 @@ Build-Depends: debhelper (>= 9.20160709),
     python3-evdev,
     python3-gi,
     python3-distro,
+    python3-setuptools,
     python3-systemd,
     xbacklight
 Standards-Version: 4.5.0
