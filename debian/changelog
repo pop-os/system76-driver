@@ -1,3 +1,9 @@
+system76-driver (24.04.14) noble; urgency=low
+
+  * Update serw12 xprofile to only run on NVIDIA < 500
+
+ -- Jacob Kauffmann <jacob@system76.com>  Thu, 23 Oct 2025 15:07:49 -0600
+
 system76-driver (24.04.13) noble; urgency=low
 
   * Set NVreg_DynamicPowerManagement on affected models
