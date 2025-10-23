@@ -1505,7 +1505,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
             return True
         elif not os.path.exists(self.filename):
             return True
-        elif not "ForceFullCompositionPipeline" in self.read():
+        elif not all(s in self.read() for s in ("ForceFullCompositionPipeline", "versions")):
             return True
         else:
             return False
@@ -1516,25 +1516,57 @@ class nvidia_forcefullcompositionpipeline(FileAction):
                 os.remove(self.oldfilename)
             except:
                 pass
-        if os.path.exists(self.filename):
-            if "ForceFullCompositionPipeline" in self.read():
-                return
-            content = self.read_and_backup()
-            content += '\n# Added by system76-driver.\n'
+        
+        script_v1 = '# Added by system76-driver.\n'
+        script_v1 += '# Force a full composition pipeline to prevent stuttering.\n\n'
+        script_v1 += '# Get the current display settings.\n'
+        script_v1 += 'oldmode=$(nvidia-settings -q CurrentMetaMode | sed -e \'s/.*:: //g\')\n\n'
+        script_v1 += '# If there were no old settings, then apply a default setting;\n'
+        script_v1 += '# otherwise, add ForceFullCompositionPipeline to the old settings.\n'
+        script_v1 += 'if [ -z "$oldmode" ]\n'
+        script_v1 += 'then\n'
+        script_v1 += '    newmode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On}"\n'
+        script_v1 += 'else\n'
+        script_v1 += '    newmode=$(echo "$oldmode" | sed \'s/}/, ForceFullCompositionPipeline=On}/g\')\nfi\n\n'
+        script_v1 += '# Apply the new display settings.\n'
+        script_v1 += 'nvidia-settings --assign CurrentMetaMode="$newmode"\n'
+        
+        script_v2 = '# Added by system76-driver.\n'
+        script_v2 += '# Force a full composition pipeline to prevent stuttering\n'
+        script_v2 += '# (only needed on driver versions < 500).\n\n'
+        script_v2 += 'driverversion=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader --id=0)\n'
+        script_v2 += 'if [ ${driverversion%%.*} -lt 500 ]\n'
+        script_v2 += 'then\n'
+        script_v2 += '    # Get the current display settings.\n'
+        script_v2 += '    oldmode=$(nvidia-settings -q CurrentMetaMode | sed -e \'s/.*:: //g\')\n\n'
+        script_v2 += '    # If there were no old settings, then apply a default setting;\n'
+        script_v2 += '    # otherwise, add ForceFullCompositionPipeline to the old settings.\n'
+        script_v2 += '    if [ -z "$oldmode" ]\n'
+        script_v2 += '    then\n'
+        script_v2 += '        newmode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On}"\n'
+        script_v2 += '    else\n'
+        script_v2 += '        newmode=$(echo "$oldmode" | sed \'s/}/, ForceFullCompositionPipeline=On}/g\')\nfi\n\n'
+        script_v2 += '    # Apply the new display settings.\n'
+        script_v2 += '    nvidia-settings --assign CurrentMetaMode="$newmode"\n'
+        script_v2 += 'fi\n'
+        
+        if not os.path.exists(self.filename):
+            content = script_v2
+        elif self.read() == script_v1:
+            content = script_v2
+        elif script_v1 in self.read():
+            # If user modified the file but our entire script is present,
+            # update just our script.
+            content = self.read_and_backup().replace(script_v1, script_v2)
         else:
-            content = '# Added by system76-driver.\n'
-        content += '# Force a full composition pipeline to prevent stuttering.\n\n'
-        content += '# Get the current display settings.\n'
-        content += 'oldmode=$(nvidia-settings -q CurrentMetaMode | sed -e \'s/.*:: //g\')\n\n'
-        content += '# If there were no old settings, then apply a default setting;\n'
-        content += '# otherwise, add ForceFullCompositionPipeline to the old settings.\n'
-        content += 'if [ -z "$oldmode" ]\n'
-        content += 'then\n'
-        content += '    newmode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On}"\n'
-        content += 'else\n'
-        content += '    newmode=$(echo "$oldmode" | sed \'s/}/, ForceFullCompositionPipeline=On}/g\')\nfi\n\n'
-        content += '# Apply the new display settings.\n'
-        content += 'nvidia-settings --assign CurrentMetaMode="$newmode"\n'
+            if "ForceFullCompositionPipeline" in self.read():
+                # Avoid double-applying in case user changed
+                # our script but didn't remove it entirely.
+                return
+            # File exists and seems to not contain the script, so add it.
+            content = self.read_and_backup()
+            content += script_v2
+        
         self.atomic_write(content)
 
 class remove_nvidia_dynamic_power_one(FileAction):
