@@ -1715,6 +1715,17 @@ class bmc_usb_ethernet(FileAction):
     def describe(self):
         return _('Manual configuration of BMC USB ethernet')
 
+class nvidia_disable_gsp_firmware(FileAction):
+    """
+    Disable GSP firmware on models that conflict with it.
+    This action will not affect installations using nvidia-open.
+    """
+    relpath = ('etc', 'modprobe.d', 'nvidia_disable_gsp_firmware.conf')
+    content = 'options nvidia NVreg_EnableGpuFirmware=0'
+
+    def describe(self):
+        return _("Disable GSP firmware on models that conflict with it")
+
 class nvidia_coarse_power_management(FileAction):
     relpath = ('etc', 'modprobe.d', 'nvidia-runtimepm.conf')
     content = 'options nvidia NVreg_DynamicPowerManagement=0x01'
