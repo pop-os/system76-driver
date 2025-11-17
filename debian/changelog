@@ -1,3 +1,14 @@
+system76-driver (24.04.15) noble; urgency=low
+
+  * Increase compat from 9 to 12
+  * Fix `Priority` category from `extra` to `optional`
+  * Bump required Python version from 3.6 to 3.8
+  * Replace deprecated distutils with setuptools
+  * Add `pyproject.toml` for modern tooling
+  * Remove support for deprecated Upstart
+
+ -- Tim Crawford <tcrawford@system76.com>  Mon, 17 Nov 2025 11:06:47 -0600
+
 system76-driver (24.04.14) noble; urgency=low
 
   * Update serw12 xprofile to only run on NVIDIA < 500
