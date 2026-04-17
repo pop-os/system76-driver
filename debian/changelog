@@ -1,3 +1,9 @@
+system76-driver (24.04.16) noble; urgency=medium
+
+  * panp16: Fix touchpad areas action in COSMIC
+
+ -- Levi Portenier <levi@system76.com>  Fri, 17 Apr 2026 13:10:15 -0600
+
 system76-driver (24.04.15) noble; urgency=medium
 
   * Add panp16
