@@ -1097,6 +1097,14 @@ class touchpad_use_areas(FileAction):
         gsettings_dir = path.join('/', 'usr', 'share', 'glib-2.0', 'schemas')
         cmd_compile_schemas = ['glib-compile-schemas', gsettings_dir + '/']
         SubProcess.check_call(cmd_compile_schemas)
+        # Check if we're on COSMIC and apply the config change if so
+        touchpad_config_file = "/usr/share/cosmic/com.system76.CosmicComp/v1/input_touchpad"
+        if path.isfile(touchpad_config_file):
+            with open(touchpad_config_file, 'r') as file:
+                data = file.read()
+                data = data.replace("Clickfinger", "ButtonAreas")
+            with open(touchpad_config_file, 'w') as file:
+                file.write(data)
 
     def get_isneeded(self):
         if self.read() != self.content:
@@ -1107,7 +1115,7 @@ class touchpad_use_areas(FileAction):
         return False
 
     def describe(self):
-        return _('Apply touchpad click-method default gsettings overrides')
+        return _('Apply touchpad click-method default overrides')
 
 
 LIMIT_TDP_UDEV_RULE = """SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/lib/system76-driver/system76-adjust-tdp --battery"
