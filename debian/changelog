@@ -1,3 +1,9 @@
+system76-driver (24.04.17) noble; urgency=medium
+
+  * Add lemp14, lemp14-b
+
+ -- Tim Crawford <tcrawford@system76.com>  Wed, 22 Apr 2026 11:14:13 -0600
+
 system76-driver (24.04.16) noble; urgency=medium
 
   * panp16: Fix touchpad areas action in COSMIC
