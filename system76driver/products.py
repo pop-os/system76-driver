@@ -611,6 +611,14 @@ PRODUCTS = {
             actions.remove_blacklist_psmouse,
         ],
     },
+    'lemp14': {
+        'name': 'Lemur Pro',
+        'drivers': [],
+    },
+    'lemp14-b': {
+        'name': 'Lemur Pro',
+        'drivers': [],
+    },
 
     # Leopard:
     'leo1': {
