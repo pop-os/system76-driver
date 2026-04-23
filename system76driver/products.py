@@ -51,6 +51,7 @@ PRODUCTS = {
             actions.blacklist_nvidia_i2c,
             actions.blacklist_psmouse,
             actions.nvidia_coarse_power_management,
+            actions.nvidia_disable_gsp_firmware,
         ],
     },
     'addw5': {
