@@ -31,8 +31,7 @@ if sys.version_info < (3, 4):
 import os
 from os import path
 import subprocess
-from distutils.core import setup
-from distutils.cmd import Command
+from setuptools import Command, setup
 
 import system76driver
 from system76driver.tests.run import run_tests
