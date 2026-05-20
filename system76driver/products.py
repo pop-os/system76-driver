@@ -920,30 +920,35 @@ PRODUCTS = {
         'name': 'Pangolin',
         'drivers': [
             actions.touchpad_use_areas,
+            actions.wifi_reload,
         ],
     },
     'pang13': {
         'name': 'Pangolin',
         'drivers': [
             actions.touchpad_use_areas,
+            actions.wifi_reload,
         ],
     },
     'pang14': {
         'name': 'Pangolin',
         'drivers': [
             actions.touchpad_use_areas,
+            actions.wifi_reload,
         ],
     },
     'pang15': {
         'name': 'Pangolin',
         'drivers': [
             actions.touchpad_use_areas,
+            actions.wifi_reload,
         ],
     },
     'panp16': {
         'name': 'Pangolin Pro',
         'drivers': [
             actions.touchpad_use_areas,
+            actions.wifi_reload,
         ],
     },
     #'panv1': {'name': 'Pangolin Value'},  # FIXME: Not in model.py
