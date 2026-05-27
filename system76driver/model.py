@@ -208,6 +208,8 @@ TABLES = {
         'lemp12': 'lemp12',
         'lemp13': 'lemp13',
         'lemp13-b': 'lemp13-b',
+        'lemp14': 'lemp14',
+        'lemp14-b': 'lemp14-b',
         'leo1': 'leo1',
         'leox2': 'leox2',
         'leox3': 'leox3',
