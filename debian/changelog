@@ -1,3 +1,9 @@
+system76-driver (24.04.19) noble; urgency=medium
+
+  * Add thelio-mira-r5
+
+ -- Levi Portenier <levi@system76.com>  Fri, 22 May 2026 10:32:53 -0600
+
 system76-driver (24.04.18) noble; urgency=medium
 
   * Prefer NVIDIA 580 until 595 issues are resolved
