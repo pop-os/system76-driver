@@ -1,3 +1,9 @@
+system76-driver (24.04.20) noble; urgency=medium
+
+  * Bump version to 24.04.20
+
+ -- Jeremy Soller <jeremy@system76.com>  Mon, 01 Jun 2026 10:00:00 -0600
+
 system76-driver (24.04.18) noble; urgency=medium
 
   * Add wifi_reload action to remove MediaTek MT7921/MT7922 WiFi PCI device on suspend and rescan on resume for pang12-pang15 and panp16
