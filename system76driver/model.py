@@ -302,6 +302,7 @@ TABLES = {
         'thelio-mira-r2': 'thelio-mira-r2',
         'thelio-mira-r3': 'thelio-mira-r3',
         'thelio-mira-r4': 'thelio-mira-r4',
+        'thelio-mira-r5': 'thelio-mira-r5',
         'thelio-spark-b1': 'thelio-spark-b1',
         'thelio-spark-r1': 'thelio-spark-r1',
         'thelio-spark-r2': 'thelio-spark-r2',
