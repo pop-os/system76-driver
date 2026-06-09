@@ -4,12 +4,6 @@ system76-driver (24.04.21) noble; urgency=medium
 
  -- Thomas Zimmerman <thomas@system76.com>  Tue, 9 Jun 2026 14:21:48 -0600
 
-system76-driver (24.04.20) noble; urgency=medium
-
-  * Bump version to 24.04.20
-
- -- Jeremy Soller <jeremy@system76.com>  Mon, 01 Jun 2026 10:00:00 -0600
-
 system76-driver (24.04.19) noble; urgency=medium
 
   * Add thelio-mira-r5
