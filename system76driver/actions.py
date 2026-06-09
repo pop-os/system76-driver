@@ -63,6 +63,42 @@ DISABLE_PM_ASYNC = """# /etc/tmpfiles.d/system76-disable-pm_async.conf
 w /sys/power/pm_async - - - - 0
 """
 
+WIFI_RELOAD = """#!/bin/sh
+
+# Installed by system76-driver
+# Removes the MediaTek MT7921/MT7922 wireless adapter on suspend and
+# rescans the PCI bus on resume. The MT7922 firmware/driver can lose
+# background scan and connection state after suspend, resulting in
+# degraded WiFi performance or complete failure to reconnect. Forcibly
+# removing the PCI device on suspend and rescanning on resume ensures
+# the adapter is fully re-initialized.
+
+set -e
+
+mediatek_vendor="0x14c3"
+
+case "$2" in
+    suspend | hybrid-sleep)
+        case "$1" in
+            pre)
+                for dev in /sys/bus/pci/devices/*; do
+                    vendor=$(cat "$dev/vendor" 2>/dev/null || true)
+                    if [ "$vendor" = "$mediatek_vendor" ]; then
+                        device=$(cat "$dev/device" 2>/dev/null || true)
+                        if [ "$device" = "0x7961" ] || [ "$device" = "0x0616" ]; then
+                            echo 1 > "$dev/remove" 2>/dev/null || true
+                        fi
+                    fi
+                done
+                ;;
+            post)
+                echo 1 > /sys/bus/pci/rescan 2>/dev/null || true
+                ;;
+        esac
+        ;;
+esac
+"""
+
 
 def random_id(numbytes=15):
     return b32encode(os.urandom(numbytes)).decode('utf-8')
@@ -1744,3 +1780,11 @@ class remove_nvidia_coarse_power_management(FileAction):
             os.remove(self.filename)
         except:
             pass
+
+class wifi_reload(FileAction):
+    relpath = ('lib', 'systemd', 'system-sleep', 'system76-wifi-reload')
+    content = WIFI_RELOAD
+    mode = 0o755
+
+    def describe(self):
+        return _('Remove MediaTek WiFi PCI device on suspend and rescan on resume')
