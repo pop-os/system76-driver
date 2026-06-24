@@ -57,8 +57,8 @@ Description: Universal driver for System76 computers
 Package: system76-driver-nvidia
 Architecture: amd64 arm64
 Depends: ${misc:Depends},
-    nvidia-driver-580-open | nvidia-driver-580 |
     nvidia-driver-595 |
+    nvidia-driver-580-open | nvidia-driver-580 |
     nvidia-driver-570-open | nvidia-driver-570 |
     nvidia-driver-550 |
     nvidia-driver-470,
