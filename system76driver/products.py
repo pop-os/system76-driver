@@ -59,6 +59,13 @@ PRODUCTS = {
             actions.blacklist_nvidia_i2c,
         ],
     },
+    'addp6': {
+        'name': 'Adder Pro',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+            actions.xe_dpcd_vesa_controls,
+        ],
+    },
 
     # Bonobo:
     'bonp1': {
@@ -611,6 +618,18 @@ PRODUCTS = {
             actions.remove_blacklist_psmouse,
         ],
     },
+    'lemp14': {
+        'name': 'Lemur Pro',
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
+    },
+    'lemp14-b': {
+        'name': 'Lemur Pro',
+        'drivers': [
+            actions.blacklist_psmouse,
+        ],
+    },
 
     # Leopard:
     'leo1': {
@@ -864,6 +883,12 @@ PRODUCTS = {
         ],
     },
     'oryp13': {
+        'name': 'Oryx Pro',
+        'drivers': [
+            actions.blacklist_nvidia_i2c,
+        ],
+    },
+    'oryp14': {
         'name': 'Oryx Pro',
         'drivers': [
             actions.blacklist_nvidia_i2c,

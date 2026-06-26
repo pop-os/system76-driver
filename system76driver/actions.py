@@ -1788,3 +1788,10 @@ class wifi_reload(FileAction):
 
     def describe(self):
         return _('Remove MediaTek WiFi PCI device on suspend and rescan on resume')
+
+class xe_dpcd_vesa_controls(FileAction):
+    relpath = ('etc', 'modprobe.d', 'xe-dpcd.conf')
+    content = "options xe enable_dpcd_backlight=2"
+
+    def describe(self):
+        return _("Force VESA backlight controls for OLED displays")
