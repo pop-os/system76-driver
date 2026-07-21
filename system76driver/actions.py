@@ -1696,6 +1696,7 @@ class intel_idle_max_cstate_4(GrubAction):
         return _('Fix for freezes on some CML-U processors')
 
 class blacklist_psmouse(FileAction):
+    update_initramfs = True
     relpath = ('etc', 'modprobe.d', 'blacklist-psmouse.conf')
     content = 'blacklist psmouse\n'
 
@@ -1703,6 +1704,7 @@ class blacklist_psmouse(FileAction):
         return _('Avoid touchpad issues caused by PS/2 interface')
 
 class remove_blacklist_psmouse(FileAction):
+    update_initramfs = True
     relpath = ('etc', 'modprobe.d', 'blacklist-psmouse.conf')
 
     def describe(self):
@@ -1760,6 +1762,7 @@ class bmc_usb_ethernet(FileAction):
         return _('Manual configuration of BMC USB ethernet')
 
 class nvidia_coarse_power_management(FileAction):
+    update_initramfs = True
     relpath = ('etc', 'modprobe.d', 'nvidia-runtimepm.conf')
     content = 'options nvidia NVreg_DynamicPowerManagement=0x01\n'
 
@@ -1767,6 +1770,7 @@ class nvidia_coarse_power_management(FileAction):
         return _("Use coarse-grained power control for NVIDIA driver")
 
 class remove_nvidia_coarse_power_management(FileAction):
+    update_initramfs = True
     relpath = ('etc', 'modprobe.d', 'nvidia-runtimepm.conf')
 
     def describe(self):
@@ -1790,6 +1794,7 @@ class wifi_reload(FileAction):
         return _('Remove MediaTek WiFi PCI device on suspend and rescan on resume')
 
 class xe_dpcd_vesa_controls(FileAction):
+    update_initramfs = True
     relpath = ('etc', 'modprobe.d', 'xe-dpcd.conf')
     content = "options xe enable_dpcd_backlight=2\n"
 
