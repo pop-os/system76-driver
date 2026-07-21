@@ -725,7 +725,7 @@ class remove_gfxpayload_text(gfxpayload_text):
 
 class uvcquirks(FileAction):
     relpath = ('etc', 'modprobe.d', 'uvc.conf')
-    content = 'options uvcvideo quirks=2'
+    content = 'options uvcvideo quirks=2\n'
 
     def describe(self):
         return _('Webcam quirk fixes')
@@ -1437,7 +1437,7 @@ class hda_disable_power_save(GrubAction):
 
 class blacklist_nvidia_i2c(FileAction):
     relpath = ('etc', 'modprobe.d', 'system76-driver_i2c-nvidia-gpu.conf')
-    content = 'blacklist i2c_nvidia_gpu'
+    content = 'blacklist i2c_nvidia_gpu\n'
 
     def describe(self):
         return _('Workaround for delay when loading NVIDIA i2c kernel module')
@@ -1697,7 +1697,7 @@ class intel_idle_max_cstate_4(GrubAction):
 
 class blacklist_psmouse(FileAction):
     relpath = ('etc', 'modprobe.d', 'blacklist-psmouse.conf')
-    content = 'blacklist psmouse'
+    content = 'blacklist psmouse\n'
 
     def describe(self):
         return _('Avoid touchpad issues caused by PS/2 interface')
@@ -1761,7 +1761,7 @@ class bmc_usb_ethernet(FileAction):
 
 class nvidia_coarse_power_management(FileAction):
     relpath = ('etc', 'modprobe.d', 'nvidia-runtimepm.conf')
-    content = 'options nvidia NVreg_DynamicPowerManagement=0x01'
+    content = 'options nvidia NVreg_DynamicPowerManagement=0x01\n'
 
     def describe(self):
         return _("Use coarse-grained power control for NVIDIA driver")
@@ -1791,7 +1791,7 @@ class wifi_reload(FileAction):
 
 class xe_dpcd_vesa_controls(FileAction):
     relpath = ('etc', 'modprobe.d', 'xe-dpcd.conf')
-    content = "options xe enable_dpcd_backlight=2"
+    content = "options xe enable_dpcd_backlight=2\n"
 
     def describe(self):
         return _("Force VESA backlight controls for OLED displays")
