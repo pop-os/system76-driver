@@ -1437,7 +1437,7 @@ class hda_disable_power_save(GrubAction):
 
 class blacklist_nvidia_i2c(FileAction):
     relpath = ('etc', 'modprobe.d', 'system76-driver_i2c-nvidia-gpu.conf')
-    content = 'blacklist i2c_nvidia_gpu\n'
+    content = 'blacklist i2c_nvidia_gpu\nalias i2c_nvidia_gpu off\n'
 
     def describe(self):
         return _('Workaround for delay when loading NVIDIA i2c kernel module')
@@ -1560,7 +1560,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
                 os.remove(self.oldfilename)
             except:
                 pass
-        
+
         script_v1 = '# Added by system76-driver.\n'
         script_v1 += '# Force a full composition pipeline to prevent stuttering.\n\n'
         script_v1 += '# Get the current display settings.\n'
@@ -1574,7 +1574,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         script_v1 += '    newmode=$(echo "$oldmode" | sed \'s/}/, ForceFullCompositionPipeline=On}/g\')\nfi\n\n'
         script_v1 += '# Apply the new display settings.\n'
         script_v1 += 'nvidia-settings --assign CurrentMetaMode="$newmode"\n'
-        
+
         script_v2 = '# Added by system76-driver.\n'
         script_v2 += '# Force a full composition pipeline to prevent stuttering\n'
         script_v2 += '# (only needed on driver versions < 500).\n\n'
@@ -1593,7 +1593,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
         script_v2 += '    # Apply the new display settings.\n'
         script_v2 += '    nvidia-settings --assign CurrentMetaMode="$newmode"\n'
         script_v2 += 'fi\n'
-        
+
         if not os.path.exists(self.filename):
             content = script_v2
         elif self.read() == script_v1:
@@ -1610,7 +1610,7 @@ class nvidia_forcefullcompositionpipeline(FileAction):
             # File exists and seems to not contain the script, so add it.
             content = self.read_and_backup()
             content += script_v2
-        
+
         self.atomic_write(content)
 
 class remove_nvidia_dynamic_power_one(FileAction):
@@ -1698,7 +1698,7 @@ class intel_idle_max_cstate_4(GrubAction):
 class blacklist_psmouse(FileAction):
     update_initramfs = True
     relpath = ('etc', 'modprobe.d', 'blacklist-psmouse.conf')
-    content = 'blacklist psmouse\n'
+    content = 'blacklist psmouse\nalias psmouse off\n'
 
     def describe(self):
         return _('Avoid touchpad issues caused by PS/2 interface')
