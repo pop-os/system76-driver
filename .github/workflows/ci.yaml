@@ -23,7 +23,6 @@ jobs:
           python3-dbus \
           python3-distro \
           python3-evdev \
-          python3-gi \
-          python3-systemd
+          python3-gi
 
     - run: python3 setup.py test --skip-gtk
