@@ -1,3 +1,9 @@
+system76-driver (24.04.23) noble; urgency=medium
+
+  * Add meer11-c and meer11-cu
+
+ -- Levi Portenier <levi@system76.com>  Tue, 27 Oct 2026 16:35:43 -0600
+
 system76-driver (24.04.22) noble; urgency=medium
 
   * Fix module blacklist actions
