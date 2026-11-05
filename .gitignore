@@ -6,4 +6,5 @@
 /debian/files
 /debian/system76-driver-nvidia/
 /debian/system76-driver/
+/dist/
 __pycache__

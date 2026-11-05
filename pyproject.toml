@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2025 System76, Inc.
+
+[build-system]
+requires = ["setuptools >= 61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "system76driver"
+dynamic = ["version"]
+description = "Hardware-specific enhancements for System76 products"
+requires-python = ">=3.8"
+# XXX: Debian pybuild uses old table format
+license = { text = "GPL-2.0-or-later" }
+authors = [{ name = "System76, Inc.", email = "dev@system76.com" }]
+
+dependencies = [
+    "dbus-python",
+    "distro",
+    "evdev",
+    "gi",
+    "systemd",
+]
+
+[dependency-groups]
+test = [
+    "pyflakes",
+    "pytest",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pop-os/system76-driver"
+"Bug Reports" = "https://github.com/pop-os/system76-driver/issues"
+
+[tool.setuptools]
+packages = ["system76driver", "system76driver.tests"]
+package-data = { "system76driver" = ["data/*"] }
+script-files = ["system76-driver", "system76-driver-cli"]
+
+[tool.setuptools.dynamic]
+version = { attr = "system76driver.__version__" }
